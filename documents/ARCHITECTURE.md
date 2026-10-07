@@ -69,5 +69,13 @@ stages.json                     "skills": ["voice", "grounding"] on a stage
 - **Proof.** Deterministic check for stock AI phrases, a Jev tone score, and a before/after comparison for the judges.
 - No extra model call. Skills change the prompt, not the number of calls.
 
+## Case file and next-steps map (decided by Juan 2026-10-06)
+After the pastor approves a package, Nury can save it as a **case file**: a local folder of linked markdown pages (index, one page per stage, people, documents, timeline, log) the pastor can reopen, read, print and export. Style: a small personal wiki, compiled once from approved text.
+- **Local only.** Case files live on the pastor's machine in `cases/` (gitignored). Nothing is uploaded. Demo and evals use synthetic families only.
+- **Approved content only.** Pages hold what the pastor approved or edited. A rejected draft never enters a case file. `log.md` records each gate with a timestamp.
+- **Built without a model call.** Pages and the map are produced deterministically from the approved stage outputs and the audit log.
+- **Next-steps map.** One SVG per case: lanes for tonight, this week, questions still open, and who to call. It shows steps and questions, never outcomes. No future-tense claims about the case.
+- **Later (not before submission):** a possible-paths map from vetted process sources (`pathways.json` per playbook), and a case update loop where Nury proposes page edits and the pastor approves each one.
+
 ## Rules that stay
 Vetted sources only. No open web. No send path. Nury is not a pastor. Humanitarian, never political. Keys from the environment only.
