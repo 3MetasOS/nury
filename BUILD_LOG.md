@@ -740,3 +740,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 119. 2026-10-07 01:23 MDT — Wrap-up mode (Juan)
 
 - Juan: no more technical work except bug fixes; improve the storytelling, the documentation and the rest. Scope from now: bug fixes, the triage robustness fix (the last core change), one final commit, a full re-run of every set, the scorecards and the review canvas, the video capture, the documentation and the story. Cut and kept as planned: the feedback chips wiring, the Improvement page and the consent-sentence switch (the learning loop stays built offline and documented as such).
+
+## 120. 2026-10-07 01:26 MDT — Correction: the self-improvement loop must be finished (Juan)
+
+- Juan: the wrap-up rule was misread. The self-improvement loop must be finished; after it and the triage fix there are no more features, and the team moves to QA and reviews. The cuts in entry 119 are withdrawn: the feedback chips wiring, the reason chips, the outcome recording from "Something changed", the consent sentence shown when capture is on, and the Improvement page are back in scope for hack-artisans. hack-jedi continues with the triage fix and the final commit, then answers questions, fact-checks the technical reference, and fixes bugs only. hack-ninja follows the documentation jobs with a claims audit and a consistency audit. The sequence: triage fix and final commit, the loop in the app, a full re-run of every set, QA and review.
