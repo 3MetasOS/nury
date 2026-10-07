@@ -29,4 +29,3 @@ You speak live. These are cues, not a script. Slide 1 and the film are locked.
 - Deck and film are local files in one folder. Test on the room's screen while another team presents.
 - Backup 1: the film file on its own: `video/raw_app/replay/app_full_replay_3x.mp4`.
 - Backup 2: the live app in replay mode (no network needed), on port 8080.
-- If the slot is 90 seconds: slides 1, 2, 4, 6. Skip 3 and 5.
