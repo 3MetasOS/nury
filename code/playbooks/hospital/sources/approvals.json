@@ -1,8 +1,15 @@
 {
- "hipaa-164-510b": "pending",
- "cfr-482-13": "pending",
- "cfr-92-201": "pending",
- "988-lifeline": "pending",
- "bls-social-workers": "pending",
- "apc-chaplains": "pending"
+ "hipaa-164-510b": "approved",
+ "cfr-482-13": "approved",
+ "cfr-92-201": "approved",
+ "988-lifeline": "approved",
+ "bls-social-workers": "approved",
+ "apc-chaplains": "rejected",
+ "_meta": {
+  "approved_by": "Juan Pelaez",
+  "decided": "2026-10-06",
+  "recorded_by": "hack-jedi",
+  "via": "hack-sensei relay (Juan's decision in chat)",
+  "note": "Sources 1-5 approved. Source 6 (Association of Professional Chaplains) rejected as weak: search-summary only."
+ }
 }

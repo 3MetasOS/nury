@@ -1,5 +1,5 @@
 {
- "status": "pending approval",
+ "status": "decided 2026-10-06: sources 1-5 approved, source 6 rejected",
  "drafted": "2026-10-06",
  "by": "hack-jedi",
  "sources": [
@@ -18,7 +18,8 @@
     "What the hospital may share with family",
     "If the patient cannot be asked"
    ],
-   "phones": []
+   "phones": [],
+   "decision": "approved"
   },
   {
    "id": "cfr-482-13",
@@ -38,7 +39,8 @@
     "Complaints",
     "Resource: hospital complaint contact"
    ],
-   "phones": []
+   "phones": [],
+   "decision": "approved"
   },
   {
    "id": "cfr-92-201",
@@ -56,7 +58,8 @@
     "A free interpreter",
     "Resource: free qualified interpreter"
    ],
-   "phones": []
+   "phones": [],
+   "decision": "approved"
   },
   {
    "id": "988-lifeline",
@@ -75,7 +78,8 @@
    ],
    "phones": [
     "988"
-   ]
+   ],
+   "decision": "approved"
   },
   {
    "id": "bls-social-workers",
@@ -91,7 +95,8 @@
    "uses": [
     "Resource: hospital social worker"
    ],
-   "phones": []
+   "phones": [],
+   "decision": "approved"
   },
   {
    "id": "apc-chaplains",
@@ -107,7 +112,8 @@
     "Resource: hospital chaplaincy"
    ],
    "phones": [],
-   "caveat": "Weakest source. Reject it, or approve it knowing the wording was not checked against the page text."
+   "caveat": "Weakest source. Reject it, or approve it knowing the wording was not checked against the page text.",
+   "decision": "rejected"
   }
  ]
 }

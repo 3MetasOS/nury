@@ -285,6 +285,14 @@ class Hospital(unittest.TestCase):
         with self.assertRaises(pbm.PlaybookError):
             run_stage("triage", CaseState("x"), client=HFake(), playbook="sudden-death")
 
+    def test_real_hospital_playbook_is_live_after_approval(self):
+        pb = pbm.load_playbook("hospital")
+        self.assertEqual(pb.pending_sources, [])
+        self.assertEqual({p["id"]: p["status"] for p in pbm.list_playbooks()}["hospital"], "live")
+        names = [e["name"] for e in pb.sources["resources"]["national"]]
+        self.assertNotIn("Hospital chaplaincy (spiritual care)", names)
+        self.assertEqual(len(names), 4)
+
     def test_rejected_source_is_removed(self):
         self._approve_all()
         a = json.loads((self.src / "approvals.json").read_text())
