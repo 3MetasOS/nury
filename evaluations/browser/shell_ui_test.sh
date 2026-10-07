@@ -32,7 +32,7 @@ JS
   check "$T logo: the lockup is in the header and in the footer, and in no page body" "$(ev "$J")" "true"
   check "$T header: no link to a page for judges" "$(ev "![...document.querySelectorAll('header.top a')].some(a=>/how-it-was-built|observability|improvement/.test(a.getAttribute('href')))")" "true"
   read -r -d '' J <<'JS'
-(()=>{const f=document.querySelector('footer.sitefoot');return /For judges and reviewers/.test(f.textContent)&&JSON.stringify([...f.querySelectorAll('.fnav a')].map(a=>a.textContent.trim()))==='["How this was built","Observability","Self-improvement"]'&&!/Improvement\b/.test(f.textContent.replace(/Self-improvement/g,''))})()
+(()=>{const f=document.querySelector('footer.sitefoot');return /For judges and reviewers/.test(f.textContent)&&JSON.stringify([...f.querySelectorAll('.fnav a')].map(a=>a.textContent.trim()))==='["How this was built","Observability","Self-improvement","What did not work","Economics","The pattern","Standards we use"]'&&!/Improvement\b/.test(f.textContent.replace(/Self-improvement/g,''))})()
 JS
   check "$T footer: 'For judges and reviewers' with the three pages, Self-improvement named so" "$(ev "$J")" "true"
   read -r -d '' J <<'JS'

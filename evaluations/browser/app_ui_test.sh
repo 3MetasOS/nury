@@ -32,7 +32,7 @@ JS
   # ---- crisis detail
   click "#picks a.pk"
   check "$T crisis: hash and view" "$(ev "location.hash+'|'+document.body.dataset.view")" '"#/crisis/detention|crisis"'
-  check "$T crisis: five stages from the playbook, rail present" "$(ev "document.querySelectorAll('#crisis-page .st').length===5&&document.querySelectorAll('#crisis-page .rail .n').length===5")" "true"
+  check "$T crisis: five stages from the playbook, drawn as a path diagram" "$(ev "document.querySelectorAll('#crisis-page .st').length===5&&document.querySelectorAll('#crisis-page svg.dgm .dg-node.on').length===5")" "true"
   check "$T crisis: 911 line, never list, time note" "$(ev "/call 911 first/.test(document.body.innerText)&&/What Nury will never do/.test(document.body.innerText)&&/about a minute/i.test(document.body.innerText)")" "true"
   read -r -d '' J <<'JS'
 (()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0&&getComputedStyle(x).display!=='none');if(!b)return false;const r=b.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.height>=56})()

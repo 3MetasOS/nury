@@ -13,8 +13,8 @@
     const rows = [{ k: "step", t: "Intake", d: "You type what the family told you." }, { k: "step", t: "Protect names", d: "You pick the names to hide. Tokens, not names, go to the model." }];
     stages.forEach((st, i) => { rows.push({ k: "stage", n: i + 1, t: num(st.title), d: st.line || st.summary || "" }); if (i < stages.length) rows.push({ k: "gate" }); });
     rows.push({ k: "step", t: "Package", d: "Every approved stage. You copy it, download it or print it." }, { k: "step", t: "Case file", d: "Optional: save it to open later, with a next-steps map." });
-    const W = 600, X = 44; let y = 14; const parts = [], ys = [];
-    rows.forEach(r => { const h = r.k === "gate" ? 44 : 70; ys.push([y, h]); y += h; });
+    const narrow = !!opts.narrow, W = narrow ? 420 : 600, X = 44, WRAP = narrow ? 30 : 44; let y = 14; const parts = [], ys = [];
+    rows.forEach(r => { const h = r.k === "gate" ? 46 : 78; ys.push([y, h]); y += h; });
     const H = y + 6;
     const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, class: "dgm", role: "img", "aria-label": `The path of a response: intake, protecting names, then ${stages.map(x => num(x.title)).join(", ")}, each followed by your gate (Approve, Edit or Stop), then the package and the case file. Stop at any gate means you handle it yourself.` });
     // the line down the left
@@ -23,8 +23,8 @@
       const [y0, h] = ys[i], cy = y0 + (r.k === "gate" ? h / 2 : 26);
       if (r.k === "gate") {
         svg.append(s("path", { d: `M${X} ${cy - 9} l9 9 l-9 9 l-9 -9 z`, class: "dg-gate" }));
-        const t = s("text", { x: X + 26, y: cy + 4, class: "dg-mono" }, "your gate: Approve · Edit · Stop");
-        svg.append(t);
+        svg.append(s("text", { x: X + 26, y: cy + 4, class: "dg-mono" }, narrow ? "your gate · Stop = I handle it" : "your gate: Approve · Edit · Stop"));
+        if (narrow) return;
         svg.append(s("path", { d: `M${X + 232} ${cy} C ${X + 300} ${cy - 5}, ${X + 360} ${cy + 5}, ${W - 150} ${cy}`, class: "dg-stop" }));
         svg.append(s("path", { d: `M${W - 158} ${cy - 5} L${W - 150} ${cy} L${W - 159} ${cy + 5}`, class: "dg-stop" }));
         svg.append(s("text", { x: W - 144, y: cy + 4, class: "dg-stoptxt" }, "Stop = I handle it"));
@@ -35,8 +35,8 @@
         svg.append(s("text", { x: X, y: cy + 5, "text-anchor": "middle", class: "dg-num" }, String(r.n)));
       } else svg.append(s("circle", { cx: X, cy, r: 9, class: "dg-node" }));
       svg.append(s("text", { x: X + 30, y: cy - 2, class: "dg-title" }, r.t));
-      wrap(r.d, 52).slice(0, 2).forEach((ln, k) => svg.append(s("text", { x: X + 30, y: cy + 16 + k * 15, class: "dg-desc" }, ln)));
-      if (r.k === "stage") svg.append(s("text", { x: W - 12, y: cy + 4, "text-anchor": "end", class: "dg-mono" }, "named rules · Jev · 3 tries"));
+      wrap(r.d, WRAP).slice(0, 2).forEach((ln, k) => svg.append(s("text", { x: X + 30, y: cy + 16 + k * 15, class: "dg-desc" }, ln)));
+      if (r.k === "stage" && !narrow) svg.append(s("text", { x: W - 12, y: cy + 4, "text-anchor": "end", class: "dg-mono" }, "rules · Jev · 3 tries"));
     });
     return svg;
   }

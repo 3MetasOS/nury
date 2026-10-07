@@ -79,7 +79,7 @@ def loop_svg():
     return "".join(out)
 
 
-def build():
+def build(out=None):
     md = SRC.read_text(encoding="utf-8")
     md = re.sub(r"## Contents\n.*?(?=\n## 1\.)", "", md, count=1, flags=re.S)       # the page builds its own contents
     md = md.replace("<!--LIVE:RULES-->", '\n<div class="live" data-live="rules" markdown="0"></div>\n')
@@ -114,7 +114,7 @@ def build():
     tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n, _ in toc)
     page = TEMPLATE.replace("@@TOC@@", tocs).replace("@@BODY@@", body).replace("@@NOTE@@", html.escape(NOTE)).replace("@@DISCLOSE@@", html.escape(DISCLOSE))
     assert 'data-live="rules"' in page and 'data-live="playbooks"' in page, "live markers lost"
-    OUT.write_text(page, encoding="utf-8")
+    Path(out or OUT).write_text(page, encoding="utf-8")
     return len(page), len(toc)
 
 
@@ -138,7 +138,7 @@ def scan_log(text):
     return hits
 
 
-def build_log():
+def build_log(out=None):
     text = LOG_SRC.read_text(encoding="utf-8")
     hits = scan_log(text)
     if hits:
@@ -164,7 +164,7 @@ def build_log():
     first = next((e for e in entries if e[0] == 1), None)
     tpl = (Path(__file__).resolve().parent / "log_template.html").read_text(encoding="utf-8")
     page = tpl.replace("@@ENTRIES@@", items).replace("@@COUNT@@", str(len(entries))).replace("@@FIRST@@", html.escape(first[1] if first else ""))
-    LOG_OUT.write_text(page, encoding="utf-8")
+    Path(out or LOG_OUT).write_text(page, encoding="utf-8")
     return len(page), len(entries)
 
 

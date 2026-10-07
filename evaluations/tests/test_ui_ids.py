@@ -158,8 +158,8 @@ def test_playbook_detail_api_is_safe_and_complete():
 
 
 def test_built_page_is_current_with_its_source():
-    """The page is generated. If the Markdown or the template changed, rebuild: python3 -m app.build_docs (from code/)."""
-    import importlib, sys
+    """How this was built is generated. Build into a temp folder and compare there: python3 -m app.build_docs (from code/) regenerates it."""
+    import importlib, sys, tempfile
     try:
         import markdown  # noqa: F401
     except ImportError:
@@ -169,13 +169,30 @@ def test_built_page_is_current_with_its_source():
     sys.path.insert(0, str(STATIC.parents[2]))
     from app import build_docs
     importlib.reload(build_docs)
-    before = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
+    with tempfile.TemporaryDirectory() as d:
+        build_docs.build(out=Path(d) / "how.html")
+        fresh = (Path(d) / "how.html").read_text(encoding="utf-8")
+    assert (STATIC / "how-it-was-built.html").read_text(encoding="utf-8") == fresh, "how-it-was-built.html is stale: run python3 -m app.build_docs"
+
+
+def test_build_log_page_exists_and_has_the_newest_entry():
+    """The build log changes with every milestone, so it is not compared byte for byte. It must exist and carry the newest entry number in BUILD_LOG.md at test time (built into a temp folder)."""
+    import sys, tempfile
     try:
-        build_docs.build()
-        after = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
-    finally:
-        (STATIC / "how-it-was-built.html").write_text(before, encoding="utf-8")
-    assert before == after, "how-it-was-built.html is stale: run python3 -m app.build_docs"
+        import markdown  # noqa: F401
+    except ImportError:
+        import pytest
+        pytest.skip("python-markdown is a build-time tool and is not installed here")
+    sys.path.insert(0, str(STATIC.parents[1]))
+    from app import build_docs
+    newest = max(int(n) for n in re.findall(r"(?m)^## (\d+)\. ", (ROOT / "BUILD_LOG.md").read_text(encoding="utf-8")))
+    with tempfile.TemporaryDirectory() as d:
+        build_docs.build_log(out=Path(d) / "log.html")
+        fresh = (Path(d) / "log.html").read_text(encoding="utf-8")
+    assert f'id="e{newest}"' in fresh or f'id="e{newest}-2"' in fresh, "the build step finds the newest entry"
+    page = (STATIC / "build-log.html").read_text(encoding="utf-8")
+    assert page.count('<details class="ent"') >= 100, "the committed page exists and holds the log"
+
 
 
 def test_how_it_was_built_has_no_computer_or_device_wording():
@@ -276,7 +293,7 @@ def test_diagrams_are_drawn_from_data_and_have_text_alternatives():
     assert "function flow(stages" in js and "function strip(stages" in js and 'role: "img"' in js and "aria-label" in js
     assert "innerHTML" not in js, "server text goes in with textContent"
     idx = (STATIC / "index.html").read_text(encoding="utf-8")
-    assert "NuryDiagram.flow(st)" in idx and "NuryDiagram.strip(stg)" in idx and 'id="case-strip"' in idx
+    assert "NuryDiagram.flow(st," in idx and "NuryDiagram.strip(stg)" in idx and 'id="case-strip"' in idx
     how = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
     assert how.count('class="adg"') == 2, "architecture and loop"
     assert 'class="adg"' in (STATIC / "network.html").read_text(encoding="utf-8")

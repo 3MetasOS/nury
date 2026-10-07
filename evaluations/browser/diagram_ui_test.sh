@@ -15,10 +15,10 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   open "http://127.0.0.1:$PORT/#/crisis/$PB"
   read -r -d '' J <<'JS'
 (async()=>{const pbs=(await (await fetch('/api/playbooks')).json()).playbooks;const p=pbs.find(x=>x.id===location.hash.split('/')[2]);const svg=document.querySelector('#crisis-page figure.dfig svg.dgm');if(!svg||!p)return 'missing';
-const nodes=svg.querySelectorAll('.dg-node.on').length,gates=svg.querySelectorAll('.dg-gate').length,lab=svg.getAttribute('aria-label');
+const nodes=svg.querySelectorAll('.dg-node.on').length,gates=svg.querySelectorAll('.dg-gate').length,stopOk=/Stop/.test(svg.textContent),lab=svg.getAttribute('aria-label');
 const titles=p.stages.every(s=>lab.includes(s.title.replace(/^\d+\.\s*/,'')));
 const sc=svg.getBoundingClientRect().width/svg.viewBox.baseVal.width;const fs=parseFloat(getComputedStyle(svg.querySelector('.dg-desc')).fontSize)*sc;
-return JSON.stringify([nodes===p.stages.length,gates===p.stages.length,titles,svg.getAttribute('role')==='img',fs>=8.5,document.documentElement.scrollWidth<=innerWidth])})()
+return JSON.stringify([nodes===p.stages.length,gates===p.stages.length&&stopOk,titles,svg.getAttribute('role')==='img',fs>=8.5,document.documentElement.scrollWidth<=innerWidth])})()
 JS
   check "$T crisis($PB): the path diagram is drawn from the playbook's stages: one node and one gate per stage, a text alternative, readable size, no sideways scroll" "$(ev "$J")" '"[true,true,true,true,true,true]"'
   check "$T crisis($PB): contrast scan clean" "$(scan)" '"[]"'

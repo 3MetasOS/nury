@@ -788,7 +788,22 @@ class H(BaseHTTPRequestHandler):
         pass
 
 
+def rebuild_static_pages():
+    """Regenerate the document pages (How this was built, Build log, Standards, ...) from their Markdown when python-markdown is installed.
+    The server itself needs no extra package: without it, the committed pages are served as they are. Never stops the server."""
+    try:
+        from app import build_docs
+        build_docs.build(); build_docs.build_log(); build_docs.build_standards()
+        for a, b, c, d in build_docs.SIMPLE_DOCS:
+            build_docs.build_simple(a, b, c, d)
+        return True
+    except Exception:
+        return False
+
+
 def main():
+    if os.environ.get("NURY_REBUILD_PAGES") == "1":      # off by default: a hosted copy serves the committed pages
+        print("pages rebuilt" if rebuild_static_pages() else "pages not rebuilt (python-markdown missing or a source file changed shape)")
     port = int(os.environ.get("PORT", "8080"))
     print(f"Nury on http://127.0.0.1:{port}")
     ThreadingHTTPServer(("127.0.0.1", port), H).serve_forever()
