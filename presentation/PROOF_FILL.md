@@ -38,3 +38,14 @@ Required wording: "the pastor keeps a case file on their own computer". Never sa
 Planned lines, ready to paste:
 - Deck slide 5 bullet: "The pastor keeps a case file on their own computer, with a map of next steps and questions to ask."
 - Pitch script, 1:35 block: "The pastor keeps a case file on their own computer. Nury adds a map of next steps and questions to bring to an attorney. It lists steps and questions. It does not say what will happen."
+
+## Church network and official lists (gated, queued Oct 7, not started)
+Rule change from Juan. Replaces "never recommends a specific attorney". Ship only on hack-sensei's written go, after it works.
+Stale lines today:
+- description.txt line 11: "Nury never recommends a specific attorney." (6 words)
+- deck.html slide 4 flow item "Attorney resources": "Never one named attorney."
+Planned replacements:
+- Description: "Nury lists only pastor-vetted contacts and official lists, endorsing no one." (10 words, net +4: 249 alone; with the two-playbooks variant it reaches 253, so cut one sentence, for example "Family materials come out in Spanish.", only if both ship.)
+- Deck: "Lists only contacts the pastor has vetted, labeled as the church's own, plus official lists. Never endorses anyone."
+- Pitch script, 1:35 block: "Attorney resources come from two places: contacts the pastor has vetted, labeled as the church's own, and official lists. Nury endorses no one."
+Do not say "find more" or any web search. It is after submission.
