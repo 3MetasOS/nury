@@ -394,3 +394,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan asked for a "This is Nury" opening moment and a memorial as the last thing in the video and the presentation. Nury is named for his aunt Nury, who served her church for 83 years, always with a smile and with Jesus in her heart; she never married and passed away a month ago.
 - Source: `presentation/MEMORIAL.md` (draft until Juan approves). Rules: his words, no edits or humanizing; only facts he gave; no stock photo; Juan's own voice for the line, never text-to-speech; the finalist video stays at most 90 seconds. The memorial is gated by an approval flag, like the proof card.
+
+## 59. 2026-10-06 21:59 MDT — Deck v2 (hack-ninja, commit 300b0bc)
+
+- Light deck on the paper palette with logo C; 9 slides in 3:00 with the 90 s cut marked, then backup slides (what broke and what changed with 7 real rows, four evaluation layers, tested privacy, how we differ from the two known entries, credits). Gated and hidden until confirmed in writing: hospital, skill system, case file, and the "listed does not mean recommended" slide. No scorecard number anywhere; slide 7 holds placeholders under the 16:00 cut rule.
+- Images: two CC0 photos with no people (a porch light; a hand with glowing lanterns) plus four own illustrations (lit phone, family silhouette, shoes by a door, window); licenses recorded in `branding/IMAGES.md`. Skipped: a cathedral crowd silhouette, a share-alike house, memorial chairs. A first deck bug in ninja's own work (a rule showed the gated hospital item by default) was found and fixed.
+- Decisions: embed Fraunces and Inter locally; BRAND.md paper color (#f7f3ea) wins; hack-ninja captures the selector screenshot itself (no Gloo call needed); slide 1 and the last slide change for "This is Nury" and the memorial once Juan approves the text.
