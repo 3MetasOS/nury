@@ -56,3 +56,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - hack-ninja: `presentation/FINALIST_SCRIPT.md` (076346e) sent to hack-video. One proof beat needs real scorecard numbers; a fallback line is included.
 - Learning: the mock-agent scorecard was committed to main. It is a self-test, not proof. hack-artisans must remove it or label it mock. Real numbers come only from a run against the real agent.
 - Locked demo intake now in scenario 1 (hack-artisans).
+
+## 9. 2026-10-06 19:48 MDT — Agent core ready (hack-jedi)
+
+- Commit 9c47e7b. `code/nury/{gloo_client,guardrails,stages,engine,audit}.py` and `code/INTERFACE.md`.
+- Live: full 5-stage run on a sample Aurora CO intake passed. Stage latency 4–18 s.
+- Rejected-and-regenerated draft shown live: pastoral stage with DEMO_PROVOKE failed on word limit (215 words) and a promise-of-outcome pattern, then regenerated clean on try 2 (15.6 s total). The pastor never saw it; it sits in the audit log only.
+- Decisions: deterministic checks (regex for prediction, advice and identity claims in EN and ES; URL allowlist; citation per rights bullet; 3 missing facts; checklist headings; under 120 words). A Gloo 403 counts as a failed try. Pastor edits are flagged, not blocked.
+- Failed: first checks too strict (3 false escalations); fixed. The model refused to be provoked into legal advice, so the demo trigger became a deterministic length+outcome violation.
+- Quality gaps: English scripture quote mixed into Spanish; a typo; header "Preparada por el pastor" could read as a pastor claim. Fixes requested.
