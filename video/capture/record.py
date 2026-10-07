@@ -4,11 +4,11 @@ Usage: python capture/record.py [base_url] [out_dir]
 Needs: playwright + system Chrome. Server must already run. Reads no secrets.
 Writes out_dir/run.webm and out_dir/marks.txt (seconds at each gate and at the end).
 """
-import sys, time
+import re, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-base = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8765/"
+base = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8099/"
 out = Path(sys.argv[2] if len(sys.argv) > 2 else "capture/raw"); out.mkdir(parents=True, exist_ok=True)
 HOLD = 3.5  # seconds the viewer can read each gate before Approve
 
@@ -20,6 +20,10 @@ with sync_playwright() as p:
     page = ctx.new_page(); t0 = time.time(); marks = []
     mark = lambda n: marks.append(f"{time.time()-t0:6.1f} {n}")
     page.goto(base); page.add_style_tag(content="html{zoom:2}"); page.wait_for_timeout(1500); mark("intake")
+    page.wait_for_timeout(1200); mark("selector")
+    card = page.get_by_role("button", name=re.compile("Immigration detention"))
+    card.hover(); page.wait_for_timeout(2500)  # shot 1b: selector holds ~4 s with Detention highlighted
+    card.click(); page.wait_for_timeout(1200)
     page.click("#btn-demo"); page.wait_for_timeout(2500)
     page.check("#demo"); page.wait_for_timeout(800)
     page.click("#btn-start"); mark("start")
