@@ -37,7 +37,7 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   # the same page on a server where the run is allowed: confirm dialog only, never confirmed
   agent-browser open "http://127.0.0.1:$PORT2/observability" >/dev/null 2>&1; agent-browser wait "#cards .card" >/dev/null 2>&1; agent-browser wait 1200 >/dev/null 2>&1
   read -r -d '' J <<'JS'
-!document.getElementById('smoke-btn').disabled&&/About \$[0-9.]+ of Gloo credit/.test(document.getElementById('smoke-note').textContent)
+!document.getElementById('smoke-btn').disabled&&/about \$[0-9.]+ of Gloo credit/i.test(document.getElementById('smoke-note').textContent)
 JS
   check "$T ops(flag on): the button is enabled and the cost estimate is stated" "$(ev "$J")" "true"
   click "#smoke-btn"
