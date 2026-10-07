@@ -222,8 +222,9 @@ def build_standards():
     body = re.sub(r'<h([23]) id="([^"]+)">(.*?)</h\1>', lambda x: f'<h{x.group(1)} id="{x.group(2)}">{x.group(3)}<a class="anc" href="#{x.group(2)}" aria-label="Link to this section">#</a></h{x.group(1)}>', body)
     body = body.replace("<table>", '<div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>').replace("</table>", "</table></div>")
     diag = functions_diagram(body_md)
-    marker = '<h2 id="the-six-case-management-functions-and-the-five-stages">'
-    if diag and marker in body:
+    mm = re.search(r'<h2 id="the-six-case-management-functions[^"]*">', body)
+    marker = mm.group(0) if mm else None
+    if diag and marker:
         i = body.index(marker); j = body.index("</p>", i) + 4
         body = body[:j] + f'<figure class="fig">{diag}<figcaption>Where each function lives in Nury. The table below says the same in words.</figcaption></figure>' + body[j:]
     tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n in toc)
