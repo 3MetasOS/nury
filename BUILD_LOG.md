@@ -417,3 +417,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Numbers counted from the repo: 13 named checks plus 5 floor checks; the privacy leak test is 6 captured request bodies x 15 canary values = 90 checks per playbook, 0 found, including a rejected draft and a pastor edit adding a new name; the official list: 28 read, 21 approved, 18 providers listed, 7 held as names only with 0 held phones; Jev judge validation unsafe 0.89–0.98 versus safe 0.02–0.24 on 10 checks, plus the failed first fix (6 cases fell to 0.29–0.78); 54 scenarios (28 core, 18 attacker, 5 case file, 3 network); a full package takes 50 to 56 seconds and costs $0.08 to $0.09.
 - Honest corrections hack-jedi made to my asks: "the engine has no crisis words" is not strictly true (the run loop has the default id "detention" and one opt-in check lists agencies). The true claim: a second crisis ran on the unchanged engine (test), and a hospital run contains 0 immigration words. HTTP 403 handling is proven by test only; no live 403 ever happened. The panel's raw validation file was overwritten by an out-of-credit run.
 - Held back as pending: any pass rate, the skills effect (A/B not run), case revision live, official list outside Colorado, mean cost per run.
+
+## 63. 2026-10-06 22:09 MDT — ElevenLabs key stored; narration auditions (Juan)
+
+- Juan supplied an ElevenLabs API key; stored in the gitignored `.env` as ELEVENLABS_API_KEY. Not in any tracked file, commit or message. Used only to render the video narration.
+- Plan check (read-only call): the account is on the **free** plan, 10,000 characters per month, 21 premade voices. The free plan requires attribution and does not include commercial use; Starter (about $5 per month) does. Decision pending with Juan: attribute in the credits and the description, or upgrade.
+- Auditions: five premade voices (Brian, George, Bella, Eric, Sarah) on voiceover lines 1 to 3, about 1,200 characters in all. The memorial is text on screen, not a synthetic voice.
+- Learning: the key appeared once in the session transcript. Rotate it after the hackathon.
