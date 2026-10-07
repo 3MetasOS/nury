@@ -1,36 +1,72 @@
 [
  {
-  "ts": "2026-10-07T04:15:40.208+00:00",
+  "ts": "2026-10-07T04:41:17.936+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T04:15:40.208+00:00",
+  "ts": "2026-10-07T04:41:17.936+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:15:45.252+00:00",
+  "ts": "2026-10-07T04:41:24.388+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "claims to be a professional (matched 'as a nurse')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 1580,
+  "tokens_out": 214,
+  "latency_s": 6.45
+ },
+ {
+  "ts": "2026-10-07T04:41:24.388+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Luis was brought to St. Mary's Hospital emergency room approximately one hour ago. The care team has mentioned a possible heart concern.\n\nPEOPLE: Rosa Delgado (congregation member, caller); Luis (patient, father of Rosa Delgado); Rosa Delgado's mother (present in waiting room)\n\nLOCATION: St. Mary's Hospital, emergency room\n\nFAMILY LANGUAGE: es\n\nURGENCY: High \u2014 patient arrived recently with a possible cardiac concern and family cannot understand staff communication.\n\nMISSING FACTS:\n1. Has the hospital offered or provided a Spanish-language interpreter or translation service to the family?\n2. Is there a specific staff member (such as a nurse or patient advocate) who has been assigned as the family's main contact?\n3. What, if anything, has the care team communicated so far about next steps or the current status of Luis?"
+ },
+ {
+  "ts": "2026-10-07T04:41:24.388+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T04:41:30.418+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1580,
-  "tokens_out": 202,
-  "latency_s": 5.043
+  "tokens_in": 1630,
+  "tokens_out": 229,
+  "latency_s": 6.029
  },
  {
-  "ts": "2026-10-07T04:15:45.252+00:00",
+  "ts": "2026-10-07T04:41:30.418+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:15:45.252+00:00",
+  "ts": "2026-10-07T04:41:30.418+00:00",
   "kind": "stage_start",
   "stage": "info",
   "deps_used": [
@@ -38,31 +74,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:15:45.252+00:00",
+  "ts": "2026-10-07T04:41:30.418+00:00",
   "kind": "gloo_call",
   "stage": "info",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:15:54.983+00:00",
+  "ts": "2026-10-07T04:41:39.932+00:00",
   "kind": "check",
   "stage": "info",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2392,
-  "tokens_out": 732,
-  "latency_s": 9.719
+  "tokens_in": 2419,
+  "tokens_out": 731,
+  "latency_s": 9.51
  },
  {
-  "ts": "2026-10-07T04:15:54.983+00:00",
+  "ts": "2026-10-07T04:41:39.933+00:00",
   "kind": "gate",
   "stage": "info",
   "action": "edit"
  },
  {
-  "ts": "2026-10-07T04:15:54.984+00:00",
+  "ts": "2026-10-07T04:41:39.934+00:00",
   "kind": "edit_check",
   "stage": "info",
   "warnings": [
@@ -73,7 +109,7 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:15:54.985+00:00",
+  "ts": "2026-10-07T04:41:39.934+00:00",
   "kind": "dynamic_source",
   "stage": "resources",
   "entries": {
@@ -81,7 +117,7 @@
   }
  },
  {
-  "ts": "2026-10-07T04:15:54.985+00:00",
+  "ts": "2026-10-07T04:41:39.934+00:00",
   "kind": "stage_start",
   "stage": "resources",
   "deps_used": [
@@ -90,38 +126,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:15:54.985+00:00",
+  "ts": "2026-10-07T04:41:39.934+00:00",
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "resources"
  },
  {
-  "ts": "2026-10-07T04:15:54.985+00:00",
+  "ts": "2026-10-07T04:41:39.934+00:00",
   "kind": "gloo_call",
   "stage": "resources",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "check",
   "stage": "resources",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2264,
-  "tokens_out": 473,
-  "latency_s": 10.716
+  "tokens_in": 2291,
+  "tokens_out": 440,
+  "latency_s": 8.338
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "gate",
   "stage": "resources",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -131,45 +167,45 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T04:16:05.707+00:00",
+  "ts": "2026-10-07T04:41:48.275+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:16:18.807+00:00",
+  "ts": "2026-10-07T04:42:01.683+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 3511,
-  "tokens_out": 654,
-  "latency_s": 13.096
+  "tokens_in": 3504,
+  "tokens_out": 696,
+  "latency_s": 13.404
  },
  {
-  "ts": "2026-10-07T04:16:18.807+00:00",
+  "ts": "2026-10-07T04:42:01.683+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:16:18.807+00:00",
+  "ts": "2026-10-07T04:42:01.683+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -179,38 +215,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:16:18.807+00:00",
+  "ts": "2026-10-07T04:42:01.683+00:00",
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "pastoral"
  },
  {
-  "ts": "2026-10-07T04:16:18.807+00:00",
+  "ts": "2026-10-07T04:42:01.683+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:16:24.097+00:00",
+  "ts": "2026-10-07T04:42:06.851+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2714,
-  "tokens_out": 184,
-  "latency_s": 5.286
+  "tokens_in": 2890,
+  "tokens_out": 140,
+  "latency_s": 5.165
  },
  {
-  "ts": "2026-10-07T04:16:24.097+00:00",
+  "ts": "2026-10-07T04:42:06.851+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:16:24.098+00:00",
+  "ts": "2026-10-07T04:42:06.851+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null

@@ -1,18 +1,18 @@
 [
  {
-  "ts": "2026-10-07T04:06:28.726+00:00",
+  "ts": "2026-10-07T04:52:55.812+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T04:06:28.726+00:00",
+  "ts": "2026-10-07T04:52:55.812+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:06:33.943+00:00",
+  "ts": "2026-10-07T04:53:01.301+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
@@ -20,17 +20,17 @@
   "violations": [],
   "reason_categories": [],
   "tokens_in": 1475,
-  "tokens_out": 211,
-  "latency_s": 5.216
+  "tokens_out": 223,
+  "latency_s": 5.488
  },
  {
-  "ts": "2026-10-07T04:06:33.943+00:00",
+  "ts": "2026-10-07T04:53:01.301+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:06:33.943+00:00",
+  "ts": "2026-10-07T04:53:01.301+00:00",
   "kind": "stage_start",
   "stage": "rights",
   "deps_used": [
@@ -38,31 +38,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:06:33.943+00:00",
+  "ts": "2026-10-07T04:53:01.301+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.446+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1938,
+  "tokens_in": 1950,
   "tokens_out": 323,
-  "latency_s": 4.342
+  "latency_s": 4.142
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.446+00:00",
   "kind": "gate",
   "stage": "rights",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.447+00:00",
   "kind": "dynamic_source",
   "stage": "attorney",
   "entries": {
@@ -71,7 +71,7 @@
   }
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.447+00:00",
   "kind": "stage_start",
   "stage": "attorney",
   "deps_used": [
@@ -80,38 +80,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.447+00:00",
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "attorney"
  },
  {
-  "ts": "2026-10-07T04:06:38.287+00:00",
+  "ts": "2026-10-07T04:53:05.447+00:00",
   "kind": "gloo_call",
   "stage": "attorney",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "check",
   "stage": "attorney",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2626,
-  "tokens_out": 831,
-  "latency_s": 14.256
+  "tokens_in": 2638,
+  "tokens_out": 488,
+  "latency_s": 10.572
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "gate",
   "stage": "attorney",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -121,45 +121,45 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T04:06:52.548+00:00",
+  "ts": "2026-10-07T04:53:16.023+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:07:13.610+00:00",
+  "ts": "2026-10-07T04:53:26.529+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 7537,
-  "tokens_out": 1171,
-  "latency_s": 21.057
+  "tokens_in": 3475,
+  "tokens_out": 578,
+  "latency_s": 10.503
  },
  {
-  "ts": "2026-10-07T04:07:13.610+00:00",
+  "ts": "2026-10-07T04:53:26.529+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:07:13.610+00:00",
+  "ts": "2026-10-07T04:53:26.529+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -169,38 +169,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T04:07:13.610+00:00",
+  "ts": "2026-10-07T04:53:26.529+00:00",
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "pastoral"
  },
  {
-  "ts": "2026-10-07T04:07:13.611+00:00",
+  "ts": "2026-10-07T04:53:26.529+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T04:07:19.035+00:00",
+  "ts": "2026-10-07T04:53:31.127+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2988,
-  "tokens_out": 182,
-  "latency_s": 5.422
+  "tokens_in": 3078,
+  "tokens_out": 115,
+  "latency_s": 4.59
  },
  {
-  "ts": "2026-10-07T04:07:19.036+00:00",
+  "ts": "2026-10-07T04:53:31.127+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T04:07:19.036+00:00",
+  "ts": "2026-10-07T04:53:31.127+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null
