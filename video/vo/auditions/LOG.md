@@ -198,3 +198,14 @@ NOTE: the render command ran three times by mistake (180 calls, 11,016 character
 - FINAL Eric 09_noory: 59 characters
 - FINAL Eric 10_noory: 50 characters
 - FINAL Eric T re-render with speed 1.1 (to fit 12 s): 189 characters
+- ARC Eric L1: 35 characters
+- ARC Eric L2: 38 characters
+- ARC Eric L3: 13 characters
+- ARC Eric L4: 31 characters
+- ARC Eric L5: 32 characters
+- ARC Eric L6: 41 characters
+- ARC Eric L7: 48 characters
+- ARC Eric L8: 46 characters
+- ARC Eric L9: 28 characters
+- ARC Eric L10: 37 characters
+- ARC Eric L11: 43 characters
