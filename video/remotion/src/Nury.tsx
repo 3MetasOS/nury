@@ -9,7 +9,9 @@ export type Marks = Record<string, number>;
 export type Proof = {pass?: number | string; n?: number | string; caught?: number | string; src?: string};
 export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>};
 
-const C = {bg: '#0d1015', surface: '#131824', amber: '#e8a33d', text: '#ece7dc', muted: '#a79f8d'};
+// LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
+const C = {bg: '#f6f1e7', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
+const D = {bg: '#080a0e', text: '#ece7dc', muted: '#a79f8d', amber: '#e8a33d'}; // dark phone interior (lock card)
 const serif = '"Fraunces", Georgia, serif';
 const sans = '"Inter", -apple-system, sans-serif';
 
@@ -81,7 +83,14 @@ const Fade: React.FC<{dur: number; children: React.ReactNode}> = ({dur, children
 };
 
 const Backdrop: React.FC = () => (
-  <AbsoluteFill style={{background: `radial-gradient(900px 700px at 30% 50%, rgba(232,163,61,.09), transparent 70%), ${C.bg}`}} />
+  <AbsoluteFill>
+    <AbsoluteFill style={{background: `radial-gradient(1100px 800px at 35% 45%, #fbf8f1, rgba(246,241,231,0) 70%), linear-gradient(180deg, #f6f1e7, #efe8d8)`}} />
+    {/* fine static grain: breaks up banding in flat light gradients after H.264 */}
+    <svg width="100%" height="100%" style={{position: 'absolute', inset: 0, opacity: 0.07, mixBlendMode: 'multiply'}}>
+      <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" /><feColorMatrix values="0 0 0 0 0.3  0 0 0 0 0.25  0 0 0 0 0.15  0 0 0 0.9 0" /></filter>
+      <rect width="100%" height="100%" filter="url(#g)" />
+    </svg>
+  </AbsoluteFill>
 );
 
 // phone-size footage on ink, caption right
@@ -99,7 +108,7 @@ const Clip: React.FC<{s: any; marks: Marks}> = ({s, marks}) => {
   return (
     <AbsoluteFill>
       <div style={{position: 'absolute', left: 470, top: 40, width: 780 * (PH / 1688), height: PH, borderRadius: 28, overflow: 'hidden',
-        boxShadow: '0 30px 80px rgba(0,0,0,.55), 0 0 0 1px rgba(236,231,220,.10)', transform: `translateY(${slide}px)`}}>
+        boxShadow: '0 40px 90px rgba(70,45,10,.28), 0 8px 24px rgba(70,45,10,.16), 0 0 0 1px rgba(13,16,21,.14)', transform: `translateY(${slide}px)`}}>
         {playFrames >= s.dur * FPS ? vid : (
           <>
             <Sequence durationInFrames={Math.max(1, playFrames)}>{vid}</Sequence>
@@ -124,12 +133,12 @@ const Lock: React.FC = () => {
   const glow = 0.5 + 0.5 * Math.sin(f / 9);
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center'}}>
-      <div style={{width: 430, height: 880, borderRadius: 56, background: '#080a0e', boxShadow: `0 0 ${60 + 50 * glow}px rgba(232,163,61,${0.18 + 0.14 * glow})`,
-        border: '1px solid rgba(236,231,220,.12)', display: 'grid', alignContent: 'center', justifyItems: 'center', gap: 18, color: C.text, fontFamily: sans}}>
+      <div style={{width: 430, height: 880, borderRadius: 56, background: D.bg, boxShadow: '0 40px 90px rgba(70,45,10,.30), 0 8px 24px rgba(70,45,10,.18)',
+        display: 'grid', alignContent: 'center', justifyItems: 'center', gap: 18, color: D.text, fontFamily: sans}}>
         <div style={{fontFamily: serif, fontSize: 112, fontWeight: 600}}>2:07</div>
-        <div style={{color: C.muted, fontSize: 26, letterSpacing: '.04em'}}>AM</div>
+        <div style={{color: D.muted, fontSize: 26, letterSpacing: '.04em'}}>AM</div>
         <div style={{marginTop: 70, fontFamily: serif, fontSize: 44}}>Maria</div>
-        <div style={{color: C.amber, fontSize: 26}}>calling</div>
+        <div style={{color: D.amber, fontSize: 26, opacity: 0.6 + 0.4 * glow}}>calling</div>
       </div>
     </AbsoluteFill>
   );
@@ -147,7 +156,7 @@ const Proof: React.FC<{p: Proof}> = ({p}) => !hasProof(p) ? null : (
 
 const End: React.FC = () => (
   <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 30}}>
-    <Img src={staticFile('logo-mark.svg')} style={{width: 132, height: 132}} />
+    <Img src={staticFile('logo-mark-paper.svg')} style={{width: 132, height: 132}} />
     <div style={{fontFamily: serif, fontWeight: 600, fontSize: 188, color: C.amber, lineHeight: 1}}>Nury</div>
     <div style={{fontFamily: serif, fontSize: 54, color: C.text}}>The crisis-response agent for solo pastors.</div>
     <div style={{fontFamily: sans, fontSize: 30, color: C.muted, maxWidth: 1200, textWrap: 'balance' as any}}>
@@ -161,7 +170,7 @@ const Caption: React.FC<{text: string; dur: number}> = ({text, dur}) => {
   const o = interpolate(f, [0, 8, dur - 8, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 46, textAlign: 'center', opacity: o}}>
-      <span style={{fontFamily: sans, fontSize: 34, color: C.text, background: 'rgba(13,16,21,.78)', padding: '10px 22px', borderRadius: 12, textWrap: 'balance' as any}}>{text}</span>
+      <span style={{fontFamily: sans, fontSize: 34, color: C.text, background: 'rgba(246,241,231,.94)', boxShadow: '0 2px 14px rgba(70,45,10,.14)', padding: '10px 22px', borderRadius: 12, textWrap: 'balance' as any}}>{text}</span>
     </div>
   );
 };
