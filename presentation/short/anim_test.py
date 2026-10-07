@@ -80,6 +80,7 @@ try:
         ab("wait", "1700" if nm in ("the-name", "memorial") else "500")        # the name builds in 2.1 s and the memorial fades in 1.2 s by CSS
         left = ev("JSON.stringify({run:document.getAnimations().filter(a=>a.playState==='running'&&a.effect&&a.effect.getTiming().iterations!==Infinity).length,pend:document.querySelectorAll('.slide.on .pend').length})")
         left = json.loads(left) if isinstance(left, str) else left
+        ev("document.querySelectorAll('video').forEach(v=>{v.pause();v.currentTime=0})"); ab("wait", "400")
         b = T / f"{k}b.png"; ab("screenshot", str(b))
         d = ImageChops.difference(Image.open(a).convert("RGB"), Image.open(b).convert("RGB")).convert("L").point(lambda v: 255 if v > 24 else 0)
         pct = 100.0 * sum(1 for v in d.getdata() if v) / (d.width * d.height)

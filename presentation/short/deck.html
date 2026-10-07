@@ -238,8 +238,9 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2.close .mem{font:italic 400 clamp(16px,1.4vw,28px)/1.3 var(--serif);color:var(--muted);margin:1.4vh 0 0}
 /* ===== short track: ?track=short shows the six slides marked short or both, in document order ===== */
 .v2 .film{display:none}
+.v2 .filmv{width:100%;height:100%;object-fit:cover;display:block}
 body.short .v2.demo .demo2{display:none}
-body.short .v2 .film{display:grid;justify-items:center;align-content:center;gap:1vh;width:60vw;max-width:100%;aspect-ratio:16/9;margin:0 auto;border:2px dashed var(--line2);border-radius:20px;background:var(--card2);color:var(--muted);font:600 clamp(14px,1.4vw,24px)/1.2 var(--sans)}
+body.short .v2 .film{display:grid;justify-items:center;align-content:center;gap:1vh;width:60vw;max-width:100%;aspect-ratio:16/9;margin:0 auto;border:2px solid var(--line2);border-radius:20px;background:var(--card2);color:var(--muted);overflow:hidden;font:600 clamp(14px,1.4vw,24px)/1.2 var(--sans)}
 body.short .v2 .film svg{width:clamp(36px,4vw,72px);fill:var(--amber)}
 .v2 .cl3{list-style:none;margin:0;padding:0;display:grid;gap:1.8vh}
 .v2 .cl3 li{display:flex;align-items:center;gap:1.4vw;background:var(--card2);border:1px solid var(--line2);border-radius:20px;padding:2.2vh 1.8vw;font:600 clamp(18px,2.2vw,42px)/1.15 var(--sans)}
@@ -354,7 +355,7 @@ body.short .v2 .film svg{width:clamp(36px,4vw,72px);fill:var(--amber)}
 <div class="dhead"><div class="stack"><h2 class="h">One call. Start to finish.</h2>
 <p class="sub">Nothing moves on without the pastor. Nothing is sent.</p></div>
 </div>
-<div class="film" role="img" aria-label="Space for the demo film, 16:9"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span>The film plays here</span></div>
+<div class="film"><video class="filmv" muted playsinline preload="auto" src="film/app_3x.mp4" aria-label="The app, recorded: the whole path, three times faster, no sound"></video></div>
 <aside class="notes">LIGHT. 0:29 to 1:13. Criterion: Impact and Execution (a working product). DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The slide shows "How this case went": five stages, each Approved. If the film fails, leave it up and say the same three lines. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside>
 </section>
 
@@ -445,6 +446,7 @@ const FX={
  chooser:(e,o)=>{const img=e.querySelector('img'),d=D(o),vals=[78,78,60,42,24,0,0],offs=[0,.1,.3,.45,.6,.78,1];
   return [A(e,[{opacity:0,transform:'translateX(72px)'},{opacity:1,transform:'none'}],{duration:500,delay:d}),
           A(img,vals.map((v,j)=>({clipPath:'inset(0 0 '+v+'% 0)',offset:offs[j]})),{duration:1500,delay:d+350,easing:'linear'})]},
+ playfilm:(e,o)=>{e.currentTime=0;const pr=e.play();if(pr&&pr.catch)pr.catch(()=>{});return A(e,[{opacity:0},{opacity:1}],Object.assign({duration:350},o))},
  ring:(e,o)=>[ring(e,o),A(e,[{opacity:1},{opacity:1}],Object.assign({},o,{duration:900,fill:'both'}))],
  riseglow:(e,o)=>[FX.rise(e,o),ring(e,Object.assign({},o,{delay:D(o)+350,fill:'none'}))],
  seqdraw:(e,o)=>{const p=e.querySelector('path'),L=p.getTotalLength();p.style.strokeDasharray=L;const a=p.animate([{strokeDashoffset:L},{strokeDashoffset:0}],{duration:300,delay:D(o),easing:EASE,fill:'backwards'});const clr=()=>{p.style.strokeDasharray=''};a.finished.then(clr,clr);return [a,A(e,[{opacity:0},{opacity:1}],{duration:80,delay:D(o)})]},
@@ -484,17 +486,17 @@ const CHOREO={
  'close':[R(1,'.brandrow','fade'),R(1,'.tagl, .sub','rise',300,350),R(2,'.photo2, .fine','fade',150,150),R(2,'.mem','fade',0,520)]
 };
 const OPEN={'the-call':[1,2]};   // slide 1 opens by itself: steps 1 and 2 play 0.8 s apart after 0.5 s; the rest wait for Space
-const CHOREO_SHORT={'the-demo':[R(1,'.film','rise')]};
+const CHOREO_SHORT={'the-demo':[R(1,'.film','rise'),R(2,'.filmv','playfilm')]};
 const BACKUP=[R(1,'.stack ~ *:not(.pill):not(aside)','rise',90)];
 function init(){all.forEach(s=>{const nm=s.dataset.name;if(TRACK==='short'&&nm==='the-demo'){s.querySelectorAll('.demo2 *').forEach(e=>{delete e.dataset.s})}else if(PREP[nm])PREP[nm](s);let rules=(TRACK==='short'&&CHOREO_SHORT[nm])||CHOREO[nm];if(!rules&&s.dataset.part==='backup')rules=BACKUP;
   let n=0;if(!rules){rules=[]}rules.forEach(r=>{[...s.querySelectorAll(r.sel)].forEach((e,k)=>{e.dataset.s=r.s;e.dataset.fx=r.fx;e.dataset.dl=r.dl+k*r.st});n=Math.max(n,r.s)});
   [...s.querySelectorAll('[data-s]')].forEach(e=>{if(!e.dataset.dl)e.dataset.dl=0;n=Math.max(n,+e.dataset.s)});s._n=n;s._step=n})}
 function cancelAll(s){s.querySelectorAll('[data-s]').forEach(e=>{e.getAnimations({subtree:false}).forEach(a=>a.cancel());e.getAnimations&&0})
   s.querySelectorAll('.ln2 *, .nd2').forEach(e=>{if(e.getAnimations)e.getAnimations().forEach(a=>{try{a.cancel()}catch(x){}})})}
-function applyPend(s){cancelAll(s);s.querySelectorAll('[data-s]').forEach(e=>{const p=+e.dataset.s>s._step;e.classList.toggle('pend',p);if(e.dataset.fx==='count')e.textContent=p?'0':e.dataset.final})}
+function applyPend(s){cancelAll(s);s.querySelectorAll('video').forEach(v=>{v.pause();try{v.currentTime=0}catch(x){}});s.querySelectorAll('[data-s]').forEach(e=>{const p=+e.dataset.s>s._step;e.classList.toggle('pend',p);if(e.dataset.fx==='count')e.textContent=p?'0':e.dataset.final})}
 function reveal(s,k){const ps=[];s.querySelectorAll('[data-s="'+k+'"]').forEach(e=>{const fx=FX[e.dataset.fx]||FX.rise,o={delay:+e.dataset.dl||0};e.classList.remove('pend');
   [].concat(fx(e,o)).forEach(a=>a&&a.finished&&ps.push(a.finished.catch(()=>{})))});return Promise.all(ps)}
-function unreveal(s,k){s.querySelectorAll('[data-s="'+k+'"]').forEach(e=>{e.getAnimations().forEach(a=>a.cancel());e.classList.add('pend');if(e.dataset.fx==='count')e.textContent='0'})}
+function unreveal(s,k){s.querySelectorAll('[data-s="'+k+'"]').forEach(e=>{e.getAnimations().forEach(a=>a.cancel());if(e.tagName==='VIDEO'){e.pause();try{e.currentTime=0}catch(x){}}e.classList.add('pend');if(e.dataset.fx==='count')e.textContent='0'})}
 const clearT=()=>{timers.forEach(clearTimeout);timers=[]};
 const cur=()=>vis()[i];
 function playRest(s){clearT();for(let k=s._step+1;k<=s._n;k++)timers.push(setTimeout(()=>{if(cur()!==s)return;s._step=k;reveal(s,k);setLab(s)},(k-s._step-1)*400+120))}

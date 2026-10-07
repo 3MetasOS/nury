@@ -2,7 +2,7 @@
 # Real-size fit check for deck.html: renders it in exact-size iframes (same origin, local http) and reports overflow.
 # Usage: sh presentation/short/fit_check.sh     (needs agent-browser and python3; uses port 18160 and stops it after)
 D=$(cd "$(dirname "$0")" && pwd)
-T=$(mktemp -d); cp "$D/deck.html" "$T/fitdeck.html"; cp -r "$D/images" "$D/fonts" "$T/"
+T=$(mktemp -d); cp "$D/deck.html" "$T/fitdeck.html"; cp -r "$D/images" "$D/fonts" "$D/film" "$T/"
 JS=$(cat "$D/fit_check.js")
 lsof -ti tcp:18160 | xargs kill 2>/dev/null
 (cd "$T" && python3 -m http.server 18160 >/dev/null 2>&1 &)
