@@ -70,7 +70,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
   <div class="row"><button class="btn" id="x-json" type="button">Export JSON</button><button class="btn" id="x-csv" type="button">Export CSV of the runs</button><span class="out" id="x-msg" role="status"></span></div>
 
   <h2 id="s-evals">Evaluations</h2>
-  <p class="lede">The latest scored sets, read from the scorecards. A pass here is a judge pass. People have not reviewed every result, so no pass rate is claimed.</p>
+  <p class="lede">We ran Nury on made-up families before release and checked each result with automatic judges. These cards show what the judges found. A person has not read every result yet.</p>
   <div class="cards" id="evcards"></div>
   <div id="smoke">
     <p class="lede" id="smoke-note"></p>
@@ -182,29 +182,47 @@ $("x-json").onclick=()=>{if(!DATA)return;download("nury-ops.json","application/j
 $("x-csv").onclick=()=>{if(!DATA)return;const rows=[["time","crisis","stages","attempts","cost_usd","latency_s","outcome"],...(DATA.runs||[]).map(r=>[r.t,r.crisis,r.stages,r.attempts,r.cost,r.latency_s,r.outcome])];
   download("nury-runs.csv","text/csv",rows.map(r=>r.map(v=>/[",\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':v).join(",")).join("\n")+"\n");$("x-msg").textContent="Saved nury-runs.csv."};
 
-function evcards(box,sets){
-  const sig=JSON.stringify(sets);if(box._sig===sig)return;box._sig=sig;box.replaceChildren();ANIM.delete(box);box.classList.add("ev");
+const usd2=v=>v==null?"n/a":"$"+v.toFixed(2);
+const EVTEXT=[   // plain-language card text (hack-ninja, documents/product/OBSERVABILITY_EVALS_TEXT.md); {n} placeholders come from the scorecard
+  {re:/^Detention/,title:"Did Nury handle the detention cases?",res:"{ok} of {total} detention cases passed the judges.",
+   bar:"Each case is one small piece of the bar. Green passed the judges. Red failed. Amber is waiting for a person to read it.",
+   no:"A pass means the judges found no problem. It does not mean a person agreed. {aw} cases still wait for a person. These families were made up for testing.",
+   ver:true},
+  {re:/^Hospital/,title:"Did Nury handle the hospital cases?",res:"{ok} of {total} hospital cases passed the judges.",
+   bar:"Same colors. Green passed, red failed, amber waits for a person.",
+   no:"{total} cases is a small set, so one case moves the bar a lot. {aw} cases still wait for a person. No hospital staff have read the results."},
+  {re:/^Attacker/,title:"Did Nury hold up when someone pushed it?",res:"{ok} of {total} hostile cases passed the judges.",
+   bar:"These are messages written to push Nury into giving advice, making promises or claiming a role. Green passed, red failed, amber waits for a person.",
+   no:"We wrote these tests ourselves, so a real attacker may try things we did not think of. A pass is a judge result, not a person's verdict."},
+  {kind:"smoke",title:"What did this quick check find?",res:"{ok} of {total} quick-check cases passed the judges.",
+   bar:"Same colors as above. The bar is built from this run only, not from the saved scorecards.",
+   no:"Three cases are a spot check, not a score. Run it to see the system work, not to measure it. It costs real money (about {estimate})."}];
+const GENERIC={title:null,res:"{ok} of {total} cases passed the judges.",bar:"Green passed the judges. Red failed. Amber is waiting for a person to read it.",no:"A judge pass is not a review by a person. {aw} cases still wait for a person."};
+function evcards(box,sets,kind){
+  const sig=JSON.stringify([sets,kind]);if(box._sig===sig)return;box._sig=sig;box.replaceChildren();ANIM.delete(box);box.classList.add("ev");
   if(!sets.length){box.append(el("p","empty","No scorecard found."));return}
   sets.forEach(s=>{
-    const c=el("div","card ev"),ok=s.judge_pass+s.human_pass,tot=Math.max(1,s.scenarios);
-    const r=el("p","evr"),nb=el("b",null,String(ok));r.append(nb,` of ${s.scenarios} scenarios passed.`);
-    const bar=el("div","evbar");bar.setAttribute("role","img");bar.setAttribute("aria-label",`${ok} passed, ${s.failed} failed, ${s.awaiting_review} waiting for a person, out of ${s.scenarios}`);
+    const T=(kind?EVTEXT.find(t=>t.kind===kind):EVTEXT.find(t=>t.re&&t.re.test(s.set)))||GENERIC;
+    const ok=s.judge_pass+s.human_pass,tot=Math.max(1,s.scenarios),f=t=>t.replace(/\{ok\}/g,ok).replace(/\{total\}/g,s.scenarios).replace(/\{aw\}/g,s.awaiting_review).replace(/\{estimate\}/g,smoke?usd2(smoke.smoke.estimate_usd):"a few dollars");
+    const c=el("div","card ev"),r=el("p","evr"),nb=el("b",null,String(ok)),rt=f(T.res);r.append(nb,rt.slice(rt.indexOf(" ")));
+    const bar=el("div","evbar");bar.setAttribute("role","img");bar.setAttribute("aria-label",`${ok} passed the judges, ${s.failed} failed, ${s.awaiting_review} waiting for a person, out of ${s.scenarios}`);
     const segs=[[ok,"var(--green)"],[s.failed,"var(--red)"],[s.awaiting_review,"var(--amber)"]].filter(x=>x[0]>0).map(([n,col])=>{const i=el("i");i.style.background=col;i.style.width=(100*n/tot)+"%";bar.append(i);return [i,100*n/tot]});
-    const lg=el("ul","legend evlg");[["var(--green)","Passed"],["var(--red)","Failed"],["var(--amber)","Waiting for a person"]].forEach(([col,t])=>{const li=el("li"),i=el("i");i.style.background=col;li.append(i,t);lg.append(li)});
-    const note=el("p","evn",`What this does not tell you: a judge pass is not a review by a person. ${s.awaiting_review} still wait for one, and ${s.human_pass} have been passed by a person. Cost ${usd(s.cost_total)} (${usd(s.cost_per_run)} per run). Core ${s.core_commit||"n/a"}.`);
-    c.title="Scenarios passed by the judges or by a person, out of all scenarios in the set.";
-    c.append(el("h3",null,s.set),r,bar,lg,note);box.append(c);
+    const bm=el("p","evn",f(T.bar)+` (${ok} passed, ${s.failed} failed, ${s.awaiting_review} waiting.)`);
+    const no=el("p","evn"),nl=el("span",null,"What this does not tell you: ");nl.style.cssText="font-weight:600;color:var(--text)";no.append(nl,f(T.no));no.style.marginTop="8px";
+    const sp=el("p","evn",`Cost of the whole set ${usd2(s.cost_total)} (${usd2(s.cost_per_run)} for each case). Version ${s.core_commit||"n/a"}.`+(T.ver?" \u201cVersion\u201d is the build of the engine that ran the test.":""));sp.style.marginTop="8px";sp.style.fontSize=".8rem";
+    c.title="Cases that passed the judges, out of all cases in the set. A judge pass is not a review by a person.";
+    c.append(el("h3",null,T.title||s.set),r,bar,bm,no,sp);box.append(c);
     reg(box,e=>{segs.forEach(([i,w])=>i.style.width=(w*e)+"%");nb.textContent=String(Math.round(ok*e))})});
   watch(box)}
 let polling=null;
 function smokeState(e){
   const st=e.state,run=st.running;$("smoke-bar").hidden=!run;$("smoke-btn").disabled=run||!e.smoke.enabled;
   $("smoke-out").textContent=run?st.progress:(st.error||(st.result?"Done.":""));$("smoke-out").classList.toggle("bad",!!st.error);
-  $("smoke-res").replaceChildren();if(st.result)evcards($("smoke-res"),[st.result]);
+  $("smoke-res").replaceChildren();if(st.result)evcards($("smoke-res"),[st.result],"smoke");
   if(run&&!polling)polling=setInterval(loadEvals,3000);if(!run&&polling){clearInterval(polling);polling=null}}
 async function loadEvals(){const r=await getJSON("/api/evals");if(!r.ok){$("smoke-note").textContent="The evaluation summary could not be loaded.";return}
   const e=r.body;evcards($("evcards"),e.sets);
-  $("smoke-note").textContent=e.smoke.enabled?e.smoke.note:"Evaluation runs are switched off on this server (set NURY_ALLOW_EVAL_RUN=1 to allow them).";
+  $("smoke-note").textContent=e.smoke.enabled?`This runs ${e.smoke.scenarios} detention cases with the same checks as a full run. It costs about ${usd2(e.smoke.estimate_usd)} of Gloo credit. Jev is paid for on its own key.`:"Evaluation runs are switched off on this server (set NURY_ALLOW_EVAL_RUN=1 to allow them).";
   $("smoke-btn").dataset.estimate=e.smoke.estimate_usd;smoke=e;smokeState(e)}
 let smoke=null;
 $("smoke-btn").onclick=()=>{if(!smoke||!smoke.smoke.enabled)return;$("confirm-p").textContent=`This runs ${smoke.smoke.scenarios} scenarios against the real service. It will spend about $${smoke.smoke.estimate_usd.toFixed(2)} of Gloo credit. Jev is billed on its own key. Nothing else will run beside it.`;$("confirm").showModal()};

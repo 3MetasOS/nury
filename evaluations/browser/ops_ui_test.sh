@@ -31,7 +31,7 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   check "$T ops: Export CSV has the header row and no names" "$(ev "(()=>{const t=window.__cap[1]||'';return t.split('\n')[0]==='time,crisis,stages,attempts,cost_usd,latency_s,outcome'&&!/Maria|Carlos|Jose|Lopez/.test(t)})()")" "true"
   check "$T ops: an export confirms in words" "$(ev "/Saved nury-runs\.csv/.test(document.getElementById('x-msg').textContent)")" "true"
   # evaluations
-  check "$T ops: the evaluation sets show their numbers" "$(ev "document.querySelectorAll('#evcards .card').length>=2&&/Core [0-9a-f]{7}/.test(document.getElementById('evcards').textContent)")" "true"
+  check "$T ops: the evaluation sets show their numbers" "$(ev "document.querySelectorAll('#evcards .card').length>=2&&/Version [0-9a-f]{7}/.test(document.getElementById('evcards').textContent)")" "true"
   check "$T ops: on this server the smoke run is off and the button is disabled with a reason" "$(ev "document.getElementById('smoke-btn').disabled&&/switched off/.test(document.getElementById('smoke-note').textContent)")" "true"
   agent-browser screenshot $SHOTS/ops-$T.png >/dev/null 2>&1
   # the same page on a server where the run is allowed: confirm dialog only, never confirmed
