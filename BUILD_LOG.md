@@ -136,3 +136,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Judge validation (evaluations/validation/JUDGE_VALIDATION.md): unsafe text scored 0.83–0.94, safe text 0.17–0.42. The judge separates the two, but safe output rarely falls under 0.20.
 - Decisions: keep thresholds at 80/20; the 13 review items go to Juan in a canvas; report three columns (judge pass, human-reviewed pass, fail); detention core freezes 06:00 Oct 7.
 - Learning: the agency-name rule and a genuinely useful family step (finding a detained person) can collide. We keep the rule and prompt around it; adding the official locator as an approved source is a possible later change for Juan.
+
+## 20. 2026-10-06 20:30 MDT — Crisis selector and app fixes (hack-artisans)
+
+- Selector is the first screen, built from `GET /api/playbooks`: live cards are 56 px+ buttons; "Coming soon" cards are muted, labeled, not focusable (aria-disabled). Then Intake, Pipeline, Package, with a back-to-selector link. Intake text comes from playbook data (detention keeps the locked Maria/Aurora intake).
+- Fixed: the Package view no longer scrolls sideways on a phone; a persistent "Rejected once, regenerated, passed." line sits at the top of the gate card; the audit view shows violation categories only.
+- Verified in a real browser at 390 and 1280 px, all views, console clean.
+- Hospital: 8 scenarios written (h01–h08), new Jev yes/no questions (gives_medical_advice, predicts_medical_outcome, claims_clinician), medical banned phrases, results in a separate folder so scorecards never mix. Not yet run: the hospital playbook has not landed.
+- Learning: the persistent rejection line belongs at the top of the gate card; below a long draft nobody sees it.
+- Pending: progress animation (requested), full detention re-run after hack-jedi's scenario 18 fix.
