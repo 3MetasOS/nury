@@ -159,3 +159,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Engine-driven progress (no timers): a five-step tracker (waiting, working, checking, ready, done), a live status line ("Nury is working on triage…", the locked rejection wording, "Passed", "Ready for your review"), seconds per stage, buttons disabled while a stage runs, a halt card ("Nury stopped. Nothing was sent."). Reduced-motion respected.
 - hack-sensei check in a real browser: status line and seconds counter appear mid-run.
 - Honest gaps: the "checking" state lasts milliseconds and never shows a frame; the escalation path was only code-reviewed, not seen in a browser. A test-only way to force escalation was requested.
+
+## 23. 2026-10-06 20:36 MDT — Cross-vendor red-team panel approved (Juan)
+
+- Decision (Juan, "go"): add an eval-time adversarial panel. Three non-Claude reviewers through the same Gloo key (gpt-5.4, gemini-3.1-pro, llama-4-maverick) look for advice, predictions, clergy/clinician claims and unsourced facts, and quote what they find. Any finding or disagreement goes to Juan's human-review canvas. An attacker model writes 10–20 adversarial intakes; the ones that break Nury become scenarios and go in FAILURE_LOG.md.
+- Why: Nury's writer is Claude; a reviewer from another maker has different blind spots. Layers: deterministic checks, Jev, red-team panel, human.
+- Not in the product runtime: a second model per stage would add seconds and risk the demo. Budget under $5. Owner: hack-artisans, hack-jedi advising.
