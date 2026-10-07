@@ -2,6 +2,9 @@
 
 The fill from build `8a28a18` is **INTERIM** (hack-sensei, 2026-10-07). hack-jedi commits a tone fix (if it works) and the security hardening, then announces one final commit. hack-artisans re-runs all five sets. Then refill from the NEW `evaluations/results/scorecard.md`. Target: 20 minutes. Never fill from a partial run. Never call Gloo.
 
+## Update 2026-10-07 04:41: final commit is `07f020c`
+hack-artisans re-runs all five sets on it (about 45 minutes). Last scorecards in the repo are still for `8a28a18` (commit 16e8177). Refill only when the scorecard table shows core `07f020c`. Tone wording must stay honest: the judge is noisy (up to 0.75 between identical runs), not independent of Jev, and no human has rated warmth. The limits L1 to L5 (documents/product/CODE_REVIEW.md section 4) stay in the docs. Also refill: both descriptions (recount, 250 or fewer), pitch, FINALIST scripts, TECH_STORY, ECONOMICS, the hub; and write the change list.
+
 ## 0. Read first (3 min)
 - `evaluations/results/scorecard.md`: the "Build comparison" table (core commit per row) and the failures list. Confirm the final core commit id in the table equals the announced commit.
 - `evaluations/results/hospital/scorecard.md`, `attacker/scorecard.md`: cost and time per run.
