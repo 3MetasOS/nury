@@ -26,17 +26,17 @@ JS
  agent-browser screenshot --full $SHOTS/diagram-crisis-$T.png >/dev/null 2>&1
  open "http://127.0.0.1:$PORT/#/case/$CASE"
  read -r -d '' J <<'JS'
-(()=>{const f=document.getElementById('case-strip');const svg=f&&f.querySelector('svg.strip');if(!svg||f.classList.contains('hidden'))return 'missing';const n=svg.querySelectorAll('.dg-node').length;const states=[...svg.querySelectorAll('.dg-node')].map(c=>c.getAttribute('class').split(' ')[1]);
-return JSON.stringify([n===5,states.every(s=>['approved','edited','stopped','pending'].includes(s)),/Stages of this case/.test(svg.getAttribute('aria-label')),document.documentElement.scrollWidth<=innerWidth])})()
+(()=>{const c=document.querySelector('#case-page .ovc');if(!c)return 'missing';const n=[...c.querySelectorAll('a.stn')];
+return JSON.stringify([n.length===5,n.every(a=>/approved|edited|stopped|pending/i.test(a.textContent)),!!c.querySelector('h3')&&c.querySelectorAll('svg.arr').length>=5,document.documentElement.scrollWidth<=innerWidth])})()
 JS
- check "$T case: the saved case shows its stages as a progress strip with a text alternative" "$(ev "$J")" '"[true,true,true,true]"'
+ check "$T case: the saved case shows its five stages as a live sequence of links with a state each" "$(ev "$J")" '"[true,true,true,true]"'
  open "http://127.0.0.1:$PORT/how-it-was-built"
  check "$T how: the architecture and the learning loop are drawn, each with a text alternative" "$(ev "(()=>{const f=[...document.querySelectorAll('svg.adg')];return f.length===2&&f.every(s=>s.getAttribute('role')==='img'&&s.getAttribute('aria-label').length>80)&&/Claude through Gloo/.test(f[0].getAttribute('aria-label'))&&/Nothing changes without a person approving it/.test(f[1].getAttribute('aria-label'))})()")" "true"
  open "http://127.0.0.1:$PORT/standards"
  check "$T standards: the six case management functions are drawn and the table says the same in words" "$(ev "document.querySelectorAll('svg.fdiag .fr').length===6&&document.querySelectorAll('.tw table').length>=3&&/informed by/i.test(document.body.textContent)&&!/is compliant with|are certified|has been certified|meets the standards/i.test(document.body.textContent)")" "true"
  check "$T standards: no sideways scroll, contrast clean" "$(ev "document.documentElement.scrollWidth<=innerWidth")|$(scan)" 'true|"[]"'
  open "http://127.0.0.1:$PORT/what-did-not-work"
- check "$T what-did-not-work: 15 items, each with its Not known line" "$(ev "document.querySelectorAll('#doc li strong').length>=60&&[...document.querySelectorAll('#doc h3')].length>=15&&(document.getElementById('doc').textContent.match(/Not known\./g)||[]).length>=15")" "true"
+ check "$T what-did-not-work: 15 items, each with its Not known line" "$(ev "document.querySelectorAll('.item').length===15&&document.querySelectorAll('.item .row.nk').length===15&&document.querySelectorAll('.fchip').length===4")" "true"
  for P in standards what-did-not-work economics pattern; do open "http://127.0.0.1:$PORT/$P"; check "$T $P: the same header and footer HTML as Home, no sideways scroll" "$(ev "$SIG")|$(ev "document.documentElement.scrollWidth<=innerWidth")" "$REF|true"; done
  open "http://127.0.0.1:$PORT/economics"; check "$T economics: contrast clean" "$(scan)" '"[]"'
  open "http://127.0.0.1:$PORT/pattern"; check "$T pattern: contrast clean" "$(scan)" '"[]"'
