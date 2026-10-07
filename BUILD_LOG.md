@@ -120,3 +120,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Decision (Juan): the crew must use agent-browser (validate every page we show), humanizer (all human-readable text; never the Jev line, locked VO, disclaimers, guardrail wording or playbook prompts), impeccable (UI and visual work), and canvas-actions (documents Juan reads or evaluates). Written into the root and all five agent CLAUDE.md files.
 - hack-sensei used them: first status canvas for Juan built; the pastor app checked in a real browser at 390x844 with agent-browser (intake view renders: heading, textbox, language select, demo checkbox, "Use demo intake", "Start"; no console errors). Server and browser session closed afterwards.
+
+## 18. 2026-10-06 20:24 MDT — Crisis selector and a second live track (Juan decided)
+
+- Decision (Juan): the app's first screen is a crisis selector. Two tracks run live: detention (flagship, the demo) and hospital emergency. Two cards show as "Coming soon" (sudden death; house fire or displacement) and are not clickable.
+- Why: shows that a new crisis is a playbook folder, with a real second track instead of only a test fixture.
+- Guards: the hospital track needs vetted sources approved by Juan, at least 5 scored scenarios, and no change to the engine or to detention behavior. Pitch claims only what runs and is scored.
+- Details in `documents/ARCHITECTURE.md` (selector section, milestones M2b, M2c, M3).

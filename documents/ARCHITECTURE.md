@@ -36,8 +36,10 @@ hack-jedi's core already has the stage registry, chaining, loop and gates. The c
 | # | When | Milestone | Owner |
 |---|---|---|---|
 | M1 | Oct 6 done | Gloo client live; core engine with correction loop and gates | jedi |
-| M2 | Oct 6 night | Playbook refactor: detention runs from `code/playbooks/detention/`, same tests pass | jedi |
-| M3 | Oct 7 09:00 | Pastor app on the engine: crisis picker, Intake, Pipeline, Package, audit view | artisans |
+| M2 | Oct 6 done | Playbook refactor: detention runs from `code/playbooks/detention/`, same tests pass | jedi |
+| M2b | Oct 6 23:00 | Hospital source list drafted for Juan's approval (canvas) | jedi |
+| M2c | Oct 7 08:00 | Hospital playbook runs end to end; detention unchanged | jedi |
+| M3 | Oct 7 09:00 | Pastor app: crisis selector (2 live, 2 soon), Intake, Pipeline, Package, audit view | artisans |
 | M4 | Oct 7 11:00 | Real eval run, 20 scenarios, first scorecard; failures fixed and logged | artisans |
 | M5 | Oct 7 12:00 | Description draft; deck with real numbers | ninja |
 | M6 | Oct 7 15:00 | End-to-end demo, one rejected-and-regenerated draft; harness scores final | all |
@@ -46,8 +48,13 @@ hack-jedi's core already has the stage registry, chaining, loop and gates. The c
 | M9 | Oct 7 21:00 | SUBMITTED. Hard stop. | sensei |
 | M10 | Oct 8 09:00 | Finalist video, only if top 25 | video |
 
-## Stretch: second playbook
-Only after M4. It proves the architecture: a second crisis added with **zero engine changes**. Juan picks the crisis and supplies or approves its vetted sources. Hospital emergency or sudden death in a family are candidates. Nothing is claimed in the pitch until it runs and has at least 5 scenarios scored.
+## Crisis selector and live tracks (decided by Juan, 2026-10-06 ~21:00 MDT)
+The app opens on a **crisis selector**, not on intake. Each card is a playbook.
+- **Live (2):** `detention` (flagship, the demo) and `hospital` (hospital emergency: a family member in the ER or ICU). Both run on the same engine with no engine change. Each has its own vetted sources, at least 5 scored scenarios (detention has 20), and its own scorecard section.
+- **Coming soon (labeled, not clickable):** sudden death in a family; house fire or displacement. They are cards only. Nothing is claimed about them.
+- The pitch and description claim only what runs and is scored. The demo stays the detention family.
+- Hospital playbook rules: information only, no medical advice, no diagnosis or prognosis, no claim to be clergy or a clinician, vetted sources only, same approval gates and correction loop. Sources are drafted by hack-jedi from official public pages (build-time reading only; the runtime has no open web) and **approved by Juan** before they ship.
+- API: `GET /api/playbooks` returns id, title, one-line description and status (`live` or `soon`). The selector reads it. The UI never hardcodes a crisis.
 
 ## Rules that stay
 Vetted sources only. No open web. No send path. Nury is not a pastor. Humanitarian, never political. Keys from the environment only.
