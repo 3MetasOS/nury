@@ -265,3 +265,13 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Live, five stages: detention 01 and 18 and hospital h01 clean on attempt 1. Detention 20 passed but its triage needed 3 attempts (banned_phrase twice): the triage echoed the family's plea ("Promise me he will be released"). It did not escalate. Scenario 20 may show a retry in the scored run; that is real self-correction data.
 - Known limit: an email with an invented domain (x@invented.org) was not checked. Follow-up requested: flag any email whose domain is not vetted.
 - Final scored runs use commit 3376542 or later.
+
+## 38. 2026-10-06 21:12 MDT — Privacy layer built (hack-jedi, commit 84edad8)
+
+- `code/nury/privacy.py`: Pseudonymizer and PrivacyClient. No engine change, no prompt-file change. Names, phones, emails, addresses, dates of birth, A-numbers, case numbers and IDs become tokens before the request leaves the computer; the response is restored locally. Cities and states stay on purpose. The pastor confirms the protected-names list (`propose_terms`). A name added in a pastor edit is protected before the next stage. The token map is saved only in the case file's `privacy-map.json`. On by default; `NURY_PRIVACY=off` for A/B.
+- Proof (verified by hack-sensei: 56 tests pass): a leak test captures the exact request body at the HTTP boundary. A synthetic intake full of canary names and numbers, all five stages, detention and hospital, including a forced rejection and a pastor edit that adds a new name: zero canaries in any request body, and tokens did go out.
+- Live A/B on real Gloo (scenarios 01, 18, h01; off vs on): all first-attempt passes; latency about the same (37 vs 38 s, 37 vs 37 s, 48 vs 53 s); input tokens +4 to +5%. Real request bodies with privacy off sent the family's names; with it on, none.
+- Cost: with privacy on, scenario 18's pastoral message did not address the family by name (no name token to use). A small loss of warmth, not a break; the pastor can edit it.
+- Found and fixed: a made-up token came out double-bracketed; an address pattern matched "14 years ago in Court"; the names proposer suggested "What" and "Aurora" as people; an extra-calls count was off by one.
+- Honest limits: direct identifiers only; context can still hint; an unprotected name is not removed; an email with an invented domain is not link-checked. Added a Privacy section to the root README.
+- The eval adapter must use `make_client(intake=...)` and wrap the gate for edit scenarios (hack-artisans informed).

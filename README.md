@@ -5,3 +5,7 @@ Nury — the crisis-response agent for solo pastors. When an immigrant family fa
 Entered by Juan Pelaez under 3Metas. Hackathon registration is under jkpelaez@hotmail.com (Solo Hacker ticket T000857383).
 
 License: MIT.
+
+## Privacy
+
+Nury removes direct identifiers before anything reaches a language model. Names, phone numbers, emails, street addresses, dates of birth and ID numbers become tokens on the pastor's computer; the real values stay local and are restored in the answers the pastor sees. The pastor confirms which names to protect. Limits: details such as a workplace or a rare job can still hint at who someone is, and a name the pastor did not protect is not removed. Case files stay on the pastor's computer.
