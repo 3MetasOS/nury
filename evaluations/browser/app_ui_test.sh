@@ -58,7 +58,7 @@ JS
   agent-browser click "#q" >/dev/null 2>&1; agent-browser type "#q" "zzzz-no-such-family" >/dev/null 2>&1; agent-browser wait 400 >/dev/null 2>&1
   check "$T cases: no-match state and count line" "$(ev "!document.getElementById('no-match').hidden&&/0 of/.test(document.getElementById('count').textContent)")" "true"
   click "#clear"; check "$T cases: clear filters restores the rows" "$(ev "document.getElementById('no-match').hidden&&document.querySelectorAll('#rows li').length>=1")" "true"
-  click "#f-status button[data-v=v2]"; check "$T cases: Version 2 filter pressed" "$(ev "document.querySelector('#f-status button[data-v=v2]').getAttribute('aria-pressed')")" '"true"'
+  click "#f-status button[data-v=v2]"; check "$T cases: Updated filter pressed" "$(ev "document.querySelector('#f-status button[data-v=v2]').getAttribute('aria-pressed')")" '"true"'
   click "#clear"
   check "$T cases: no sideways scroll" "$(ov)" "true"
   check "$T cases: contrast scan clean" "$(scan)" '"[]"'
@@ -192,9 +192,9 @@ JS
   check "$T follow-up: clearing asks first, with the clear wording" "$(waitexp "document.getElementById('confirm').open&&/Clear the follow-up flag\?/.test(document.getElementById('confirm-t').textContent)&&document.getElementById('confirm-ok').textContent==='Clear follow-up'&&$P==='true'")" "true"
   click "#confirm-ok"
   check "$T follow-up: confirming clears it, with a toast" "$(waitexp "$P==='false'&&/Follow-up cleared\./.test(document.getElementById('toast-t').textContent)")" "true"
-  # ---- 'Something changed' asks before it drafts version 2 (only the Cancel path runs: Confirm would call the model)
+  # ---- 'Something changed' asks before it drafts again (only the Cancel path runs: Confirm would call the model)
   click "#b-changed"; ev "document.getElementById('rv-note').value='A test note';1" >/dev/null; click "#rv-go"
-  check "$T changed: Record asks first, with the version 2 wording, and Cancel sends nothing" "$(waitexp "document.getElementById('confirm').open&&/Record what changed\?/.test(document.getElementById('confirm-t').textContent)&&/keeps version 1 as it was/.test(document.getElementById('confirm-b').textContent)&&document.getElementById('confirm-ok').textContent==='Record and draft version 2'&&document.activeElement.id==='confirm-no'")" "true"
+  check "$T changed: Record asks first, with the updated-draft wording, and Cancel sends nothing" "$(waitexp "document.getElementById('confirm').open&&/Record what changed\?/.test(document.getElementById('confirm-t').textContent)&&/keeps the first draft/.test(document.getElementById('confirm-b').textContent)&&document.getElementById('confirm-ok').textContent==='Record and draft again'&&document.activeElement.id==='confirm-no'")" "true"
   click "#confirm-no"; check "$T changed: Cancel closes it and nothing was drafted" "$(waitexp "!document.getElementById('confirm').open&&document.body.dataset.view!=='pipe'")" "true"
   # ---- unsaved-work guard (stubbed package screen)
   ev "$(cat $HERE/pkgstub.js)" >/dev/null; ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 900 >/dev/null 2>&1

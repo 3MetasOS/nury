@@ -140,7 +140,7 @@ def write_changes(d, new_id, rv, stage_ids):
         n = sum(1 for x in difflib.ndiff(old.get(name, "").splitlines(), new[name].splitlines()) if x[:2] in ("+ ", "- "))
         rows.append(f"- {title}: {'unchanged' if n == 0 else str(n) + ' lines differ'}")
     text = ("# What changed\n\n"
-            f"This is version {new_id.rsplit('-v', 1)[1]} of the case. It sits beside the earlier version, which is unchanged.\n\n"
+            "This is an updated draft of the case. It sits beside the first draft, which is unchanged.\n\n"
             "## What the pastor reported\n\n"
             f"- Step: {rv.get('step') or 'not named'}\n- Result: {RESULT_LABEL.get(rv.get('result'), 'unknown')}\n"
             f"- What happened: {rv.get('note', '').strip()}\n\n"

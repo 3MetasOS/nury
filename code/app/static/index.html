@@ -342,7 +342,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <div class="fgroup seg" role="group" aria-label="Status" id="f-status">
         <button type="button" data-v="all" aria-pressed="true">All <b></b></button>
         <button type="button" data-v="follow" aria-pressed="false">Needs follow-up <b></b></button>
-        <button type="button" data-v="v2" aria-pressed="false">Version 2 <b></b></button>
+        <button type="button" data-v="v2" aria-pressed="false">Updated <b></b></button>
       </div>
       <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
       <div class="fgroup" role="group" aria-label="Crisis" id="f-crisis"></div>
@@ -463,10 +463,10 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
     <figure class="dfig hidden" id="case-strip"></figure>
     <button class="cta hidden" type="button" id="case-follow" aria-pressed="false" style="margin-top:12px"></button><p class="note" id="case-follow-msg" role="status" style="margin:6px 0 0"></p>
-    <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
+    <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
-  <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; version 2 keeps version 1" data-arrow="left" data-rot="-1.2">Something changed</button>
-    <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare versions</button></div>
+  <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; it keeps the first draft" data-arrow="left" data-rot="-1.2">Something changed</button>
+    <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare drafts</button></div>
   <div class="card hidden" id="revise">
     <h2>What happened?</h2>
     <p class="note" style="margin:0">Nury records what you tell it and drafts the case again. It does not predict what will happen next.</p>
@@ -485,7 +485,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 </section>
 <section id="v-compare" class="hidden narrow">
   <button class="back" id="back-compare">&larr; Back to the case</button>
-  <div class="card"><h2 id="cmp-title">Compare versions</h2><p class="note" style="margin:0" id="cmp-sub"></p>
+  <div class="card"><h2 id="cmp-title">Compare drafts</h2><p class="note" style="margin:0" id="cmp-sub"></p>
     <div class="chips" id="cmp-chips" role="tablist" style="margin-top:10px"></div></div>
   <div class="card"><div id="cmp-body"></div></div>
 </section>
@@ -593,7 +593,7 @@ function families(){const m=new Map();CASES.forEach(c=>{const g=m.get(c.family_i
 const matchStatus=(c,s)=>s==="all"||(s==="follow"&&c.followup)||(s==="v2"&&c.version_count>1);
 function chipsFor(c){const s=h("span",{class:"scs"});
   const add=(cls,icon,t)=>s.append(h("span",{class:"sc "+cls},ic(icon),t));
-  add("s-saved","i-check","Saved");if(c.version_count>1)add("s-v2","i-v2","Version "+c.version);if(c.followup)add("s-follow","i-flag","Needs follow-up");return s}
+  add("s-saved","i-check","Saved");if(c.version_count>1)add("s-v2","i-v2",(n=>n===1?"Updated":n===2?"Updated twice":`Updated ${n} times`)(c.version_count-1));if(c.followup)add("s-follow","i-flag","Needs follow-up");return s}
 function mkCase(c){const k=crisisInfo(c);
   return h("li",null,h("a",{class:"case",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
     h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta"},`${k.short} · saved ${relTime(c.iso)}`),chipsFor(c)),
@@ -616,7 +616,7 @@ function renderHome(){const fam=families(),n=fam.length;
   $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
   $("see-all").textContent=n>2?`All cases (${n})`:"All cases";
   $("stats").hidden=n<=3;
-  if(n>3)$("stats-grid").replaceChildren(...[["all","All"],["follow","Needs follow-up"],["v2","Version 2"]].map(([k,l])=>
+  if(n>3)$("stats-grid").replaceChildren(...[["all","All"],["follow","Needs follow-up"],["v2","Updated"]].map(([k,l])=>
     h("a",{class:"stat",href:"#/cases/"+k},h("b",null,String(fam.filter(c=>matchStatus(c,k)).length)),h("span",null,l))));
   renderPicks()}
 function renderCases(){const fam=families(),n=fam.length;
@@ -646,7 +646,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
       h("div",{class:"two"},h("div",null,h("h4",null,"Nury produces"),h("p",null,x.makes||s.line)),h("div",null,h("h4",null,"You decide"),h("p",null,x.decide||"You read it, then approve, edit or stop."))),
       h("p",{class:"gatel"},ic("i-gate"),"Your gate: Approve, Edit or Stop"))))});
   flow.append(h("li",null,h("span",{class:"node cap"},ic("i-save")),h("div",{class:"capcard"},h("h3",null,"Then the package is yours"),
-    h("p",null,"Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again as version 2 and keeps version 1 as it was."))));
+    h("p",null,"Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again with what changed and keeps the first draft."))));
   const blk=(id,title,...kids)=>h("section",{class:"blk","aria-labelledby":id},h("h2",{id},title),...kids);
   const gives=(d.gives||st.map(s=>s.title)).map((g,i)=>h("li",null,h("span",{class:"tile"},ic((ds[i]||{}).icon||"i-triage")),h("span",null,h("b",null,g))));
   gives.push(h("li",null,h("span",{class:"tile"},ic("i-save")),h("span",null,h("b",null,"A package you copy or download"),h("span",{class:"d"},"Save it to a case file and open it later."))),
@@ -742,7 +742,7 @@ async function openCase(id){
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
     b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
   const vs=c.versions||[c.meta.id];$("case-vers").classList.toggle("hidden",vs.length<2);
-  $("case-vers").replaceChildren(...vs.map((v,i)=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent="v"+(i+1);b.setAttribute("aria-label","Version "+(i+1));b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
+  $("case-vers").replaceChildren(...vs.map((v,i)=>({v,i})).reverse().map(({v,i})=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent=i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft");b.setAttribute("aria-label",b.textContent);b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
   $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
   show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
 }
@@ -760,7 +760,7 @@ $("b-changed").onclick=()=>{
 $("rv-cancel").onclick=()=>$("revise").classList.add("hidden");
 $("rv-go").onclick=async()=>{
   const note=$("rv-note").value.trim();if(!note){$("rv-err").textContent="Write what happened first.";return}
-  if(!await askConfirm({title:"Record what changed?",body:"Nury drafts again as version 2 and keeps version 1 as it was.",ok:"Record and draft version 2"}))return;
+  if(!await askConfirm({title:"Record what changed?",body:"Nury drafts again with what changed and keeps the first draft.",ok:"Record and draft again"}))return;
   reviseCtx={case_id:curCase.meta.id,step:$("rv-step").value,result:document.querySelector('input[name="rv-res"]:checked').value,note};
   const pv=await api("/api/revision-preview",reviseCtx);if(pv.error){$("rv-err").textContent=pv.error;return}
   pb=pbs.find(p=>p.id===pv.playbook)||{id:pv.playbook};$("lang").value=pv.language||"es";$("intake").value=pv.intake;$("demo").checked=false;
@@ -773,7 +773,7 @@ $("b-compare").onclick=async()=>{
   const vs=curCase.versions;const a=vs[vs.length-2],b=vs[vs.length-1];
   const d=await api(`/api/case/${encodeURIComponent(a)}/compare/${encodeURIComponent(b)}`);
   if(d.error){return}
-  $("cmp-sub").textContent=`Red lines are only in v${vs.length-1}. Green lines are new in v${vs.length}.`;
+  $("cmp-sub").textContent=`Red lines are only in ${vs.length>2?"the earlier draft":"the first draft"}. Green lines are new in the updated draft.`;
   const names=Object.keys(d.pages);
   const draw=n=>{$("cmp-chips").querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.p===n));
     $("cmp-body").replaceChildren(...d.pages[n].map(l=>{const e=document.createElement("div");e.className="dl "+l.t;e.textContent=(l.t==="add"?"+ ":l.t==="del"?"- ":"  ")+l.x;return e}))};
@@ -888,7 +888,7 @@ async function poll(){
       let r;try{r=await api(`/api/session/${sid}/save`,{})}catch(e){r={error:"Could not reach the server. Nothing was saved."}}
       if(!r||r.error||!r.id){er.setAttribute("role","alert");er.textContent=(r&&r.error)||"Could not save. Try again.";btn.disabled=false;er.scrollIntoView({block:"center",behavior:"smooth"});return}
       btn.textContent="Saved";sv.replaceChildren();
-      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`Saved as ${r.id}${vm?` (version ${vm[1]}, beside the earlier version)`:""}. Nothing was sent to anyone. `));
+      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`Saved as ${r.id}${vm?` (an updated draft, beside the first draft)`:""}. Nothing was sent to anyone. `));
       const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>{allowLeave=true;go("#/case/"+encodeURIComponent(r.id))};a.onkeydown=e=>{if(e.key==="Enter")a.onclick()};sv.append(a);
       sv.classList.remove("hidden");sv.scrollIntoView({block:"center",behavior:"smooth"})};
     renderLog($("log2"),s.log);show("v-pkg");return}
