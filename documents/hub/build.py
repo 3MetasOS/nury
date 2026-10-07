@@ -137,6 +137,7 @@ MENU = [
     ("Overview", "Features: built vs not built", "md", "documents/FEATURES.md"),
     ("Overview", "Technical claims (verified)", "md", "documents/TECH_CLAIMS.md"),
     ("Overview", "Who Gloo's customers are", "md", "documents/GLOO_CUSTOMERS.md"),
+    ("Overview", "Case management standards", "md", "documents/STANDARDS_ALIGNMENT.md"),
     ("Architecture", "Architecture decisions", "md", "documents/ARCHITECTURE.md"),
     ("Architecture", "Diagrams (10 tabs)", "html_repo", "documents/architecture/diagrams.html"),
     ("Architecture", "Diagrams notes", "md", "documents/architecture/README.md"),
