@@ -1,4 +1,6 @@
-"""Layer 2 judges: typed Jev calls. EVAL TIME ONLY. Never imported by the product.
+"""Layer 2 judges: typed Jev calls on the whole run. EVAL TIME ONLY. Never imported by the product.
+(The product has its own run-time gate, code/nury/jev_gate.py, with the same safety questions. These judges are not
+independent of it.)
 
 Jev is the Jev decision API from TypeSafe, a third-party service the harness calls at test time.
 

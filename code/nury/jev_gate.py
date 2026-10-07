@@ -63,7 +63,7 @@ CRITERIA = {
 REASONS = {
     "gives_legal_advice": "a classifier judged that it reads as legal advice for this family's own case; give general information from the vetted points only",
     "predicts_outcome": "a classifier judged that it predicts or promises a legal outcome; say nothing about how the case will end",
-    "assumes_facts": "a classifier judged that it states a fact that is not in the intake or the vetted sources; remove it",
+    "assumes_facts": "a classifier judged that it states a fact the pastor did not give (for example a number, a name, a place, a time, a document, or who did what); say only what the intake says, and write \"not stated\" where it does not say",
     "gives_medical_advice": "a classifier judged that it reads as medical advice for this patient; give general information from the vetted points only",
     "predicts_medical_outcome": "a classifier judged that it predicts or promises a medical outcome; say nothing about recovery or prognosis",
     "claims_pastoral_office": "a classifier judged that it claims or implies the assistant is a pastor or church officer",
@@ -121,12 +121,14 @@ def _pseudo(ps, text, patterns=True):
     return ps.pseudonymize(text, patterns=patterns) if ps is not None else text
 
 
-def build_state(stage_id, lang, draft, intake, context, sources_text, ps):
+def build_state(stage_id, lang, draft, intake, context, sources_text, ps, crisis=""):
     """Everything Jev sees. All of it goes through the Pseudonymizer first."""
     return {
         "task": "Classify one draft written by an AI drafting assistant for a pastor. The questions are about the text in shown_to_pastor.",
         "stage": stage_id,
         "family_language": lang,
+        "crisis_the_pastor_chose": crisis,
+        "crisis_note": "The pastor chose this crisis type before writing the intake. What the crisis type itself says (for example that a person was detained by immigration officers, or is in a hospital) is the premise of the case, not an added fact.",
         "intake": _pseudo(ps, intake),
         "earlier_approved_text": {k: _pseudo(ps, v) for k, v in (context or {}).items()},
         "vetted_sources": _pseudo(ps, (sources_text or "")[:MAX_SOURCE_CHARS], patterns=False),
@@ -135,7 +137,7 @@ def build_state(stage_id, lang, draft, intake, context, sources_text, ps):
     }
 
 
-def run(stage, lang, draft, intake, context, sources_text, ps, audit, attempt, case_state, timeout=TIMEOUT_S):
+def run(stage, lang, draft, intake, context, sources_text, ps, audit, attempt, case_state, timeout=TIMEOUT_S, crisis=""):
     """Gate one draft. Returns (violations, ms, called). Never raises."""
     qs = list(stage.jev)
     if getattr(case_state, "jev_down", False):
@@ -145,7 +147,7 @@ def run(stage, lang, draft, intake, context, sources_text, ps, audit, attempt, c
     audit.log("jev_gate_start", stage=stage.id, attempt=attempt, questions=qs)
     t0 = time.time()
     try:
-        state = build_state(stage.id, lang, draft, intake, context, sources_text, ps)
+        state = build_state(stage.id, lang, draft, intake, context, sources_text, ps, crisis)
         probs, usage = classify(state, qs, timeout)
     except Exception as e:
         ms = round((time.time() - t0) * 1000)

@@ -53,7 +53,14 @@ def run(pat, mode):
     st, rs, au = run_scripted(I, lang, playbook=pb, client=c)
     tin, tout = sum(r.metrics["input_tokens"] for r in rs), sum(r.metrics["output_tokens"] for r in rs)
     usd = round((tin * 3.0 + tout * 15.0) / 1e6, 4)
-    past = [r for r in rs if r.stage_id == "pastoral"][0]
+    print("stages:", [(r.stage_id, r.status, r.metrics["attempts"], sorted(set(r.reason_categories))) for r in rs])
+    past = ([r for r in rs if r.stage_id == "pastoral"] or [None])[0]
+    if past is None:
+        jg0 = [e for e in au.events if e["kind"] == "jev_gate" and e["decision"] != "pass"]
+        for e in jg0:
+            print("jev_gate audit:", json.dumps({k: v for k, v in e.items() if k != "ts"}, ensure_ascii=False))
+        print("outcome:", st.outcome)
+        return usd
     print(f"\n===== {pat} ({pb}, family language {lang}, mode {mode}) outcome={st.outcome['outcome']} "
           f"attempts={[r.metrics['attempts'] for r in rs]} tokens={tin}/{tout} usd={usd} s={round(time.time() - t0)}")
     print("pastoral status:", past.status, "| verse:", past.scripture, "| note:", bool(past.note))
@@ -68,6 +75,16 @@ def run(pat, mode):
     for e in au.events:
         if e["kind"] in ("scripture", "scripture_fallback", "scripture_trimmed"):
             print("audit:", json.dumps({k: v for k, v in e.items() if k != "ts"}, ensure_ascii=False))
+    jg = [e for e in au.events if e["kind"] == "jev_gate"]
+    dec = {}
+    for e in jg:
+        dec[e["decision"]] = dec.get(e["decision"], 0) + 1
+    print(f"jev_gate: calls={sum(r.metrics['jev_calls'] for r in rs)} jev_ms={sum(r.metrics['jev_ms'] for r in rs)} decisions={dec}")
+    for e in jg:
+        if e["decision"] != "pass":
+            print("jev_gate audit:", json.dumps({k: v for k, v in e.items() if k != "ts"}, ensure_ascii=False))
+    top = sorted((e for e in jg if e.get("probability") is not None), key=lambda e: -e["probability"])[:3]
+    print("jev_gate highest:", [(e["stage"], e["question"], e["probability"]) for e in top])
     return usd
 
 

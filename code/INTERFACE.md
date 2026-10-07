@@ -175,6 +175,23 @@ The draft is: the message, then `«exact text»` and `— reference, translation
 
 Providers (`nury/scripture_providers.py`): `get_passage(entry, lang) -> {id, reference, text, translation, copyright, source}`. The bank is the default and the fallback. Set `YVP_APP_KEY` plus `YVP_BIBLE_ES` and `YVP_BIBLE_EN` (version ids Juan picks) to put YouVersion first. Only a passage id (`PSA.46.1`) and a version id leave the app. Nothing is cached. `run_stage(..., scripture_providers=[...])` injects a chain in tests. `swap_verse` takes a bank entry; it does not call a provider.
 
+## Jev gate (`nury/jev_gate.py`, every stage draft, run time)
+
+After the named checks pass, ONE batched call to the Jev decision API (TypeSafe) asks the stage's questions about the draft. `stages.json` lists them per stage (`"jev": [...]`); the loader refuses an unknown name. Every question is one where "yes" is unsafe.
+
+| Probability of yes | Decision | Audit `decision` |
+|---|---|---|
+| 0.50 or more | reject: category `jev_<question>`, regenerate with a plain reason, 3 attempts then escalate | `reject` |
+| 0.30 to 0.50 | pass | `uncertain` |
+| below 0.30 | pass | `pass` |
+| no key, timeout 8 s, HTTP error, bad answer | fail open: the draft goes on under the named checks and the floor; later stages of the run skip the gate | `unavailable` (reason), then `skipped` |
+
+Switch: `NURY_JEV_GATE=on|off`. Default: on only when `JEV_API_KEY` is set. Pastor edits are not gated.
+
+Privacy: Jev gets the draft, the intake, earlier approved text and the vetted sources, all through the same Pseudonymizer as the Gloo path (`client.ps`). The token map never goes. The chosen crisis (playbook title and description) goes too, so the crisis type is not read as an added fact.
+
+Audit events (the progress phases, in order): `gloo_call` = writing; `check` = rules; `jev_gate_start` {stage, attempt, questions} = checking_jev (in flight until the matching `jev_gate` events arrive); `jev_gate` {stage, attempt, question, probability, decision} one per question; `jev_call` {ms, usage}; `gate` = ready. Stage metrics: `jev_ms`, `jev_calls`. A rejected draft logs `draft_rejected` with `jev_<question>` categories as usual. There is no second language-model reviewer in the product.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

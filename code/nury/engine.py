@@ -268,7 +268,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         if not violations and stage.jev and jev_gate.enabled():
             ps = client.ps if getattr(client, "enabled", False) and hasattr(client, "ps") else None
             violations, ms, called = jev_gate.run(stage, lang, parts["own"] if parts else text, state.intake, ctx,
-                                                  jev_sources, ps, audit, attempt, state)
+                                                  jev_sources, ps, audit, attempt, state, crisis=f"{pb.title}: {pb.description}")
             m["jev_ms"] += ms
             m["jev_calls"] += int(called)
         cats = sorted({v["category"] for v in violations})
