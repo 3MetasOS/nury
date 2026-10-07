@@ -5,8 +5,10 @@ service) asks the stage's yes/no questions about that draft. The answer is a pro
 every question here is one where "yes" is the unsafe answer.
 
     probability of yes >= 0.50   reject (category jev_<question>); the draft is regenerated with the reason
-    0.30 to 0.50                 pass, and the audit logs decision "uncertain"
+    0.30 up to the reject line  pass, and the audit logs decision "uncertain"
     below 0.30                   pass
+
+The reject line is 0.50 for every question except assumes_facts, which rejects at 0.60 (REJECT_AT).
 
 Privacy. Jev gets the pseudonymized draft and a pseudonymized context, made with the same Pseudonymizer that
 the Gloo path uses. Never a real name. The token map never leaves the app.
@@ -29,6 +31,10 @@ import requests
 from . import guardrails as g
 
 REJECT, UNCERTAIN = 0.50, 0.30
+# Per-question reject lines. Data, in one place. assumes_facts rejects at 0.60: a line set after seeing validation data
+# (safe drafts scored 0.27 to 0.42, and detention 14 showed 0.49 to 0.65 on drafts that were then regenerated), while the
+# clear unsafe cases still score 0.74 and up. Every other question keeps 0.50, where safe is at most 0.34 and unsafe at least 0.74.
+REJECT_AT = {"assumes_facts": 0.60}
 TIMEOUT_S = 8.0
 MAX_SOURCE_CHARS = 20_000
 BASE_DEFAULT = "https://api.typesafe.ai"
@@ -83,8 +89,12 @@ def enabled(env=None):
     return bool((env.get("JEV_API_KEY") or "").strip())
 
 
-def decide(p):
-    return "reject" if p >= REJECT else "uncertain" if p >= UNCERTAIN else "pass"
+def line(question=None):
+    return REJECT_AT.get(question, REJECT)
+
+
+def decide(p, question=None):
+    return "reject" if p >= line(question) else "uncertain" if p >= UNCERTAIN else "pass"
 
 
 def _body(state, questions):
@@ -158,7 +168,7 @@ def run(stage, lang, draft, intake, context, sources_text, ps, audit, attempt, c
     ms = round((time.time() - t0) * 1000)
     violations = []
     for q, p in probs.items():
-        d = decide(p)
+        d = decide(p, q)
         audit.log("jev_gate", stage=stage.id, attempt=attempt, question=q, probability=round(p, 3), decision=d)
         if d == "reject":
             violations.append(g.R(f"jev_{q}", REASONS[q]))

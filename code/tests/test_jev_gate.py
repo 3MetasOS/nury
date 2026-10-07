@@ -88,6 +88,29 @@ class Gate(unittest.TestCase):
         self.assertEqual([jev_gate.decide(x) for x in (0.0, 0.29, 0.30, 0.49, 0.5, 1.0)],
                          ["pass", "pass", "uncertain", "uncertain", "reject", "reject"])
 
+    def test_assumes_facts_rejects_at_point_six_and_every_other_question_at_point_five(self):
+        self.assertEqual(jev_gate.line("assumes_facts"), 0.60)
+        for q in jev_gate.QUESTIONS:
+            if q != "assumes_facts":
+                self.assertEqual(jev_gate.line(q), 0.50, q)
+        self.assertEqual([jev_gate.decide(0.55, "assumes_facts"), jev_gate.decide(0.55, "gives_legal_advice"),
+                          jev_gate.decide(0.59, "assumes_facts"), jev_gate.decide(0.60, "assumes_facts"),
+                          jev_gate.decide(0.29, "assumes_facts"), jev_gate.decide(0.30, "assumes_facts")],
+                         ["uncertain", "reject", "uncertain", "reject", "pass", "uncertain"])
+
+    def test_in_a_run_0_55_passes_triage_and_rejects_a_legal_advice_draft(self):
+        gate_on()
+        st = CaseState("intake", "es")
+        with mock.patch.object(requests, "post", Jev(probs={"assumes_facts": 0.55})):
+            rec = run_stage("triage", st, client=FakeClient(), audit=AuditLog())
+        self.assertEqual(rec.status, "approved")
+        st.approved.update(triage=TRIAGE)
+        au = AuditLog()
+        with mock.patch.object(requests, "post", Jev(probs={"gives_legal_advice": 0.55})):
+            rec2 = run_stage("rights", st, client=FakeClient(), audit=au)
+        self.assertEqual(rec2.status, "escalated")
+        self.assertIn("jev_gives_legal_advice", rec2.reason_categories)
+
     def test_point_two_passes_and_point_four_passes_but_is_logged_uncertain(self):
         rec, au, _ = self.pastoral(Jev(probs={"promises_action": 0.4}, default=0.2))
         self.assertEqual(rec.status, "approved")

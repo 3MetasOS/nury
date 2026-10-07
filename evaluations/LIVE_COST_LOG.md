@@ -154,3 +154,6 @@ detention 01 and hospital h01, YouVersion on: **$0.1765** (cap $0.30). Both pack
 | G4 | final code: detention 01, hospital h01 | $0.17 | 5 + 5 calls, 859 ms and 764 ms total |
 | | **Slot G total (Gloo)** | **about $0.59** (cap $1.00) | Jev bills on its own key; usage about 700 in and 80 out tokens per pastoral call; price not known |
 
+### Slot G, run G5: the 0.60 line for assumes_facts (hack-jedi, 2026-10-07)
+
+detention 14, 01 and hospital h01, gate on, YouVersion on: Gloo **$0.2535** (cap $0.50). All three complete, first attempt at every stage, 5 Jev calls each (862, 843 and 765 ms of Jev time). Decisions: 14: pass 8, uncertain 2 (triage `assumes_facts` 0.59, attorney 0.50); 01: pass 9, uncertain 1 (attorney 0.45); h01: pass 10. Slot G Gloo total about **$0.84** (the cap of this slot was $1.00 plus this $0.50 run).

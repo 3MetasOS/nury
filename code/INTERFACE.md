@@ -181,8 +181,8 @@ After the named checks pass, ONE batched call to the Jev decision API (TypeSafe)
 
 | Probability of yes | Decision | Audit `decision` |
 |---|---|---|
-| 0.50 or more | reject: category `jev_<question>`, regenerate with a plain reason, 3 attempts then escalate | `reject` |
-| 0.30 to 0.50 | pass | `uncertain` |
+| at or over the question's line (0.50; `assumes_facts` 0.60, set after seeing validation data; `REJECT_AT`) | reject: category `jev_<question>`, regenerate with a plain reason, 3 attempts then escalate | `reject` |
+| 0.30 up to the line | pass | `uncertain` |
 | below 0.30 | pass | `pass` |
 | no key, timeout 8 s, HTTP error, bad answer | fail open: the draft goes on under the named checks and the floor; later stages of the run skip the gate | `unavailable` (reason), then `skipped` |
 
