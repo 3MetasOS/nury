@@ -779,3 +779,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - hack-jedi proved with the version history that the registry at the scored build c317050 already held the same 20 entries; the statement "the scored runs used 14 (and 20 now)" was false: the 14 came from an older build, before the Scripture checks (3) and the panel checks (3) were added on 2026-10-06 at 23:45 and 23:48. The claims register and the feature list are corrected (they say "20 named checks", and for the registry "the same 20 at c317050"). hack-jedi did not verify that all 20 apply in a full run per stage, so we say "20 named checks in the registry; each stage applies the ones listed for it, plus the safety floor" and never "all 20 apply in every stage".
 - Decision (hack-sensei): replace "14" everywhere now, not after the re-run (architecture, the documentation source, the deck, the technical story, the scripts, the descriptions, the design spec and prototype), and record in the claims audit that the earlier audit carried the false number.
+
+## 127. 2026-10-07 02:36 MDT — Juan's review of review cut 2
+
+- Juan: the memorial name needs its accent (Peláez); some video screenshots still say "for solo pastors" (the old rehearsal capture of the old app); the main issue is too much silence between the voices (about 25 seconds of voice in 90): "lets review the script very carefully while i review the app."
+- Actions: hack-video prints a timeline of voice lines and gaps, tightens the cut, recaptures the non-live screens from the current app, adds the accent; hack-ninja reviews all three scripts against the cut and proposes added short lines (approved by hack-sensei before any is recorded) and cuts; hack-sensei reviews the proposal before Juan.
