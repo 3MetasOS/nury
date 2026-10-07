@@ -1,6 +1,13 @@
 {
  "_about": "Verse bank for the pastoral message. The model chooses an id from this list. It never writes Scripture. The engine inserts the exact text below. Comfort and presence only. No verse that promises an outcome, none about foreigners or politics.",
  "tradition": "none",
+ "approval": {
+  "approved_by": "Juan Pelaez",
+  "date": "2026-10-06",
+  "via": "relayed by hack-sensei (msg 'Juan APPROVED all 12 verses')",
+  "scope": "all verses listed here",
+  "how_to_reject": "set the verse's source_id to \"rejected\" in approvals.json (one line), then refresh the canvas"
+ },
  "max_block_words": 52,
  "translations": {
   "es": {
