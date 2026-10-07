@@ -59,7 +59,7 @@ Status words:
 | 21 | Skills improve the wording. | The before and after run (`evaluations/skills_ab.py`) has not been run. | PENDING final scorecard | not quoted yet |
 | 22 | After approval, a case is saved as a local folder of linked pages and a next-steps map, built without a model call from approved text only. It refuses to save if any stage is not approved, if a rejected draft or a key would be written. | `code/nury/casefile.py`; `code/tests/test_casefile.py` (9 tests); two real runs saved on 2026-10-07. | VERIFIED offline test; VERIFIED live | 14 files per case with privacy; 0 rejected-draft strings in the folder or its zip |
 | 23 | The next-steps map shows steps and questions only: four lanes (tonight, this week, questions still open, who to call), no outcomes, readable at 390 px. | `nextsteps_svg` in `casefile.py`; tests `test_map_is_svg_390_*`; agent-browser check at 390 and 1280 px. | VERIFIED offline test | 4 lanes |
-| 24 | A saved case can be revised: v2 sits beside v1, which is never touched. | `code/app/server.py` (revision), `evaluations/casefile_check.py`. Its live run is on the owed list. | PENDING final scorecard | not quoted yet |
+| 24 | A saved case can be revised: v2 sits beside v1, which is never touched, with a change log and a compare view. | `code/app/server.py` (revision); `evaluations/casefile_check.py`; BUILD_LOG 56: revision scenarios 5 of 5 PASS live, v1 files byte-identical after v2 was saved, and the whole app run once in a real browser with privacy on (protect step, 5 gates, Save, Open case, Something changed, Draft again, Save as v2, Compare). | VERIFIED live | 5 of 5 case-file and revision scenarios; v1 unchanged byte for byte |
 
 ## 6b. Evaluation: four layers
 
