@@ -475,3 +475,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan is not happy with the direction of the presentation and the video: he wants a more cinematic approach, more persona, more tension, built on better practices. The 90 seconds must say "this is Nury", that it is a crisis-management tool for the solo pastor, sell the technical work, and end with the memorial.
 - Decision: pause polishing; keep every existing asset. `presentation/CREATIVE_BRIEF.md` asks hack-ninja (writer) and hack-video (producer) for three genuinely different treatments with beat sheets to the second, cited craft research, persona, narration and sound design, and a feasibility cost. Starting concept A, "From night to light": the film opens in night (ink), the lantern lights (amber), it ends in dawn (paper), which also answers the note that the all-dark look is heavy. Juan picks one.
+
+## 73. 2026-10-06 22:44 MDT — Target user confirmed (Juan)
+
+- After questioning whether the solo pastor is really the target, Juan chose: the solo pastor stays the hero. The brand line is unchanged ("the crisis-response agent for solo pastors"); the film's persona is one pastor, alone, at 2:07 AM; one honest line at the end of the deck says church teams can use it too, as next. No team imagery and no claim of roles or shared cases.
