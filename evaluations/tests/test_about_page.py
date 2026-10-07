@@ -97,3 +97,14 @@ def test_what_did_not_work_page_is_cards_with_filters_and_anchors(tmp_path):
     out = tmp_path / "w.html"
     build_docs.build_wdnw(out=out)
     assert out.read_text(encoding="utf-8") == page, "what-did-not-work.html is stale: run python3 -m app.build_docs"
+
+
+def test_pattern_page_is_cards_with_a_sequence_and_the_honest_list(tmp_path):
+    page = (STATIC / "pattern.html").read_text(encoding="utf-8")
+    assert 'data-note="the part you can reuse"' in page and 'class="pull"' in page and "Written 20" not in page
+    assert page.count('class="stn"') == 5 and all(f'id="part-{i}"' in page and f'href="#part-{i}"' in page for i in range(1, 6))
+    assert page.count('class="card nope"') >= 5 and page.count('class="card idea"') == 3 and "Idea, not built" in page
+    assert "Use it when" in page and "Do not use it when" in page and page.count('class="chip"') >= 10
+    out = tmp_path / "p.html"
+    build_docs.build_pattern(out=out)
+    assert out.read_text(encoding="utf-8") == page, "pattern.html is stale: run python3 -m app.build_docs"

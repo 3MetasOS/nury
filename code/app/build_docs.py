@@ -233,8 +233,7 @@ def build_standards():
     return len(page), len(toc)
 
 
-SIMPLE_DOCS = [("ECONOMICS.md", "economics.html", "Economics", "What a Nury case costs, where the time goes, and what could break the economics."),
-               ("PATTERN.md", "pattern.html", "The pattern", "The approve-gated stage pipeline for high-stakes drafting, and when to reuse it.")]
+SIMPLE_DOCS = [("ECONOMICS.md", "economics.html", "Economics", "What a Nury case costs, where the time goes, and what could break the economics.")]
 
 
 def build_simple(src_name, out_name, title, desc):
@@ -366,6 +365,102 @@ def build_wdnw(out=None, src=None):
     return len(page), len(cards)
 
 
+
+
+PATTERN_SRC = ROOT / "documents" / "product" / "PATTERN.md"
+PATTERN_OUT = Path(__file__).resolve().parent / "static" / "pattern.html"
+ARROW = '<svg class="arr" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+
+
+def build_pattern(out=None, src=None):
+    """The pattern page as cards, from documents/product/PATTERN.md. The text is not changed: the 'Written ...' line is dropped (as on the other document pages),
+    the 'Do not use it when' sentence becomes the second column under its own label, and 'Files:' paths become mono chips inside their sentence."""
+    text = Path(src or PATTERN_SRC).read_text(encoding="utf-8")
+    def inline(t):
+        return re.sub(r"^<p>(.*)</p>$", r"\1", markdown.markdown(t.strip(), extensions=["sane_lists"]).strip(), flags=re.S)
+    def paras(t):
+        return [x.strip() for x in re.split(r"\n{2,}", t.strip()) if x.strip()]
+    pre = re.split(r"(?m)^## ", re.sub(r"(?m)^# .*\n", "", text, count=1), maxsplit=1)[0]
+    intro = "".join(f"<p>{inline(x)}</p>" for x in paras(pre) if not x.startswith("Written 20"))
+    sec = {}
+    for m in re.finditer(r"(?ms)^## (.+?)\n(.*?)(?=^## |\Z)", text):
+        sec[m.group(1).strip()] = m.group(2).strip()
+    def find(prefix):
+        k = next((k for k in sec if k.lower().startswith(prefix)), None)
+        return k, (sec.get(k) or "")
+    def h2(k, i):
+        return f'<h2 id="{i}">{html.escape(k)}</h2>'
+    body = []
+    k, t = find("the one-sentence")
+    if k:
+        quote = " ".join(l.lstrip("> ").strip() for l in t.splitlines() if l.startswith(">"))
+        more = "\n".join(l for l in t.splitlines() if not l.startswith(">")).strip()
+        if not quote:                                   # an older text without a blockquote: the first paragraph is the quote
+            ps = paras(t); quote, more = (ps[0], "\n\n".join(ps[1:])) if ps else ("", "")
+        body.append(f'<section aria-labelledby="s-one">{h2(k, "s-one")}<blockquote class="pull"><p>{inline(quote)}</p></blockquote>'
+                    + (f'<p class="after">{inline(more)}</p>' if more else "") + "</section>")
+    k, t = find("when to use")
+    if k:
+        bullets = [l[2:].strip() for l in t.splitlines() if l.startswith("- ")]
+        rest = " ".join(l for l in t.splitlines() if l.strip() and not l.startswith("- ")).strip()
+        col2 = f'<div class="col no"><p>{inline(rest)}</p></div>' if rest else ""
+        body.append(f'<section aria-labelledby="s-when">{h2(k, "s-when")}<div class="two"><div class="col"><h3>Use it when</h3><ul>{"".join(f"<li>{inline(b)}</li>" for b in bullets)}</ul></div>{col2}</div></section>')
+    k, t = find("the five parts")
+    if k:
+        parts = []
+        for m in re.finditer(r"(?ms)^(\d+)\.\s+\*\*(.+?)\*\*\s*(.*?)(?=^\d+\.\s+\*\*|\Z)", t):
+            n, title, rest = m.group(1), m.group(2).strip(), " ".join(m.group(3).split())
+            parts.append((n, title.rstrip("."), rest))
+        nodes = []
+        for i, (n, ti, _) in enumerate(parts):
+            if i:
+                nodes.append(f'<li class="sa" aria-hidden="true">{ARROW}</li>')
+            nodes.append(f'<li><a class="stn" href="#part-{n}"><span class="nd">{n}</span><span class="nm">{html.escape(ti)}</span></a></li>')
+        cards = []
+        for n, ti, rest in parts:
+            fm = re.search(r"\bFiles:\s*(.*)$", rest)
+            prose = rest[:fm.start()].strip() if fm else rest
+            files = ""
+            if fm:
+                ft = fm.group(1)
+                ft_html = re.sub(r"`([^`]+)`", lambda x: f'<code class="chip">{html.escape(x.group(1))}</code>', html.escape(ft, quote=False).replace("&amp;", "&"))
+                files = f'<div class="files"><span class="lab">Files</span> {ft_html}</div>'
+            cards.append(f'<article class="card" id="part-{n}" aria-labelledby="part-{n}-t"><div class="head"><span class="badge" aria-hidden="true">{n}</span><h3 id="part-{n}-t">{html.escape(ti)}.</h3></div><p>{inline(prose)}</p>{files}</article>')
+        body.append(f'<section aria-labelledby="s-parts">{h2(k, "s-parts")}<ol class="seq" aria-label="The five parts in order">{"".join(nodes)}</ol><div class="cards c2">{"".join(cards)}</div></section>')
+    k, t = find("what to copy")
+    if k:
+        body.append(f'<section aria-labelledby="s-copy">{h2(k, "s-copy")}<ul class="list">{"".join(f"<li>{inline(l[2:])}</li>" for l in t.splitlines() if l.startswith("- "))}</ul></section>')
+    k, t = find("what it does not give")
+    if k:
+        cards = []
+        for l in t.splitlines():
+            if l.startswith("- "):
+                m = re.match(r"- \*\*(.+?)\*\*\s*(.*)$", l)
+                cards.append(f'<div class="card nope"><b>{inline(m.group(1))}</b><p>{inline(m.group(2))}</p></div>' if m else f'<div class="card nope"><p>{inline(l[2:])}</p></div>')
+        body.append(f'<section aria-labelledby="s-not">{h2(k, "s-not")}<div class="cards c2">{"".join(cards)}</div></section>')
+    k, t = find("three other places") if find("three other places")[0] else find("other places")
+    if k:
+        items = list(re.finditer(r"(?ms)^(\d+)\.\s+\*\*(.+?)\*\*\s*(.*?)(?=^\d+\.\s+\*\*|\Z)", t))
+        lead = t[:items[0].start()].strip() if items else t
+        tail = t[items[-1].end():].strip() if items else ""
+        last_body = items[-1].group(3) if items else ""
+        # the closing paragraph is whatever follows the last numbered item's first paragraph
+        cards = []
+        for j, m in enumerate(items):
+            b = m.group(3).strip()
+            if j == len(items) - 1:
+                bp = re.split(r"\n{2,}", b, maxsplit=1)
+                b = bp[0]
+                tail = bp[1].strip() if len(bp) > 1 else ""
+            cards.append(f'<article class="card idea"><span class="tag">Idea, not built</span><h3>{inline(m.group(2).rstrip(",. "))}</h3><p>{inline(b)}</p></article>')
+        body.append(f'<section aria-labelledby="s-ideas">{h2(k, "s-ideas")}' + (f'<p class="muted after" style="margin:0 0 12px">{inline(lead)}</p>' if lead else "") + f'<div class="cards c3">{"".join(cards)}</div>' + (f'<p class="after">{inline(tail)}</p>' if tail else "") + "</section>")
+    tpl = (Path(__file__).resolve().parent / "pattern_template.html").read_text(encoding="utf-8")
+    page = (tpl.replace("@@TITLE@@", "The pattern").replace("@@DESC@@", html.escape("The approve-gated stage pipeline for high-stakes drafting, and when to reuse it."))
+            .replace("@@INTRO@@", intro).replace("@@BODY@@", "\n".join(body)))
+    Path(out or PATTERN_OUT).write_text(page, encoding="utf-8")
+    return len(page)
+
+
 if __name__ == "__main__":
     n, t = build()
     print(f"wrote {OUT} ({n} bytes, {t} sections)")
@@ -375,5 +470,6 @@ if __name__ == "__main__":
     print(f"wrote {STD_OUT} ({n} bytes, {t} sections)")
     for a, b, c, d in SIMPLE_DOCS:
         print(f"wrote {b} ({build_simple(a, b, c, d)} bytes)")
+    print(f"wrote pattern.html ({build_pattern()} bytes)")
     n, k = build_wdnw()
     print(f"wrote what-did-not-work.html ({n} bytes, {k} items)")
