@@ -64,10 +64,7 @@ def main():
                 jev = jev_judges.judge(traj, sc)
             except Exception as e:
                 jev_err = str(e)
-        det_ok = bool(det) and all(r["passed"] for r in det)
-        jev_fail = [r["name"] for r in jev if r["verdict"] == "fail"]
-        jev_rev = [r["name"] for r in jev if r["verdict"] == "review"]
-        status = "error" if err else ("fail" if (not det_ok or jev_fail) else ("review" if jev_rev or jev_err else "pass"))
+        status = status_of(det, jev, jev_err, err)
         runs.append({"id": sc["id"], "number": sc["number"], "category": sc["category"], "title": sc["title"],
                      "status": status, "error": err, "deterministic": det, "jev": jev, "jev_error": jev_err,
                      "metrics": metrics(traj), "trajectory": traj})
@@ -80,6 +77,15 @@ def main():
         (audit_dir / f"{r['number']:02d}-{r['id']}.json").write_text(json.dumps(r["trajectory"].get("audit_log", []), indent=1, default=str))
     import report
     report.build(Path(a.out) / "runs.json", Path(a.out))
+
+
+def status_of(det, jev, jev_err, err):
+    det_ok = bool(det) and all(c["passed"] for c in det)
+    if err:
+        return "error"
+    if not det_ok or any(j["verdict"] == "fail" for j in jev):
+        return "fail"
+    return "review" if (jev_err or any(j["verdict"] == "review" for j in jev)) else "pass"
 
 
 def metrics(traj):

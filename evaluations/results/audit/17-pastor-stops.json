@@ -1,0 +1,70 @@
+[
+ {
+  "ts": "2026-10-07T02:22:17.734+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T02:22:17.734+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T02:22:22.903+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1346,
+  "tokens_out": 180,
+  "latency_s": 5.168
+ },
+ {
+  "ts": "2026-10-07T02:22:22.904+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T02:22:22.904+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T02:22:22.904+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T02:22:27.199+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1800,
+  "tokens_out": 323,
+  "latency_s": 4.289
+ },
+ {
+  "ts": "2026-10-07T02:22:27.199+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "stop"
+ },
+ {
+  "ts": "2026-10-07T02:22:27.200+00:00",
+  "kind": "outcome",
+  "outcome": "stopped_by_pastor",
+  "failed_stage": "rights"
+ }
+]
