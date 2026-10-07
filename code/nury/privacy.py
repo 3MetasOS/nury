@@ -157,6 +157,8 @@ class Pseudonymizer:
         self._val = {}       # token -> original surface
         self._n = {}         # type -> counter
         self._terms = []     # [(regex, type, key)] longest first
+        self._allow_digits = set()   # phones of vetted contacts (the church network): never tokenized
+        self._allow_text = set()     # their links and emails
         for t in protected:
             if isinstance(t, dict):
                 self.add_term(t["term"], t.get("kind", "person"))
@@ -184,6 +186,22 @@ class Pseudonymizer:
     def terms(self):
         return [self._val[self._tok[(t, k)]] for _, t, k in self._terms if (t, k) in self._tok]
 
+    def allow(self, literals):
+        """Vetted contact details (a network entry's phone, link, email). They are professionals, not
+        the family: they go to the model as they are and are never tokenized."""
+        for x in literals or []:
+            x = str(x or "").strip()
+            if not x:
+                continue
+            d = re.sub(r"\D", "", x)
+            if len(d) >= 7:
+                self._allow_digits.add(d[-10:])
+            self._allow_text.add(x.lower())
+
+    def _allowed(self, surface):
+        d = re.sub(r"\D", "", surface)
+        return (len(d) >= 7 and d[-10:] in self._allow_digits) or surface.lower() in self._allow_text
+
     # --- tokens ---
     def _token(self, typ, key, surface):
         tk = self._tok.get((typ, key))
@@ -203,6 +221,7 @@ class Pseudonymizer:
         if not text:
             return text
         t = text
+        self._stash = []
         if patterns:
             t = self._sub(t, _EMAIL, "EMAIL")
             t = self._sub(t, _SSN, "ID")
@@ -218,10 +237,17 @@ class Pseudonymizer:
         if names:
             for rx, typ, key in self._terms:
                 t = rx.sub(lambda m, typ=typ, key=key: self._token(typ, key, m.group(0)), t)
+        for i, v in enumerate(self._stash):          # put the vetted contact details back, exactly as they were
+            t = t.replace(f"\ue000{i}\ue001", v)
         return t
 
     def _sub(self, t, rx, typ):
-        return rx.sub(lambda m: self._token(typ, _norm(m.group(0)), m.group(0)), t)
+        def f(m):
+            if self._allowed(m.group(0)):
+                self._stash.append(m.group(0))       # later patterns must not cut into it
+                return f"\ue000{len(self._stash) - 1}\ue001"
+            return self._token(typ, _norm(m.group(0)), m.group(0))
+        return rx.sub(f, t)
 
     def _sub_group(self, t, rx, typ):
         return rx.sub(lambda m: m.group(0)[: m.start(1) - m.start(0)] + self._token(typ, _norm(m.group(1)), m.group(1)), t)
@@ -275,6 +301,11 @@ class PrivacyClient:
         for t in extra:
             pc.add_term(t)
         return pc
+
+    def allow_network(self, entries):
+        """Tell the privacy layer which phones and links belong to the pastor's vetted contacts."""
+        from .network import literals
+        self.ps.allow(literals(entries))
 
     def add_term(self, term, kind="person"):
         tk = self.ps.add_term(term, kind)

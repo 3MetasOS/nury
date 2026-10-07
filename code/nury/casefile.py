@@ -108,19 +108,25 @@ def _digits(s):
 
 
 def who_to_call(pb, state):
-    """[{name, phone, url}] for vetted entries whose link or phone appears in the approved resources text."""
+    """[{name, phone, url, church}] for vetted entries whose link or phone appears in the approved resources text.
+    Church-network contacts the run used come first and are marked church=True (the pastor's own, not endorsed)."""
     sid, src = _resource_stage_id(pb)
     if not sid or sid not in state.approved:
         return []
     text = state.approved[sid]
     norm = g._norm_url
     out = []
+
+    def hit(url, phone):
+        return bool((url and norm(url) in norm(text)) or (phone and len(_digits(phone)) >= 3 and re.search(r"(?<!\d)" + re.escape(phone) + r"(?!\d)", text)))
+    for e in (state.sources_used.get(sid, {}).get("church_network", {}) or {}).get("entries", []):
+        if hit(e.get("url", ""), e.get("phone", "")) and (e.get("url") or e.get("phone")):
+            out.append({"name": e["name"], "phone": e.get("phone", ""), "url": e.get("url", ""), "church": True})
     data = pb.sources[src]
     for e in data.get("national", []) + data.get("local", []):
         url, phone = e.get("url", ""), e.get("phone", "")
-        hit = (url and norm(url) in norm(text)) or (phone and len(_digits(phone)) >= 3 and re.search(r"(?<!\d)" + re.escape(phone) + r"(?!\d)", text))
-        if hit and (url or phone):
-            out.append({"name": e["name"], "phone": phone, "url": url})
+        if hit(url, phone) and (url or phone):
+            out.append({"name": e["name"], "phone": phone, "url": url, "church": False})
     return out
 
 
@@ -148,7 +154,8 @@ def lanes_for(pb, state):
     tonight = chk.get("DO TONIGHT", [])
     week = chk.get("GATHER THESE DOCUMENTS", []) or chk.get("WHAT TO BRING AND ASK", [])
     questions = tri.get("MISSING FACTS", [])
-    calls = [f"{c['name']}" + (f": {c['phone']}" if c["phone"] else "") + (f"  {c['url']}" if c["url"] else "") for c in who_to_call(pb, state)]
+    calls = [("Church: " if c.get("church") else "") + f"{c['name']}" + (f": {c['phone']}" if c["phone"] else "") + (f"  {c['url']}" if c["url"] else "")
+             for c in who_to_call(pb, state)]
     return [("Tonight", tonight), ("This week", week), ("Questions still open", questions), ("Who to call", calls)]
 
 

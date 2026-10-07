@@ -85,5 +85,75 @@ def no_stock_phrases(p, text, ctx):
     return [g.R("stock_phrase", f"stock or inflated wording: {sorted(set(hits))[:3]}")] if hits else []
 
 
+_ENDORSE = re.compile(
+    r"\b(?:highly recommended|recommended|we recommend|i recommend|top[- ]rated|best (?:lawyer|attorney|option|choice|clinic|help)|the best)\b"
+    r"|\b(?:recomendad[oa]s?|recomendamos|recomiendo|recomendar|altamente recomendad\w+)\b|\b(?:el|la|los|las)\s+mejor(?:es)?\b", re.I)
+_TITLED = re.compile(r"\b(?:Lic\.|Licenciad[oa]|Abogad[oa]|Attorney|Atty\.|Esq\.|Dr\.|Dra\.)\s+[A-ZÁÉÍÓÚÑ][\w'’]+(?:\s+[A-ZÁÉÍÓÚÑ][\w'’]+)?")
+
+
+def no_endorsement_words(p, text, ctx):
+    """Nury lists contacts. It never ranks or endorses one."""
+    hits = sorted({m.group(0).lower() for m in _ENDORSE.finditer(text)})
+    return [g.R("endorsement", f"endorsing or ranking words: {hits[:3]}")] if hits else []
+
+
+def _entries(ctx, names):
+    out = []
+    for n in names:
+        d = ctx.data.get(n) or {}
+        for key in ("entries", "national", "local"):
+            out += [e for e in d.get(key, []) if isinstance(e, dict)]
+    return out
+
+
+def _fold(s):
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", s or "") if unicodedata.category(c) != "Mn").casefold()
+
+
+def listed_contacts_known(p, text, ctx):
+    """A contact in the draft must be a contact we gave: the church network or the vetted lists.
+    Church entries are copied exactly (name with its own phone or link). A titled personal name that is in
+    neither list is rejected."""
+    out = []
+    church = _entries(ctx, p.get("church", []))
+    known = _entries(ctx, p.get("church", []) + p.get("lists", []))
+    low = _fold(text)
+    for e in church:
+        name = _fold(e["name"])
+        if name and name in low:
+            ph = re.sub(r"\D", "", e.get("phone", ""))
+            ok = (ph and ph in re.sub(r"\D", "", text)) or (e.get("url") and g._norm_url(e["url"]) in g._norm_url(text))
+            if (ph or e.get("url")) and not ok:
+                out.append(g.R("ungrounded_claim", f"church contact listed without its own phone or link: {e['name'][:40]}"))
+    for line in text.splitlines():
+        s = line.strip()
+        if not re.match(r"^[-•*]|^\d+[.)]", s):
+            continue
+        digits = re.sub(r"\D", "", s)
+        for e in church:
+            ph = re.sub(r"\D", "", e.get("phone", ""))
+            if ph and ph in digits and _fold(e["name"]) not in _fold(s):
+                out.append(g.R("ungrounded_claim", f"church contact name changed or missing for phone {e.get('phone')}"))
+    blob = _fold(" ".join(e["name"] for e in known))
+    for m in _TITLED.finditer(text):
+        if _fold(m.group(0)) not in blob:
+            out.append(g.R("ungrounded_claim", f"names a professional who is not in the network or vetted sources: {m.group(0)}"))
+    return out
+
+
+def network_entries_present(p, text, ctx):
+    """Every church contact we handed over must appear, with its phone or link."""
+    out = []
+    low = re.sub(r"\D", "", text)
+    for e in _entries(ctx, [p["source"]]):
+        ph = re.sub(r"\D", "", e.get("phone", ""))
+        hit = (ph and ph in low) or (e.get("url") and g._norm_url(e["url"]) in g._norm_url(text))
+        if not hit:
+            out.append(g.R("missing_vetted_entry", f"church contact left out: {e['name'][:40]}"))
+    return out
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
-                                    vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases)}
+                                    vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases, no_endorsement_words,
+                                    listed_contacts_known, network_entries_present)}

@@ -1,6 +1,11 @@
-Task: format the list below as a clean, scannable list in {{lang_name}}. National first, then local.
-Copy names and links exactly. Add one line on what to have ready before calling (names, dates, paperwork).
-Do not recommend any one attorney. Do not add entries.
+Task: format the lists below as a clean, scannable list in {{lang_name}}.
+If CHURCH CONTACTS has entries, put them first under the heading "People our church has worked with" (write the heading in {{lang_name}}). Under it add one line saying these are the church's own contacts and not endorsements by Nury. Then list the national hotlines and directories.
+If CHURCH CONTACTS says (none), leave out that heading and do not mention church contacts at all.
+Copy every name, phone number, and link exactly. Do not change the name, phone number, or link of any entry. You may translate its short description into {{lang_name}}. Do not merge, shorten, or add entries. Do not call any contact best, top, or recommended. Do not say one contact is better than another. Do not name any person who is not in the lists.
+Add one line on what to have ready before calling (names, dates, paperwork).
 
-LIST:
+CHURCH CONTACTS (the pastor's own; may be empty):
+{{church_list}}
+
+NATIONAL LIST:
 {{vetted_list}}

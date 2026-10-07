@@ -96,6 +96,26 @@
             "empty": "(No church-vetted local entries yet. Say the pastor can add them.)"
           }
         ]
+      },
+      {
+        "name": "church_network",
+        "dynamic": "network",
+        "var": "church_list",
+        "kinds": [
+          "medicare_medicaid_help",
+          "social_services",
+          "interpreter",
+          "legal_aid",
+          "other"
+        ],
+        "limit": 5,
+        "groups": [
+          {
+            "list": "entries",
+            "line": "- {name}: {services} {phone} {url}",
+            "empty": "(none)"
+          }
+        ]
       }
     ],
     "checks": [
@@ -107,6 +127,22 @@
           "local"
         ],
         "field": "url"
+      },
+      {
+        "name": "network_entries_present",
+        "source": "church_network"
+      },
+      {
+        "name": "listed_contacts_known",
+        "church": [
+          "church_network"
+        ],
+        "lists": [
+          "resources"
+        ]
+      },
+      {
+        "name": "no_endorsement_words"
       }
     ],
     "skills": [

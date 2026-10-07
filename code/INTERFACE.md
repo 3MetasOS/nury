@@ -131,6 +131,30 @@ cf.save_case(state, audit, "detention", root, privacy=client)                   
 - **Events.** `client.events` has kinds and tokens only, never real values.
 - **Honest limit.** Direct identifiers are removed. Context ("14 years", "his workplace", a rare job) can still hint at who a person is. A name the pastor did not protect is not removed.
 
+## Church network (`nury/network.py`)
+
+The pastor's own vetted contacts, local only (`network/network.json`, gitignored like `cases/`). Nury lists them first, under "People our church has worked with", labeled as the church's own contacts and not endorsements. It never invents, alters, ranks or endorses a contact.
+
+```python
+from nury import network as net
+n = net.load_network(root="network", demo=None)       # demo=None reads NURY_DEMO_NETWORK; "1" loads the FICTIONAL demo file (read only)
+n.list(); n.get(id); n.add(entry); n.update(id, fields); n.delete(id); n.mark_used(id, "2026-10-07")
+n.export_json(dest); n.import_json(src, merge=True)    # one bad entry refuses the whole import; fictional files are refused
+n.home; n.set_home("Aurora", "CO")                     # the church's own place: used when a case does not say which state
+net.validate(entry)                                    # -> cleaned entry or NetworkError (name, kind, phone or link required)
+net.match(entries, state, city, language, kinds, limit=5)    # deterministic, no model
+net.parse_location("Aurora, Colorado") -> ("Aurora", "CO")
+net.KINDS  # pro_bono_immigration_attorney, legal_aid, medicare_medicaid_help, social_services, interpreter, other
+```
+
+Entry fields: `id, name, kind, services, languages (es, en), city, state, phone, url, note, last_used (YYYY-MM-DD), tags, nationwide`. The pastor's `note` stays on the pastor's screen: it is never put in a prompt, a draft, or the map.
+
+- **Demo network.** `code/network_demo/DEMO_NETWORK_FAKE.json` (top-level `fictional: true`, names end with "(fictional)", phones 555-01xx, `.example.org` links). Loaded only when `NURY_DEMO_NETWORK=1`; demos, evals and video set it; a real run never does. The UI must show a banner "fictional demo contacts" when `n.fictional` is true.
+- **Matching.** State and language must fit when known; city match ranks first, then most recently used, then name. With no state in the case (triage LOCATION), the church's `home` state is used; with neither, only `nationwide` entries are listed. `kinds` come from the stage in `stages.json`.
+- **In the stages.** `attorney` (detention) and `resources` (hospital) carry a dynamic source `{"dynamic": "network", "kinds": [...]}` (and a hook `{"dynamic": "official_list"}` that reads an approved `sources/official_list.json`, empty until one exists). Checks: `network_entries_present` (every matched contact must be listed with its phone or link), `listed_contacts_known` (a church contact keeps its exact name with its own phone or link; a titled person such as "Abogado Juan Pérez" who is in neither list is rejected), `no_endorsement_words` (category `endorsement`: best, recommended, el mejor, altamente recomendada...). The phones and links of matched contacts join the run's allowlist.
+- **Run record.** `state.sources_used[stage_id]["church_network"]["entries"]` and the audit event `dynamic_source {stage, entries: {name: [ids]}}`. The case file's "Who to call" lane shows them first, marked "Church:".
+- **Privacy.** `client.allow_network(entries)` (PrivacyClient) keeps those phones and links from being tokenized in the context sent to the model; the family's own numbers are still tokenized. Call it once per session with `n.list()`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

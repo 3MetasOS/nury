@@ -1,0 +1,90 @@
+{
+  "fictional": true,
+  "note": "FICTIONAL demo contacts for demos, evals and video. Not real organizations. Loaded only when NURY_DEMO_NETWORK=1.",
+  "home": {
+    "city": "Aurora",
+    "state": "CO"
+  },
+  "entries": [
+    {
+      "id": "demo-aurora-legal",
+      "name": "Demo Legal Aid (fictional)",
+      "kind": "pro_bono_immigration_attorney",
+      "services": "Free immigration consultations for detained family members (fictional)",
+      "languages": [
+        "es",
+        "en"
+      ],
+      "city": "Aurora",
+      "state": "CO",
+      "phone": "(303) 555-0101",
+      "url": "https://demo-legal-aid.example.org/",
+      "note": "Fictional entry. The pastor's note would go here.",
+      "last_used": "2026-09-14",
+      "tags": [
+        "demo",
+        "detention"
+      ]
+    },
+    {
+      "id": "demo-mesa-clinic",
+      "name": "Demo Border Law Clinic (fictional)",
+      "kind": "pro_bono_immigration_attorney",
+      "services": "Pro bono help after an arrest or detention (fictional)",
+      "languages": [
+        "es"
+      ],
+      "city": "Mesa",
+      "state": "AZ",
+      "phone": "(480) 555-0102",
+      "url": "https://demo-law-clinic.example.org/",
+      "note": "Fictional entry.",
+      "last_used": "2026-08-30",
+      "tags": [
+        "demo",
+        "detention"
+      ]
+    },
+    {
+      "id": "demo-aurora-medicare",
+      "name": "Demo Medicare Helpers (fictional)",
+      "kind": "medicare_medicaid_help",
+      "services": "Help with Medicare and Medicaid questions (fictional)",
+      "languages": [
+        "es",
+        "en"
+      ],
+      "city": "Aurora",
+      "state": "CO",
+      "phone": "(303) 555-0103",
+      "url": "https://demo-medicare-help.example.org/",
+      "note": "Fictional entry.",
+      "last_used": "2026-09-20",
+      "tags": [
+        "demo",
+        "hospital"
+      ]
+    },
+    {
+      "id": "demo-national-interpreters",
+      "name": "Demo Interpreter Line (fictional)",
+      "kind": "interpreter",
+      "services": "Phone interpreters for hospital visits (fictional)",
+      "languages": [
+        "es",
+        "en"
+      ],
+      "city": "",
+      "state": "",
+      "nationwide": true,
+      "phone": "(800) 555-0104",
+      "url": "",
+      "note": "Fictional entry.",
+      "last_used": "2026-09-01",
+      "tags": [
+        "demo",
+        "hospital"
+      ]
+    }
+  ]
+}

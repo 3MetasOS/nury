@@ -31,6 +31,7 @@ class CaseState:
     language: str = "es"                          # family language
     approved: dict = field(default_factory=dict)  # stage_id -> approved OR edited text (with disclaimer)
     results: dict = field(default_factory=dict)   # stage_id -> StageResult (full, eval only)
+    sources_used: dict = field(default_factory=dict)  # stage_id -> {dynamic source name: data} (church network)
     outcome: Optional[dict] = None                # set by run_pipeline: see compute_outcome
 
     def set_manual(self, stage_id, text):
@@ -78,6 +79,24 @@ def get_playbook(playbook=None):
     if pid not in _PB_CACHE:
         _PB_CACHE[pid] = pbm.load_playbook(pid)
     return _PB_CACHE[pid]
+
+
+def dynamic_source(spec, pb, state, fields, lang):
+    """Sources filled at run time. 'network': the pastor's own contacts that fit this case.
+    'official_list': an approved official list in the playbook's sources/ (empty until one is approved)."""
+    from . import network
+    kind = spec["dynamic"]
+    if kind == "network":
+        return network.source_for(spec, state, fields, lang)
+    if kind == "official_list":
+        f = pb.dir / "sources" / spec.get("file", "official_list.json")
+        if not f.is_file():
+            return {"entries": []}
+        city, st = network.parse_location(fields.get("location", ""))
+        items = [x for x in json.loads(f.read_text(encoding="utf-8")).get("entries", []) if x.get("approved", True)]
+        got = [x for x in items if network.state_abbr(x.get("state", "")) == st or x.get("nationwide")]
+        return {"entries": got[: spec.get("limit", 5)]}
+    raise ValueError(f"unknown dynamic source {kind!r}")
 
 
 def skills_enabled(flag=None):
@@ -147,12 +166,20 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         state.results[stage_id] = rec
         return rec
     client = client or GlooClient()
-    data = {n: pb.sources[n] for n in stage.sources}
+    data = {n: pb.sources.get(n, {}) for n in stage.sources}
+    dynamic = {}
+    for spec in stage.source_specs:
+        if spec.get("dynamic"):
+            dynamic[spec["name"]] = data[spec["name"]] = dynamic_source(spec, pb, state, fields, lang)
+    if dynamic:
+        state.sources_used[stage_id] = dynamic
+        audit.log("dynamic_source", stage=stage_id,
+                  entries={k: [x["id"] for x in v.get("entries", [])] for k, v in dynamic.items()})
     fault = _fault_for(stage_id, fault_injection)
     m = _new_metrics()
     ctx = {d: state.approved[d] for d in stage.deps if d in state.approved}
     active = stage.skills if skills_enabled(skills) else []     # skills off: no text, no checks, no events
-    base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields, active)
+    base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields, active, dynamic)
     user_input = pbm.build_input(stage, state)
     sources_blob = json.dumps(data, ensure_ascii=False)
     vetted_blob = sources_blob + "\n" + "\n".join(ctx.values())
@@ -260,6 +287,8 @@ def _sources_list(pb, stage_id):
     """Vetted sources behind a stage: names and links the pastor can use by hand."""
     out = []
     for spec in pb.registry[stage_id].source_specs:
+        if spec.get("dynamic"):
+            continue
         data = pb.sources[spec["name"]]
         for grp in spec["groups"]:
             for ent in data.get(grp["list"], []):

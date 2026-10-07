@@ -169,6 +169,8 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
     sources = {}
     for s in stages:
         for spec in s.source_specs:
+            if spec.get("dynamic"):               # filled at run time (church network, official list)
+                continue
             sources[spec["name"]] = json.loads((d / "sources" / spec["file"]).read_text(encoding="utf-8"))
     approvals = _approvals(d)
     pending = _apply_approvals(sources, approvals, pj["id"]) if approvals is not None else []
@@ -203,11 +205,11 @@ def _fmt(line, entry, lang):
     return line.replace("{lang}", lang).format_map(vals)
 
 
-def render_sources(stage, pb, lang):
-    """{var: text} for each source spec, built only from the vetted JSON."""
+def render_sources(stage, pb, lang, dynamic=None):
+    """{var: text} for each source spec, built only from the vetted JSON (and the run's dynamic sources)."""
     out = {}
     for spec in stage.source_specs:
-        data, lines = pb.sources[spec["name"]], []
+        data, lines = (dynamic or {}).get(spec["name"]) or pb.sources.get(spec["name"], {}), []
         for grp in spec["groups"]:
             items = data.get(grp["list"], [])
             lines += [_fmt(grp["line"], e, lang) for e in items]
@@ -217,14 +219,14 @@ def render_sources(stage, pb, lang):
     return out
 
 
-def render_prompt(stage, pb, lang, state, fields, skills=None):
+def render_prompt(stage, pb, lang, state, fields, skills=None, dynamic=None):
     """Instructions text for a stage: the playbook prompt with its variables filled in."""
     prompt = stage.prompt
     for v in stage.variants:
         if when_matches(v["when"], fields):
             prompt = v["prompt"]
             break
-    vars_ = {"lang_name": LANG_NAME[lang], **render_sources(stage, pb, lang)}
+    vars_ = {"lang_name": LANG_NAME[lang], **render_sources(stage, pb, lang, dynamic)}
     for k, v in vars_.items():
         prompt = prompt.replace("{{" + k + "}}", v)
     prompt += skills_lib.render(stage.skills if skills is None else skills, lang, pb.boundary)

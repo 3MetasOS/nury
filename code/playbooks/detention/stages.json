@@ -92,11 +92,23 @@
           {
             "list": "national",
             "line": "- NATIONAL: {name}: {description} — {url}"
-          },
+          }
+        ]
+      },
+      {
+        "name": "church_network",
+        "dynamic": "network",
+        "var": "church_list",
+        "kinds": [
+          "pro_bono_immigration_attorney",
+          "legal_aid"
+        ],
+        "limit": 5,
+        "groups": [
           {
-            "list": "local",
-            "line": "- LOCAL (church-vetted): {name} ({area}): {phone} {url}",
-            "empty": "(No church-vetted local entries yet. Say the pastor can add them.)"
+            "list": "entries",
+            "line": "- {name}: {services} {phone} {url}",
+            "empty": "(none)"
           }
         ]
       }
@@ -106,10 +118,25 @@
         "name": "vetted_links_present",
         "source": "attorneys",
         "lists": [
-          "national",
-          "local"
+          "national"
         ],
         "field": "url"
+      },
+      {
+        "name": "network_entries_present",
+        "source": "church_network"
+      },
+      {
+        "name": "listed_contacts_known",
+        "church": [
+          "church_network"
+        ],
+        "lists": [
+          "attorneys"
+        ]
+      },
+      {
+        "name": "no_endorsement_words"
       }
     ],
     "skills": [
