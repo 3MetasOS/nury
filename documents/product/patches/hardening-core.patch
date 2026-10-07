@@ -1,0 +1,216 @@
+diff --git a/code/nury/gloo_client.py b/code/nury/gloo_client.py
+index 1e361f9..842c510 100644
+--- a/code/nury/gloo_client.py
++++ b/code/nury/gloo_client.py
+@@ -68,6 +68,10 @@ def load_env():
+             return
+ 
+ 
++class CallBudgetExceeded(Exception):
++    """One run tried to make more Gloo HTTP calls than its budget allows."""
++
++
+ class GuardrailBlock(Exception):
+     """Gloo guardrails hard-blocked the request (HTTP 403)."""
+ 
+@@ -84,6 +88,8 @@ class GlooClient:
+             raise RuntimeError("Set GLOO_API_KEY in the environment.")
+         self.base_url = (base_url or BASE_URL).rstrip("/")
+         self.model = model or os.environ.get("GLOO_MODEL", DEFAULT_MODEL)
++        self.max_calls = None      # set by the app: the most HTTP calls this client may make (None = no limit)
++        self.calls = 0
+ 
+     def respond(self, user_input, instructions=None, model=None, **kwargs):
+         """Return (json, meta). meta has latency_s and token counts."""
+@@ -91,9 +97,15 @@ class GlooClient:
+         if instructions:
+             payload["instructions"] = instructions
+         payload.update(kwargs)
++        cap = os.environ.get("NURY_MAX_OUTPUT_TOKENS", "").strip()
++        if cap.isdigit() and "max_output_tokens" not in payload:   # off unless set: confirm the endpoint accepts it with one live call first
++            payload["max_output_tokens"] = int(cap)
+         t0 = time.monotonic()
+         retries = 0
+         while True:
++            if self.max_calls is not None and self.calls >= self.max_calls:
++                raise CallBudgetExceeded(f"more than {self.max_calls} calls in one run")
++            self.calls += 1
+             try:
+                 resp = requests.post(
+                     f"{self.base_url}/responses",
+diff --git a/code/nury/guardrails.py b/code/nury/guardrails.py
+index e16cfee..de91d85 100644
+--- a/code/nury/guardrails.py
++++ b/code/nury/guardrails.py
+@@ -134,7 +134,39 @@ def phone_reasons(text, *allowed_blobs):
+ 
+ 
+ # ---- email allowlist: an email must come from the vetted sources, the approved text, or the intake ----
+-_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
++class LinearEmail:
++    """An email pattern that is scanned in linear time and finds exactly what the plain pattern
++    `[\\w.+\\-]+@<domain>` finds. The plain pattern is quadratic on a long unbroken token (it retries from every letter).
++    A start is tried only where a run of local-part characters begins, and at the end of the previous match, which are
++    the only places the plain pattern can succeed. tests/test_hardening.py proves the equality on 20,000 strings."""
++    LOCAL = r"[\w.+\-]+@"
++
++    def __init__(self, domain):
++        self._adj = re.compile(self.LOCAL + domain)                      # used with .match(text, pos) only
++        self._run = re.compile(r"(?<![\w.+\-])" + self.LOCAL + domain)    # a start at the beginning of a run
++        self.pattern = self._adj.pattern
++
++    def finditer(self, text):
++        pos, n = 0, len(text)
++        while pos <= n:
++            m = self._adj.match(text, pos) or self._run.search(text, pos)
++            if not m:
++                return
++            yield m
++            pos = m.end()
++
++    def findall(self, text):
++        return [m.group(1) if self._adj.groups else m.group(0) for m in self.finditer(text)]
++
++    def sub(self, repl, text):
++        out, last = [], 0
++        for m in self.finditer(text):
++            out += [text[last:m.start()], repl(m) if callable(repl) else repl]
++            last = m.end()
++        return "".join(out) + text[last:]
++
++
++_EMAIL_IN_TEXT = LinearEmail(r"([\w\-]+(?:\.[\w\-]+)+)")
+ 
+ 
+ def email_reasons(text, vetted_blob, *known_blobs):
+diff --git a/code/nury/privacy.py b/code/nury/privacy.py
+index 1b3f1d7..1ba9321 100644
+--- a/code/nury/privacy.py
++++ b/code/nury/privacy.py
+@@ -17,6 +17,8 @@ import os
+ import re
+ import unicodedata
+ 
++from .guardrails import LinearEmail
++
+ _TYPES = ("PERSON", "PLACE", "PHONE", "EMAIL", "ADDRESS", "DOB", "DATE", "ANUMBER", "CASE", "ID")
+ _T = "|".join(_TYPES)
+ _BRACKETED = re.compile(r"\[\s*(" + _T + r")[\s_\-]*(\d+)\s*\]", re.I)
+@@ -45,7 +47,7 @@ _ADDR_EN = re.compile(r"(?<!\w)\d{1,6}\s+(?:(?-i:[NSEW])\.?\s+|(?:North|South|Ea
+ _ADDR_ES = re.compile(r"\b(?:Calle|Avenida|Av\.|Camino|Carretera)\s+(?:[\wÁÉÍÓÚÑáéíóúñ'’.\-]+\s+){0,3}?"
+                       r"(?:#|No\.?|núm\.?|número)?\s*\d{1,6}\b(?:,?\s*(?:Apt|Apartamento|Depto|Unit|#)\.?\s*[\w\-]+)?", re.I)
+ _PO = re.compile(r"\bP\.?\s?O\.?\s+Box\s+\d+\b", re.I)
+-_EMAIL = re.compile(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+")
++_EMAIL = LinearEmail(r"[\w\-]+(?:\.[\w\-]+)+")      # same matches as before, linear time on a long unbroken token
+ _PHONE10 = re.compile(r"(?<![\w.])(?:\+?\d{1,3}[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}(?![\w])")
+ _PHONE7 = re.compile(r"(?<![\d.\-])\d{3}[-.\s]\d{4}(?![\d\-])")
+ _ANUM = re.compile(r"(?<![\w-])A[- ]?\d{8,9}(?!\d)")
+diff --git a/code/tests/test_hardening_core.py b/code/tests/test_hardening_core.py
+new file mode 100644
+index 0000000..abbcc85
+--- /dev/null
++++ b/code/tests/test_hardening_core.py
+@@ -0,0 +1,103 @@
++"""Hardening tests, core part (CODE_REVIEW.md): the exact linear email scanner, the per-run call budget and the optional
++output-token cap in the Gloo client. No network: requests.post is replaced."""
++import os
++import random
++import re
++import sys
++import time
++import unittest
++from pathlib import Path
++
++sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import nonet  # noqa: E402,F401
++from nury import gloo_client, guardrails, privacy  # noqa: E402
++from test_core import CANNED  # noqa: E402
++
++
++class _Resp:
++    status_code = 200
++    text = "{}"
++    headers = {}
++
++    def raise_for_status(self):
++        pass
++
++    def json(self):
++        return {"output": [], "usage": {"input_tokens": 1, "output_tokens": 1}}
++
++
++class Budget(unittest.TestCase):
++    def setUp(self):
++        self.sent = []
++        self._post = gloo_client.requests.post
++        gloo_client.requests.post = lambda url, json=None, **kw: (self.sent.append(json), _Resp())[1]
++        self.addCleanup(setattr, gloo_client.requests, "post", self._post)
++
++    def test_a_run_cannot_make_more_calls_than_its_budget(self):
++        c = gloo_client.GlooClient(api_key="k")
++        c.max_calls = 2
++        c.respond("a")
++        c.respond("b")
++        with self.assertRaises(gloo_client.CallBudgetExceeded):
++            c.respond("c")
++        self.assertEqual(c.calls, 2)
++
++    def test_max_output_tokens_is_sent_only_when_asked(self):
++        c = gloo_client.GlooClient(api_key="k")
++        c.respond("a")
++        self.assertNotIn("max_output_tokens", self.sent[-1])
++        os.environ["NURY_MAX_OUTPUT_TOKENS"] = "1500"
++        try:
++            c.respond("a")
++        finally:
++            del os.environ["NURY_MAX_OUTPUT_TOKENS"]
++        self.assertEqual(self.sent[-1]["max_output_tokens"], 1500)
++
++
++OLD_EMAIL = re.compile(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+")
++OLD_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
++
++
++class EmailRegex(unittest.TestCase):
++    def corpus(self):
++        out = ["", "a@b.co", "maria.lopez+iglesia@example.org llamó", "@a@b.com", "x.y@z.w.v", "..@a.b", "a@b", "a@@b.com", "me@x.com,you@y.org",
++               "ñandú@correo.mx y José@Correo.com", "foo-bar_baz@sub-domain.example.co.uk.", "no email here", "a" * 200 + "@x.com", "x@" + "y" * 50]
++        for pb in ("detention", "hospital"):
++            root = Path(__file__).resolve().parents[1] / "playbooks" / pb
++            for f in list(root.rglob("*.json")) + list(root.rglob("*.txt")):
++                out.append(f.read_text(encoding="utf-8"))
++        for texts in list(CANNED.values()):
++            out.append(texts if isinstance(texts, str) else str(texts))
++        rnd = random.Random(7)
++        alpha = ["a", "B", "1", "_", "-", ".", "+", "@", " ", "\n", "é", "ñ", "x.y", "@z.co"]
++        out += ["".join(rnd.choice(alpha) for _ in range(rnd.randint(0, 40))) for _ in range(20000)]
++        return out
++
++    def test_the_linear_regex_matches_exactly_what_the_old_one_matched(self):
++        n = 0
++        for t in self.corpus():
++            self.assertEqual([m.group(0) for m in privacy._EMAIL.finditer(t)], [m.group(0) for m in OLD_EMAIL.finditer(t)], t[:60])
++            self.assertEqual([(m.group(0), m.group(1)) for m in guardrails._EMAIL_IN_TEXT.finditer(t)],
++                             [(m.group(0), m.group(1)) for m in OLD_EMAIL_IN_TEXT.finditer(t)], t[:60])
++            n += 1
++        self.assertGreater(n, 20000)
++
++    def test_a_long_unbroken_token_is_scanned_in_linear_time(self):
++        for rx in (privacy._EMAIL, guardrails._EMAIL_IN_TEXT):
++            for t in ("x" * 200_000, "1" * 200_000, "a." * 100_000, "a@" * 50_000):
++                t0 = time.time()
++                rx.findall(t)
++                self.assertLess(time.time() - t0, 1.0, (rx.pattern[:20], t[:6]))
++
++    def test_the_whole_pseudonymizer_and_the_email_check_stay_fast_on_a_long_token(self):
++        t0 = time.time()
++        privacy.propose_terms("x" * 20_000)
++        guardrails.email_reasons("x" * 20_000, "", "")
++        self.assertLess(time.time() - t0, 2.0)
++
++
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -26,7 +26,7 @@ Per review note 3: Gloo latency per stage has a median of **6.0 to 11.8 seconds*
 
 Two consequences:
 - A pastor waits 30 to 50 seconds per package, plus however long they take to read and approve. The product is built around that wait, not around speed.
-- Jev is cheap in time. Its price is not known to us (it bills on its own key), so we cannot say anything about its cost share.
+- Jev is cheap in time and in money (section 3.6).
 
 ## 3. What breaks the economics
 
@@ -56,8 +56,8 @@ Today Nury uses one Gloo key. Credit ran out twice during the build (HTTP 402). 
 - **Built:** a cost log for every live run, a price table kept as data, and a ledger that records tokens, cost and latency per stage (`ledger.summarize()`, an ops endpoint that the app must mount).
 - **Not built:** a per-key or per-church budget cap, quotas, alerts, or a switch that stops spending at a ceiling.
 
-### 3.6 Jev pricing is unknown
-Jev bills on its own key and we do not know its price. Every package makes up to one Jev call per attempt per stage. If Jev charges per call, its cost scales with attempts. We cannot put a number on it.
+### 3.6 Jev is a rounding error
+Jev's price is public: $0.042 per million input tokens, output tokens free, with rate limits of 100,000 tokens and 80 requests a second (https://docs.typesafe.ai/models, read 2026-10-07; a second page, flaviocopes.com/jev-pricing, says the same). From the audit files of the final scored runs, one package sends about 8,200 Jev input tokens (detention, mean of 20 runs, 4.6 calls) to about 11,500 (hospital, mean of 8, 5 calls). At $0.042 per million that is about **$0.0003 (detention) to $0.0005 (hospital) per package**, under 1 percent of the Gloo cost. This is an estimate from our own token counts, not a bill. Not checked: a billing page for our account, volume discounts, free-tier terms. Separate from price: **nobody on the team has read TypeSafe's data retention and terms for run-time use.** Jev sees tokens, not names, but the terms are unread.
 
 ### 3.7 Hosting and people are not included
 Every figure above is the Gloo bill only. Not included: hosting, a database and storage, sign-in, encryption at rest, monitoring, backups, support, and the review of sources and drafts by an attorney or a native Spanish speaker. The app has no sign-in and no encryption at rest today, and a hosted product for many churches needs them (see `documents/FEATURES.md`).
@@ -74,12 +74,12 @@ The price file says: "Cache pricing is not used. Recheck before relying on it: p
 | Verse list | Id only; engine inserts the text | Sending only fitting verses |
 | Stage that never passes | Three attempts, then escalate | A cheaper path for a repeat failure |
 | Shared key | Cost log per run; price table; ledger | Budget caps, quotas, rate limits, alerts |
-| Jev price | Fails open if down | A price, and a count of Jev calls per package |
+| Jev cost and terms | Fails open if down; price is public and tiny | A review of TypeSafe's terms and data retention |
 | Hosting, people | Nothing | All of it |
 
 ## 5. What we still do not know
 
 - The cost with real intakes. Every number comes from synthetic scenarios written by us.
 - The cost of a pastor's second pass: an edit and a revision runs the pipeline again (a revision run cost about $0.15 to $0.16 in slot C of the cost log).
-- Jev's price, and the cost of the red-team panel. The panel is a pre-release audit, not part of a package. I have not added its cost to the figures above.
+- TypeSafe's data retention and terms, and the cost of the red-team panel. The panel is a pre-release audit, not part of a package. I have not added its cost to the figures above.
 - Whether 33 to 49 seconds is acceptable to a pastor at 2 AM. We have not asked one.

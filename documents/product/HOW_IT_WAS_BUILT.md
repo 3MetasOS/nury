@@ -106,7 +106,7 @@ No call can reach the family. A test (`NoSendPath` in `code/tests/test_core.py`)
 
 ### Cost and time
 
-A full package took 50 to 56 seconds and cost 8 to 9 cents in four live pipelines, at $3 and $15 per million tokens (`evaluations/results/live_checks_slot_b.md`). That was measured before the Jev gate. The gate adds one Jev call per draft attempt: a median of about 150 ms a call, about 0.8 to 1.1 seconds for a full package. Jev bills on its own key and we have not seen its price, so no Jev dollar cost is quoted.
+On the final build, a full package took about 33 seconds and cost about 6 cents for detention (mean of 20 scored runs), and about 49 seconds and 9 cents for hospital (mean of 8), at $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one Jev call per draft attempt: about 150 to 230 ms a call, about 3 percent of the time. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). From our own audit files, a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens, so Jev costs about $0.0003 to $0.0005 per package: an estimate from our token counts, not a bill.
 
 ## 2. How the engine works
 
@@ -652,7 +652,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Content governance** | Legal and medical sources reviewed by professionals, a native Spanish speaker reading the output, a schedule for updating official lists, and a named owner for each | Sources approved by Juan from official pages. No professional review. No native-speaker review. No update schedule. | NOT BUILT |
 | **Rule and workflow editor** | An editor for rules and crises, with review, a named approver and staged rollout | Edit JSON and Python in the repo (sections 5 and 7) | NOT BUILT |
 | **Compliance and legal review** | A privacy policy, a retention rule, a consent process, and a lawyer's review of where information ends and unauthorized practice of law begins | The consent note exists. Nothing else. | NOT BUILT |
-| **Run-time Jev gate** | A calibration study, the false-reject rate measured over many cases, stability measured, Jev's price known, and TypeSafe's terms and retention read | Live on three scenarios. Smoke-tested on 20 pairs. | BUILT, live (three scenarios); the rest NOT BUILT |
+| **Run-time Jev gate** | A calibration study, the false-reject rate measured over many cases, stability measured, TypeSafe's terms and data retention for run-time use read (Jev's price is public: $0.042 per million input tokens, output free) | Live on three scenarios. Smoke-tested on 20 pairs. | BUILT, live (three scenarios); the rest NOT BUILT |
 | **More crises** | More playbooks, each with approved sources and scenarios | Two live, two cards | PLANNED |
 | **More languages** | Family output beyond Spanish and English, and a UI beyond English | Spanish and English only; English UI | NOT BUILT |
 | **More official lists** | The Department of Justice list for every state | Colorado only | NOT BUILT |
@@ -672,7 +672,7 @@ This is a suggested order, not a plan we have committed to.
 2. **Then make the content trustworthy:** professional review of the legal and medical sources, native-speaker review of the Spanish, an owner and a schedule for each official list.
 3. **Then make change safe:** evaluation in CI with regression gates, a human review queue, and a rule and workflow editor with review and staged rollout.
 4. **Then widen:** more crises, more languages, more states, mobile and offline, teams and handoff, reminders.
-5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability, price, terms), watch cost and time per package, and put Nury in front of real pastors early and carefully, with the consent process and legal review in place first.
+5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability, terms and data retention), watch cost and time per package, and put Nury in front of real pastors early and carefully, with the consent process and legal review in place first.
 
 ## Honest limits, in one place
 

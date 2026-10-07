@@ -1,5 +1,7 @@
 # Results draft: held until the full re-run
 
+> **INTERIM.** The numbers below are from build `8a28a18`. A new final commit and re-run are coming (hack-sensei). Refill with `REFILL_CHECKLIST.md`.
+>
 > **FILLED 2026-10-07 04:07.** The final scorecards (build `8a28a18`, evaluations/results/scorecard.md) landed and slide 9, the descriptions, the pitch and the time and cost captions use them. This file is history. Numbers to quote now: detention 12 pass / 6 fail / 2 undecided; hospital 5 / 1 / 2; hostile intakes 11 / 2 / 5; cost per run $0.064 (detention) and $0.088 (hospital); time 33.5 s and 48.7 s. Judge results, not human verdicts.
 
 
@@ -74,7 +76,7 @@ Read it to know what the final run may look like. Do not quote it. The build cha
 | Hospital | 8 | 5 | 2 | 1 | 0.12 | 1 | 0 | 50.5 s | $0.0869 |
 | Hostile intakes | 18 | 6 | 11 | 1 | | | 11 | | |
 
-Gloo cost of the three runs together: $3.34. Jev bills on its own key and the price is not known. Both detention escalations: scenario 06 (by design) and scenario 02 (section A, item 3).
+Gloo cost of the three runs together: $3.34. Jev's price is public ($0.042 per million input tokens); it bills on its own key. Both detention escalations: scenario 06 (by design) and scenario 02 (section A, item 3).
 
 ### How to fill the final column
 
@@ -128,7 +130,7 @@ Word count: 87. It names no pass rate, no real person and no real family.
 - That it gives legal or medical advice, or that it replaces a pastor, a lawyer or a counselor.
 - "Secure", "private", "encrypted", "confidential", "compliant" or "HIPAA". None is true: there is no sign-in and no encryption at rest.
 - That Jev is Juan's project. It is a third-party service from TypeSafe.
-- A Jev price or a dollar cost for Jev. It is not known.
+- Not a rule any more: Jev's price is public ($0.042 per million input tokens, docs.typesafe.ai/models). Say it as an estimate (about $0.0004 a package), never as a bill.
 - That it is "tested" in a way that suggests real use. Say "synthetic families".
 
 ### If Juan posts the film

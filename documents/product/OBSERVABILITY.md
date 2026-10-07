@@ -55,7 +55,7 @@ GET /api/ops?since=86400
 
 `summarize(since)` returns: runs and packages (complete runs); cost per package and total cost; latency p50 and p95 per stage (model time plus Jev time); how many attempts stages took; the escalation rate (per stage and per run); the share of stages where each rule category fired; Jev decisions per question; and the Scripture provider mix. `since` is seconds back, a timedelta, a datetime or an ISO UTC time. Without `since` it reads everything.
 
-Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE_OUT` (Gloo, per 1M tokens). If they are unset, the cost fields are null and the summary says so. Jev's own price is not known and is not included.
+Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE_OUT` (Gloo, per 1M tokens). If they are unset, the cost fields are null and the summary says so. Jev's own cost is not included (public price: $0.042 per million input tokens, about $0.0003 to $0.0005 per package).
 
 ## How the app uses it
 
@@ -66,7 +66,7 @@ Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE
 
 - **Event hook.** `AuditLog.subscribe(fn)` calls `fn(event)` after each event is recorded. A subscriber that raises is ignored, so it can never break a run. The ledger, a progress bar or a future ops stream can hang off it instead of re-reading the list.
 - **Monotonic time.** Every audit event carries `t_ms`, milliseconds on a monotonic clock since the log was created. Subtract two `t_ms` values for a duration that does not depend on the wall clock.
-- **Price table as data.** `code/nury/pricing.json` holds the model prices (input and output per 1M tokens), with a source and a date. The engine reads it; `NURY_PRICE_IN` and `NURY_PRICE_OUT` still override. A model that is not in the file has no cost (null): nothing is guessed. Each stage's metrics now record the `model` that answered. **Jev has an entry that says "unknown, not quoted": no Jev cost is computed anywhere.**
+- **Price table as data.** `code/nury/pricing.json` holds the model prices (input and output per 1M tokens), with a source and a date. The engine reads it; `NURY_PRICE_IN` and `NURY_PRICE_OUT` still override. A model that is not in the file has no cost (null): nothing is guessed. Each stage's metrics now record the `model` that answered. **Jev has an entry that says "unknown, not quoted": that is out of date (the public price is $0.042 per million input tokens), and no Jev cost is computed anywhere yet.**
 - **Gloo retries.** `meta["http_retries"]` says how many times the same request was repeated after a 429, a 5xx or a dropped connection. It is not a draft attempt. The ledger does not yet record it.
 - **CI.** `.github/workflows/ci.yml` runs the offline product and evaluation tests and a scan for key-like strings in tracked files. **It has not run**: there was no runner to try it on. Its actions are pinned to commit hashes and its runner to `ubuntu-24.04`; the Python packages it installs for the evaluation tests (pytest, PyYAML, markdown) are not pinned.
 
