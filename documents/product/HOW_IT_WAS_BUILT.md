@@ -687,6 +687,8 @@ This is a suggested order, not a plan we have committed to.
 - The red team cannot gate. It flags safe text. It advises.
 - The test-time Jev judges are not independent of the run-time gate.
 - The effect of the skills is not measured.
+- The triage can restate the family's own words and be refused three times by the checks, and then the pastor gets no case summary. We saw it on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran. That is not a rate.
+- Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
 - The tone score did not rise after the promises fix. The tone judge moves by up to 0.75 between identical runs; one sample near its 3.0 line proves little.
 - The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood, and the Spanish has not been read by a native speaker.
 - No real pastor has used Nury. A native Spanish speaker has not scored the Spanish.

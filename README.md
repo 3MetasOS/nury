@@ -105,6 +105,8 @@ If one evaluation test (`test_built_page_is_current_with_its_source`) fails, a d
 - Nothing has been learned. The learning loop is built and off.
 - There is no sign-in and no encryption at rest. One shared pool of cases and one shared church network are visible to anyone who can reach the app. A hosted version needs all of that, plus separation between churches.
 - A native Spanish speaker has not read the Spanish.
+- The triage can restate the family's own words and be refused three times by the checks, and then the pastor gets no case summary. We saw it on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran. That is not a rate.
+- Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
 - Plainer text improved the reading level but scored colder on the tone judge. Pass, fail and undecided counts are judge results, not human verdicts.
 
 ## Privacy
