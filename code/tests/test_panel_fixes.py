@@ -183,6 +183,17 @@ class Triage(unittest.TestCase):
             pb = get_playbook(pid)
             self.assertNotIn("Plain-language rules", pbm.render_prompt(pb.registry["triage"], pb, "en", None, {}))
 
+    def test_the_triage_prompts_name_the_words_not_to_restate_and_give_no_sentence_to_paste(self):
+        hosp = pbm.render_prompt(get_playbook("hospital").registry["triage"], get_playbook("hospital"), "en", None, {})
+        for needle in ("Never write survive, die, recover, whether he will, stop treatment or continue treatment in SITUATION", "say only that the caller asks about it, in a few words",
+                       "MISSING FACTS: exactly 3 numbered facts", "Your first characters must be \"SITUATION:\""):
+            self.assertIn(needle, hosp, needle)
+        self.assertNotIn("The caller has questions about the outlook", hosp)           # a whole sentence gets pasted into cases that never asked
+        det = pbm.render_prompt(get_playbook("detention").registry["triage"], get_playbook("detention"), "en", None, {})
+        for needle in ("The caller asks for a promise about the outcome.", "Stop that sentence after the word outcome", "never write will be released, will be deported",
+                       "MISSING FACTS: exactly 3 numbered facts"):
+            self.assertIn(needle, det, needle)
+
     def test_the_triage_prompts_forbid_advice(self):
         for pid in ("detention", "hospital"):
             pb = get_playbook(pid)
