@@ -510,7 +510,7 @@ code/playbooks/<crisis_id>/
 
 **Hospital** (`code/playbooks/hospital/`). A family member is in the ER or ICU. BUILT, live. Eight scenarios. Same shape: triage, an information brief from five sources Juan approved, hospital resources, a checklist (DO TONIGHT, DO NOT DO, WHAT TO BRING AND ASK, with no DO NOT line that directs a care decision), and a pastoral message. It adds the twelve medical banned patterns. The information brief must end by urging the family to ask the hospital care team.
 
-**Coming soon.** Sudden death in a family, and house fire or displacement. They are folders with `status: soon` and no stages. The engine refuses to run them, and the app shows them as muted cards. Nothing is claimed about them.
+**Coming soon.** Sudden loss, and house fire. (Card titles changed in commit `aabbd63`: title text only, after the scored build `9bc5c6d`. Detention is now titled "Immigration matter".) They are folders with `status: soon` and no stages. The engine refuses to run them, and the app shows them as muted cards. Nothing is claimed about them.
 
 ### The files, in detail
 
