@@ -16,6 +16,9 @@ Specific user: a solo pastor, no staff, no lawyer on the line, taking a panicked
 
 Approval gate after every stage: Approve / Edit / Stop. Stop means "I'll handle this manually." Later stages use the edited text.
 
+## Architecture
+Nury is a crisis-management engine that runs playbooks. A crisis is data: a folder under `code/playbooks/`. Detention is playbook #1. See `documents/ARCHITECTURE.md` (the contract, layers, and milestones M1–M10).
+
 ## Rules
 - Guardrail self-correction: an unsafe draft is rejected and regenerated, max 3 tries, then escalate. The pastor never sees the unsafe draft.
 - Legal information only. Never advice, predictions, or strategy.
