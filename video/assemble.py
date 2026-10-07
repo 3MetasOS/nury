@@ -23,16 +23,16 @@ esc = lambda t: t.replace("\\","\\\\").replace(":","\\:").replace("'","\u2019").
 tmp = Path(tempfile.mkdtemp()); segs = []; audio = []; t0 = 0.0
 def run(a): subprocess.run(["ffmpeg","-y","-loglevel","error",*a], check=True)
 for i,(sid,kind,dur,fr,to,label,vo) in enumerate(S):
-    out = tmp / f"{i:02d}.mp4"; bg = f"color=c=0x0d1015:s=1920x1080:r=30:d={dur}"
-    caps = "".join(f",drawtext=fontfile={HEL}:text='{esc(VO[k])}':fontsize=34:fontcolor=0xece7dc:box=1:boxcolor=0x0d1015@0.78:boxborderw=12:x=(w-text_w)/2:y=h-90:enable='between(t,{at},{at+VOLEN[k]+0.5})'" for k,at in vo)
+    out = tmp / f"{i:02d}.mp4"; bg = f"color=c=0xf6f1e7:s=1920x1080:r=30:d={dur}"
+    caps = "".join(f",drawtext=fontfile={HEL}:text='{esc(VO[k])}':fontsize=34:fontcolor=0x0d1015:box=1:boxcolor=0xf6f1e7@0.94:boxborderw=12:x=(w-text_w)/2:y=h-90:enable='between(t,{at},{at+VOLEN[k]+0.5})'" for k,at in vo)
     fade = f",fade=t=in:d=0.33,fade=t=out:st={dur-0.33}:d=0.33"
     if kind == 'clip':
         a = M[fr[0]]+fr[1]; b = M[to[0]]+to[1]; rate = min(4,max(0.85,(b-a)/dur))
-        lab = f",drawtext=fontfile={GEO}:text='{esc(label)}':fontsize=64:fontcolor=0xece7dc:x=1110:y=(h-text_h)/2" if label else ""
+        lab = f",drawtext=fontfile={GEO}:text='{esc(label)}':fontsize=64:fontcolor=0x0d1015:x=1110:y=(h-text_h)/2" if label else ""
         fc = f"[1:v]setpts=PTS/{rate},scale=-2:900[p];[0:v][p]overlay=470:40:eof_action=repeat{lab}{caps}{fade}[v]"
         run(["-f","lavfi","-i",bg,"-ss",f"{a}","-t",f"{b-a}","-i",str(P/"run.mp4"),"-filter_complex",fc,"-map","[v]","-t",f"{dur}","-pix_fmt","yuv420p",str(out)])
     elif kind == 'lock':
-        fc = f"[0:v]drawtext=fontfile={GEO}:text='2\\:07':fontsize=140:fontcolor=0xece7dc:x=(w-text_w)/2:y=330,drawtext=fontfile={HEL}:text='AM':fontsize=30:fontcolor=0xa79f8d:x=(w-text_w)/2:y=490,drawtext=fontfile={GEO}:text='Maria':fontsize=52:fontcolor=0xece7dc:x=(w-text_w)/2:y=600,drawtext=fontfile={HEL}:text='calling':fontsize=28:fontcolor=0xe8a33d:x=(w-text_w)/2:y=670{caps}{fade}[v]"
+        fc = f"[0:v]drawbox=x=745:y=100:w=430:h=880:color=0x080a0e:t=fill,drawtext=fontfile={GEO}:text='2\\:07':fontsize=140:fontcolor=0xece7dc:x=(w-text_w)/2:y=330,drawtext=fontfile={HEL}:text='AM':fontsize=30:fontcolor=0xa79f8d:x=(w-text_w)/2:y=490,drawtext=fontfile={GEO}:text='Maria':fontsize=52:fontcolor=0xece7dc:x=(w-text_w)/2:y=600,drawtext=fontfile={HEL}:text='calling':fontsize=28:fontcolor=0xe8a33d:x=(w-text_w)/2:y=670{caps}{fade}[v]"
         run(["-f","lavfi","-i",bg,"-filter_complex",fc,"-map","[v]","-t",f"{dur}","-pix_fmt","yuv420p",str(out)])
     else:
         fc = f"[0:v]null{caps}{fade}[v]"

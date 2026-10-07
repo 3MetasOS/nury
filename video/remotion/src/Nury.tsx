@@ -84,7 +84,7 @@ const Fade: React.FC<{dur: number; children: React.ReactNode}> = ({dur, children
 
 const Backdrop: React.FC = () => (
   <AbsoluteFill>
-    <AbsoluteFill style={{background: `radial-gradient(1100px 800px at 35% 45%, #fbf8f1, rgba(246,241,231,0) 70%), linear-gradient(180deg, #f6f1e7, #efe8d8)`}} />
+    <AbsoluteFill style={{background: 'linear-gradient(180deg, #f6f1e7, #eee7d7)'}} />
     {/* fine static grain: breaks up banding in flat light gradients after H.264 */}
     <svg width="100%" height="100%" style={{position: 'absolute', inset: 0, opacity: 0.07, mixBlendMode: 'multiply'}}>
       <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" /><feColorMatrix values="0 0 0 0 0.3  0 0 0 0 0.25  0 0 0 0 0.15  0 0 0 0.9 0" /></filter>
