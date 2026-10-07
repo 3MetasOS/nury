@@ -63,6 +63,7 @@ textarea{min-height:170px;resize:vertical}
 .stn{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);padding:10px;border-radius:12px;border:1px solid var(--line);width:100%}a.stn:hover{border-color:var(--amber-line)}
 .stn .nd{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--amber);color:var(--amber-text);font:600 20px var(--sans)}
 .stn .nm{font:600 14px var(--sans);flex:1}.stn .stt{font:500 12px var(--sans);color:var(--muted)}.stn.endm .nd{background:var(--amber);color:var(--amber-ink)}
+.pdfrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.pdfrow .mono{margin-right:4px}
 .dseq{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.dseq .arr{width:34px;height:10px;transform:none}
 .dchip{padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted);font:600 13px var(--sans);text-decoration:none}.dchip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
 @media (min-width:860px){.seq{flex-direction:row;align-items:flex-start;gap:0}.seq li{flex:1 1 0;min-width:0}.seq .sa{flex:0 0 52px;padding:0;align-items:flex-start;margin-top:22px}.seq .arr{transform:none;width:44px;height:12px;margin:0 4px}.stn{flex-direction:column;text-align:center;border:0;gap:8px;padding:0}.stn .nm{flex:none}}
@@ -481,6 +482,8 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <button class="btn primary" id="b-copyall">Copy all</button>
       <button class="btn" id="b-download">Download</button>
       <button class="btn" id="b-print">Print family copy</button>
+      <button class="btn sm" id="b-pdf-fam" type="button">Family copy (PDF)</button>
+      <button class="btn sm" id="b-pdf-pas" type="button">Pastor copy (PDF)</button>
       <button class="btn" id="b-save">Save to case file</button>
     </div>
     <div id="final-body"></div>
@@ -749,6 +752,13 @@ document.addEventListener("click",e=>{
 function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 document.querySelectorAll("dialog.sheet").forEach(d=>{d.addEventListener("click",e=>{if(e.target===d)d.close()});
   d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())});
+/* PDF copies: the server makes them with Chrome or Chromium; without one the print view opens and says so */
+async function downloadPdf(kind,id,which,btn){const old=btn.textContent;btn.disabled=true;btn.textContent="Making the PDF...";
+  try{const r=await fetch(`/api/${kind}/${encodeURIComponent(id)}/pdf/${which}`);
+    if(r.ok){const b=await r.blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);const cd=r.headers.get("Content-Disposition")||"";a.download=(cd.match(/filename="([^"]+)"/)||[])[1]||"nury-copy.pdf";a.style.display="none";document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000)}
+    else{const j=await r.json().catch(()=>({}));toast((j.error||"The PDF could not be made")+".");if(j.print_url)window.open(j.print_url,"_blank","noopener")}}
+  catch(e){toast("The PDF could not be made.")}
+  btn.disabled=false;btn.textContent=old}
 /* one confirm dialog for every action that changes a case; focus starts on Cancel, Escape cancels */
 function askConfirm({title,body,ok}){return new Promise(res=>{const d=$("confirm");$("confirm-t").textContent=title;$("confirm-b").textContent=body;$("confirm-ok").textContent=ok;let out=false;
   const fin=v=>{out=v;d.close()};$("confirm-ok").onclick=()=>fin(true);$("confirm-no").onclick=()=>fin(false);
@@ -823,6 +833,9 @@ function renderOverview(){const root=$("case-page");root.replaceChildren();const
         h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},word[s.state]))))});
     ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
     seq.append(ol)}
+  { const fb=h("button",{type:"button",class:"btn sm",id:"o-pdf-fam"},ic("i-save"),"Family copy (PDF)"),pb2=h("button",{type:"button",class:"btn sm",id:"o-pdf-pas"},ic("i-save"),"Pastor copy (PDF)");
+    fb.onclick=()=>downloadPdf("case",c.meta.id,"family",fb);pb2.onclick=()=>downloadPdf("case",c.meta.id,"pastor",pb2);
+    seq.append(h("div",{class:"pdfrow"},h("span",{class:"mono"},"Print copies"),fb,pb2)) }
   const vs=c.versions||[c.meta.id];
   if(vs.length>1){const row=h("div",{class:"dseq"});vs.forEach((v,i)=>{if(i)row.append(arrowSvg("done"));row.append(h("a",{href:"#/case/"+encodeURIComponent(v),class:"dchip"+(v===c.meta.id?" on":"")},i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft")))});seq.append(row)}
   const next=h("section",{class:"ovc"},h("h3",null,"Next steps"),h("p",{class:"muted sm",style:"margin:0 0 14px"},"What to do tonight and this week, and what is still open."));
@@ -969,6 +982,7 @@ async function poll(){
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
       c.append(h,d1,p,d,b);return c}));
     const whole=NuryFinal.text(s);
+    $("b-pdf-fam").onclick=()=>downloadPdf("session",sid,"family",$("b-pdf-fam"));$("b-pdf-pas").onclick=()=>downloadPdf("session",sid,"pastor",$("b-pdf-pas"));
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
     $("b-download").onclick=()=>NuryFinal.download("nury-package.txt",whole);
     $("b-print").onclick=()=>window.print();

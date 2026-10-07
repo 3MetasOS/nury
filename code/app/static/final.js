@@ -115,7 +115,7 @@
     const bil = (en, fm) => { const f = document.createDocumentFragment(); f.append(el("span", "g-en", en)); if (fm) f.append(el("span", "g-fam", fm)); return f; };
     const row = (k, v, kf2) => { const d = el("div"); const dt = el("dt", "mono"); dt.append(bil(k, kf2)); d.append(dt); const dd = el("dd"); if (typeof v === "string") dd.textContent = v; else dd.append(v); d.append(dd); kf.append(d); };
     row(E.case, s.playbook ? s.playbook.title : "", fam ? T.case : "");
-    row(E.date, new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), fam ? T.date : "");
+    row(E.date, (s.date ? new Date(s.date) : new Date()).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }), fam ? T.date : "");
     const inp = el("input"); inp.id = "kf-pastor"; inp.type = "text"; inp.placeholder = "Your name"; inp.autocomplete = "off"; inp.setAttribute("aria-label", "Pastor's name, printed on the family copy"); inp.value = key();
     const pn = el("span", "pn-print"); pn.id = "kf-pastor-print";
     inp.oninput = () => { try { localStorage.setItem("nury-pastor", inp.value); } catch (e) {} pn.textContent = inp.value; foot.textContent = T.foot(inp.value.trim()); };
@@ -173,7 +173,7 @@
       const prov = ((s.log || []).filter(e => e.kind === "scripture").pop() || {}).provider;
       const srcTxt = prov === "youversion" ? "YouVersion" : "the church's verified verse bank";
       const vs = el("p", "vsrc"); vs.append(el("span", "g-en", `The system chose this verse from ${srcTxt} and checked it matches the source word for word. The pastor approved it.`));
-      if (fam && lang === "es") vs.append(el("span", "g-fam", `El sistema eligió este versículo de ${prov === "youversion" ? "YouVersion" : "el banco de versículos verificado de la iglesia"} y comprobó que coincide palabra por palabra con la fuente. El pastor lo aprobó.`));
+      if (fam && lang === "es") vs.append(el("span", "g-fam", `El sistema eligió este versículo ${prov === "youversion" ? "de YouVersion" : "del banco de versículos verificado de la iglesia"} y comprobó que coincide palabra por palabra con la fuente. El pastor lo aprobó.`));
       s3.append(vs);
     }
     if (p.why) s3.append(para(p.why, "pwhy"));

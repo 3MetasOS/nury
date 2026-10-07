@@ -1,0 +1,67 @@
+/* Print copies of a case (family copy, pastor copy). US Letter, black on white, Inter for text, Fraunces for headings. */
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:400;src:url(__FONTS__/Fraunces-400-0.woff2) format("woff2")}
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:600;src:url(__FONTS__/Fraunces-600-1.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;src:url(__FONTS__/Inter-400-2.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:500;src:url(__FONTS__/Inter-500-3.woff2) format("woff2")}
+:root{--ink:#111;--mut:#444;--rule:#bdbdbd;--amber:#b8660e}
+*{box-sizing:border-box}
+html{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+body{margin:0;background:#fff;color:var(--ink);font:400 11.5pt/1.5 "Inter",system-ui,sans-serif;font-variant-numeric:tabular-nums}
+main{max-width:7in;margin:0 auto;padding:0.4in 0}
+@page{size:Letter;margin:0.85in 0.75in 0.85in 0.75in}
+.screenonly{margin:12px auto;max-width:7in;padding:10px 12px;border:1px solid var(--rule);border-radius:8px;font-size:13px;background:#fafafa}
+@media print{.screenonly{display:none}main{max-width:none;padding:0}}
+.runhead{display:none}
+h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;color:var(--ink);margin:0}
+.fp-head{margin:0 0 6pt}
+.fp-lock{display:flex;align-items:center;gap:8pt;margin:0 0 14pt;color:var(--amber)}
+.fp-lock .lockup{display:flex;flex-direction:column}.fp-lock .lk{display:flex;align-items:center;gap:8pt;color:var(--amber)}.fp-lock .lk .i{width:22pt;height:22pt}.fp-lock .lk b{font:600 17pt/1 "Fraunces",serif;color:var(--amber)}.fp-lock .tg{font:400 8.5pt "Inter",sans-serif;color:var(--mut)}
+.fp-h1{font-size:23pt;line-height:1.18;margin:0 0 14pt;max-width:none;letter-spacing:-.005em}
+.final[data-fam="1"] .fp-h1{font-size:0}.final[data-fam="1"] .fp-h1::before{content:attr(data-print);font-size:23pt}
+.keyfacts{display:grid;grid-template-columns:repeat(2,1fr);gap:0;margin:0 0 6pt;border-top:1.5px solid var(--ink);border-bottom:1px solid var(--rule)}
+.keyfacts>div{padding:7pt 0;border-bottom:1px solid var(--rule)}.keyfacts>div:nth-last-child(-n+2){border-bottom:0}
+.keyfacts dt{font:500 8pt "Inter",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 0 2pt}
+.keyfacts dd{margin:0;font-size:11.5pt}
+.keyfacts input{display:none}.pn-wrap .pn-print{display:inline-block;min-width:2.2in;border-bottom:1px solid var(--ink);min-height:1.2em}
+.fp-sec{margin:22pt 0 0;break-inside:auto}
+.fp-sec h2{font-size:16pt;line-height:1.2;padding-bottom:5pt;margin:0 0 9pt;border-bottom:2px solid var(--amber);break-after:avoid}
+.fp-sec h2 .h-fam{display:inline}.fp-sec h2 .h-en{display:inline}
+.final[data-fam="1"] .g-en,.final[data-fam="1"] .h-en{display:none}.final[data-fam="1"] .g-fam,.final[data-fam="1"] .h-fam{display:inline}
+.final[data-fam="0"] .g-fam,.final[data-fam="0"] .h-fam{display:none}
+.edmark{display:inline-block;margin:0 0 6pt;font:500 8pt "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--ink);padding:1pt 6pt;border-radius:99px}
+ul.lines{list-style:none;margin:0;padding:0;display:grid;gap:7pt}
+.lines li{break-inside:avoid;padding-left:14pt;position:relative}.lines li::before{content:"";position:absolute;left:0;top:.62em;width:5pt;height:5pt;border-radius:50%;background:var(--amber)}
+.lines .cite{display:block;font:400 8pt ui-monospace,Menlo,monospace;color:var(--mut);margin-top:1pt}
+details.full,details.more{display:block}details>summary{display:none}
+.fullbody p{margin:0 0 7pt}.plain p{margin:0 0 7pt}
+.tgroup .grp,.docs .grp,.donot .grp{font:500 8.5pt "Inter",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 0 6pt}
+ol.todo{list-style:none;counter-reset:t;margin:0;padding:0;display:grid;gap:8pt}
+.todo li{counter-increment:t;position:relative;padding-left:26pt;break-inside:avoid}.todo li::before{content:counter(t);position:absolute;left:0;top:0;width:17pt;height:17pt;border:1.5px solid var(--ink);border-radius:50%;font:600 9pt/15pt "Inter",sans-serif;text-align:center}
+.todo strong{font-weight:600}
+.donot{margin:12pt 0 0;padding:9pt 12pt;border:1.5px solid var(--ink);border-radius:6pt;break-inside:avoid}
+.donot ul{margin:0;padding-left:16pt;display:grid;gap:4pt}
+.docs{margin:14pt 0 0}.docs .dg{font-weight:600;margin:8pt 0 4pt}
+ul.ck{list-style:none;margin:0;padding:0;display:grid;gap:6pt}
+.ck li{display:flex;align-items:flex-start;gap:9pt;break-inside:avoid}
+.ck input{appearance:none;-webkit-appearance:none;flex:none;width:14pt;height:14pt;margin:1.5pt 0 0;border:1.6px solid var(--ink);border-radius:2pt;background:#fff}
+.ck label{flex:1}
+.spirit .lant{display:none}
+.pmsg p{margin:0 0 8pt;font-size:12pt;line-height:1.55}
+blockquote.verse{margin:12pt 0;padding:11pt 14pt;border:1px solid var(--rule);border-radius:4pt;background:#fbfaf7;break-inside:avoid}
+.verse .vt{margin:0 0 5pt;font:400 12.5pt/1.5 "Fraunces",Georgia,serif;font-style:italic}
+.verse .vr{margin:0;font:500 9pt "Inter",sans-serif;letter-spacing:.04em;color:var(--mut)}
+.vsrc{font-size:8.5pt;color:var(--mut);margin:0 0 8pt}.pwhy p{margin:0 0 6pt;font-size:10.5pt;color:var(--mut)}
+ul.cards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9pt}
+.rc{padding:9pt 11pt;border:1px solid var(--rule);border-radius:5pt;break-inside:avoid;display:flex;flex-direction:column;gap:3pt}
+.rtag{font:500 7.5pt "Inter",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--mut)}
+.rc .rn{font:600 12pt/1.25 "Fraunces",serif}.rc .rd{margin:0;font-size:9.5pt;line-height:1.4}
+.ract .call{display:inline-block;margin-top:3pt;font-weight:700;font-size:12.5pt;color:var(--ink);text-decoration:none;letter-spacing:.01em}
+.rsmall{margin:2pt 0 0;font-size:9pt;color:var(--mut);overflow-wrap:anywhere}.rsmall a{color:var(--mut);text-decoration:none}
+.rnote{font-size:9pt;color:var(--mut);margin:8pt 0 0}
+a{color:inherit;text-decoration:none}
+.fp-foot{margin:20pt 0 0;padding-top:8pt;border-top:1px solid var(--rule);font-size:10pt}
+.fp-disc{display:none}
+.fp-rec{font-size:9pt;color:var(--mut)}
+.audit table{width:100%;border-collapse:collapse;font-size:10.5pt}.audit th,.audit td{text-align:left;padding:5pt 6pt;border-bottom:1px solid var(--rule)}.audit th{font:500 8pt "Inter",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--mut)}
+.audit ul{margin:4pt 0 0;padding-left:16pt;font-size:10pt}.audit .meta{font-size:9pt;color:var(--mut);margin:0 0 8pt}
+.hnote{display:none}

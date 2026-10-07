@@ -54,7 +54,7 @@ SHELL_IDS = set(re.findall(r'\bid="([^"]+)"', (STATIC / "shell.js").read_text(en
 
 
 def test_every_page_uses_the_shared_shell_and_defines_no_header_of_its_own():
-    pages = list(STATIC.glob("*.html"))
+    pages = [f for f in STATIC.glob("*.html") if f.name != "case-print.html"]   # the print template is a standalone document, not a page of the app
     assert {p.name for p in pages} >= {"index.html", "network.html"}
     for f in pages:
         s = f.read_text(encoding="utf-8")
