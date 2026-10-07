@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 47 live verified, 29 offline tested, 3 built but not yet checked live, 6 planned, 20 not built.
+Count: 47 live verified, 33 offline tested, 3 built but not yet checked live, 7 planned, 21 not built.
 
 ## 1. Pastor experience
 
@@ -48,6 +48,11 @@ Count: 47 live verified, 29 offline tested, 3 built but not yet checked live, 6 
 | How to add a rule | A written note with two worked examples (a data rule and a code check) whose code is run by a test. | BUILT, offline tested | `documents/product/ADD_A_RULE.md`; `tests/test_add_a_rule_doc.py` | developer |
 | Run ledger | An append-only JSONL record, one line per stage and per run: attempts, rule categories fired, Jev decisions and probabilities, tokens, cost, latency, provider, outcome. Never text, names or case ids; a string that is not a short slug stops the write. | BUILT, offline tested | `nury/ledger.py`; `tests/test_ledger.py` (leak test with canaries) | developer, judge |
 | Ops summary | `ledger.summarize()` and a read-only `GET /api/ops`: cost per package, latency p50 and p95 per stage, attempts, escalation and rejection rates, Jev decisions by question, provider mix. The app has to call the recorder and mount the route (hack-artisans). | BUILT, offline tested | `app/ops_api.py`; `tests/test_ledger.py` | developer |
+| Feedback capture (off by default) | At each gate, records the pastor's action and the sentences that changed, with names already tokenized, plus rule categories, Jev decisions, an optional reason chip and the 'Something changed' answer. A strict counts mode stores no sentence. Whole drafts and Scripture are never stored. | BUILT, offline tested | `nury/feedback.py`; `tests/test_feedback.py` (canary leak test, both modes) | developer, judge |
+| Learning report and candidate review | A script turns feedback into a report and proposed candidates (prompt line, rule, Jev question, scenario), each with evidence counts. A candidate file has a status, and approval needs a named person and a date; no script sets a status past proposed. | BUILT, offline tested | `tools/learning_report.py`, `tools/candidates.py`; `tests/test_learning_loop.py` | developer |
+| Candidate before and after test | Runs a candidate on a copy of the repository against the core, attacker and case-file sets, prints before and after, and a no-regression gate. Never changes the repository. Live use costs about $10 for all sets and one repeat and has not been run. | BUILT, offline tested (mock agent only) | `tools/candidate_test.py` | developer |
+| Learning loop on synthetic data | A worked example: 30 invented sessions, the real capture code, a report, five proposed candidates. No real pastor has used Nury. | BUILT, offline tested | `documents/product/learning_example/`; `LEARNING_LOOP.md` | developer, judge |
+| Feedback in the app | The server calling `record_gate`, the reason chips, `POST /api/feedback`, and the consent sentence on screen when capture is on. | PLANNED | hack-artisans | pastor |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
@@ -145,6 +150,7 @@ Nothing in this section may be claimed in the film, the deck or the description.
 | Other traditions' canons | A verse list per tradition. The bank has a `tradition` field, set to none; the loader refuses any other value. | NOT BUILT | `scripture.load_bank` | pastor |
 | Rule editor | Adding or changing a rule from the app, with review, approval and staged rollout. Today a rule goes in through a code change, the tests and a commit. | NOT BUILT | `documents/product/ADD_A_RULE.md` | developer |
 | Workflow editor | Creating a new crisis from the app. Today a developer runs the scaffold and writes the files. | NOT BUILT | `tools/new_playbook.py` | developer |
+| A loop that learns on its own | Changing prompts or rules without a person. Not built, and not planned: the loop only proposes. | NOT BUILT | `LEARNING_LOOP.md` | developer |
 | Teams and roles | Several pastors or staff sharing a church account with different permissions. Nury today has one shared pool of cases and no sign-in. | NOT BUILT | not designed; everyone who can reach the app sees the same cases and the same church network | pastor |
 | Shared cases | A case owned by a person or a church and opened by the right people. Today there is one shared pool of cases on the server. | NOT BUILT | cases live in one folder on the server; no owner field | pastor |
 | Encryption at rest | Case files, the church network and the token map are saved as plain files on the server's disk. Nury adds no encryption. | NOT BUILT | `nury/casefile.py` writes plain files | pastor, judge |

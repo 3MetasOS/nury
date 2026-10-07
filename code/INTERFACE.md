@@ -217,6 +217,22 @@ ledger.summarize(since=86400)                   # runs, packages, cost per packa
 
 Lines go to `data/ledger/ledger.jsonl` (`NURY_LEDGER_DIR` changes it; gitignored). A line holds numbers, booleans, null and short slugs only; a string that is not a slug stops the write. `app/ops_api.py` (`handle(method, path)`) serves `GET /api/ops?since=<seconds or ISO UTC>`; mount it as its docstring says. See `documents/product/OBSERVABILITY.md`.
 
+## Feedback capture and the learning loop (`nury/feedback.py`, `tools/`)
+
+```python
+from nury import feedback as fb
+fb.mode()                        # "off" (default) | "sentences" (NURY_FEEDBACK=on) | "counts" (NURY_FEEDBACK=counts)
+fb.CONSENT_SENTENCE              # show it only when mode() != "off"
+fb.CHIPS, fb.CHIP_LABELS         # good_as_is, too_long, not_my_voice, wrong_tone, inaccurate
+fb.record_gate(stage, action, draft_text, final_text, privacy_client, audit.events,
+               outcome_label=None, reason_chip=None, playbook=None, language=None, run_id=None)   # at each gate; returns False if off or failed; never raises
+fb.record_chip(stage, chip, playbook=..., language=...)    # POST /api/feedback
+fb.record_outcome(playbook, "went as hoped" | "did not go as hoped" | "unknown")   # the 'Something changed' answer; the note is never stored
+fb.prune(days)                   # retention: delete old daily files
+```
+
+Lines go to `data/feedback/feedback-YYYYMMDD.jsonl` (`NURY_FEEDBACK_DIR`; gitignored). Sentence mode holds only the changed sentences, already tokenized, and drops and counts any that still look protected; counts mode holds no sentence. Tools: `tools/learning_report.py` (report and proposed candidates), `tools/candidates.py` (checks `candidates/<id>.md`), `tools/candidate_test.py` (before and after, no-regression gate), `tools/learning_example.py` (the synthetic example). See `documents/product/LEARNING_LOOP.md`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

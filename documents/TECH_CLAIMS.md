@@ -118,6 +118,14 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 
 | 56 | The rules are listed in one place. Every floor rule, named check and Jev question has a hand-written plain description, the file it lives in and the stages that use it; a test fails if one is missing. Adding a rule today takes a code change, a test and a commit: there is no rule editor. A scaffold creates a new crisis folder that cannot run until a person approves its sources and flips its status. | `code/nury/rules.py`, `tests/test_rules.py`, `tools/new_playbook.py`, `tests/test_new_playbook.py`, `documents/product/ADD_A_RULE.md` | VERIFIED offline test | 41 entries: 13 floor, 20 checks, 8 Jev questions |
 
+## 6f. The learning loop (built 2026-10-07; synthetic data only)
+
+| # | Claim | Evidence | Status | The number |
+|---|---|---|---|---|
+| 57 | Capture of what pastors change is off by default. When on, it stores only the sentences that changed, already tokenized, and drops and counts any that still look like a name or protected value. A strict mode stores no sentence. Whole drafts and quoted Scripture are never stored. | `nury/feedback.py`; `tests/test_feedback.py` (canary leak test in both modes; an unprotected name typed by the pastor is dropped) | VERIFIED offline test. Sentence mode holds tokenized text; context that points to a person without naming them is not caught | 15 tests; 10 canaries; 0 found |
+| 58 | Nothing in the loop changes Nury by itself. A candidate is a file with a status; approval needs a named person and a date; the test script runs on a copy and never edits the repository or the candidate; a test reads the scripts' source for any status set past proposed. | `tools/candidates.py`, `tools/candidate_test.py`, `tests/test_learning_loop.py` | VERIFIED offline test | 19 tests |
+| 59 | The loop has NOT been shown to improve Nury. It was built and tested on 30 synthetic sessions; no real pastor has used Nury; the patterns in the example were written into the scripted behavior. The before-and-after gate has not been run live, its thresholds are our choice, and Jev scores drift by up to 0.12. | `documents/product/LEARNING_LOOP.md` section 8 | NOT MEASURED, so not claimed as an improvement | 0 real sessions |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

@@ -1,0 +1,12 @@
+Candidate c-0001-detention-pastoral-length (prompt_line, status proposed, synthetic evidence: True)
+--- base/code/playbooks/detention/prompts/pastoral.txt
++++ cand/code/playbooks/detention/prompts/pastoral.txt
+@@ -15,3 +15,4 @@
+ WHY speaks to the family directly, with "you" (in Spanish, "ustedes" or "usted" as the message does). Never write "this family" or "the family". It says in plain words why this verse may matter to them tonight. Say what the verse says, not what God knows, sees, feels, wants or intends. Ground it only in what the verse says: God with them, comfort, presence. Speak as the pastor would. No promise of any outcome. No claim about what God will do for this case, or why it happened. Nothing beyond the verse. Do not say you are a pastor.
+ Approved verses (id | reference | themes | text):
+ {{verse_list}}
++Keep it to about 50 words.
+
+The changed copy still loads both playbooks: yes
+
+DRY RUN. Nothing was run. A live test of sets ['core', 'attacker', 'casefile'] would run about 51 scenarios per arm, x2 arms, x1 repeats, at roughly $0.1 per scenario plus Jev: about $10.2 on Gloo.
