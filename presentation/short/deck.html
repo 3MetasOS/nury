@@ -396,7 +396,7 @@ function go(k,mode){const S=vis();i=Math.max(0,Math.min(S.length-1,k));all.forEa
  anim.enter(s,mode||'final');setLab(s);
  if(!document.getElementById('idx').hidden)idxRender()}
 function startIndex(){const h=(location.hash||'').slice(1);if(!h)return 0;const n=parseInt(h);if(!isNaN(n))return n-1;const j=vis().findIndex(s=>s.dataset.name===h);if(j>=0)return j;const jg=all.findIndex(s=>s.dataset.name===h);if(jg>=0&&all[jg].hasAttribute('data-gated')){document.body.classList.add('show-gated');return vis().findIndex(s=>s.dataset.name===h)}return 0}
-function start(){const h=(location.hash||'').slice(1);go(startIndex(),h?'final':'fresh')}
+function start(){go(startIndex(),'fresh')}
 function idxRender(){const S=vis(),l=document.getElementById('idxl');l.replaceChildren();S.forEach((s,k)=>{const li=document.createElement('li');const b=document.createElement('button');b.type='button';b.textContent=(k+1)+' · '+(s.hasAttribute('data-gated')?'G · ':'')+title(s)+(s.dataset.part==='backup'?'  (backup)':'');if(k===i)b.className='cur';b.onclick=()=>{document.getElementById('idx').hidden=true;go(k)};li.append(b);l.append(li)})}
 function idxToggle(){const x=document.getElementById('idx');x.hidden=!x.hidden;if(!x.hidden)idxRender()}
 /* keys: captured at window level, so the browser never scrolls or jumps; a repeat or a flood of key events inside 140 ms is one press */
