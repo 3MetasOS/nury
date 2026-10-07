@@ -106,7 +106,7 @@ No call can reach the family. A test (`NoSendPath` in `code/tests/test_core.py`)
 
 ### Cost and time
 
-On the final build, a full detention package took about 34 seconds and cost about 6 cents (mean of 20 scored runs). A full hospital package took about 50 seconds and cost about 9 cents (mean of 8). These costs use $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one Jev call per draft attempt. Each call takes about 150 to 230 ms, about 3 percent of the time. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). Our own audit files show that a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens. So Jev costs about $0.0003 to $0.0005 per package. That is an estimate from our token counts, not a bill.
+On the final build, a full detention package took about 34 seconds and cost about 6 cents (mean of 20 scored runs). A full hospital package took about 50 seconds and cost about 9 cents (mean of 8). These costs use $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one call per draft attempt, a median of about 155 ms each. On the final scored sets that is about 0.8 seconds per package against 34 to 46 seconds of model time: about 2 percent of the time the calls take. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). Our own audit files show that a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens. So Jev costs about $0.0003 to $0.0005 per package. That is an estimate from our token counts, not a bill.
 
 ### Replay mode, the command line and MCP
 
@@ -310,7 +310,7 @@ What is not built: a rule editor, a workflow editor, and a review and approval f
 
 ## 3. The evaluation system
 
-Two things check Nury, in two places. At **run time** (while a pastor uses it), the named rules and the Jev gate check each draft. At **test time** (before release), five layers judge the system as a whole. The test-time layers exist because a system that grades its own work needs someone else to grade it too. A learning loop sits beside these layers. It turns pastors' edits into proposed changes, and a person must approve each one. It is built and has not been used. See the subsection "How a person can improve Nury" at the end of this section.
+Two things check Nury, in two places. At **run time** (while a pastor uses it), the named rules and the Jev gate check each draft. At **test time** (before release), four layers judge the system as a whole: the Jev typed judges, plain-code judges, the red team and human review. The test-time layers exist because a system that grades its own work needs someone else to grade it too. A learning loop sits beside these layers. It turns pastors' edits into proposed changes, and a person must approve each one. It is built and has not been used. See the subsection "How a person can improve Nury" at the end of this section.
 
 ### Who does what
 
@@ -318,7 +318,7 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 |---|---|---|
 | Writer | Claude Sonnet 4.6 through Gloo AI Studio | Run time |
 | Named rules | Our own code, `code/nury/checks.py` and the floor | Run time and test time |
-| Jev gate | The Jev decision API from TypeSafe, a third-party service we use and did not build | Run time: BUILT, live on three scenarios |
+| Jev gate | The Jev decision API from TypeSafe, a third-party service we use and did not build | Run time: BUILT, live (first tried on three scenarios, then in the scored runs of the final build) |
 | Jev typed judges | The same Jev API, a different job: scoring whole runs | Test time |
 | Red team | Three models from three other makers, through Gloo AI Studio: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick. None is Claude, on purpose, so the reviewer does not share the writer's blind spots. | Test time |
 | Human review | People | Test time |
@@ -327,9 +327,9 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 
 ### Layer by layer
 
-**1. Named rules (plain code).** Each draft is tested against the stage's rules and the safety floor. They are fast and exact, and no one can talk their way past them. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 264 offline product tests that pass (run at the end of 2026-10-07 with no keys set).
+**1. Named rules (plain code), at run time.** Each draft is tested against the stage's rules and the safety floor. They are fast and exact, and no one can talk their way past them. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 336 offline product tests that pass (run on 2026-10-07 with no keys set).
 
-**2. Jev gate, at run time.** BUILT, live on three scenarios (detention 01 and 14, hospital h01; build `50668d6`).
+**2. Jev gate, at run time.** BUILT, live. It was first tried on three scenarios (detention 01 and 14, hospital h01; build `50668d6`) and then ran in the scored runs of the final build.
 
 | Item | Status | Evidence |
 |---|---|---|
@@ -349,7 +349,7 @@ Its limits, plainly. The sample is small: two scenarios, 20 pairs, with unsafe p
 
 **Fails open.** If Jev has no key, times out, errors or answers badly, the draft still goes to the pastor, checked by the named rules and the floor alone. The audit log records "unavailable" with the reason, and later stages of the run skip the gate. The product never blocks on Jev. The gate is on only when a Jev key is present.
 
-**3. Jev typed judges, at test time.** BUILT, live. Fifteen typed questions (nine yes or no, five scores from 1 to 5, one choice) read the whole run, not one draft. We fixed the bars before we looked: accept at 0.80 or more, fail at 0.20 or less, and send the middle band to a person. Evidence: `evaluations/judges/jev_judges.py`, TECH_CLAIMS 36 to 39.
+**3. Jev typed judges, at test time.** BUILT, live. Sixteen typed questions (ten yes or no, five scores from 1 to 5, one choice) read the whole run, not one draft. Any one run is asked only the ones its scenario needs (4 to 8). We fixed the bars before we looked: accept at 0.80 or more, fail at 0.20 or less, and send the middle band to a person. Evidence: `evaluations/judges/jev_judges.py`, TECH_CLAIMS 36 to 39.
 
 - **Separation.** On ten checks, unsafe text scored 0.89 to 0.98 and safe text 0.02 to 0.24 (`evaluations/validation/JUDGE_VALIDATION.md`).
 - **A fix that failed.** Our first fix for a judge confusion told it to ignore rejected drafts. That dropped six unsafe scores to 0.29 to 0.78, below the 0.80 bar. We rejected the fix and wrote the failure down.
@@ -358,7 +358,7 @@ Its limits, plainly. The sample is small: two scenarios, 20 pairs, with unsafe p
 
 **Important change.** The test-time Jev judges are **no longer independent** of the run-time gate. Both ask Jev the same validated questions. A draft that reaches a typed judge has already passed Jev's gate on those questions. So their agreement is no longer fresh evidence. The independent evidence comes from the plain-code judges, the red team, human review and the attacker intakes.
 
-**4. Plain-code judges, at test time.** BUILT, live. Seven judges over whole runs: banned phrases, disclaimers, link and phone allowlist, language, workflow, completeness, stock phrases. No AI. `evaluations/judges/deterministic.py`.
+**4. Plain-code judges, at test time.** BUILT, live. Nine plain-code checks read each run: seven decide (banned phrases, disclaimers, link and phone allowlist, language, workflow, completeness, no leak of protected names) and two only advise (stock AI phrases, promises nobody took). No AI. `evaluations/judges/deterministic.py`.
 
 **5. Red team, before release.** BUILT, live (second validation pass, then a run on 28 scenarios on an earlier core). The three reviewers read what the pastor saw. They quote any sentence that gives advice, predicts an outcome, invents a fact or claims a role. A finding must quote the sentence, and the quote is checked against the real text. One reviewer (llama) quoted text that is not in the draft: once in validation and four times in the run on 28 scenarios.
 
@@ -368,7 +368,7 @@ Its limits, plainly. The sample is small: two scenarios, 20 pairs, with unsafe p
 
 **6. Human review.** BUILT, live. A page for Juan shows only what the pastor saw, grouped by question, with pass and fail buttons. Anything a judge is unsure about goes here. `evaluations/make_review_canvas.py`.
 
-**7. Attacker intakes.** BUILT, not yet run. Eighteen hostile intakes try to push Nury into advice, predictions, false claims and role claims. A non-Claude model wrote them, and a person edited them. `evaluations/scenarios_attacker/`. Nothing is claimed about how Nury does on them.
+**7. Attacker intakes: the hostile test set the layers read.** BUILT, live. Eighteen hostile intakes try to push Nury into advice, predictions, false claims and role claims. A non-Claude model wrote them, and a person edited them. `evaluations/scenarios_attacker/`. On the final build, 13 pass, 1 fails and 4 await review (judge results, not human verdicts).
 
 ### The scenarios and the scorecard
 
@@ -711,7 +711,7 @@ This is a suggested order, not a plan we have committed to.
 
 ## Honest limits, in one place
 
-- The Jev gate ran live on three scenarios only. On one grief case it rejected safe drafts until we gave it the crisis type. We have not measured the false-reject rate over many cases. When Jev is down, the product's safety rests on the safety floor and the named rules.
+- The Jev gate was first tried live on three scenarios, then ran in the scored runs of the final build. On one grief case it rejected safe drafts until we gave it the crisis type. We have not measured the false-reject rate over many cases. When Jev is down, the product's safety rests on the safety floor and the named rules.
 - We smoke-tested the Jev gate on 20 pairs from two scenarios. We did not calibrate it or measure its stability.
 - The red team only advises. It cannot gate, and it flags safe text.
 - The test-time Jev judges are not independent of the run-time gate.
