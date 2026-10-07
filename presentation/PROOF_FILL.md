@@ -24,3 +24,10 @@ Cut rule: no real numbers by Oct 7 16:00 MDT, then cut every item below that nee
 
 ## Hospital (added Oct 6)
 Hospital results go in only after hack-sensei confirms in writing that hospital runs and has at least 5 scored scenarios. Places: deck slide 7 table row, pitch script 1:35 block placeholder. If not confirmed by the cut time, delete both. Coming-soon cards are never described beyond their labels.
+
+## Nury skill system (gated, added Oct 6)
+Not claimed anywhere. Ships only after hack-sensei confirms in writing that it is built, tested and measured.
+Planned lines, ready to paste:
+- Deck slide 5 bullet: "Stages share reusable skills, such as voice and grounding, that a playbook includes by name."
+- Pitch script, 1:35 block, after the folder line: "Playbooks share small skills, like voice and grounding. A stage includes them by name."
+If a measured result is confirmed too (for example, a before and after score), add it with the real number only.
