@@ -20,9 +20,11 @@
   },
   "classifiers": {
     "jev": {
-      "price": null,
-      "status": "unknown, not quoted",
-      "notes": "Jev (the Jev decision API from TypeSafe) bills on its own key. We have not seen its price, so no Jev cost is computed or quoted. Measured size of one pastoral-stage call: about 700 input and 80 output tokens."
+      "price": {"input": 0.042, "output": 0.0},
+      "status": "public price, account billing not checked",
+      "source": "https://docs.typesafe.ai/models, read by hack-sensei on 2026-10-07 (input $0.042 per million tokens, output free; rate limits 100,000 tokens and 80 requests per second)",
+      "as_of": "2026-10-07",
+      "notes": "Jev (the Jev decision API from TypeSafe) bills on its own key. The engine does not add it to a stage's cost (the Gloo cost); jev_cost_usd computes it from the input tokens of the gate calls. Not checked: a billing page for our account, volume discounts."
     }
   }
 }

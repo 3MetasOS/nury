@@ -25,13 +25,17 @@ class Pricing(unittest.TestCase):
         for k in ("NURY_PRICE_IN", "NURY_PRICE_OUT"):
             os.environ.pop(k, None)
 
-    def test_the_file_has_the_run_model_with_a_source_and_a_date_and_jev_is_not_quoted(self):
+    def test_the_file_has_the_run_model_with_a_source_and_a_date_and_jev_has_its_public_price(self):
         t = json.loads((Path(pricing.__file__).parent / "pricing.json").read_text())
         m = t["models"]["gloo-anthropic-claude-sonnet-4.6"]
         self.assertEqual((m["input"], m["output"], t["per_tokens"], m["as_of"]), (3.0, 15.0, 1000000, "2026-10-06"))
         self.assertIn("Gloo", m["source"])
-        self.assertIsNone(t["classifiers"]["jev"]["price"])
-        self.assertEqual(pricing.jev_status(), "unknown, not quoted")
+        self.assertEqual(t["classifiers"]["jev"]["price"], {"input": 0.042, "output": 0.0})
+        self.assertIn("typesafe.ai", t["classifiers"]["jev"]["source"])
+        self.assertEqual(pricing.jev_status(), "public price, account billing not checked")
+        self.assertEqual(pricing.jev_cost_usd(1_000_000), 0.042)
+        self.assertEqual(pricing.jev_cost_usd(9057), 0.00038039)
+        self.assertIsNone(pricing.jev_cost_usd(None))
 
     def test_cost_is_tokens_times_the_table(self):
         self.assertEqual(pricing.cost_usd("gloo-anthropic-claude-sonnet-4.6", 1000, 200), round((1000 * 3 + 200 * 15) / 1e6, 6))

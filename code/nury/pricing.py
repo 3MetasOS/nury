@@ -2,7 +2,7 @@
 
 An environment override still wins: NURY_PRICE_IN and NURY_PRICE_OUT (USD per 1M tokens), as before.
 A model that is not in the file has no cost: cost_usd stays None. Nothing is guessed.
-Jev has an entry that says "unknown, not quoted"; no Jev cost is ever computed.
+Jev has an entry with its public price (input only; output is free). The engine does not add it to a stage's cost.
 """
 import json
 import os
@@ -38,6 +38,14 @@ def cost_usd(model, tokens_in, tokens_out):
             return None
         pi, po = p["input"], p["output"]
     return round((tokens_in * pi + tokens_out * po) / table()["per_tokens"], 6)
+
+
+def jev_cost_usd(input_tokens):
+    """Dollar cost of Jev gate calls from their input tokens, at the public price in the file. Output tokens are free."""
+    p = table()["classifiers"]["jev"].get("price")
+    if not p or input_tokens is None:
+        return None
+    return round(input_tokens * p["input"] / table()["per_tokens"], 8)
 
 
 def jev_status():
