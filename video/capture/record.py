@@ -31,6 +31,9 @@ with sync_playwright() as p:
     card.hover(); page.wait_for_timeout(2500)  # shot 1b: selector holds ~4 s with Detention highlighted
     card.click(); page.wait_for_timeout(1200)
     page.click("#btn-demo"); page.wait_for_timeout(2500)
+    pn = page.get_by_text(re.compile("Protected names", re.I))
+    if pn.count():  # shot 2b: only exists once privacy is wired in the app
+        mark("protected"); page.wait_for_timeout(3700)
     page.check("#demo"); page.wait_for_timeout(800)
     page.click("#btn-start"); mark("start")
     for i in range(1, 6):

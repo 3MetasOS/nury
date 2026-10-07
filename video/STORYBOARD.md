@@ -77,6 +77,21 @@ Rules for this shot:
 - Say nothing about the "Coming soon" crises. The video shows them as the app labels them.
 - `capture/record.py` needs one new click (Detention card) before "Use demo intake". Selector ids are unknown until hack-artisans pushes. Re-capture only on hack-sensei's word.
 
+## Update Oct 6 (late): Protected names beat and case-file beat
+Caption text comes from hack-sensei. Nothing below is claimed until hack-sensei confirms it in writing. Remotion shows the Protected names scene only when footage has a `protected` mark AND `remotion/public/confirmed.json` has `{"protected": true}`.
+
+| # | Cut | Time | Visual | VO | On-screen text |
+|---|---|---|---|---|---|
+| 2b | 90 s | after shot 2, 4 s | Intake screen with the "Protected names" list the pastor confirms (names Nury found, add or remove). | (silence) | "Nury keeps names on this computer" |
+| 11b | Pitch only | after the package, about 6 s | The saved case file opens: index page, one page per stage, the next-steps map (lanes: tonight, this week, open questions, who to call). Local folder view, no upload. | Pitch VO from hack-ninja | "Saved on the pastor's computer. Approved text only." (confirm wording) |
+
+Rules for these two:
+- Honest limit: the privacy layer removes direct identifiers, not context. No caption says "private" or "anonymous". Use the confirmed wording only.
+- Case file shows approved text only. A rejected draft never appears. The next-steps map shows steps and questions, never outcomes or predictions.
+- Both beats are shot once the screens exist and hack-sensei gives the go. Use the synthetic family only.
+
+90 s re-time with 2b (sum 90 s): lock 9, selector 4, intake 6, protected 4, triage 10, rights 17, montage 11, pastoral 10, package 10, end 8 (proof beat, if real numbers exist, still takes 8 s from rights, triage, package as before).
+
 ## Open questions
 1. Show a redacted reason on the guardrail strip (for example "reason: advice, not information")? Only if the app already has the category. Needs hack-jedi.
 2. Who reads the VO? Juan, or TTS?

@@ -4,7 +4,8 @@ import {Nury, buildTimeline, FPS, type Data} from './Nury';
 
 const load = async (): Promise<Data> => {
   const j = (p: string) => fetch(staticFile(p)).then((r) => r.json());
-  return {marks: await j('marks.json'), proof: await j('proof.json')};
+  const confirmed = await j('confirmed.json').catch(() => ({}));
+  return {marks: await j('marks.json'), proof: await j('proof.json'), confirmed};
 };
 
 export const Root: React.FC = () => (

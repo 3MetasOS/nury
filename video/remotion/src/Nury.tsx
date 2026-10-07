@@ -7,7 +7,7 @@ import {
 export const FPS = 30;
 export type Marks = Record<string, number>;
 export type Proof = {pass?: number | string; n?: number | string; caught?: number | string; src?: string};
-export type Data = {marks: Marks; proof: Proof};
+export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>};
 
 const C = {bg: '#0d1015', surface: '#131824', amber: '#e8a33d', text: '#ece7dc', muted: '#a79f8d'};
 const serif = '"Fraunces", Georgia, serif';
@@ -32,25 +32,29 @@ type Scene = {
   id: string; dur: number; trim?: number; kind: 'lock' | 'clip' | 'proof' | 'end';
   from?: [string, number]; to?: [string, number]; // src range as [mark, offset]
   label?: string; vo?: {k: string; at: number}[];
+  needs?: string; trimN?: number; // needs: scene shows only if marks[needs] exists AND confirmed[needs] is true
 };
 const SCENES: Scene[] = [
   {id: 'lock', kind: 'lock', dur: 9, vo: [{k: '01', at: 1.5}]},
   {id: 'selector', kind: 'clip', dur: 4, from: ['selector', 0], to: ['selector', 3.7], label: 'The pastor picks the crisis.'},
   {id: 'intake', kind: 'clip', dur: 6, trim: 0, from: ['selector', 3.7], to: ['start', 0.3], label: 'Solo pastor. No staff. No lawyer.', vo: [{k: '02', at: 0.3}]},
-  {id: 'triage', kind: 'clip', dur: 11, trim: 2, from: ['start', 0.3], to: ['approve1', 0.4], label: '1  Triage', vo: [{k: '03', at: 4.5}, {k: '04', at: 8.2}]},
-  {id: 'rights', kind: 'clip', dur: 18, trim: 3, from: ['approve1', 0.4], to: ['approve2', 0.4], label: '2  Rights brief. Vetted sources only.', vo: [{k: '05', at: 6}, {k: '06', at: 10.5}]},
-  {id: 'montage', kind: 'clip', dur: 12, from: ['approve2', 0.4], to: ['approve4', 0.4], label: '3  Attorneys   4  Checklist', vo: [{k: '07', at: 4}]},
+  {id: 'protected', kind: 'clip', dur: 4, needs: 'protected', from: ['protected', 0], to: ['protected', 3.7], label: 'Nury keeps names on this computer'},
+  {id: 'triage', kind: 'clip', dur: 11, trim: 2, trimN: 1, from: ['start', 0.3], to: ['approve1', 0.4], label: '1  Triage', vo: [{k: '03', at: 4.5}, {k: '04', at: 8.2}]},
+  {id: 'rights', kind: 'clip', dur: 18, trim: 3, trimN: 1, from: ['approve1', 0.4], to: ['approve2', 0.4], label: '2  Rights brief. Vetted sources only.', vo: [{k: '05', at: 6}, {k: '06', at: 10.5}]},
+  {id: 'montage', kind: 'clip', dur: 12, trimN: 1, from: ['approve2', 0.4], to: ['approve4', 0.4], label: '3  Attorneys   4  Checklist', vo: [{k: '07', at: 4}]},
   {id: 'pastoral', kind: 'clip', dur: 11, from: ['approve4', 0.4], to: ['approve5', 0.4], label: '5  Pastoral message', vo: [{k: '08', at: 3}]},
   {id: 'proof', kind: 'proof', dur: 8},
-  {id: 'package', kind: 'clip', dur: 11, trim: 3, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send. The pastor does.', vo: [{k: '09', at: 1}]},
+  {id: 'package', kind: 'clip', dur: 11, trim: 3, trimN: 1, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send. The pastor does.', vo: [{k: '09', at: 1}]},
   {id: 'end', kind: 'end', dur: 8, vo: [{k: '10', at: 1}]},
 ];
 const hasProof = (p: Proof) => p.pass != null && p.n != null && p.caught != null;
 export const buildTimeline = (d: Data) => {
   const proof = hasProof(d.proof);
+  const ok = (n?: string) => !n || (d.marks[n] != null && d.confirmed?.[n] === true);
+  const names = ok('protected') && d.marks['protected'] != null;
   let t = 0;
-  const scenes = SCENES.filter((s) => s.kind !== 'proof' || proof).map((s) => {
-    const dur = s.dur - (proof ? s.trim ?? 0 : 0);
+  const scenes = SCENES.filter((s) => (s.kind !== 'proof' || proof) && ok(s.needs)).map((s) => {
+    const dur = s.dur - (proof ? s.trim ?? 0 : 0) - (names ? s.trimN ?? 0 : 0);
     const r = {...s, dur, start: t}; t += dur; return r;
   });
   return {scenes, total: t};
