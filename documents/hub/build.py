@@ -10,6 +10,7 @@ Reading copy only. The repo files stay the source. Re-run to refresh.
 import glob
 import json
 import os
+import re
 from pathlib import Path
 
 import markdown
@@ -65,6 +66,24 @@ def html_file(path):
     if not p.exists():
         return None
     return p.read_text(encoding="utf-8", errors="replace")
+
+
+def brand_page():
+    b = ROOT / "branding"
+    def svg(n):
+        f = b / n
+        return f.read_text(encoding="utf-8") if f.exists() else ""
+    if not (b / "logo-mark.svg").exists():
+        return None
+    body = ("<h1>Nury logo</h1><p>Outline lantern. Chosen by Juan. Pure SVG.</p>"
+            "<div class='grid'>"
+            f"<div class='card' style='background:#0d1015'><b>Lockup on ink</b><br><div style='max-width:360px'>{svg('logo-lockup.svg')}</div></div>"
+            f"<div class='card' style='background:#f6f1e7;color:#111'><b>Lockup on paper</b><br><div style='max-width:360px'>{svg('logo-lockup-light.svg')}</div></div></div>"
+            "<h2>Mark</h2><div class='grid'>"
+            f"<div class='card'><div style='width:96px'>{svg('logo-mark.svg')}</div><p class='pill'>logo-mark.svg</p></div>"
+            f"<div class='card'><div style='width:32px'>{svg('logo-mark-small.svg')}</div><p class='pill'>logo-mark-small.svg, for 24 px and under</p></div>"
+            f"<div class='card'><div style='width:32px'>{svg('favicon.svg')}</div><p class='pill'>favicon.svg</p></div></div>")
+    return wrap("Logo", body)
 
 
 def canvas_file(name):
@@ -144,6 +163,8 @@ MENU = [
     ("Video", "Storyboard", "md", "video/STORYBOARD.md"),
     ("Video", "Storyboard (canvas)", "canvas", "storyboard.html"),
     ("Video", "Remotion vs ffmpeg", "canvas", "remotion-vs-ffmpeg.html"),
+    ("Brand", "Brand kit", "md", "branding/BRAND.md"),
+    ("Brand", "Logo and lockups", "brand", None),
     ("Project", "Status (canvas)", "canvas", "status.html"),
 ]
 
@@ -154,6 +175,8 @@ def build():
     for group, label, kind, src in MENU:
         if kind == "raw":
             html = src
+        elif kind == "brand":
+            html = brand_page()
         elif kind == "md":
             html = md_page(src, label)
         elif kind == "txt":
@@ -172,7 +195,9 @@ def build():
             continue
         pages.append({"id": f"p{len(pages)}", "group": group, "label": label, "html": html})
     data = json.dumps(pages).replace("</", "<\\/")
-    shell = SHELL.replace("__DATA__", data)
+    logo = (ROOT / "branding" / "logo-mark.svg").read_text(encoding="utf-8") if (ROOT / "branding" / "logo-mark.svg").exists() else ""
+    logo = logo.replace('width="64" height="64"', 'width="34" height="34"', 1)
+    shell = SHELL.replace("__DATA__", data).replace("__LOGO__", logo)
     OUT.write_text(shell, encoding="utf-8")
     print(f"wrote {OUT} ({OUT.stat().st_size // 1024} KB), {len(pages)} pages")
     if missing:
@@ -214,7 +239,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 </style></head><body>
 <nav id="nav" aria-label="Nury hub menu">
  <div class="brand"><div class="mark">
-  <svg width="30" height="38" viewBox="0 0 30 38" aria-hidden="true"><path d="M15 2v4M10 6h10M9 9h12l2 22H7z" fill="none" stroke="#e8a33d" stroke-width="1.6" stroke-linejoin="round"/><path d="M15 13c3 3 4 6 0 11-4-5-3-8 0-11z" fill="#e8a33d"/><path d="M8 33h14v3H8z" fill="#e8a33d"/></svg>
+  __LOGO__
   <div><b>Nury</b><small>the crisis-response agent for solo pastors</small></div></div></div>
  <div class="search"><input id="q" type="search" placeholder="Search the menu" aria-label="Search the menu"></div>
  <div class="menu" id="menu"></div>

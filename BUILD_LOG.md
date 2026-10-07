@@ -361,3 +361,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Options by hack-ninja (`branding/options.html`): A peaked lantern (recommended), B arched lantern on a cord loop, C outline lantern. Decision (Juan): C.
 - Known limit of C: thin at 16 px. Mitigation: a heavier-stroke small-size variant for the favicon and sizes under 24 px.
 - To apply: brand kit (`branding/`), deck, app header and favicon, video end card, hub.
+
+## 53. 2026-10-06 21:45 MDT — Logo C applied (hack-ninja, commit bc4dfee); hub updated
+
+- Logo C finalized in `branding/`: mark, lockups on ink and paper, favicon, and a heavier-stroke small mark for sizes under 24 px (tested at 16, 24 and 32 px). `BRAND.md` covers C only; A and B moved to `branding/archive/`. `APP_SNIPPETS.md` gives hack-artisans the header and favicon snippets. The deck carries the logo.
+- Hub: the sidebar now shows the real mark, and two pages were added (Brand kit; Logo and lockups). 36 pages. Checked in a real browser at 1280 px.
