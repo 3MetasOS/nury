@@ -3,12 +3,13 @@
 Run from the repo root with two servers up (no key needed, no model call):
   LIVE  http://127.0.0.1:8080  the normal app with its saved (synthetic) cases
   REPLAY http://127.0.0.1:8096 the same app started with NURY_REPLAY=1 NURY_FEEDBACK=on (a recorded run: sample intake, gates, final page)
-Usage: python3 presentation/screens/capture_screens.py [live|replay|pdf|all]
+Usage: python3 presentation/screens/capture_screens.py [live|replay|final|pdf|all]
 Needs agent-browser, Pillow, and pdftoppm for the PDF pages. The app is not changed: only a screenshot is taken."""
-import json, subprocess, sys, tempfile, time, zipfile, urllib.request
+import json, os, subprocess, sys, tempfile, time, zipfile, urllib.request
 from pathlib import Path
 from PIL import Image
 
+os.environ.setdefault("AGENT_BROWSER_SESSION", "nury-screens")      # its own browser session: other agents drive the default one
 OUT = Path(__file__).resolve().parent
 LIVE, REPLAY = "http://127.0.0.1:8080", "http://127.0.0.1:8096"
 ES_CASE = "detention-20261007-052545-0556"          # a synthetic Spanish detention case (Jose, Maria)
@@ -39,6 +40,14 @@ def open_light(url, w, h=2400):
     ab("wait", "1200")
     ev("try{localStorage.setItem('nury-theme','light')}catch(e){};location.reload();1")
     ab("wait", "2200")
+
+
+def until(js, secs=60):
+    for _ in range(secs):
+        if ev(js) is True or ev(js) == "true":
+            return True
+        ab("wait", "1000")
+    return False
 
 
 def settle():
@@ -91,25 +100,22 @@ def replay(w):
     ev("[...document.querySelectorAll('button,a')].find(b=>/Respond to a crisis/.test(b.textContent)&&b.getBoundingClientRect().height>0).click();1"); ab("wait", "900")
     snap("03-chooser", w, box_sel="#chooser", pad=0)
     ev("document.getElementById('chooser').close();location.hash='#/crisis/detention';1"); ab("wait", "1500")
-    snap("02-crisis", w, bottom_sel="#crisis-page .flow, #crisis-page svg.dgm, #crisis-page .seq" if False else "#crisis-page")
+    snap("02-crisis", w, bottom_sel="#crisis-page svg.dgm", pad=24)
     ev("[...document.querySelectorAll('[data-begin]')].find(b=>b.getBoundingClientRect().height>0).click();1"); ab("wait", "900")
     ev("document.getElementById('btn-demo').click();1"); ab("wait", "500")
     snap("04-intake", w, bottom_sel="#v-intake .card, #v-intake form, #v-intake", pad=24)
     ev("document.getElementById('btn-start').click();1"); ab("wait", "1500")
     ev("document.getElementById('b-protect-go').click();1"); ab("wait", "9000")
     snap("05-gate", w, bottom_sel="#gate")
-    for i in range(6):
-        ev("var b=document.getElementById('b-approve');if(b&&b.getBoundingClientRect().height>0)b.click();1")
-        for _ in range(40):
-            ab("wait", "1000")
-            st = ev("JSON.stringify({final:document.body.dataset.view,ap:(document.getElementById('b-approve')||{getBoundingClientRect:()=>({height:0})}).getBoundingClientRect().height>0,fin:!!document.querySelector('#final:not(.hidden)')&&document.getElementById('final').getBoundingClientRect().height>0})")
-            st = json.loads(st) if isinstance(st, str) else st
-            if st.get("fin") or st.get("ap"):
-                break
-        if st.get("fin"):
-            break
-    ab("wait", "1500")
-    snap("06-final-es", w, bottom_sel="#final .keyfacts, #final .kf, #fp-actions", pad=24)
+
+
+def final(w):
+    """The final page of a real approved Spanish case (its saved text), shown through the same stub the browser tests use. No model call, no 'Recorded run' label."""
+    stub = " ".join((Path(__file__).resolve().parents[2] / "evaluations" / "browser" / "finalstub.js").read_text(encoding="utf-8").split("\n"))
+    open_light(LIVE + "/#/", w); ab("wait", "800")
+    ev(f"(async()=>{{{stub}; await window.__finalStub({json.dumps(ES_CASE)},{{addVerse:true}}); sid='x'; show('v-pkg'); poll(); return 1}})()")
+    ab("wait", "2500")
+    snap("06-final-es", w, bottom_sel="#final", crop_h=1500 if w > 600 else 2000)
     ev("document.getElementById('b-export').click();1"); ab("wait", "500")
     snap("10-export-menu", w, top_sel=".keyfacts", bottom_sel="#b-export-menu", pad=24)
 
@@ -134,5 +140,7 @@ if __name__ == "__main__":
             live(w)
         if what in ("replay", "all"):
             replay(w)
+        if what in ("final", "all"):
+            final(w)
     if what in ("pdf", "all"):
         pdf()
