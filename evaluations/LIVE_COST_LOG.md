@@ -189,7 +189,7 @@ Gate on, YouVersion on, privacy and leak check on, Jev judges on. Gloo cost is t
 | I2 | hospital, all 8 | $0.7026 |
 | I3 | attacker a01 to a18 | $1.3825 |
 | I4 | network n01 to n03 | $0.3278 |
-| I5 | case-file cf01 to cf03, rv01, rv02 | $0.5 (see results/casefile.json) |
-| | **Total** | **about $4.2** (cap $6.0) |
+| I5 | case-file cf01 to cf03, rv01, rv02 | $0.5865 |
+| | **Total** | **$4.2838** (cap $6.0) |
 
 The c317050 results are in `results/before_final2/`. An earlier start on fe1fd7b (2 minutes, killed by the HOLD) is logged above as an aborted start.
