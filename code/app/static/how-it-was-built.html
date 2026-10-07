@@ -698,6 +698,15 @@ td:first-child code{white-space:nowrap}
 - Retention is a recommendation (30 days for sentence mode), not a policy, and nothing prunes the files automatically.
 - Nobody has reviewed the consent or the retention as a lawyer or an ethics board would.</p>
 <p>The research behind the pattern (reflect on what went wrong, propose a change, score it, keep it only if it scores better) is in <code>LEARNING_LOOP.md</code>, read from abstracts only. We left out everything that lets an agent change itself.</p>
+<p><a id="outside-review"></a></p>
+<h3 id="outside-review-the-red-team">Outside review (the red team)<a class="anc" href="#outside-review-the-red-team" aria-label="Link to this section">#</a></h3>
+<p>Three models from three other makers read sample drafts and flagged problems: OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick, all through Gloo AI Studio. None is Claude, on purpose.</p>
+<ul>
+<li><strong>How we checked the reviewers first.</strong> On 8 drafts with planted problems, all three caught 8 of 8. They also flagged safe drafts, so they over-flag. Llama sometimes quoted text that is not in the draft: once in validation and four times in the run on 28 scenarios.</li>
+<li><strong>When it ran.</strong> By hand, before release, on an earlier build (core <code>00fe7b1</code>). It was <strong>not re-run on the final build</strong>, and it is <strong>not part of the app at run time</strong>. The product never calls it.</li>
+<li><strong>What came out.</strong> 55 corroborated findings (two or more reviewers quoted about the same sentence) across 25 scenarios. People read them.</li>
+<li><strong>What it is.</strong> Advice only. It cannot pass or fail a run, and it never changes a result. We decide what to change.</li>
+</ul>
 <h2 id="4-the-rules">4. The rules<a class="anc" href="#4-the-rules" aria-label="Link to this section">#</a></h2>
 <p>A rule in Nury is a test a draft must pass. There are three kinds, and the order matters.</p>
 <p><strong>The safety floor.</strong> Rules in code that every prompt carries and every draft is checked against. A playbook or a skill can add to them. Nothing can remove them. <span class="st st-built-live">BUILT, live</span>. <code>code/nury/guardrails.py</code>, <code>code/nury/engine.py</code>.</p>
@@ -1028,6 +1037,19 @@ td:first-child code{white-space:nowrap}
 <li><strong>Needs follow-up.</strong> A flag on a saved case, with no reminder and no date. The server route is built (<span class="st st-built-off">BUILT, offline</span>); the button in the app is <span class="st st-inprog">IN PROGRESS</span>.</li>
 <li><strong>Not built:</strong> a case update loop where Nury proposes page edits (<span class="st st-planned">PLANNED</span>), a possible-paths map (<span class="st st-planned">PLANNED</span>), a printable PDF (<span class="st st-notbuilt">NOT BUILT</span>).</li>
 </ul>
+<p><a id="scripture"></a></p>
+<h3 id="scripture-where-the-verses-come-from">Scripture: where the verses come from<a class="anc" href="#scripture-where-the-verses-come-from" aria-label="Link to this section">#</a></h3>
+<p>The model never writes a verse. It picks an id from a verified list, and the engine inserts the exact text.</p>
+<ul>
+<li><strong>The list.</strong> Twelve verses that Juan approved, each with its reference. The text comes from one of two places. The first is a bank of public-domain texts we checked: Reina-Valera 1909 (Spanish) and the World English Bible (English). The second is YouVersion, when the app holds a YouVersion key: the Berean Standard Bible in English (version id 3034) and the Biblia Libre Versión Bíblica in Spanish (version id 3291).</li>
+<li><strong>What shows.</strong> The version name and its copyright are shown with every verse, as YouVersion's rules require.</li>
+<li><strong>What leaves the app.</strong> Only a passage id and a version id go to YouVersion. No name and no case text ever does.</li>
+<li><strong>Checks.</strong> A verbatim check (<code>verse_block_verbatim</code>) confirms the verse in the draft is exactly the text we inserted. A word cap applies: a verse over the cap is treated as unavailable. Psalm titles and verse numbers are removed under a fixed rule, and any markup we do not recognize counts as unavailable.</li>
+<li><strong>If YouVersion is unavailable</strong> (no key, an error, or a verse over the cap), the verified bank is used, and the audit log records which source was used.</li>
+<li><strong>In the scored runs.</strong> On the final build <code>9bc5c6d</code>, 44 of the 45 verses in the detention, hospital, hostile-intake and network runs came from YouVersion. One (Psalm 23:4, hostile intake a12) came from the bank. The audit event does not record why. On the earlier build <code>c317050</code>, all 31 verses in its scored runs came from YouVersion with no fallback.</li>
+<li><strong>Limits.</strong> Counts are from audit files of synthetic runs. No pastor has said whether a verse fits a message. Nury caches nothing from YouVersion, and a 429 or any error means "unavailable".</li>
+</ul>
+<p>Code: <code>code/nury/scripture.py</code>, <code>code/nury/scripture_providers.py</code>.</p>
 <h2 id="9-from-hackathon-to-real-product">9. From hackathon to real product<a class="anc" href="#9-from-hackathon-to-real-product" aria-label="Link to this section">#</a></h2>
 <p>Nury today is a working demo on two crises, tested on synthetic families. The table says what stands between it and a church using it on real families. Nothing in it exists yet unless the status says so.</p>
 <div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>

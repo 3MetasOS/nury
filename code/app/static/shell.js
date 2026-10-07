@@ -38,7 +38,8 @@
     <p class="fl mono ft">How it was made</p>
     <div class="fb"><p class="fl mono">Writer</p><p>Claude Sonnet 4.6, through Gloo AI Studio's guarded endpoint, with Gloo's guardrails.</p></div>
     <div class="fb"><p class="fl mono">Checks</p><p><span id="fm-checks"></span>named rules and a safety floor on every draft, plus a second check by Jev, from TypeSafe. <a href="/how-it-was-built#honest-limits-in-one-place">See the limits</a></p></div>
-    <div class="fb"><p class="fl mono">Outside review</p><p>Before release, AI models from other makers read sample drafts and flagged problems. Their notes are advice to us. They are not part of the app. <a href="/how-it-was-built#who-does-what">Details</a></p></div>
+    <div class="fb"><p class="fl mono">Scripture</p><p>Verses are never written by the model. Each verse is chosen from a verified list and inserted word for word from YouVersion (Berean Standard Bible in English, Biblia Libre in Spanish), or from the public-domain Reina-Valera 1909 and World English Bible. Every verse shows its version and copyright. <a href="/how-it-was-built#scripture">Details</a></p></div>
+    <div class="fb"><p class="fl mono">Outside review</p><p>Before release, AI models from other makers read sample drafts and flagged problems. Their notes are advice to us. They are not part of the app. <a href="/how-it-was-built#outside-review">Details</a></p></div>
     <div class="fb" id="fm-build" hidden><p class="fl mono">Build</p><p><span></span></p></div>
   </div>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
