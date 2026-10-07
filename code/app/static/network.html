@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Our network · Nury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.12);
+--amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--text:#ece7dc;--muted:#a79f8d;
+--green:#8fce9e;--red:#e0785f;--red-soft:rgba(224,120,95,.12);
+--serif:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--r:12px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+main{max-width:720px;margin:0 auto;padding:16px 16px calc(40px + env(safe-area-inset-bottom))}
+::selection{background:var(--amber);color:var(--amber-ink)}
+a{color:var(--amber);overflow-wrap:anywhere}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:8px 0 4px;flex-wrap:wrap}
+h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0;color:var(--amber)}
+.back{color:var(--muted);font-size:.9rem;text-decoration:none}.back:hover{color:var(--text)}
+.lede{color:var(--muted);margin:6px 0 16px;max-width:60ch}
+.banner{background:var(--red-soft);border:1px solid var(--red);border-radius:var(--r);padding:12px 14px;margin:0 0 16px;font-size:.95rem}
+.banner b{color:var(--red)}
+.bar{display:grid;gap:10px;grid-template-columns:1fr;margin:0 0 14px}
+@media(min-width:560px){.bar{grid-template-columns:1fr 200px auto}}
+input,select,textarea{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;min-height:44px}
+textarea{min-height:76px;resize:vertical}
+label{display:block;font-size:.85rem;color:var(--muted);margin:12px 0 5px}
+.btn{min-height:44px;padding:10px 16px;border-radius:10px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 .95rem var(--sans);cursor:pointer;transition:background .15s,border-color .15s}
+.btn:hover{border-color:rgba(232,163,61,.5)}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.btn.danger{color:var(--red)}.btn.sm{min-height:40px;padding:8px 12px;font-size:.88rem}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.row{padding:16px 0;border-bottom:1px solid var(--line)}
+.row h2{font:500 1.15rem/1.3 var(--serif);margin:0 0 2px;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:.88rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.chip{font-size:.78rem;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.chip.k{border-color:rgba(232,163,61,.5);color:var(--amber)}
+.contact{margin:8px 0 0;overflow-wrap:anywhere}
+.note{margin:8px 0 0;font-size:.9rem;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.empty{padding:28px 0;color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 16px}
+.panel h2{font:500 1.2rem var(--serif);margin:0 0 4px}
+.grid2{display:grid;gap:0 12px;grid-template-columns:1fr}@media(min-width:560px){.grid2{grid-template-columns:1fr 1fr}}
+.err{color:var(--red);font-size:.92rem;min-height:1.3em;margin:10px 0 0}
+.ok{color:var(--green)}
+.hint{font-size:.82rem;color:var(--muted);margin:4px 0 0}
+details>summary{cursor:pointer;color:var(--amber);font-weight:600;min-height:44px;display:flex;align-items:center}
+@media(prefers-reduced-motion:no-preference){.row{animation:in .3s cubic-bezier(.16,1,.3,1)}@keyframes in{from{opacity:0;transform:translateY(4px)}}}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Our network</h1><a class="back" href="/">Back to Nury</a></header>
+<p class="lede">People our church has worked with. Nury lists them first, labeled as the church's own contacts. It never ranks or recommends them. This stays on this computer.</p>
+<div id="banner" class="banner" hidden><b>Fictional demo contacts.</b> These are made up for the demo and are read only. A real network is never mixed with them.</div>
+
+<section class="panel" id="home-panel">
+  <h2>Our church's place</h2>
+  <p class="meta">Used when a case does not say which state the family is in.</p>
+  <div class="grid2">
+    <div><label for="h-city">City</label><input id="h-city" autocomplete="off"></div>
+    <div><label for="h-state">State</label><input id="h-state" placeholder="CO or Colorado" autocomplete="off"></div>
+  </div>
+  <div class="acts"><button class="btn sm" id="h-save">Save place</button></div>
+  <p class="err" id="h-msg" role="status"></p>
+</section>
+
+<div class="bar">
+  <input id="q" type="search" placeholder="Search name, city, service, tag" aria-label="Search">
+  <select id="kf" aria-label="Filter by kind"></select>
+  <button class="btn primary" id="add-btn">Add a contact</button>
+</div>
+
+<section class="panel" id="form" hidden>
+  <h2 id="form-title">Add a contact</h2>
+  <label for="f-name">Name</label><input id="f-name" autocomplete="off">
+  <div class="grid2">
+    <div><label for="f-kind">Kind</label><select id="f-kind"></select></div>
+    <div><label for="f-last">Last used</label><input id="f-last" type="date"></div>
+  </div>
+  <label for="f-services">What they do</label><input id="f-services" placeholder="Short and factual" maxlength="200">
+  <p class="hint">This line can appear in a family message. Keep it plain: no ranking words.</p>
+  <div class="grid2">
+    <div><label for="f-phone">Phone</label><input id="f-phone" inputmode="tel" placeholder="(303) 555-0100"></div>
+    <div><label for="f-url">Link</label><input id="f-url" inputmode="url" placeholder="https://"></div>
+    <div><label for="f-city">City</label><input id="f-city"></div>
+    <div><label for="f-state">State</label><input id="f-state" placeholder="CO"></div>
+  </div>
+  <label>Languages they serve</label>
+  <div class="acts" style="margin-top:0"><label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" id="l-es" style="width:auto;min-height:0"> Spanish</label>
+  <label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" id="l-en" style="width:auto;min-height:0"> English</label>
+  <label style="display:flex;gap:8px;align-items:center;margin:0"><input type="checkbox" id="f-nation" style="width:auto;min-height:0"> Serves any state</label></div>
+  <label for="f-tags">Tags (separated by commas)</label><input id="f-tags" placeholder="detention, hospital">
+  <label for="f-note">Your note</label><textarea id="f-note" maxlength="500"></textarea>
+  <p class="hint">Your note stays on your screen. It is never sent to a model and never in a family message.</p>
+  <p class="err" id="f-err" role="alert"></p>
+  <div class="acts"><button class="btn primary" id="f-save">Save</button><button class="btn" id="f-cancel">Cancel</button></div>
+</section>
+
+<ul class="list" id="list"></ul>
+<p class="empty" id="empty" hidden>No contacts yet. Add the people your church has worked with. Nury lists them first when they fit a family's place and language.</p>
+
+<details style="margin-top:22px">
+  <summary>Import or export</summary>
+  <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>
+  <div class="acts"><button class="btn sm" id="exp">Export file</button>
+  <label class="btn sm" style="margin:0;display:inline-flex;align-items:center" for="imp">Import file</label><input type="file" id="imp" accept="application/json" hidden></div>
+  <p class="err" id="io-msg" role="status"></p>
+</details>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const KIND={pro_bono_immigration_attorney:"Pro bono immigration attorney",legal_aid:"Legal aid",medicare_medicaid_help:"Medicare and Medicaid help",social_services:"Social services",interpreter:"Interpreter",other:"Other"};
+let S={entries:[],kinds:[],readonly:false,fictional:false,home:{city:"",state:""}},editing=null,confirming=null;
+async function api(method,path,body){
+  const r=await fetch(path,{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"Something went wrong");return j}
+async function load(){S=await api("GET","/api/network");paint()}
+function paint(){
+  $("banner").hidden=!S.fictional;
+  document.querySelectorAll("#add-btn,#h-save,#imp").forEach(e=>e.disabled=S.readonly);
+  $("h-city").value=S.home.city;$("h-state").value=S.home.state;
+  [$("h-city"),$("h-state")].forEach(e=>e.disabled=S.readonly);
+  const kopts=S.kinds.map(k=>`<option value="${k}">${esc(KIND[k]||k)}</option>`).join("");
+  $("f-kind").innerHTML=kopts;$("kf").innerHTML=`<option value="">All kinds</option>`+kopts;
+  list()}
+function list(){
+  const q=$("q").value.trim().toLowerCase(),k=$("kf").value;
+  const rows=S.entries.filter(e=>(!k||e.kind===k)&&(!q||[e.name,e.city,e.state,e.services,(e.tags||[]).join(" ")].join(" ").toLowerCase().includes(q)));
+  $("empty").hidden=rows.length>0||S.entries.length>0;
+  $("list").innerHTML=rows.map(e=>`<li class="row" data-id="${esc(e.id)}">
+  <h2>${esc(e.name)}</h2>
+  <div class="meta">${esc(KIND[e.kind]||e.kind)}${e.city||e.state?" · "+esc([e.city,e.state].filter(Boolean).join(", ")):""}${e.nationwide?" · serves any state":""}</div>
+  ${e.services?`<div style="margin-top:6px">${esc(e.services)}</div>`:""}
+  <div class="contact">${e.phone?`<a href="tel:${esc(e.phone.replace(/[^\d+]/g,""))}">${esc(e.phone)}</a>`:""}${e.phone&&e.url?" · ":""}${e.url?`<a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">${esc(e.url.replace(/^https?:\/\//,""))}</a>`:""}</div>
+  <div class="chips">${(e.languages||[]).map(l=>`<span class="chip">${l==="es"?"Spanish":"English"}</span>`).join("")}${(e.tags||[]).map(t=>`<span class="chip k">${esc(t)}</span>`).join("")}${e.last_used?`<span class="chip">last used ${esc(e.last_used)}</span>`:""}</div>
+  ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
+  ${S.readonly?"":`<div class="acts">${confirming===e.id?`<span class="meta" style="align-self:center">Delete this contact?</span><button class="btn sm danger" data-act="del-yes">Yes, delete</button><button class="btn sm" data-act="del-no">Keep it</button>`:`<button class="btn sm" data-act="used">Mark used today</button><button class="btn sm" data-act="edit">Edit</button><button class="btn sm danger" data-act="del">Delete</button>`}</div>`}
+  </li>`).join("")}
+function openForm(e){
+  editing=e?e.id:null;$("form").hidden=false;$("form-title").textContent=e?"Edit contact":"Add a contact";
+  const v=e||{};$("f-name").value=v.name||"";$("f-kind").value=v.kind||"other";$("f-last").value=v.last_used||"";
+  $("f-services").value=v.services||"";$("f-phone").value=v.phone||"";$("f-url").value=v.url||"";$("f-city").value=v.city||"";
+  $("f-state").value=v.state||"";$("l-es").checked=(v.languages||["es","en"]).includes("es");$("l-en").checked=(v.languages||["es","en"]).includes("en");
+  $("f-nation").checked=!!v.nationwide;$("f-tags").value=(v.tags||[]).join(", ");$("f-note").value=v.note||"";$("f-err").textContent="";
+  $("f-name").focus();$("form").scrollIntoView({behavior:"smooth",block:"start"})}
+function readForm(){return{name:$("f-name").value,kind:$("f-kind").value,last_used:$("f-last").value,services:$("f-services").value,phone:$("f-phone").value,url:$("f-url").value,city:$("f-city").value,state:$("f-state").value,languages:[$("l-es").checked&&"es",$("l-en").checked&&"en"].filter(Boolean),nationwide:$("f-nation").checked,tags:$("f-tags").value.split(",").map(t=>t.trim()).filter(Boolean),note:$("f-note").value}}
+$("add-btn").onclick=()=>openForm(null);
+$("f-cancel").onclick=()=>{$("form").hidden=true};
+$("f-save").onclick=async()=>{try{editing?await api("PUT","/api/network/"+editing,readForm()):await api("POST","/api/network",readForm());$("form").hidden=true;await load()}catch(e){$("f-err").textContent=e.message}};
+$("h-save").onclick=async()=>{try{S=await api("POST","/api/network/home",{city:$("h-city").value,state:$("h-state").value});$("h-msg").className="err ok";$("h-msg").textContent="Saved.";paint()}catch(e){$("h-msg").className="err";$("h-msg").textContent=e.message}};
+$("list").onclick=async ev=>{const b=ev.target.closest("[data-act]");if(!b)return;const id=b.closest(".row").dataset.id,a=b.dataset.act;
+  try{if(a==="edit")openForm(S.entries.find(x=>x.id===id));
+  else if(a==="used"){await api("POST","/api/network/"+id+"/used");await load()}
+  else if(a==="del"){confirming=id;list()}else if(a==="del-no"){confirming=null;list()}
+  else if(a==="del-yes"){await api("DELETE","/api/network/"+id);confirming=null;await load()}}catch(e){$("io-msg").textContent=e.message}};
+$("q").oninput=list;$("kf").onchange=list;
+$("exp").onclick=async()=>{const j=await api("GET","/api/network/export");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(j,null,2)],{type:"application/json"}));a.download="our-network.json";a.click()};
+$("imp").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const r=await api("POST","/api/network/import",{entries:j.entries||[]});S=r;paint();$("io-msg").className="err ok";$("io-msg").textContent=`Added ${r.added}.`}catch(e){$("io-msg").className="err";$("io-msg").textContent=e.message}ev.target.value=""};
+load().catch(e=>{$("io-msg").textContent=e.message});
+</script>
+</body>
+</html>

@@ -23,6 +23,14 @@ from nury.privacy import PrivacyClient, make_client, privacy_enabled, propose_te
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
 STATIC = Path(__file__).parent / "static"
+# 'Our network' screen: hack-jedi's app/network_api.py. Mounted as its docstring says: every /api/network request goes to
+# handle(method, path, body_bytes) -> (status, content_type, bytes), and /network serves static/network.html.
+try:
+    from app import network_api  # type: ignore
+except Exception:
+    network_api = None
+STATIC_OK = re.compile(r"^/[A-Za-z0-9_-]+\.(html|css|js|svg)$")
+MIME = {"html": "text/html; charset=utf-8", "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8", "svg": "image/svg+xml"}
 CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # local only, gitignored
 CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
@@ -132,6 +140,12 @@ class Session:
         self.revision = revision      # {case_id, step, result, note} when this run revises a saved case
         # One privacy client per session: its token map lives here. The pastor's confirmed list is the list that counts.
         self.client = make_client(protected=protected) if protected is not None else make_client(intake=intake)
+        try:   # church contacts keep their phones and links readable in the model context (INTERFACE.md, Church network)
+            from nury import network as net
+            if hasattr(self.client, "allow_network"):
+                self.client.allow_network(net.load_network(root=str(Path(CASES_ROOT).parent / "network")).list())
+        except Exception:
+            pass
         self.state = CaseState(intake, language)
         self.audit = AuditLog()
         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
@@ -280,13 +294,49 @@ class H(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(b)
 
+    def _raw(self):
+        if not hasattr(self, "_rawcache"):
+            self._rawcache = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+        return self._rawcache
+
     def _body(self):
-        n = int(self.headers.get("Content-Length") or 0)
-        return json.loads(self.rfile.read(n) or b"{}")
+        return json.loads(self._raw() or b"{}")
+
+    def _network(self, method, path):
+        """True when the request belongs to the network screen and was answered."""
+        if not (network_api and path.split("?")[0].startswith("/api/network")):
+            return False
+        status, ctype, body = network_api.handle(method, self.path, self._raw())
+        self.send_response(status)
+        self.send_header("Content-Type", ctype)
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+        return True
+
+    def do_PUT(self):
+        self._network("PUT", self.path) or self._json({"error": "not found"}, 404)
+
+    def do_DELETE(self):
+        self._network("DELETE", self.path) or self._json({"error": "not found"}, 404)
 
     def do_GET(self):
         p = self.path.split("?")[0]
-        if p == "/":
+        if self._network("GET", p):
+            return
+        if p == "/network" and (STATIC / "network.html").is_file():
+            p = "/network.html"
+        if STATIC_OK.match(p) and (STATIC / p[1:]).is_file() and p != "/index.html":
+            b = (STATIC / p[1:]).read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", MIME[p.rsplit(".", 1)[1]])
+            self.send_header("Content-Length", str(len(b)))
+            self.end_headers()
+            self.wfile.write(b)
+        elif p == "/api/features":
+            self._json({"network": (STATIC / "network.html").is_file()})
+        elif p == "/":
             b = (STATIC / "index.html").read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -341,7 +391,10 @@ class H(BaseHTTPRequestHandler):
             self._json({"error": "not found"}, 404)
 
     def do_POST(self):
-        p, b = self.path, self._body()
+        p = self.path
+        if self._network("POST", p):
+            return
+        b = self._body()
         if p == "/api/propose-terms":
             self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
         elif p == "/api/revision-preview":

@@ -120,6 +120,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <p class="note" style="margin:0">Choose the kind of crisis. Nury opens the right playbook.</p></div>
   <div id="picks"></div>
   <p class="note" id="select-err"></p>
+  <a class="crow hidden" id="net-link" href="/network" style="text-decoration:none"><span><span class="t">Our network</span><span class="d">Contacts your church has vetted. Stays on this computer.</span></span></a>
   <div class="cases hidden" id="cases"><h3>Open cases</h3><div id="cases-list"></div></div>
 </section>
 
@@ -270,6 +271,7 @@ let pbs=[],pb=null;
 const CHEV='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 async function loadSelect(){
   show("v-select");$("select-err").textContent="";NAV=null;loadCases();
+  api("/api/features").then(f=>$("net-link").classList.toggle("hidden",!f.network)).catch(()=>{});
   try{pbs=(await api("/api/playbooks")).playbooks}catch(e){$("select-err").textContent="Could not load the crisis list. Check that the server is running.";return}
   $("picks").replaceChildren(...pbs.map(p=>{
     const live=p.status==="live",el=document.createElement(live?"button":"div");
