@@ -19,12 +19,6 @@ from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
 STATIC = Path(__file__).parent / "static"
 SESSIONS = {}
-# Fallback until playbook.json carries intake.demo (asked of hack-jedi). The locked text lives in
-# presentation/SHARED_DEMO.md; the app must use it exactly for the detention demo.
-LOCKED_DEMO_FALLBACK = {"detention": ("Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration "
-               "officers outside his workplace in Aurora around 6 PM yesterday. She does not know if the officers "
-               "showed a warrant. Jose has lived here 14 years. They have two children, 8 and 11, both US citizens. "
-               "Maria is afraid to leave the house tomorrow. She wants to know what to do tonight.")}
 GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
 
 
@@ -39,7 +33,7 @@ def playbooks():
         if f.is_file():
             intake = json.loads(f.read_text(encoding="utf-8")).get("intake", {})
         p["placeholder"] = intake.get("placeholder", GENERIC_PLACEHOLDER)
-        demo = intake.get("demo") or LOCKED_DEMO_FALLBACK.get(p["id"])
+        demo = intake.get("demo")
         if demo:
             p["demo_intake"] = demo
         out.append(p)
@@ -62,6 +56,10 @@ class Session:
         self.audit = AuditLog()
         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
         self.fault = {"stage": self.pb.stages[1].id, "times": 1, "draft_suffix": UNSAFE_SUFFIX} if demo_guardrail else None
+        # TEST ONLY: NURY_TEST_ESCALATE=1 (server env, never set for the demo) makes stage 2 fail all 3 tries
+        # when the demo box is ticked, so the escalation path can be viewed once in a browser.
+        if demo_guardrail and os.environ.get("NURY_TEST_ESCALATE") == "1":
+            self.fault["times"] = 3
         self.current = None        # stage id being worked
         self.waiting = None        # StageResult at the gate
         self.decision = None

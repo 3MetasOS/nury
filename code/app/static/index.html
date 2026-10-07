@@ -240,7 +240,7 @@ async function poll(){
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
   $("halt").classList.toggle("hidden",!halted);
-  if(halted){clearInterval(timer);$("halt-msg").textContent=s.halted||"Something went wrong ("+s.error+"). Your intake is not lost; start again."}
+  if(halted){clearInterval(timer);$("halt-msg").textContent=(s.halted||"").replace(" I'll handle this manually.","")||"Something went wrong ("+s.error+"). Your intake is not lost; start again."}
   const g=s.gate;
   $("gate").classList.toggle("hidden",!g);
   $("work").classList.toggle("hidden",!!g||!!halted);
