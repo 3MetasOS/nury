@@ -15,6 +15,7 @@ def scrub():
     for k in ("YVP_APP_KEY", "YVP_BIBLE_ES", "YVP_BIBLE_EN", "JEV_API_KEY"):
         os.environ.pop(k, None)
     os.environ["NURY_JEV_GATE"] = "off"      # a test that wants the gate turns it on and patches requests.post
+    os.environ.setdefault("NURY_REPLAY", "0")      # replay is for people with no key; a test that wants it sets NURY_REPLAY=1
 
 
 def _guard_network():

@@ -28,7 +28,7 @@ License: MIT. Disclosure: the Jev decision API from TypeSafe is used as typed ju
 
 ## Try it in 2 minutes (no keys)
 
-You need Python 3.12 and git. With no keys you can open the app, read every document page and run all tests. Running a crisis needs a Gloo key (see below): without one, the run stops with the error "Set GLOO_API_KEY in the environment."
+You need Python 3.12 and git. With no keys you can open the app, read every document page, run all tests and run a **recorded** crisis (see replay mode below). Running your own crisis needs a Gloo key (see below).
 
 ```
 git clone <this repository> nury && cd nury
@@ -38,6 +38,8 @@ cd code && python3 -m app.server          # http://127.0.0.1:8080  (PORT=9000 to
 ```
 
 You will see the Nury home page with the crisis chooser, the cases list, the church network, an observability page and the "How this was built" documentation.
+
+**Replay mode (the default with no key).** With no `GLOO_API_KEY`, the app runs a recorded run of each playbook's sample intake. The words the model wrote were recorded earlier on this build; everything else runs for real: the safety floor, the named checks, the correction loop, the approval gates, the audit log, the privacy layer, the case file and the Scripture insertion. Press "Use the sample intake" and approve the five stages (turn on the demo box to watch a draft be rejected and rewritten). A typed intake is refused with "This is a recorded run. Add a Gloo key to run your own." An edit you make at a gate is carried forward, but later stages stay the recorded ones. The Jev scores shown are the recorded ones, labelled so. `NURY_REPLAY=1` forces replay, `NURY_REPLAY=0` forces it off; with a key present and the variable unset, replay is off and Nury behaves exactly as before.
 
 **Live mode.** Export `GLOO_API_KEY` in your shell, or put it in a `.env` file at the repo root (gitignored), then restart the app. `JEV_API_KEY` turns the Jev gate on; without it drafts are checked by the code rules alone. `YVP_APP_KEY`, `YVP_BIBLE_ES` and `YVP_BIBLE_EN` turn on exact verse text from YouVersion; without them Nury uses a bank of verified public-domain verses. `NURY_FEEDBACK=on` (or `counts`, the stricter mode) records what a pastor changes (off by default). Keys come from the environment only. Never commit one: `python3 code/tools/scan_keys.py` checks the tracked files.
 

@@ -438,8 +438,9 @@ def make_client(inner=None, protected=(), intake=None, enabled=None):
 
     protected: the pastor's confirmed terms. intake: pass it instead when no pastor confirms (evals):
     every suggested person in the intake is protected."""
+    from . import replay
     from .gloo_client import GlooClient
-    inner = inner or GlooClient()
+    inner = inner or (replay.ReplayClient() if replay.active() else GlooClient())      # no key: the recorded run, never a key-less live call
     if not privacy_enabled(enabled):
         return inner
     if intake is not None:

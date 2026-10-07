@@ -23,6 +23,7 @@ from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome,
 from nury.privacy import PrivacyClient, make_client, privacy_enabled, propose_terms
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 from nury import log
+from nury import replay
 
 STATIC = Path(__file__).parent / "static"
 # 'Our network' screen: hack-jedi's app/network_api.py. Mounted as its docstring says: every /api/network request goes to
@@ -262,6 +263,10 @@ class Session:
         except Exception as e:
             log.note("server.allow_network", e)
         inner = getattr(self.client, "inner", self.client)
+        self.replay = bool(getattr(inner, "replay", False))          # recorded model words, live checks (nury/replay.py)
+        self.replay_edited = False
+        if self.replay:
+            inner.use_playbook(playbook_id, language)
         if hasattr(inner, "max_calls"):           # the most Gloo HTTP calls this one run may make
             inner.max_calls = RUN_CALL_BUDGET
         self.state = CaseState(intake, language)
@@ -296,6 +301,8 @@ class Session:
             self.waiting, self.decision = result, None
             self.cv.wait_for(lambda: self.decision is not None)
             d, self.waiting = self.decision, None
+            if self.replay and d.action == "edit":
+                self.replay_edited = True
         self._feedback(result, d)
         return d
 
@@ -323,6 +330,8 @@ class Session:
                 self.results.append(r)
                 if self.rec:
                     self.rec.stage_done(r, self.audit.events)
+                if self.replay:                       # the Jev scores of the recorded run, shown as recorded
+                    self.audit.log("jev_recorded", stage=s.id, label="recorded", scores=getattr(getattr(self.client, "inner", self.client), "jev_scores", lambda _s: [])(s.id))
                 if r.status not in ("approved", "edited"):
                     try:
                         self.sources_list = compute_outcome(self.pb.id, self.state, self.results)["package"].get("sources_list", [])
@@ -438,7 +447,9 @@ class Session:
                          else f"Draft rejected by guardrail. Regenerating ({min(len(fails) + 1, 3)} of 3).")
         progress = self.progress(ev)
         log = [safe_event(e) for e in ev]
-        return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
+        return {"id": self.id, "replay": self.replay, "replay_banner": replay.BANNER if self.replay else None,
+                "replay_note": replay.EDIT_NOTE if self.replay and self.replay_edited else None,
+                "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
                 "error": self.error, "sources_list": self.sources_list, "done": self.done, "log": log, "language": self.state.language,
                 "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None,
                 "map_svg": self.map_svg() if self.done and not self.halted else None,
@@ -600,7 +611,8 @@ class H(BaseHTTPRequestHandler):
                 n_checks = len(_checks.REGISTRY)
             except Exception:
                 n_checks = None
-            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up"), "named_checks": n_checks,
+            self._json({"replay": replay.active(), "replay_banner": replay.BANNER if replay.active() else "",
+                        "network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up"), "named_checks": n_checks,
                         "feedback": fb, "consent_sentence": sentence if fb else "", "chips": chips})
         elif p == "/":
             b = (STATIC / "index.html").read_bytes()
@@ -710,6 +722,8 @@ class H(BaseHTTPRequestHandler):
             chosen = next((p for p in playbooks() if p["id"] == pid), None)
             if not chosen or chosen["status"] != "live":
                 return self._json({"error": "That crisis is not available yet."}, 400)
+            if replay.active() and not replay.is_sample(pid, intake, b.get("language", "es")):
+                return self._json({"error": replay.REFUSAL, "replay": True}, 400)
             if b.get("language", "es") not in chosen.get("languages", ["es"]):
                 return self._json({"error": "That language is not available for this crisis."}, 400)
             if isinstance(b.get("protected"), list) and (len(b["protected"]) > MAX_PROTECTED or any(len(str(t.get("term", "") if isinstance(t, dict) else t)) > MAX_TERM for t in b["protected"])):

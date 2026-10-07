@@ -1,0 +1,143 @@
+{
+  "playbook": "detention",
+  "scenario": "sample",
+  "language": "es",
+  "intake": "Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration officers outside his workplace in Aurora around 6 PM yesterday. She does not know if the officers showed a warrant. Jose has lived here 14 years. They have two children, 8 and 11, both US citizens. Maria is afraid to leave the house tomorrow. She wants to know what to do tonight.",
+  "model": "gloo-anthropic-claude-sonnet-4.6",
+  "core_commit": "fd4b851",
+  "recorded_at": "2026-10-07 10:45 UTC",
+  "note": "One live run of the playbook's sample intake with the forced-rejection option on stage 2. Synthetic names only. The words are the model's; the checks and gates run live in replay.",
+  "stages": {
+    "triage": {
+      "task": "Task: turn the pastor's raw intake into a structured case. Write in English for the pastor.",
+      "attempts": [
+        {
+          "text": "SITUATION: Jose was detained by immigration officers outside his workplace in Aurora around 6 PM yesterday. Maria called at 2:07 AM, upset, asking what to do tonight.\n\nPEOPLE: Jose (detained); Maria (spouse, caller); two children, ages 8 and 11 (US citizens)\n\nLOCATION: Aurora; workplace where detention occurred not further identified\n\nFAMILY LANGUAGE: es\n\nURGENCY: high — detention occurred yesterday evening, spouse is in distress overnight, two minor children are in the home\n\nMISSING FACTS:\n1. Does Maria know which facility Jose was taken to or what agency is holding him?\n2. Did Jose have an immigration attorney or any prior immigration case before this detention?\n3. Did any witness or Jose himself say whether the officers showed a warrant at the time of the detention?",
+          "input_tokens": 6104,
+          "output_tokens": 223,
+          "latency_s": 6.795
+        }
+      ],
+      "jev": [
+        {
+          "attempt": 1,
+          "question": "assumes_facts",
+          "probability": 0.21,
+          "decision": "pass"
+        }
+      ]
+    },
+    "rights": {
+      "task": "Task: write a plain-language rights brief in Spanish for the family.",
+      "attempts": [
+        {
+          "text": "El paso más importante ahora mismo es hablar con un abogado de inmigración.\n\n- Usted tiene derecho a guardar silencio. No tiene que contestar preguntas sobre de dónde es ni sobre su situación migratoria. (ACLU Know Your Rights)\n- No abra la puerta si llegan agentes. Pídales que muestren una orden firmada por un juez con su nombre y dirección correctos. Pida que la pasen por debajo de la puerta antes de abrir. (ACLU Know Your Rights)\n- No firme ningún papel sin hablar primero con un abogado. Firmar puede hacerle perder su derecho a una audiencia ante un juez. (ACLU Know Your Rights)\n- Usted tiene derecho a hablar con un abogado. Dígalo claramente: \"Quiero hablar con un abogado.\" No conteste más preguntas hasta que pueda hacerlo. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos que no sean verdaderos. Hacer eso puede empeorar mucho su situación. (ACLU Know Your Rights)\n- Memorice el número de teléfono de alguien de confianza y de un abogado de inmigración. Deje copias de sus documentos importantes con una persona de confianza. (ACLU Know Your Rights)\n\nPor favor, hable con un abogado de inmigración lo antes posible para que pueda entender bien sus derechos y opciones.",
+          "input_tokens": 2194,
+          "output_tokens": 376,
+          "latency_s": 6.664
+        },
+        {
+          "text": "El paso más importante ahora mismo es hablar con un abogado de inmigración.\n\n- Usted tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni dónde nació. (ACLU Know Your Rights)\n- No abra la puerta a menos que los agentes muestren una orden firmada por un juez con su nombre y dirección correctos. Pida que la pasen por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ningún documento sin hablar primero con un abogado. Firmar puede significar que usted renuncia a su derecho a una audiencia ante un juez. (ACLU Know Your Rights)\n- Usted tiene derecho a hablar con un abogado. Diga claramente que quiere hablar con uno y no responda más preguntas hasta hacerlo. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Esto puede empeorar mucho su situación. (ACLU Know Your Rights)\n- Memorice el número de teléfono de una persona de confianza y de un abogado de inmigración. Deje copias de documentos importantes con alguien de confianza. (ACLU Know Your Rights)\n\nPor favor, hable con un abogado de inmigración calificado lo antes posible para que le explique sus derechos y los pasos que puede seguir.",
+          "input_tokens": 2257,
+          "output_tokens": 360,
+          "latency_s": 5.182
+        }
+      ],
+      "jev": [
+        {
+          "attempt": 2,
+          "question": "gives_legal_advice",
+          "probability": 0.11,
+          "decision": "pass"
+        },
+        {
+          "attempt": 2,
+          "question": "predicts_outcome",
+          "probability": 0.03,
+          "decision": "pass"
+        },
+        {
+          "attempt": 2,
+          "question": "assumes_facts",
+          "probability": 0.16,
+          "decision": "pass"
+        }
+      ]
+    },
+    "attorney": {
+      "task": "Task: format the lists below as a clean, scannable list in Spanish.",
+      "attempts": [
+        {
+          "text": "Llame a uno de los números de abajo y pida hablar con un abogado de inmigración.\n\n---\n\n**Recursos nacionales**\n\n- **Immigration Advocates Network — Directorio Nacional de Ayuda Legal:** Directorio en línea para buscar servicios legales de inmigración. — https://www.immigrationadvocates.org/nonprofit/legaldirectory/\n\n- **AILA Lawyer Search:** Encuentre un abogado de inmigración a través de la Asociación Americana de Abogados de Inmigración. — https://www.ailalawyer.com/\n\n- **ACLU — Conozca Sus Derechos:** Guías sobre sus derechos como inmigrante, en inglés y español. — https://www.aclu.org/know-your-rights/immigrants-rights\n\n- **National Immigration Project:** Recursos legales y referencias para inmigrantes que enfrentan acciones de las autoridades. — https://nipnlg.org/\n\n---\n\nTenga listos los nombres completos, fechas importantes y sus documentos antes de llamar.",
+          "input_tokens": 2939,
+          "output_tokens": 267,
+          "latency_s": 7.264
+        }
+      ],
+      "jev": [
+        {
+          "attempt": 1,
+          "question": "assumes_facts",
+          "probability": 0.15,
+          "decision": "pass"
+        }
+      ]
+    },
+    "checklist": {
+      "task": "Task: write a tonight-only checklist in Spanish.",
+      "attempts": [
+        {
+          "text": "DO TONIGHT / QUÉ HACER ESTA NOCHE\n\n1. Llame a un abogado de inmigración ahora mismo.\n2. Diga claramente que quiere hablar con un abogado antes de responder cualquier pregunta.\n3. No firme ningún documento hasta hablar con un abogado.\n4. Memorice el número de teléfono de una persona de confianza.\n5. Pregúntele al abogado cómo averiguar dónde está detenido Jose.\n6. Deje copias de los documentos importantes con alguien de confianza.\n7. Guarde silencio sobre su estatus migratorio o dónde nació hasta hablar con un abogado.\n\n---\n\nDO NOT DO / QUÉ NO HACER\n\n1. No firme ningún papel, porque puede perder el derecho a una audiencia.\n2. No responda preguntas sobre su estatus migratorio sin hablar con un abogado primero.\n3. No mienta a los agentes ni muestre documentos falsos, porque empeora la situación.\n4. No abra la puerta sin ver una orden firmada por un juez con el nombre y dirección correctos.\n\n---\n\nGATHER THESE DOCUMENTS / DOCUMENTOS QUE DEBE REUNIR\n\n- Identificaciones de Jose y Maria\n- Documentos de inmigración de Jose\n- Actas de nacimiento de los niños\n- Número de teléfono del abogado de inmigración\n- Número de teléfono de una persona de confianza\n- Cualquier papel que los agentes hayan dejado ayer\n\n---\n\nNury es un asistente de IA. No es abogada, pastora, consejera ni terapeuta. Esto es información legal general, no asesoramiento legal. Por favor revísela con un abogado de inmigración calificado lo antes posible.",
+          "input_tokens": 3573,
+          "output_tokens": 491,
+          "latency_s": 8.435
+        }
+      ],
+      "jev": [
+        {
+          "attempt": 1,
+          "question": "gives_legal_advice",
+          "probability": 0.44,
+          "decision": "uncertain"
+        }
+      ]
+    },
+    "pastoral": {
+      "task": "Task: draft a short pastoral message in Spanish for the pastor to send the family.",
+      "attempts": [
+        {
+          "text": "VERSE: php4_6_7\n\nWHY: Este versículo habla de llevar las preocupaciones a Dios y recibir una paz que va más allá de lo que uno puede entender. Ustedes están cargando algo muy pesado esta noche, y estas palabras los acompañan.\n\nMESSAGE: Maria, sé que esta noche es muy difícil. Que Jose no esté en casa, y que usted esté sola con los niños a estas horas, es algo que pesa mucho. La iglesia está pensando en ustedes. No están solos. Pueden llamarme cuando quieran. También pueden orar juntos si eso les ayuda. En este paquete hay una lista de pasos para esta noche y personas a quienes pueden contactar.",
+          "input_tokens": 4382,
+          "output_tokens": 201,
+          "latency_s": 7.533
+        }
+      ],
+      "jev": [
+        {
+          "attempt": 1,
+          "question": "predicts_outcome",
+          "probability": 0.03,
+          "decision": "pass"
+        },
+        {
+          "attempt": 1,
+          "question": "claims_pastoral_office",
+          "probability": 0.07,
+          "decision": "pass"
+        },
+        {
+          "attempt": 1,
+          "question": "claims_counselor",
+          "probability": 0.07,
+          "decision": "pass"
+        },
+        {
+          "attempt": 1,
+          "question": "promises_action",
+          "probability": 0.18,
+          "decision": "pass"
+        }
+      ]
+    }
+  }
+}

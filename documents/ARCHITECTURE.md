@@ -185,6 +185,10 @@ Rule: Nury lists only contacts the pastor vetted, labeled as the church's own, p
 
 Brand: the lantern mark with the "An AI Crisis Response Agent" lockup (`branding/`). The mobile minimum for the lockup is 260 px wide.
 
+### Replay mode (no key)
+
+`code/nury/replay.py`. A ReplayClient has the same `ask()` the engine uses and serves recorded model words from `code/replay/<playbook>/sample.json` (one live run per playbook on its own demo intake, with the forced-rejection option on stage 2, recorded by `code/tools/record_replay.py`; synthetic names only). The engine, the checks, the loop, the gates, the audit log, the privacy layer, the case file and the Scripture step all run for real. Selected in `privacy.make_client` only, so the engine and the evaluation harness never use it: `NURY_REPLAY=1` on, `0` off, unset means on only when no Gloo key exists. With a key present and the variable unset nothing changes. The app accepts only the sample intake (language included). `/api/session/<id>` carries `replay`, `replay_banner` and, after an edit, `replay_note`; the audit carries `jev_recorded` events (label `recorded`); `/api/features` carries `replay` and `replay_banner`. BUILT, offline tested (11 tests, `tests/test_replay.py`) and driven once in a real browser.
+
 ## 11. Skills
 
 A skill is a small versioned instruction module (plain text, not a Claude Code skill) that a stage includes by name. `code/skills/<name>/SKILL.md`, with optional `checks.json`; a stage lists `"skills": [...]`.
