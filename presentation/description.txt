@@ -6,11 +6,11 @@ It is 2 AM. A pastor's phone rings. A panicked immigrant family says a relative 
 
 Nury turns that call into a package. The pastor types what the family said. Nury runs five stages: triage the case, write a plain-language rights brief, list attorney resources, build a family checklist, and draft a short pastoral message. Family materials come out in the family's language.
 
-After every stage, the pastor can Approve, Edit, or Stop. Nury has no send path. Nothing reaches the family except through the pastor.
+After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
 
 Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source file. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
 
-Each draft passes our rules and, when Jev is reachable, a Jev classifier. A failing draft is regenerated, up to three tries, then escalated. The pastor sees only drafts that passed, and approves every stage.
+Each draft passes our rules and, when Jev is reachable, a Jev classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval.
 
 Nury runs on Gloo's guarded Responses endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
 

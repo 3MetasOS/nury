@@ -217,5 +217,5 @@ Change list against the 8a28a18 fill. Judge results, not human verdicts. The fou
 | Titles | | card titles changed after 9bc5c6d (title text only, aabbd63) | deck, screenshot, HOW_IT_WAS_BUILT |
 | Red-team panel | not re-run | still not re-run on the final build | deck backup row says so |
 
-**PENDING (hack-jedi's check):** "the final scored build differs from the shipped build only in the crisis card titles and one context string given to Jev". Not written into any public text yet.
+**Scored build against shipped build (hack-jedi's check, 2026-10-07):** The shipped build differs from the scored build (9bc5c6d) only in the crisis card titles (for example detention: Immigration matter) and in the title text inside one context string given to the Jev gate; three pipelines run on the shipped build (detention 01 and 14, attacker a02) completed with no draft rejected and with the Jev gate probabilities in their usual range. Three pipelines, one run each, are a smoke check, not a rate.
 

@@ -66,7 +66,7 @@ Nury is one engine that runs **playbooks**. A crisis is a folder of data. Two pl
         +-- any problem? --> regenerate, with the reasons and never the draft  (3 tries)
         |                    still failing after 3 --> "I'll handle this manually"
         v
-   APPROVAL GATE      the pastor sees only a draft that passed. Approve / Edit / Stop
+   APPROVAL GATE      the pastor sees a draft after the checks that ran. Approve / Edit / Stop
         |
         v
  Package: every approved stage. Copy or download. The pastor shares it by hand.
@@ -85,7 +85,7 @@ Nury is one engine that runs **playbooks**. A crisis is a folder of data. Two pl
 6. **Detokenize.** The reply is converted back so the pastor sees real names. A mangled token is repaired. An unknown token makes Nury ask again, twice at most, and then shows a visible gap. BUILT, offline.
 7. **Named checks.** Plain code tests the draft against the stage's rules and the safety floor. Section 4 lists them. BUILT, live.
 8. **Jev gate.** If the draft passed the named checks, one batched call to the Jev decision API (from TypeSafe) asks that stage's yes/no questions, for example "Does any text give legal advice about this family's case?" Each question is written so that "yes" is the unsafe answer. At or over the question's line (0.50, or 0.60 for the facts question) the draft is rejected. From 0.30 up to the line it passes and the audit log records "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate. BUILT, live on three scenarios; see section 2.
-9. **The loop.** A rejected draft goes back to the model with the reasons, in plain words, never the rejected text. Three tries in all. After the third failure the stage ends with no draft shown and the line "I'll handle this manually." The pastor never sees an unsafe draft. BUILT, live.
+9. **The loop.** A rejected draft goes back to the model with the reasons, in plain words, never the rejected text. Three tries in all. After the third failure the stage ends with no draft shown and the line "I'll handle this manually." A rejected draft is held back, not shown. The checks are tripwires, not proofs, so a draft that passes can still be wrong, and the pastor approves every stage. BUILT, live.
 10. **Scripture** (pastoral message only). The model returns a verse id from an approved list and at most two short why-lines. The app inserts the exact verse text. BUILT, live. See section 7.
 11. **Approval gate.** The pastor sees a draft that passed. Approve moves on. Edit replaces the text, and a name typed in an edit is protected before the next stage runs. Stop ends the run with "I'll handle this manually." and offers the vetted sources. BUILT, live.
 12. **Package.** Every approved stage, with Copy all and Download, and the line "Nury never sends anything. You do." BUILT, live.
@@ -120,7 +120,7 @@ This section explains how Nury's core works: the cycle for one stage, the five-s
 
 ### The cycle for one stage
 
-One stage is one call of `run_stage` (`engine.py` line 154). The pastor sees only a draft that passed every layer below, or a plain "I'll handle this manually."
+One stage is one call of `run_stage` (`engine.py` line 154). The pastor sees a draft only after it passed the layers below that ran (the Jev gate fails open when Jev is unreachable, and the audit log says so), or a plain "I'll handle this manually." The checks are tripwires, not proofs.
 
 1. **Read the inputs.** The engine loads the playbook and the stage, and reads the fields from the approved triage text (line 169). A stage with a `when` condition that does not match is skipped (line 172). It gathers the approved text of the stages this one depends on (line 189) and builds the stage input (line 192, `playbook.build_input`).
 2. **Fill in the sources.** Fixed sources come from the playbook's vetted JSON. Dynamic sources are chosen at run time: the church's own contacts, the official list for the state, and the approved verses (`dynamic_source`, line 89). The audit records which entries were offered (line 185).

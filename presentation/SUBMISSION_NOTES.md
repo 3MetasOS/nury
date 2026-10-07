@@ -7,7 +7,7 @@ Lines that belong in the submission, outside the 250-word description:
 - Entry by Juan Peláez, 3Metas.
 - Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. (link the build log). The planning notes and a small scripted scaffold existed before the event and are kept in `documents/prework` as reference. The first commit of the Nury repository is 2026-10-06 19:36 MDT, and everything in `code/` was written during the event.
 - With no Gloo key the app runs a RECORDED run of each sample intake (replay mode). The model's words are recorded; the checks, gates and privacy layer run for real. It is not a live run and is off when a key is present. Also shipped: a read-only CLI and MCP server for Nury's rules (no key, no model call).
-- PENDING hack-jedi's check, do not publish yet: "the final scored build differs from the shipped build only in the crisis card titles and one context string given to Jev".
+- The shipped build differs from the scored build (9bc5c6d) only in the crisis card titles (for example detention: Immigration matter) and in the title text inside one context string given to the Jev gate; three pipelines run on the shipped build (detention 01 and 14, attacker a02) completed with no draft rejected and with the Jev gate probabilities in their usual range. Three pipelines, one run each, are a smoke check, not a rate.
 - Images and fonts: see `branding/IMAGES.md`.
 
 The first line is disclosure, not attribution: the judges should know the narration is synthetic. It stays out of the description, which stays unchanged.

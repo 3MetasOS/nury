@@ -7,7 +7,7 @@ Gate rule from hack-sensei still holds: skills, the case file, the church networ
 ## 1. The 60-second technical story (spoken, about 154 words)
 A pastor types what a family said. A privacy layer in Nury swaps names, phones and IDs for tokens, so the model sees tokens, not names. The request goes to Gloo AI Studio's guarded endpoint, where Claude writes. A full package is five calls, about a minute and about nine cents.
 
-Twenty named checks and the safety floor read every draft. Then Jev, a classifier from TypeSafe, answers fixed questions about it with a probability. At its line, usually 0.50, the draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it. If Jev is down, the pastor is not blocked.
+Twenty named checks and the safety floor read every draft. Then Jev, a classifier from TypeSafe, answers fixed questions about it with a probability. At its line, usually 0.50, the draft is rejected and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval. If Jev is down, the run continues on the deterministic checks alone and the audit log says so.
 
 Before release we test it in four layers: plain code, typed judges (also Jev, so no longer independent of the gate), a red team of three models from other makers that only advises, and a person. Then the pastor decides: Approve, Edit or Stop. Nury has no send path.
 

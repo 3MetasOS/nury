@@ -39,7 +39,7 @@ DECIDED (hack-sensei, 2026-10-07): Eric's film plays and Juan stays silent while
 Play rows 5 to 7 of the film (the tool, the rights brief, the turn: 0:25 to 0:52 in table 1, about 27 s), with Eric's lines. Do not run the live app on stage.
 - Juan BEFORE (about 3 s): "Here is one call, start to finish."
 - The film plays (27 s). Juan says nothing.
-- Juan AFTER (about 4 s): "The pastor never saw the unsafe draft. Nury never sends. The pastor does."
+- Juan AFTER (about 4 s): "A draft that failed was held back. Nury never sends. The pastor does."
 The selector screenshot is the first frame the audience sees. If the film fails to play, Juan says the three sentences of the old demo text (types, five stages with a gate after each, rejected draft regenerated) and shows the screenshots; no live app.
 
 ## 1:14 to 1:36  Slide 5 (light): how it is built  [90s]
