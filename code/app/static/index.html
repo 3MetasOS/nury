@@ -328,7 +328,7 @@ $("rv-go").onclick=async()=>{
   reviseCtx={case_id:curCase.meta.id,step:$("rv-step").value,result:document.querySelector('input[name="rv-res"]:checked').value,note};
   const pv=await api("/api/revision-preview",reviseCtx);if(pv.error){$("rv-err").textContent=pv.error;return}
   pb=pbs.find(p=>p.id===pv.playbook)||{id:pv.playbook};$("lang").value=pv.language||"es";$("intake").value=pv.intake;$("demo").checked=false;
-  const r=await api("/api/propose-terms",{intake:pv.intake});
+  const r=await api("/api/propose-terms",{intake:pv.terms_text||pv.intake});
   if(!r.on){startRun(null);return}
   termList=(r.terms||[]).map(t=>({term:t.term,kind:t.kind,count:t.count,on:!!t.suggested}));
   $("protect-err").textContent="";$("add-term").value="";drawTerms();
@@ -439,7 +439,7 @@ async function poll(){
     $("b-save").onclick=async()=>{$("b-save").disabled=true;const r=await api(`/api/session/${sid}/save`,{});
       if(r.error){$("save-err").textContent=r.error;$("b-save").disabled=false;return}
       $("b-save").textContent="Saved";sv.classList.remove("hidden");sv.replaceChildren();
-      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`${vm?`Saved as version ${vm[1]}, beside the earlier version. `:"Saved "}on this computer in ${r.path}. It stays here. Nothing was sent. `));
+      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`${vm?`Saved as version ${vm[1]}, beside the earlier version, on this computer in `:"Saved on this computer in "}${r.path}. It stays here. Nothing was sent. `));
       const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a)};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;

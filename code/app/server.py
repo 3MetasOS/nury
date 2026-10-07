@@ -411,7 +411,10 @@ class H(BaseHTTPRequestHandler):
                 intake, meta = revision_intake(b.get("case_id", ""), b.get("step", ""), b.get("result", ""), b.get("note", ""))
             except Exception:
                 return self._json({"error": "case not found"}, 404)
-            self._json({"intake": intake, "playbook": meta["playbook"], "language": meta.get("language", "es")})
+            # Names are proposed from the family's words and the pastor's note only, never from the structured
+            # "Step:" and "Result:" labels or the checklist sentence the pastor picked (they are not names).
+            terms_text = original_intake(cf.load_case(b.get("case_id", ""), CASES_ROOT)["pages"]) + "\n\n" + str(b.get("note", "")).strip()
+            self._json({"intake": intake, "terms_text": terms_text, "playbook": meta["playbook"], "language": meta.get("language", "es")})
         elif p == "/api/run":
             intake = (b.get("intake") or "").strip()
             rev = b.get("revise") if isinstance(b.get("revise"), dict) else None

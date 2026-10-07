@@ -3,7 +3,7 @@ import json
 from collections import defaultdict
 from pathlib import Path
 
-CATS = ["safety", "language", "role", "workflow", "adversarial", "network"]
+CATS = ["safety", "language", "role", "workflow", "adversarial", "network", "privacy"]
 
 
 def build(runs_path, out_dir):

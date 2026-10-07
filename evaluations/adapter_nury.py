@@ -26,6 +26,34 @@ PRIVACY = privacy_enabled()   # on by default; NURY_PRIVACY=off for an A/B. The 
 
 
 
+class _Capture:
+    """Sits BELOW the privacy layer. Records the exact strings that would be sent to the model, so a run can be
+    checked for protected names at the boundary. Only counts leave this class; the strings stay in memory."""
+
+    def __init__(self, inner):
+        self.inner, self.bodies = inner, []
+
+    def ask(self, user_input, instructions=None, **kw):
+        self.bodies.append(f"{user_input or ''}\n{instructions or ''}")
+        return self.inner.ask(user_input, instructions=instructions, **kw)
+
+    def respond(self, user_input, instructions=None, **kw):
+        self.bodies.append(f"{user_input or ''}\n{instructions or ''}")
+        return self.inner.respond(user_input, instructions=instructions, **kw)
+
+    def __getattr__(self, name):
+        return getattr(self.inner, name)
+
+
+def _contains(text, term):
+    import re
+    t = term.strip()
+    if not t:
+        return False
+    pat = rf"(?<!\w){re.escape(t)}(?!\w)" if t[0].isalnum() and t[-1].isalnum() else re.escape(t)
+    return re.search(pat, text, re.I) is not None
+
+
 def _viol(v):
     return [x if isinstance(x, str) else f"{x.get('category')}: {x.get('reason')}" for x in (v or [])]
 
@@ -67,7 +95,9 @@ def _run(sc, t0, pbid, ids, fi, kw):
     # Same path as run_scripted, plus the privacy client (protects every suggested person in the intake)
     # and the gate wrapper that protects a name the pastor adds in an edit.
     state, audit = CaseState(sc["intake"], sc["output_language"]), AuditLog()
-    client = make_client(intake=sc["intake"])
+    from nury.gloo_client import GlooClient
+    cap = _Capture(GlooClient())
+    client = make_client(inner=cap, intake=sc["intake"])
     try:   # keep every vetted phone, link and email of the run intact (the family's own numbers are still tokenized)
         if hasattr(client, "allow_playbook"):
             client.allow_playbook(get_playbook(pbid))
@@ -103,7 +133,14 @@ def _run(sc, t0, pbid, ids, fi, kw):
         if r.status in ("stopped", "escalated"):
             halted, halt_stage, escalated = True, n, r.status == "escalated"
             break
+    # Boundary check: no protected value (names the pastor confirmed or added, phones, emails...) in any string sent to the model.
+    pmap = client.map() if hasattr(client, "map") else {}
+    values = [v for v in pmap.values() if isinstance(v, str) and v.strip()]
+    leaks = sum(1 for b in cap.bodies for v in values if _contains(b, v))
+    expect = (sc.get("flags") or {}).get("expect_protected", [])
+    protected_present = {t: any(_contains(v, t) for v in values) for t in expect}
     pkg = None if halted else {str(s["n"]): s["final_text"] for s in stages}
     return {"scenario_id": sc["id"], "stages": stages, "halted": halted, "halt_stage": halt_stage,
             "escalated": escalated, "audit_log": audit.events, "package": pkg,
-            "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "privacy": PRIVACY, "latency_s": round(time.time() - t0, 2)}
+            "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "privacy": PRIVACY,
+            "privacy_checked_values": len(values), "privacy_bodies": len(cap.bodies), "privacy_leaks": leaks, "protected_present": protected_present, "latency_s": round(time.time() - t0, 2)}

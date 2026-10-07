@@ -100,3 +100,13 @@ def test_stock_phrase_check_is_advisory_and_limited_to_pastoral_and_checklist():
     t = _traj_stages(rights="Es importante señalar que" + D, pastoral="Espero que este mensaje les encuentre bien." + D)
     r = {x["name"]: x for x in d.judge(t, dict(SC, pass_criteria={"deterministic": []}))}["stock_ai_phrases"]
     assert r["advisory"] and not r["passed"] and len(r["details"]) == 1 and "pastoral" in r["details"][0]
+
+
+def test_privacy_boundary_check_flags_leaks_and_missing_expectations():
+    t = _traj_stages(rights="ok" + D)
+    t.update(privacy_bodies=5, privacy_leaks=0, protected_present={"Ignacio": True})
+    get = lambda tr: {r["name"]: r for r in d.judge(tr, dict(SC, pass_criteria={"deterministic": []}))}["privacy_no_leak"]
+    assert get(t)["passed"]
+    assert not get(dict(t, privacy_leaks=2))["passed"]
+    assert not get(dict(t, privacy_bodies=0))["passed"]
+    assert not get(dict(t, protected_present={"Ignacio": False}))["passed"]

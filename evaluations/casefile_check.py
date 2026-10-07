@@ -60,6 +60,14 @@ def check_case_dir(d, playbook, rejected_snippets=(), secrets=(), edit_marker=No
     return bad
 
 
+USAGE = []   # [(label, tokens_in, tokens_out)] per pipeline, for the cost log
+P_IN, P_OUT = 3.00, 15.00   # gloo-anthropic-claude-sonnet-4.6, USD per 1M tokens (Gloo /platform/v2/models)
+
+
+def note_usage(label, results):
+    USAGE.append((label, sum(r.metrics.get("input_tokens", 0) for r in results), sum(r.metrics.get("output_tokens", 0) for r in results)))
+
+
 def tree_hash(d):
     import hashlib
     return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(d).iterdir()) if p.is_file()}
@@ -74,6 +82,7 @@ def revise_and_check(sc, saved, root, ids, secrets, cf, run_scripted):
     rv = dict(sc["revise"], case_id=saved["id"])
     intake, meta = srv.revision_intake(saved["id"], rv["step"], rv["result"], rv["note"])
     state2, results2, audit2 = run_scripted(intake, sc["output_language"], {}, playbook=sc["playbook"])
+    note_usage(sc["id"] + " (v2)", results2)
     new_id = srv.next_version_id(saved["id"])
     r2 = cf.save_case(state2, audit2, playbook=sc["playbook"], root=root, case_id=new_id)
     d2 = Path(r2["path"])
@@ -115,6 +124,7 @@ def run_live():
         for k, a in sc["pastor_actions"].items():
             dec[ids[int(k) - 1]] = ("edit", a["edit"]) if isinstance(a, dict) else a
         state, results, audit = run_scripted(sc["intake"], sc["output_language"], dec, fault_injection=fi, playbook=sc["playbook"])
+        note_usage(sc["id"] + " (v1)", results)
         rejected = [a["text"] for r in results for a in r.attempts if a.get("violations") and a.get("text")]
         snippets = [UNSAFE_SUFFIX.strip()] if fi else []
         with tempfile.TemporaryDirectory() as root:
@@ -133,7 +143,13 @@ def run_live():
         print(f"{sc['id']:<34} {'PASS' if not problems else 'FAIL'} {problems}", flush=True)
     d = HERE / "results"
     d.mkdir(exist_ok=True)
-    (d / "casefile.json").write_text(json.dumps(out, indent=1))
+    tot_i, tot_o = sum(u[1] for u in USAGE), sum(u[2] for u in USAGE)
+    for label, ti, to in USAGE:
+        print(f"  {label:<40} in {ti:>6} out {to:>5}  ${ti * P_IN / 1e6 + to * P_OUT / 1e6:.4f}")
+    cost = tot_i * P_IN / 1e6 + tot_o * P_OUT / 1e6
+    print(f"TOTAL in {tot_i} out {tot_o} cost ${cost:.4f}")
+    (d / "casefile.json").write_text(json.dumps({"checks": out, "usage": [{"run": u[0], "in": u[1], "out": u[2]} for u in USAGE],
+                                                  "tokens_in": tot_i, "tokens_out": tot_o, "cost_usd": round(cost, 4)}, indent=1))
     return out
 
 
