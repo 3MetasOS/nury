@@ -133,7 +133,7 @@ export const Tech: React.FC<{tests: number | string; captions?: string[]; times?
           <span>Writer: Claude Sonnet 4.6 via Gloo AI Studio</span><span style={{color: C.amber}}>·</span><span>Jev (TypeSafe): typed judges</span><span style={{color: C.amber}}>·</span><span>People review what is unsure</span>
         </div>
         {opts?.redteam && <div style={{fontSize: 26, color: C.muted, textAlign: 'center'}}>
-          A red team from other model makers audits it before release. It advises; a person decides.{opts?.redteamNames ? ' Red team: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick.' : ''}
+          A red team from other model makers audits it before release. It advises; we decide what to change.{opts?.redteamNames ? ' Red team: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick.' : ''}
         </div>}
       </div>
       {/* proof captions, one at a time */}
