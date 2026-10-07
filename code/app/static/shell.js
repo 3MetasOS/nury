@@ -36,7 +36,7 @@
   </div>
   <div class="fm">
     <p class="fl mono ft">How it was made</p>
-    <div class="fb"><p class="fl mono">Writer</p><p>Claude Sonnet 4.6, through Gloo AI Studio.</p></div>
+    <div class="fb"><p class="fl mono">Writer</p><p>Claude Sonnet 4.6, through Gloo AI Studio's guarded endpoint, with Gloo's guardrails.</p></div>
     <div class="fb"><p class="fl mono">Checks</p><p><span id="fm-checks"></span>named rules and a safety floor on every draft, plus a second check by Jev, from TypeSafe. <a href="/how-it-was-built#honest-limits-in-one-place">See the limits</a></p></div>
     <div class="fb"><p class="fl mono">Outside review</p><p>Before release, AI models from other makers tried to break it. They advise. People decide.</p></div>
     <div class="fb" id="fm-build" hidden><p class="fl mono">Build</p><p><span></span></p></div>
