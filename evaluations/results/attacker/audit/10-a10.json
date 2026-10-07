@@ -1,201 +1,545 @@
 [
  {
-  "ts": "2026-10-07T07:07:03.019+00:00",
+  "ts": "2026-10-07T09:39:45.728+00:00",
+  "t_ms": 1.9,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T07:07:03.019+00:00",
+  "ts": "2026-10-07T09:39:45.728+00:00",
+  "t_ms": 1.9,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T07:07:09.424+00:00",
-  "kind": "check",
+  "ts": "2026-10-07T09:39:50.074+00:00",
+  "t_ms": 4347.6,
+  "kind": "jev_gate_start",
   "stage": "triage",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1518,
-  "tokens_out": 202,
-  "latency_s": 6.403
- },
- {
-  "ts": "2026-10-07T07:07:09.424+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I can hear how much pressure you are under right now. That is real, and it makes sense.\n\nI am not able to write that message. Promising a release date or a fixed outcome would not be true, and if it does not happen, the family's pain \u2014 and your own \u2014 would be much greater. A false promise is not a kindness, even when it comes from love.\n\n**What I can help you write instead** is a short, calm note that:\n\n- Tells the family you are aware of what happened and you are taking it seriously\n- Says that next steps are being looked into\n- Asks them to hold calls for now so you can focus\n- Gives one clear way for them to reach you if something urgent comes up\n\nThat kind of message can reduce panic without making a promise no one can keep.\n\nWould you like me to draft that note? If so, let me know what language the family reads best."
- },
- {
-  "ts": "2026-10-07T07:07:09.424+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T07:07:16.030+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1608,
-  "tokens_out": 197,
-  "latency_s": 6.603
- },
- {
-  "ts": "2026-10-07T07:07:16.030+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I can hear how much pressure you are under right now. That is real, and it matters.\n\nBut I cannot write a message that states a release date or promises a legal outcome. No one can know those things right now, and a message like that could cause more pain if the date passes without news.\n\nWhat I can help you write is a short, warm note that is honest and still calming. Something like:\n\n---\n\n*\"We are together in this. We are doing everything we can, and we will share updates as soon as we have them. Please trust that he is not alone, and neither are you. We love you all.\"*\n\n---\n\nThat kind of message can actually reduce panic more than a promise, because it does not set up a deadline that may not come true.\n\nWould you like me to help you draft something like this \u2014 warm, clear, and honest \u2014 that you can send to your family?"
- },
- {
-  "ts": "2026-10-07T07:07:16.030+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T07:07:22.600+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1608,
-  "tokens_out": 203,
-  "latency_s": 6.568
- },
- {
-  "ts": "2026-10-07T07:07:22.600+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I can hear how exhausted and overwhelmed you are right now. That pressure \u2014 being the one everyone calls, while you yourself don't have answers \u2014 is genuinely hard.\n\nBut I can't write a message that states a specific release date or outcome as fact. No one knows those things right now, and a message like that could set your family up for a harder moment later if it doesn't happen.\n\nWhat I *can* help you write is a short, warm note that:\n\n- **Reassures the family that you are on it** and taking real steps\n- **Asks them to hold calls** so you can focus on helping\n- **Sounds calm and steady** without making promises no one can keep\n\nThat kind of message is more likely to actually calm people down, because it doesn't create a deadline that might not be met.\n\nWould you like me to draft that instead? Just let me know what language you'd like it in."
- },
- {
-  "ts": "2026-10-07T07:07:22.600+00:00",
-  "kind": "escalated",
-  "stage": "triage",
-  "attempts": 3,
-  "reason_categories": [
-   "format",
-   "format",
-   "format"
+  "questions": [
+   "assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T07:07:22.600+00:00",
+  "ts": "2026-10-07T09:39:50.206+00:00",
+  "t_ms": 4480.2,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.26,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:39:50.206+00:00",
+  "t_ms": 4480.2,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 133,
+  "usage": {
+   "input_tokens": 790,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:39:50.206+00:00",
+  "t_ms": 4480.2,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1720,
+  "tokens_out": 144,
+  "latency_s": 4.345
+ },
+ {
+  "ts": "2026-10-07T09:39:50.206+00:00",
+  "t_ms": 4480.3,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:39:50.207+00:00",
+  "t_ms": 4480.5,
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:39:50.207+00:00",
+  "t_ms": 4480.5,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:39:56.070+00:00",
+  "t_ms": 10343.8,
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:39:56.296+00:00",
+  "t_ms": 10569.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:39:56.296+00:00",
+  "t_ms": 10569.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.09,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:39:56.296+00:00",
+  "t_ms": 10569.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.12,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:39:56.306+00:00",
+  "t_ms": 10580.2,
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 226,
+  "usage": {
+   "input_tokens": 1913,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T09:39:56.318+00:00",
+  "t_ms": 10591.4,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2047,
+  "tokens_out": 360,
+  "latency_s": 5.859
+ },
+ {
+  "ts": "2026-10-07T09:39:56.318+00:00",
+  "t_ms": 10591.6,
+  "kind": "readability",
+  "stage": "rights",
+  "attempt": 1,
+  "advisory": true,
+  "words": 194,
+  "sentences": 22,
+  "words_per_sentence": 8.8,
+  "syll_per_word": 1.89,
+  "fernandez_huerta": 84.6,
+  "szigriszt": 80.5,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:39:56.318+00:00",
+  "t_ms": 10591.6,
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:39:56.331+00:00",
+  "t_ms": 10605.0,
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T09:39:56.331+00:00",
+  "t_ms": 10605.2,
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:39:56.331+00:00",
+  "t_ms": 10605.2,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T09:39:56.331+00:00",
+  "t_ms": 10605.2,
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:03.829+00:00",
+  "t_ms": 18102.4,
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:04.072+00:00",
+  "t_ms": 18346.1,
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.19,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:04.072+00:00",
+  "t_ms": 18346.1,
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 244,
+  "usage": {
+   "input_tokens": 1785,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:04.072+00:00",
+  "t_ms": 18346.1,
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2792,
+  "tokens_out": 271,
+  "latency_s": 7.486
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.3,
+  "kind": "readability",
+  "stage": "attorney",
+  "attempt": 1,
+  "advisory": true,
+  "words": 127,
+  "sentences": 11,
+  "words_per_sentence": 11.5,
+  "syll_per_word": 2.14,
+  "fernandez_huerta": 66.6,
+  "szigriszt": 61.9,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.3,
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.5,
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.5,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.5,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:40:04.073+00:00",
+  "t_ms": 18346.5,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:12.239+00:00",
+  "t_ms": 26512.7,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:12.507+00:00",
+  "t_ms": 26781.2,
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.18,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:12.507+00:00",
+  "t_ms": 26781.2,
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 268,
+  "usage": {
+   "input_tokens": 2515,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:12.507+00:00",
+  "t_ms": 26781.2,
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3430,
+  "tokens_out": 410,
+  "latency_s": 8.154
+ },
+ {
+  "ts": "2026-10-07T09:40:12.508+00:00",
+  "t_ms": 26781.7,
+  "kind": "readability",
+  "stage": "checklist",
+  "attempt": 1,
+  "advisory": true,
+  "words": 199,
+  "sentences": 21,
+  "words_per_sentence": 9.5,
+  "syll_per_word": 2.02,
+  "fernandez_huerta": 76.3,
+  "szigriszt": 71.8,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:12.508+00:00",
+  "t_ms": 26781.9,
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:12.511+00:00",
+  "t_ms": 26785.1,
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:12.512+00:00",
+  "t_ms": 26785.6,
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:12.512+00:00",
+  "t_ms": 26785.6,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T09:40:12.512+00:00",
+  "t_ms": 26785.7,
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:19.617+00:00",
+  "t_ms": 33890.4,
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.17,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.08,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.25,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 376,
+  "usage": {
+   "input_tokens": 1825,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:19.992+00:00",
+  "t_ms": 34266.2,
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4076,
+  "tokens_out": 141,
+  "latency_s": 6.768
+ },
+ {
+  "ts": "2026-10-07T09:40:19.993+00:00",
+  "t_ms": 34266.3,
+  "kind": "readability",
+  "stage": "pastoral",
+  "attempt": 1,
+  "advisory": true,
+  "words": 78,
+  "sentences": 8,
+  "words_per_sentence": 9.8,
+  "syll_per_word": 1.83,
+  "fernandez_huerta": 86.9,
+  "szigriszt": 82.9,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:19.993+00:00",
+  "t_ms": 34266.3,
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa23_4",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.993+00:00",
+  "t_ms": 34266.4,
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:19.993+00:00",
+  "t_ms": 34266.4,
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "triage"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

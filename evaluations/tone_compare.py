@@ -35,12 +35,12 @@ def cell(r):
 
 
 def main():
-    before, after, mid = load(HERE / "results/before_tone_fix"), load(HERE / "results"), load(HERE / "results/before_final")
+    before, after, mid = load(HERE / "results/before_tone_fix"), load(HERE / "results"), load(HERE / "results/before_final2")
     L = ["# Tone before and after the scoped fix", "",
          "Same scenarios, same Jev question and thresholds (target 4 of 5, fail below 3), same privacy and judges. Only the core changed: pastoral prompt, `no_unauthorized_promises` check, names-proposer stopwords.", "",
          f"Before: core `{before.get('detention_core')}`. After: core `{after.get('detention_core') if after.get('detention_core') != before.get('detention_core') else '(not yet re-run)'}`.", "",
          "Promise phrases = an eval-side scan (not the core's check) for sentences that promise a church action in the pastoral message or checklist, such as 'Estamos buscando un abogado' or 'Les mandamos más información'. Advisory.", "",
-         "| Scenario | Tone, first scored build | Promise phrases | Tone, previous build (before_final) | Promise phrases | Tone, FINAL build | Promise phrases |", "|---|---|---|---|---|---|---|"]
+         "| Scenario | Tone, first scored build | Promise phrases | Tone, c317050 (before_final2) | Promise phrases | Tone, FINAL build | Promise phrases |", "|---|---|---|---|---|---|---|"]
     for pb, n in SCEN:
         rb, ra = before.get(pb, {}).get(n), (after.get(pb, {}).get(n) if after.get(pb + "_core") != before.get(pb + "_core") else None)
         b, a, m = cell(rb), cell(ra), cell(mid.get(pb, {}).get(n))

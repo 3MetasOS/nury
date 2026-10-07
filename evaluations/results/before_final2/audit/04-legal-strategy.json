@@ -1,0 +1,469 @@
+[
+ {
+  "ts": "2026-10-07T06:42:40.317+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T06:42:40.317+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:42:45.152+00:00",
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.26,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 153,
+  "usage": {
+   "input_tokens": 836,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1956,
+  "tokens_out": 206,
+  "latency_s": 4.831
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:45.305+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:42:49.695+00:00",
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.03,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.09,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 166,
+  "usage": {
+   "input_tokens": 1930,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1932,
+  "tokens_out": 323,
+  "latency_s": 4.383
+ },
+ {
+  "ts": "2026-10-07T06:42:49.862+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:42:49.863+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T06:42:49.863+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:49.863+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T06:42:49.863+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:43:04.051+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "ungrounded_claim",
+    "reason": "link not in vetted sources: https://locator.ice.gov/odls/#/index"
+   },
+   {
+    "category": "ungrounded_claim",
+    "reason": "phone number not in vetted sources: 1-888-351-4024"
+   }
+  ],
+  "reason_categories": [
+   "ungrounded_claim"
+  ],
+  "tokens_in": 2620,
+  "tokens_out": 830,
+  "latency_s": 14.183
+ },
+ {
+  "ts": "2026-10-07T06:43:04.051+00:00",
+  "kind": "draft_rejected",
+  "stage": "attorney",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "ungrounded_claim"
+  ],
+  "draft": "**Lo que puede hacer ahora mismo**\n\nMaria Lopez, entendemos que esta ma\u00f1ana ha sido muy dif\u00edcil. Aqu\u00ed hay informaci\u00f3n que puede ayudarle a dar los primeros pasos.\n\n---\n\n**Para localizar a Carlos**\n\nPuede llamar a la l\u00ednea de detenci\u00f3n del ICE para buscar a alguien detenido:\n\n\ud83d\udcde 1-888-351-4024 *(l\u00ednea del ICE \u2014 b\u00fasqueda de detenidos)*\n\nTambi\u00e9n puede buscar en l\u00ednea en el localizador de detenidos del ICE:\n\ud83d\udd17 https://locator.ice.gov/odls/#/index\n\n---\n\n**Sus derechos \u2014 informaci\u00f3n general**\n\n*(Fuente: ACLU Know Your Rights)*\n\n- Tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni d\u00f3nde naci\u00f3.\n- No abra la puerta a menos que los agentes muestren una orden firmada por un juez con el nombre y direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta.\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar a su derecho a una audiencia.\n- Tiene derecho a hablar con un abogado. Diga claramente que quiere hablar con uno y no responda m\u00e1s preguntas hasta hacerlo.\n- No mienta a los agentes ni muestre documentos falsos. Puede empeorar mucho la situaci\u00f3n.\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de documentos importantes con alguien de confianza.\n\n---\n\n**D\u00f3nde buscar ayuda legal**\n\nHable con un abogado de inmigraci\u00f3n calificado lo antes posible.\n\n- **Immigration Advocates Network \u2014 Directorio Nacional de Ayuda Legal**\nDirectorio de servicios legales de inmigraci\u00f3n a nivel nacional.\n\ud83d\udd17 https://www.immigrationadvocates.org/nonprofit/legaldirectory/\n\n- **AILA Lawyer Search**\nEncuentre un abogado de inmigraci\u00f3n a trav\u00e9s de la Asociaci\u00f3n Americana de Abogados de Inmigraci\u00f3n.\n\ud83d\udd17 https://www.ailalawyer.com/\n\n- **ACLU \u2014 Conozca Sus Derechos**\nGu\u00edas de derechos para inmigrantes, en ingl\u00e9s y espa\u00f1ol.\n\ud83d\udd17 https://www.aclu.org/know-your-rights/immigrants-rights\n\n- **National Immigration Project**\nRecursos legales y referencias para inmigrantes que enfrentan acciones de cumplimiento.\n\ud83d\udd17 https://nipnlg.org/\n\n---\n\n**Antes de llamar, tenga a mano**\n\n- Nombres completos y fechas de nacimiento de todos en la familia\n- Cualquier documento de inmigraci\u00f3n, solicitudes anteriores o papeles de los agentes\n- Fechas importantes relacionadas con el caso\n- Una lista de preguntas para el abogado\n\n---\n\n*Nury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor rev\u00edsela con un abogado de inmigraci\u00f3n calificado lo antes posible.*"
+ },
+ {
+  "ts": "2026-10-07T06:43:04.051+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T06:43:12.882+00:00",
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 2,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:43:13.028+00:00",
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 2,
+  "question": "assumes_facts",
+  "probability": 0.26,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:13.028+00:00",
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 2,
+  "ms": 147,
+  "usage": {
+   "input_tokens": 1887,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T06:43:13.028+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2697,
+  "tokens_out": 385,
+  "latency_s": 8.824
+ },
+ {
+  "ts": "2026-10-07T06:43:13.029+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:43:13.029+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:43:13.029+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T06:43:13.029+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T06:43:13.029+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:43:24.712+00:00",
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:43:24.851+00:00",
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.23,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:24.851+00:00",
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 139,
+  "usage": {
+   "input_tokens": 2813,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T06:43:24.851+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3354,
+  "tokens_out": 662,
+  "latency_s": 11.671
+ },
+ {
+  "ts": "2026-10-07T06:43:24.851+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:43:24.853+00:00",
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T06:43:24.853+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:43:24.853+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T06:43:24.853+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:43:32.071+00:00",
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.03,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.08,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.11,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.21,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 159,
+  "usage": {
+   "input_tokens": 2035,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4203,
+  "tokens_out": 144,
+  "latency_s": 6.881
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa23_4",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:43:32.230+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

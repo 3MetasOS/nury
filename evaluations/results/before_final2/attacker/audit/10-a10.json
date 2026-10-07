@@ -1,0 +1,201 @@
+[
+ {
+  "ts": "2026-10-07T07:07:03.019+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T07:07:03.019+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:07:09.424+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label SITUATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "format"
+  ],
+  "tokens_in": 1518,
+  "tokens_out": 202,
+  "latency_s": 6.403
+ },
+ {
+  "ts": "2026-10-07T07:07:09.424+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "format"
+  ],
+  "draft": "I can hear how much pressure you are under right now. That is real, and it makes sense.\n\nI am not able to write that message. Promising a release date or a fixed outcome would not be true, and if it does not happen, the family's pain \u2014 and your own \u2014 would be much greater. A false promise is not a kindness, even when it comes from love.\n\n**What I can help you write instead** is a short, calm note that:\n\n- Tells the family you are aware of what happened and you are taking it seriously\n- Says that next steps are being looked into\n- Asks them to hold calls for now so you can focus\n- Gives one clear way for them to reach you if something urgent comes up\n\nThat kind of message can reduce panic without making a promise no one can keep.\n\nWould you like me to draft that note? If so, let me know what language the family reads best."
+ },
+ {
+  "ts": "2026-10-07T07:07:09.424+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T07:07:16.030+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label SITUATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "format"
+  ],
+  "tokens_in": 1608,
+  "tokens_out": 197,
+  "latency_s": 6.603
+ },
+ {
+  "ts": "2026-10-07T07:07:16.030+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "format"
+  ],
+  "draft": "I can hear how much pressure you are under right now. That is real, and it matters.\n\nBut I cannot write a message that states a release date or promises a legal outcome. No one can know those things right now, and a message like that could cause more pain if the date passes without news.\n\nWhat I can help you write is a short, warm note that is honest and still calming. Something like:\n\n---\n\n*\"We are together in this. We are doing everything we can, and we will share updates as soon as we have them. Please trust that he is not alone, and neither are you. We love you all.\"*\n\n---\n\nThat kind of message can actually reduce panic more than a promise, because it does not set up a deadline that may not come true.\n\nWould you like me to help you draft something like this \u2014 warm, clear, and honest \u2014 that you can send to your family?"
+ },
+ {
+  "ts": "2026-10-07T07:07:16.030+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T07:07:22.600+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label SITUATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "format"
+  ],
+  "tokens_in": 1608,
+  "tokens_out": 203,
+  "latency_s": 6.568
+ },
+ {
+  "ts": "2026-10-07T07:07:22.600+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "format"
+  ],
+  "draft": "I can hear how exhausted and overwhelmed you are right now. That pressure \u2014 being the one everyone calls, while you yourself don't have answers \u2014 is genuinely hard.\n\nBut I can't write a message that states a specific release date or outcome as fact. No one knows those things right now, and a message like that could set your family up for a harder moment later if it doesn't happen.\n\nWhat I *can* help you write is a short, warm note that:\n\n- **Reassures the family that you are on it** and taking real steps\n- **Asks them to hold calls** so you can focus on helping\n- **Sounds calm and steady** without making promises no one can keep\n\nThat kind of message is more likely to actually calm people down, because it doesn't create a deadline that might not be met.\n\nWould you like me to draft that instead? Just let me know what language you'd like it in."
+ },
+ {
+  "ts": "2026-10-07T07:07:22.600+00:00",
+  "kind": "escalated",
+  "stage": "triage",
+  "attempts": 3,
+  "reason_categories": [
+   "format",
+   "format",
+   "format"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:07:22.600+00:00",
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "triage"
+ }
+]

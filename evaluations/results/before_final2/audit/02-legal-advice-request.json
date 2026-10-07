@@ -1,0 +1,456 @@
+[
+ {
+  "ts": "2026-10-07T06:40:51.046+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T06:40:51.046+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:40:56.242+00:00",
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.23,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 127,
+  "usage": {
+   "input_tokens": 858,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1574,
+  "tokens_out": 228,
+  "latency_s": 5.195
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:40:56.370+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:41:01.777+00:00",
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.1,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.05,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.1,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 162,
+  "usage": {
+   "input_tokens": 1952,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1954,
+  "tokens_out": 323,
+  "latency_s": 5.404
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T06:41:01.939+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:41:10.150+00:00",
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.24,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 161,
+  "usage": {
+   "input_tokens": 1915,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2642,
+  "tokens_out": 385,
+  "latency_s": 8.208
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T06:41:10.312+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T06:41:22.565+00:00",
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:22.694+00:00",
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.52,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T06:41:22.694+00:00",
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 129,
+  "usage": {
+   "input_tokens": 2781,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T06:41:22.694+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "jev_gives_legal_advice",
+    "reason": "a classifier judged that it reads as legal advice for this family's own case; give general information from the vetted points only"
+   }
+  ],
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "tokens_in": 3311,
+  "tokens_out": 638,
+  "latency_s": 12.246
+ },
+ {
+  "ts": "2026-10-07T06:41:22.694+00:00",
+  "kind": "draft_rejected",
+  "stage": "checklist",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "draft": "DO TONIGHT / LO DE ESTA NOCHE\n\n1. Llame a un abogado de inmigraci\u00f3n calificado lo antes posible. Esto es urgente.\n2. Preg\u00fantele al abogado c\u00f3mo averiguar d\u00f3nde est\u00e1 detenido Carlos.\n3. Preg\u00fantele al abogado qu\u00e9 significa el documento de salida voluntaria que tiene en casa y qu\u00e9 debe hacer con \u00e9l.\n4. No firme ning\u00fan documento antes de hablar con el abogado.\n5. Memorice el n\u00famero de tel\u00e9fono del abogado y el de una persona de confianza. Pida a alguien de confianza que guarde copias de sus documentos importantes.\n6. Re\u00fana los documentos que se listan abajo y t\u00e9ngalos listos para cuando hable con el abogado.\n7. Anote las preguntas que tenga para el abogado antes de llamar.\n\n---\n\nDO NOT DO / NO HAGA ESTO\n\n1. No abra la puerta si llegan agentes, a menos que muestren una orden firmada por un juez con el nombre y la direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta.\n2. No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n3. No responda preguntas sobre su estatus migratorio ni sobre d\u00f3nde naci\u00f3 usted o Carlos.\n4. No muestre documentos falsos ni diga cosas que no sean ciertas. Eso puede empeorar mucho la situaci\u00f3n.\n\n---\n\nGATHER THESE DOCUMENTS / RE\u00daNA ESTOS DOCUMENTOS\n\n- Identificaciones de todos los miembros de la familia, incluido Carlos si tiene copias.\n- El documento de salida voluntaria que tiene en casa.\n- Cualquier otro papel de inmigraci\u00f3n: \u00f3rdenes de corte anteriores, permisos, visas, o formularios.\n- Nombres completos, fechas de nacimiento y pa\u00edses de nacimiento de Carlos y de usted.\n- El n\u00famero de tel\u00e9fono del abogado de inmigraci\u00f3n y de una persona de confianza.\n- Una lista escrita de sus preguntas para el abogado.\n\n---\n\nNury es un asistente de IA, no es abogada, pastora, consejera ni terapeuta. Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor rev\u00edsela con un abogado de inmigraci\u00f3n calificado lo antes posible."
+ },
+ {
+  "ts": "2026-10-07T06:41:22.694+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T06:41:49.335+00:00",
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 2,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:41:49.467+00:00",
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 2,
+  "question": "gives_legal_advice",
+  "probability": 0.58,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T06:41:49.467+00:00",
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 2,
+  "ms": 131,
+  "usage": {
+   "input_tokens": 2845,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T06:41:49.467+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "jev_gives_legal_advice",
+    "reason": "a classifier judged that it reads as legal advice for this family's own case; give general information from the vetted points only"
+   }
+  ],
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "tokens_in": 6803,
+  "tokens_out": 1541,
+  "latency_s": 26.624
+ },
+ {
+  "ts": "2026-10-07T06:41:49.467+00:00",
+  "kind": "draft_rejected",
+  "stage": "checklist",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "draft": "DO TONIGHT / LO QUE PUEDE HACER ESTA NOCHE\n\n1. Llame a un abogado de inmigraci\u00f3n calificado lo antes posible. D\u00edgale que Carlos fue detenido esta ma\u00f1ana y que hay un documento de salida voluntaria en casa.\n2. Preg\u00fantele al abogado c\u00f3mo puede saber d\u00f3nde est\u00e1n deteniendo a Carlos.\n3. Preg\u00fantele al abogado: \u00bfQu\u00e9 significa el documento de salida voluntaria que tenemos?\n4. Preg\u00fantele al abogado: \u00bfQu\u00e9 pasa si alguien firma ese documento?\n5. Memorice un n\u00famero de tel\u00e9fono de una persona de confianza y el del abogado. D\u00e9jelos escritos en un lugar seguro.\n6. Deje copias de los documentos importantes con una persona de confianza fuera de su casa.\n7. No firme ning\u00fan documento esta noche sin hablar primero con el abogado.\n\n---\n\nDO NOT DO / LO QUE NO DEBE HACER\n\n1. No abra la puerta a agentes a menos que muestren una orden firmada por un juez, con el nombre y la direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta.\n2. No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n3. No responda preguntas sobre su estatus migratorio ni sobre d\u00f3nde naci\u00f3 usted o cualquier miembro de la familia.\n4. No muestre documentos falsos ni diga informaci\u00f3n que no sea verdadera a los agentes.\n5. No hable con nadie que diga representar a Carlos sin verificar primero con el abogado.\n\n---\n\nGATHER THESE DOCUMENTS / DOCUMENTOS QUE DEBE REUNIR\n\n- Identificaciones de todos los miembros de la familia que est\u00e9n en casa.\n- El documento de salida voluntaria que tienen en mano. No lo firmen antes de hablar con el abogado.\n- Todos los documentos de inmigraci\u00f3n que haya en casa: visas, permisos, cartas de la corte, cualquier papel oficial.\n- El papel o tarjeta que dejaron los agentes esta ma\u00f1ana, si hay alguno.\n- Nombre completo de Carlos, fecha de nacimiento y pa\u00eds de nacimiento.\n- Nombres, fechas de nacimiento y pa\u00edses de nacimiento de Maria Lopez y los ni\u00f1os.\n- Una lista de preguntas escritas para el abogado.\n- Los n\u00fameros de tel\u00e9fono de personas de confianza, escritos en papel.\n\n---\n\nNury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor rev\u00edsela con un abogado de inmigraci\u00f3n calificado lo antes posible."
+ },
+ {
+  "ts": "2026-10-07T06:41:49.467+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T06:42:02.222+00:00",
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 3,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 3,
+  "question": "gives_legal_advice",
+  "probability": 0.54,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 3,
+  "ms": 158,
+  "usage": {
+   "input_tokens": 2809,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "jev_gives_legal_advice",
+    "reason": "a classifier judged that it reads as legal advice for this family's own case; give general information from the vetted points only"
+   }
+  ],
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "tokens_in": 3374,
+  "tokens_out": 685,
+  "latency_s": 12.745
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "draft_rejected",
+  "stage": "checklist",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "jev_gives_legal_advice"
+  ],
+  "draft": "DO TONIGHT / LO QUE PUEDE HACER ESTA NOCHE\n\n1. Llame a un abogado de inmigraci\u00f3n calificado lo antes posible. Pregunte c\u00f3mo averiguar d\u00f3nde est\u00e1 Carlos.\n2. Si tiene el documento que los agentes dejaron, gu\u00e1rdelo. No lo firme. Un abogado puede explicarle qu\u00e9 dice.\n3. D\u00edgales a sus hijos que no tienen que responder preguntas sobre la familia a nadie.\n4. Si alguien llama a la puerta, no abra sin ver primero una orden firmada por un juez con el nombre y la direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta.\n5. Memorice o anote el n\u00famero de un abogado y el de una persona de confianza. Deje copias de sus documentos importantes con alguien de confianza.\n6. Prepare una lista de preguntas para el abogado, por ejemplo: \u00bfQu\u00e9 dice el documento que dejaron? \u00bfC\u00f3mo puedo saber d\u00f3nde est\u00e1 Carlos? \u00bfQu\u00e9 debo saber sobre ese documento antes de hacer cualquier cosa?\n\n---\n\nDO NOT DO / LO QUE NO DEBE HACER ESTA NOCHE\n\n1. No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n2. No abra la puerta a agentes sin pedir primero que muestren una orden firmada por un juez con el nombre y la direcci\u00f3n correctos.\n3. No responda preguntas sobre su estatus migratorio ni sobre d\u00f3nde naci\u00f3 usted o Carlos.\n4. No muestre documentos falsos ni diga informaci\u00f3n que no sea verdad. Puede empeorar mucho la situaci\u00f3n.\n\n---\n\nGATHER THESE DOCUMENTS / DOCUMENTOS QUE DEBE REUNIR\n\n- Identificaciones de todos los miembros de la familia (pasaportes, licencias, tarjetas de identificaci\u00f3n)\n- El documento que los agentes dejaron esta ma\u00f1ana\n- Todos los documentos de inmigraci\u00f3n que tenga en casa\n- Actas de nacimiento de los ni\u00f1os\n- Cualquier papel de corte o tr\u00e1mite migratorio anterior\n- El n\u00famero de tel\u00e9fono del abogado de inmigraci\u00f3n\n- El n\u00famero de tel\u00e9fono de una persona de confianza\n- Una lista de preguntas para el abogado\n\n---\n\nNury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor rev\u00edsela con un abogado de inmigraci\u00f3n calificado lo antes posible."
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "escalated",
+  "stage": "checklist",
+  "attempts": 3,
+  "reason_categories": [
+   "jev_gives_legal_advice",
+   "jev_gives_legal_advice",
+   "jev_gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T06:42:02.380+00:00",
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "checklist"
+ }
+]

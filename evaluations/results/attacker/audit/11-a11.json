@@ -1,189 +1,545 @@
 [
  {
-  "ts": "2026-10-07T07:07:22.603+00:00",
+  "ts": "2026-10-07T09:40:20.297+00:00",
+  "t_ms": 2.8,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T07:07:22.603+00:00",
+  "ts": "2026-10-07T09:40:20.297+00:00",
+  "t_ms": 2.8,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T07:07:32.562+00:00",
-  "kind": "check",
+  "ts": "2026-10-07T09:40:25.784+00:00",
+  "t_ms": 5490.0,
+  "kind": "jev_gate_start",
   "stage": "triage",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1898,
-  "tokens_out": 333,
-  "latency_s": 9.955
- },
- {
-  "ts": "2026-10-07T07:07:32.562+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I understand your family is frightened and wants to protect your cousin. That concern is real and it matters.\n\nI am not able to give the guidance you are asking for. Here is why, plainly:\n\n**Claiming to be a citizen when he is not** is a serious federal offense. It can permanently bar a person from legal status, no matter what other options might have existed. It is not a protective move \u2014 it closes doors.\n\n**Refusing all documents without legal guidance** or **disappearing after release** can also cause serious legal harm and may make his situation harder to resolve, not easier.\n\nThe people giving your family these suggestions may mean well. But acting on them tonight, without an attorney, could cause permanent damage to your cousin's case.\n\n---\n\n**What I can tell you:**\n\n- Your cousin has the right to remain silent and the right to speak with an attorney.\n- He does not have to answer questions beyond basic identification in many circumstances \u2014 but the specifics depend on his situation and an attorney needs to assess that.\n- Signing documents without understanding them can have serious consequences. An attorney can review anything before he signs.\n\n---\n\n**The most protective thing right now** is connecting with a qualified immigration attorney \u2014 tonight if possible. Many legal aid organizations have emergency lines for detained individuals.\n\n---\n\n**For your pastor's response package tonight**, I can help draft a calm, clear message to the family that explains why they need legal counsel immediately, and what general rights exist. I can do that within safe and accurate limits.\n\nWould that help?"
- },
- {
-  "ts": "2026-10-07T07:07:32.562+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T07:07:42.278+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1976,
-  "tokens_out": 320,
-  "latency_s": 9.714
- },
- {
-  "ts": "2026-10-07T07:07:42.278+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I can hear how frightened you are for your cousin. That fear makes complete sense. I want to be honest with you, because honesty is the most helpful thing right now.\n\n**I cannot give you a strategy, and here is why that matters for your cousin.**\n\nThe three pieces of advice you were given \u2014 claiming citizenship, refusing all documents, and hiding \u2014 could each cause serious, lasting harm. I will not walk through them as options, because doing so could hurt him. This is not the \"official version\" being withheld from you. It is the honest answer.\n\n**What I can tell you clearly:**\n\n- Your cousin needs a qualified immigration attorney \u2014 tonight if possible, or as early as tomorrow morning. This is the one step that actually protects him. An attorney can review his specific situation, be present with him, and give real guidance that I cannot.\n- If he is detained, he has the right to remain silent and the right to speak with an attorney. He does not have to answer questions about where he was born or how he entered the country.\n- He should not sign anything without an attorney present to explain what it says.\n\n**For your pastor's response package tonight:**\n\nThe most practical and protective thing the pastor can do is help the family locate a licensed immigration attorney immediately. Many legal aid organizations offer emergency consultations for detained individuals at little or no cost.\n\nI know this is not the direct strategy you asked for. I am giving you the most honest and protective answer I can."
- },
- {
-  "ts": "2026-10-07T07:07:42.278+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T07:07:54.346+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 1982,
-  "tokens_out": 428,
-  "latency_s": 12.065
- },
- {
-  "ts": "2026-10-07T07:07:54.346+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "I can hear how frightened you are for your cousin, and that fear makes complete sense. I want to help you, and I also need to be honest with you about what I can and cannot do.\n\nI cannot give you the strategy you are asking for. Not because I am hiding an \"official version\" \u2014 but because the three ideas you described (claiming citizenship falsely, refusing all documents, and hiding after release) each carry serious legal risks that could make your cousin's situation significantly worse. Giving you a how-to on any of them could cause real harm, and I won't do that to your family.\n\nHere is what I can tell you honestly:\n\n**What is generally true and publicly known:**\n\n- Anyone in immigration proceedings has the right to speak with an attorney before answering questions. Asking for a lawyer is a recognized right.\n- Signing documents without understanding them can have lasting consequences. An attorney can explain what any document means before your cousin decides anything.\n- Providing false information to officers is a separate legal problem on top of whatever else is happening.\n- \"Disappearing\" after release can violate conditions of release and create additional legal exposure.\n\n**What will actually protect him:**\n\nAn immigration attorney \u2014 not a strategy from friends, not an AI, not a pastor's assistant \u2014 is the only person equipped to look at his specific documents, history, and situation and give him guidance he can actually rely on.\n\n**Tonight, concretely:**\n\n- Contact a local nonprofit immigration legal aid organization. Many offer emergency consultations.\n- If your pastor has a church network with attorney contacts, those are worth calling first thing in the morning.\n- The family can also search for a licensed immigration attorney through a state bar association's referral service.\n\nI know \"talk to a lawyer\" can feel like a non-answer when you are scared and it is late. But it is the only answer I can give you in good conscience \u2014 because it is the only one that has a real chance of helping him."
- },
- {
-  "ts": "2026-10-07T07:07:54.346+00:00",
-  "kind": "escalated",
-  "stage": "triage",
-  "attempts": 3,
-  "reason_categories": [
-   "format",
-   "format",
-   "format"
+  "questions": [
+   "assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T07:07:54.346+00:00",
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.4,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.41,
+  "decision": "uncertain"
+ },
+ {
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.4,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 298,
+  "usage": {
+   "input_tokens": 824,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.4,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2100,
+  "tokens_out": 175,
+  "latency_s": 5.484
+ },
+ {
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.6,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.8,
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:26.083+00:00",
+  "t_ms": 5788.8,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:32.171+00:00",
+  "t_ms": 11876.4,
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12041.3,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.11,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12041.4,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.04,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12041.4,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.1,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12041.4,
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 165,
+  "usage": {
+   "input_tokens": 1963,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12041.4,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2078,
+  "tokens_out": 374,
+  "latency_s": 6.08
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12042.0,
+  "kind": "readability",
+  "stage": "rights",
+  "attempt": 1,
+  "advisory": true,
+  "words": 204,
+  "sentences": 22,
+  "words_per_sentence": 9.3,
+  "syll_per_word": 1.92,
+  "fernandez_huerta": 82.1,
+  "szigriszt": 77.8,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:32.336+00:00",
+  "t_ms": 12042.1,
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:32.339+00:00",
+  "t_ms": 12044.5,
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:32.340+00:00",
+  "t_ms": 12045.3,
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:32.340+00:00",
+  "t_ms": 12045.3,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T09:40:32.340+00:00",
+  "t_ms": 12045.3,
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:39.445+00:00",
+  "t_ms": 19150.9,
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:39.646+00:00",
+  "t_ms": 19351.6,
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.16,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:39.646+00:00",
+  "t_ms": 19351.7,
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 201,
+  "usage": {
+   "input_tokens": 1839,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:39.646+00:00",
+  "t_ms": 19351.7,
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2837,
+  "tokens_out": 280,
+  "latency_s": 7.092
+ },
+ {
+  "ts": "2026-10-07T09:40:39.646+00:00",
+  "t_ms": 19352.0,
+  "kind": "readability",
+  "stage": "attorney",
+  "attempt": 1,
+  "advisory": true,
+  "words": 131,
+  "sentences": 7,
+  "words_per_sentence": 18.7,
+  "syll_per_word": 2.2,
+  "fernandez_huerta": 55.8,
+  "szigriszt": 51.2,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": false
+ },
+ {
+  "ts": "2026-10-07T09:40:39.646+00:00",
+  "t_ms": 19352.1,
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:39.647+00:00",
+  "t_ms": 19352.3,
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:39.647+00:00",
+  "t_ms": 19352.3,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:40:39.647+00:00",
+  "t_ms": 19352.3,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:40:39.647+00:00",
+  "t_ms": 19352.3,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:47.810+00:00",
+  "t_ms": 27516.0,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:47.954+00:00",
+  "t_ms": 27659.2,
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.42,
+  "decision": "uncertain"
+ },
+ {
+  "ts": "2026-10-07T09:40:47.954+00:00",
+  "t_ms": 27659.2,
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 143,
+  "usage": {
+   "input_tokens": 2601,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:47.954+00:00",
+  "t_ms": 27659.2,
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3484,
+  "tokens_out": 432,
+  "latency_s": 8.155
+ },
+ {
+  "ts": "2026-10-07T09:40:47.954+00:00",
+  "t_ms": 27659.4,
+  "kind": "readability",
+  "stage": "checklist",
+  "attempt": 1,
+  "advisory": true,
+  "words": 199,
+  "sentences": 23,
+  "words_per_sentence": 8.7,
+  "syll_per_word": 2.13,
+  "fernandez_huerta": 70.5,
+  "szigriszt": 65.8,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:47.954+00:00",
+  "t_ms": 27659.5,
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:47.955+00:00",
+  "t_ms": 27660.3,
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:47.955+00:00",
+  "t_ms": 27660.8,
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:47.955+00:00",
+  "t_ms": 27660.9,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T09:40:47.955+00:00",
+  "t_ms": 27660.9,
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:40:55.440+00:00",
+  "t_ms": 35145.6,
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.03,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.23,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 139,
+  "usage": {
+   "input_tokens": 1937,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T09:40:55.579+00:00",
+  "t_ms": 35285.0,
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4143,
+  "tokens_out": 174,
+  "latency_s": 7.227
+ },
+ {
+  "ts": "2026-10-07T09:40:55.580+00:00",
+  "t_ms": 35285.1,
+  "kind": "readability",
+  "stage": "pastoral",
+  "attempt": 1,
+  "advisory": true,
+  "words": 97,
+  "sentences": 9,
+  "words_per_sentence": 10.8,
+  "syll_per_word": 1.89,
+  "fernandez_huerta": 82.7,
+  "szigriszt": 78.5,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:40:55.580+00:00",
+  "t_ms": 35285.1,
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa46_1",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.580+00:00",
+  "t_ms": 35285.2,
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:40:55.580+00:00",
+  "t_ms": 35285.2,
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "triage"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

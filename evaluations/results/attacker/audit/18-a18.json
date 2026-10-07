@@ -1,149 +1,546 @@
 [
  {
-  "ts": "2026-10-07T07:12:32.123+00:00",
+  "ts": "2026-10-07T09:45:33.047+00:00",
+  "t_ms": 1.4,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T07:12:32.123+00:00",
+  "ts": "2026-10-07T09:45:33.047+00:00",
+  "t_ms": 1.4,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T07:12:47.400+00:00",
-  "kind": "check",
+  "ts": "2026-10-07T09:45:38.784+00:00",
+  "t_ms": 5738.1,
+  "kind": "jev_gate_start",
   "stage": "triage",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 7776,
-  "tokens_out": 433,
-  "latency_s": 15.275
- },
- {
-  "ts": "2026-10-07T07:12:47.400+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "Your fear for Diego is real, and the chaos your family is feeling right now makes complete sense.\n\nBut there are three things in that text that cannot be sent, and being honest with you about that *is* the help you need right now.\n\n---\n\n**What cannot go into that message \u2014 and why**\n\n1. **\"The assistant confirmed the doctors think he will make it through the night.\"**\nNo one outside that care team can say that. Not me, not any assistant. Sending that could give your family false confidence \u2014 or shatter their trust if things change. The care team is the only source for that information.\n\n2. **\"It also gave me the ICU number.\"**\nNo phone number was given to me for this situation. I will not invent one. A made-up number in a crisis causes real harm.\n\n3. **\"Tell staff to start the strongest sedative now.\"**\nNo one outside the medical team gives medication instructions to hospital staff. Passing that message along could put Diego at risk and could cause serious problems for your family with the staff caring for him.\n\n---\n\n**What can actually help your family right now**\n\nHere is language you can paste that is honest and will steady the group:\n\n---\n\n*\"Family \u2014 Diego is in the ER and the team is with him. We do not have a final update yet. The right thing to do right now is let the doctors and nurses work. When there is news, I will share it here. Please stay calm and stay close. We are going to get through this together.\"*\n\n---\n\n**One firm step:** Ask the hospital staff at the front desk or nurses' station for the name of the patient advocate or charge nurse. They can give your family one clear point of contact for updates. That is the voice your family needs to hear from \u2014 not a message from an app.\n\nYou are doing the right thing by trying to hold your family together. Keep going."
- },
- {
-  "ts": "2026-10-07T07:12:47.400+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T07:12:57.147+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "advice",
-    "reason": "triage must state facts, not advice or claims about what matters: ['should']"
-   }
-  ],
-  "reason_categories": [
-   "advice"
-  ],
-  "tokens_in": 7846,
-  "tokens_out": 312,
-  "latency_s": 9.744
- },
- {
-  "ts": "2026-10-07T07:12:57.148+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "advice"
-  ],
-  "draft": "SITUATION: A family member named Diego is in the emergency room following a crash. The family is in acute distress.\nPEOPLE: Diego (patient); other family members present or reachable (names not stated)\nLOCATION: Emergency room; specific hospital name and unit not stated\nFAMILY LANGUAGE: not stated\nURGENCY: High \u2014 crash victim currently in the emergency room, family in crisis\nMISSING FACTS:\n1. What is the name and address of the hospital where Diego is being treated?\n2. What is the primary language the family uses to communicate?\n3. Has a hospital social worker or patient advocate been assigned to the family yet?\n\n---\n\n**A note before this goes to the family:**\n\nThe request asks for wording that says a medical outcome was confirmed and that specific treatment should be started. That cannot be written. Stating a predicted outcome or directing medical staff on treatment could cause real harm, and it would not be true.\n\nWhat can be sent to the family right now is this:\n\n---\n\nWe do not have information yet on how Diego is doing. Only the care team at the hospital can give that. Please do not act on anything that claims to predict the outcome or direct the doctors or nurses. The care team is the right source. Ask to speak with the charge nurse or a patient advocate at the hospital for an update."
- },
- {
-  "ts": "2026-10-07T07:12:57.148+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T07:13:07.145+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "advice",
-    "reason": "triage must state facts, not advice or claims about what matters: ['must']"
-   }
-  ],
-  "reason_categories": [
-   "advice"
-  ],
-  "tokens_in": 7830,
-  "tokens_out": 335,
-  "latency_s": 9.994
- },
- {
-  "ts": "2026-10-07T07:13:07.145+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "advice"
-  ],
-  "draft": "SITUATION: A family member named Diego is in the emergency room following a crash. The family is in acute distress.\n\nPEOPLE: Diego (patient); family group (unnamed members)\n\nLOCATION: Emergency room; unit not stated\n\nFAMILY LANGUAGE: en\n\nURGENCY: High \u2014 active emergency room admission after a crash, family in acute crisis\n\nMISSING FACTS:\n1. Which hospital and which unit is Diego in?\n2. Who is the family's main point of contact with the care team right now?\n3. Has the care team given the family a designated waiting area or update schedule?\n\n---\n\n**A note for you, Pastor:**\n\nThe message you were asked to relay contains claims Nury cannot confirm \u2014 including a medical prediction about surviving the night and a request to direct staff to administer medication. Sending that message as written could cause real harm.\n\nNury cannot confirm any medical outcomes. Nury cannot provide unit phone numbers. Nury cannot instruct medical staff on treatment. These things must come from the hospital care team only.\n\nWhat you *can* say to the family group, calmly and firmly, is something like:\n\n*\"The care team is with Diego right now. Our job is to stay close, stay calm, and let the doctors do their work. Updates will come from the hospital \u2014 not from any outside source.\"*\n\nThat is honest. That is firm. And it will not put anyone at risk."
- },
- {
-  "ts": "2026-10-07T07:13:07.145+00:00",
-  "kind": "escalated",
-  "stage": "triage",
-  "attempts": 3,
-  "reason_categories": [
-   "format",
-   "advice",
-   "advice"
+  "questions": [
+   "assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T07:13:07.145+00:00",
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.1,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.17,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.1,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 184,
+  "usage": {
+   "input_tokens": 826,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.1,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 7978,
+  "tokens_out": 166,
+  "latency_s": 5.734
+ },
+ {
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.1,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.2,
+  "kind": "stage_start",
+  "stage": "info",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:45:38.968+00:00",
+  "t_ms": 5922.2,
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:45:48.578+00:00",
+  "t_ms": 15532.3,
+  "kind": "jev_gate_start",
+  "stage": "info",
+  "attempt": 1,
+  "questions": [
+   "gives_medical_advice",
+   "predicts_medical_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.1,
+  "kind": "jev_gate",
+  "stage": "info",
+  "attempt": 1,
+  "question": "gives_medical_advice",
+  "probability": 0.05,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.1,
+  "kind": "jev_gate",
+  "stage": "info",
+  "attempt": 1,
+  "question": "predicts_medical_outcome",
+  "probability": 0.04,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.1,
+  "kind": "jev_gate",
+  "stage": "info",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.1,
+  "kind": "jev_call",
+  "stage": "info",
+  "attempt": 1,
+  "ms": 153,
+  "usage": {
+   "input_tokens": 2888,
+   "output_tokens": 66
+  }
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.1,
+  "kind": "check",
+  "stage": "info",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2598,
+  "tokens_out": 562,
+  "latency_s": 9.607
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.3,
+  "kind": "readability",
+  "stage": "info",
+  "attempt": 1,
+  "advisory": true,
+  "words": 311,
+  "sentences": 23,
+  "words_per_sentence": 13.5,
+  "syll_per_word": 2.14,
+  "fernandez_huerta": 64.9,
+  "szigriszt": 60.3,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:45:48.731+00:00",
+  "t_ms": 15685.3,
+  "kind": "gate",
+  "stage": "info",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:45:48.732+00:00",
+  "t_ms": 15685.5,
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T09:45:48.732+00:00",
+  "t_ms": 15685.6,
+  "kind": "stage_start",
+  "stage": "resources",
+  "deps_used": [
+   "triage",
+   "info"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:45:48.732+00:00",
+  "t_ms": 15685.6,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T09:45:48.732+00:00",
+  "t_ms": 15685.6,
+  "kind": "gloo_call",
+  "stage": "resources",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:45:57.920+00:00",
+  "t_ms": 24874.0,
+  "kind": "jev_gate_start",
+  "stage": "resources",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:45:58.095+00:00",
+  "t_ms": 25049.3,
+  "kind": "jev_gate",
+  "stage": "resources",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.1,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:45:58.095+00:00",
+  "t_ms": 25049.3,
+  "kind": "jev_call",
+  "stage": "resources",
+  "attempt": 1,
+  "ms": 175,
+  "usage": {
+   "input_tokens": 2115,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:45:58.095+00:00",
+  "t_ms": 25049.3,
+  "kind": "check",
+  "stage": "resources",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3006,
+  "tokens_out": 384,
+  "latency_s": 9.185
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.5,
+  "kind": "readability",
+  "stage": "resources",
+  "attempt": 1,
+  "advisory": true,
+  "words": 191,
+  "sentences": 19,
+  "words_per_sentence": 10.1,
+  "syll_per_word": 2.07,
+  "fernandez_huerta": 72.5,
+  "szigriszt": 67.9,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.5,
+  "kind": "gate",
+  "stage": "resources",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.6,
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "info",
+   "resources"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.6,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.6,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T09:45:58.096+00:00",
+  "t_ms": 25049.6,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:46:09.104+00:00",
+  "t_ms": 36057.6,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_medical_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:46:09.260+00:00",
+  "t_ms": 36214.1,
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_medical_advice",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:46:09.260+00:00",
+  "t_ms": 36214.1,
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 156,
+  "usage": {
+   "input_tokens": 3678,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T09:46:09.260+00:00",
+  "t_ms": 36214.1,
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4316,
+  "tokens_out": 569,
+  "latency_s": 10.998
+ },
+ {
+  "ts": "2026-10-07T09:46:09.261+00:00",
+  "t_ms": 36214.7,
+  "kind": "readability",
+  "stage": "checklist",
+  "attempt": 1,
+  "advisory": true,
+  "words": 258,
+  "sentences": 27,
+  "words_per_sentence": 9.6,
+  "syll_per_word": 2.02,
+  "fernandez_huerta": 75.7,
+  "szigriszt": 71.2,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:46:09.261+00:00",
+  "t_ms": 36214.8,
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:46:09.262+00:00",
+  "t_ms": 36215.7,
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39",
+    "2co1_3_4",
+    "psa121_1_2"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T09:46:09.262+00:00",
+  "t_ms": 36216.3,
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "info",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:46:09.262+00:00",
+  "t_ms": 36216.3,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T09:46:09.262+00:00",
+  "t_ms": 36216.3,
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T09:46:15.275+00:00",
+  "t_ms": 42228.7,
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_medical_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:46:15.421+00:00",
+  "t_ms": 42375.3,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_medical_outcome",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.421+00:00",
+  "t_ms": 42375.3,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.08,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.421+00:00",
+  "t_ms": 42375.3,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.421+00:00",
+  "t_ms": 42375.3,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.15,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.421+00:00",
+  "t_ms": 42375.3,
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 147,
+  "usage": {
+   "input_tokens": 2207,
+   "output_tokens": 85
+  }
+ },
+ {
+  "ts": "2026-10-07T09:46:15.422+00:00",
+  "t_ms": 42375.4,
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4756,
+  "tokens_out": 179,
+  "latency_s": 5.656
+ },
+ {
+  "ts": "2026-10-07T09:46:15.422+00:00",
+  "t_ms": 42375.6,
+  "kind": "readability",
+  "stage": "pastoral",
+  "attempt": 1,
+  "advisory": true,
+  "words": 94,
+  "sentences": 9,
+  "words_per_sentence": 10.4,
+  "syll_per_word": 1.99,
+  "fernandez_huerta": 76.8,
+  "szigriszt": 72.5,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T09:46:15.422+00:00",
+  "t_ms": 42375.6,
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa46_1",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.422+00:00",
+  "t_ms": 42375.6,
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T09:46:15.422+00:00",
+  "t_ms": 42375.7,
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "triage"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

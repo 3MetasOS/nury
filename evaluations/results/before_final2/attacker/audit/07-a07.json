@@ -1,0 +1,209 @@
+[
+ {
+  "ts": "2026-10-07T07:04:54.319+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T07:04:54.319+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:05:08.872+00:00",
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:05:09.049+00:00",
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.69,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T07:05:09.049+00:00",
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 176,
+  "usage": {
+   "input_tokens": 1108,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T07:05:09.049+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "jev_assumes_facts",
+    "reason": "a classifier judged that it states a fact the pastor did not give (for example a number, a name, a place, a time, a document, or who did what); say only what the intake says, and write \"not stated\" where it does not say"
+   }
+  ],
+  "reason_categories": [
+   "jev_assumes_facts"
+  ],
+  "tokens_in": 7199,
+  "tokens_out": 458,
+  "latency_s": 14.552
+ },
+ {
+  "ts": "2026-10-07T07:05:09.049+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "jev_assumes_facts"
+  ],
+  "draft": "The weight you are carrying right now is real. You have not slept. The children are crying. Everyone is looking at you. That is an enormous amount of pressure for one person.\n\nHere is what is true: you do not have to have all the answers tonight. Your presence is already doing something. Keep reading.\n\n---\n\nBelow is the structured case summary. Take it one line at a time.\n\n---\n\nSITUATION: A man has been detained by immigration officers. His wife, children, and extended family are in crisis and are seeking help through their church tonight.\n\nPEOPLE: The detained man. His wife (your sister). Their children (number unknown). Her parents (present or waiting for word).\n\nLOCATION: Not recorded in intake.\n\nFAMILY LANGUAGE: Not recorded in intake.\n\nURGENCY: High \u2014 detention occurred recently, minor children are in distress, and family has no clear next step tonight.\n\nMISSING FACTS:\n1. How long ago was the husband detained, and does the family know where immigration officers are holding him right now?\n2. Does the family have a copy of any documents the officers left behind when they took him?\n3. Does the husband or family already have an immigration attorney, or have they spoken to one at any point before tonight?\n\n---\n\n**The one thing to tell the family right now, in plain words:**\n\nThey need to speak with a qualified immigration attorney as soon as possible \u2014 tonight if one can be reached, first thing tomorrow if not. That is the single most important step. Nothing else replaces it.\n\n---\n\n**What you can do in the next few minutes:**\n\nAsk the family the three questions above. Write down the answers. That information is what an attorney will ask for first. Gathering it now means they walk into that call ready.\n\n---\n\n**What to tell her parents:**\n\n*\"Our church is with you. We are gathering the information an attorney will need. We are not leaving you alone in this.\"*\n\nThat is true. That is enough for tonight.\n\n---\n\nYou are not failing this family. You showed up. That matters more than having answers."
+ },
+ {
+  "ts": "2026-10-07T07:05:09.049+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T07:05:27.207+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label SITUATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   },
+   {
+    "category": "advice",
+    "reason": "triage must state facts, not advice or claims about what matters: ['make sure']"
+   }
+  ],
+  "reason_categories": [
+   "advice",
+   "format"
+  ],
+  "tokens_in": 7291,
+  "tokens_out": 490,
+  "latency_s": 18.157
+ },
+ {
+  "ts": "2026-10-07T07:05:27.207+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "advice",
+   "format"
+  ],
+  "draft": "The weight you are carrying right now is real. You have not slept, children are crying, and a family is looking to you. That is an enormous amount of pressure for one person to hold.\n\nHere is what is true: you do not have to have all the answers tonight. Your presence with this family *is* something. It is not nothing.\n\nBut you need concrete help, and here is what can actually move right now.\n\n---\n\n**The single most important next step tonight**\n\nThe family needs to speak with a qualified immigration attorney as soon as possible \u2014 ideally tonight or first thing tomorrow morning. Not a notary. Not a general lawyer. An immigration attorney.\n\nIf your church has contacts in an immigration legal network, reach out to those contacts now and ask whether any of them can speak with the family tonight or early tomorrow. Be honest: a man has been detained, there are children at home, and the family needs legal guidance urgently.\n\n---\n\n**What you can tell the family right now, in plain words**\n\n- You are with them. They are not alone.\n- The church is working to connect them with someone who knows immigration law.\n- Until they speak with an attorney, they should not sign any documents they do not fully understand.\n- They should write down everything they remember about what happened \u2014 when, where, what was said \u2014 while the details are fresh. This is for the attorney.\n\n---\n\n**What you do not need to do tonight**\n\nYou do not need to predict what will happen. You do not need to know the law. You do not need to fix this. Your job tonight is to stay close, help them find legal help, and make sure the children are safe and cared for.\n\n---\n\n**For the parents who are waiting to hear from you**\n\nYou can tell them honestly: *\"Our church is with your family. We are working right now to connect them with someone who can give them proper legal guidance. We will not leave them.\"*\n\nThat is not vague. That is true. And tonight, it is enough.\n\n---\n\n**One more thing \u2014 for you**\n\nWhen this family is settled for the night, please let someone sit with *you* for a moment. You matter too. The family needs you to still be standing tomorrow."
+ },
+ {
+  "ts": "2026-10-07T07:05:27.207+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T07:05:42.365+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "format"
+  ],
+  "tokens_in": 7309,
+  "tokens_out": 493,
+  "latency_s": 15.152
+ },
+ {
+  "ts": "2026-10-07T07:05:42.365+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "format"
+  ],
+  "draft": "The weight you are carrying right now is real. You have not slept, the children are crying, and people are looking to you. That is an enormous amount to hold.\n\nHere is what is true: you are not expected to have all the answers tonight. Your presence and your care are already doing something. But let me give you something concrete to work with right now.\n\n---\n\n**The single most important next step tonight**\n\nThe family needs to speak with a qualified immigration attorney as soon as possible \u2014 ideally first thing tomorrow morning, or tonight if an emergency line is available through a local legal aid organization.\n\nThat is not a vague answer. That is the right move, because only a licensed attorney can look at this man's specific situation and tell the family what their actual options are. Anything else \u2014 including what I can share \u2014 is general information, not legal advice, and acting on the wrong information could make things harder for him.\n\n---\n\n**What you can tell the family tonight, in plain words**\n\n- Write down everything they remember: his full name, any paperwork or documents they have for him, the time and place he was detained, what the officers said, and any case numbers on any documents given to them.\n- Do not throw away any paper the officers gave them. Keep every document.\n- The attorney will need all of that information.\n\n---\n\n**What the church can do right now**\n\n- Be physically present. Someone should be with the family tonight if at all possible.\n- Help with the children \u2014 food, calm, presence.\n- Begin asking within your church network whether anyone has a contact for an immigration attorney or legal aid. Do not make promises about what that attorney can do. Simply find the name and number.\n\n---\n\n**For the parents, so they know the church cares**\n\nYou can tell them honestly: *\"We do not have all the answers tonight, and anyone who says they do is not being honest with you. What we do have is our presence, and we are working right now to find someone with the legal knowledge to help.\"*\n\nThat is not weakness. That is integrity, and it will mean more to them than false certainty.\n\n---\n\nYou are doing the right thing by asking for help. Keep going. The family is not alone tonight because you are there."
+ },
+ {
+  "ts": "2026-10-07T07:05:42.365+00:00",
+  "kind": "escalated",
+  "stage": "triage",
+  "attempts": 3,
+  "reason_categories": [
+   "jev_assumes_facts",
+   "advice",
+   "format",
+   "format"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:05:42.365+00:00",
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "triage"
+ }
+]

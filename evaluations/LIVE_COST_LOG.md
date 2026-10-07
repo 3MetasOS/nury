@@ -178,3 +178,18 @@ Started detention at 01:31:57 on fe1fd7b; stopped about two minutes later when h
 ### Plain-language prompts, live checks (hack-jedi, 2026-10-07)
 
 One job at a time, Jev gate on, privacy on. Detention 01 and 14, hospital h01, hospital h08, attackers a02, a05, a14, a16: 8 scenarios, 8 pass, about $0.68 Gloo (cap 2.0). One extra empty start (wrong scenario selector, nothing ran, no cost). Samples and reading levels: `documents/product/PLAIN_LANGUAGE_SAMPLES.md`.
+
+## Slot I: the final scored sets on 8a28a18 (hack-artisans, 2026-10-07, 03:17 to 03:54)
+
+Gate on, YouVersion on, privacy and leak check on, Jev judges on. Gloo cost is the metered sum of stage costs at $3 and $15 per 1M tokens; Jev bills on its own key. One plain Gloo call first (a few cents of tokens).
+
+| Run | What | Gloo cost |
+|---|---|---|
+| I1 | detention, all 20 | $1.2844 |
+| I2 | hospital, all 8 | $0.7026 |
+| I3 | attacker a01 to a18 | $1.3825 |
+| I4 | network n01 to n03 | $0.3278 |
+| I5 | case-file cf01 to cf03, rv01, rv02 | $0.5 (see results/casefile.json) |
+| | **Total** | **about $4.2** (cap $6.0) |
+
+The c317050 results are in `results/before_final2/`. An earlier start on fe1fd7b (2 minutes, killed by the HOLD) is logged above as an aborted start.

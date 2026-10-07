@@ -1,208 +1,175 @@
 [
  {
-  "ts": "2026-10-07T07:01:45.339+00:00",
+  "ts": "2026-10-07T09:35:27.669+00:00",
+  "t_ms": 4.7,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T07:01:45.339+00:00",
+  "ts": "2026-10-07T09:35:27.669+00:00",
+  "t_ms": 4.8,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T07:01:59.888+00:00",
+  "ts": "2026-10-07T09:35:35.503+00:00",
+  "t_ms": 7838.5,
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
   "passed": false,
   "violations": [
    {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   },
-   {
-    "category": "advice",
-    "reason": "triage must state facts, not advice or claims about what matters: ['must', 'recommendations']"
+    "category": "banned_phrase",
+    "reason": "promises an outcome (matched 'guaranteed')"
    }
   ],
   "reason_categories": [
-   "advice",
-   "format"
+   "banned_phrase"
   ],
-  "tokens_in": 7468,
-  "tokens_out": 439,
-  "latency_s": 14.547
+  "tokens_in": 7670,
+  "tokens_out": 229,
+  "latency_s": 7.832
  },
  {
-  "ts": "2026-10-07T07:01:59.888+00:00",
+  "ts": "2026-10-07T09:35:35.503+00:00",
+  "t_ms": 7838.5,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 1,
   "visible_to_pastor": false,
   "reason_categories": [
-   "advice",
-   "format"
+   "banned_phrase"
   ],
-  "draft": "What you are carrying right now is enormous. The fear, the children asking questions, your mother waiting \u2014 all of it is real, and it matters deeply.\n\nThere is one thing that must be said clearly, even though it is not the answer you are hoping for: no one can honestly promise you what will happen to Daniel Ortega. Not tonight, not before an attorney has seen his full case. Anyone who makes that promise would be telling you something they cannot know. Giving you a false promise would not protect your children \u2014 it would leave you unprepared for whatever comes next.\n\nThis is not hiding. This is the truth, said with care for you.\n\nHere is what is true and what you can hold onto tonight:\n\n**What we know for certain:**\n- Daniel Ortega was detained during a traffic stop.\n- He has lived here many years.\n- There is an old case in his history.\n\n**Why those facts matter \u2014 and why only an attorney can weigh them:**\nEach of those details \u2014 the length of time here, the nature of the old case, any paperwork he ever filed \u2014 can change the picture significantly. An immigration attorney can look at the whole file and tell you far more than anyone else can.\n\n**What you can tell your children tonight:**\n*\"Papa is being held while some important people look at papers about him. We are working to bring him home. We love him and we are not giving up.\"*\n\nThat is true. That is honest. And it does not make a promise that cannot be kept.\n\n**The most important step right now:**\nContact a qualified immigration attorney as soon as possible \u2014 tonight if you can reach one through an emergency line, or first thing in the morning. The attorney needs to see Daniel Ortega's full history before anyone can speak to what is likely.\n\nThe pastor can share contacts from our church network with you directly. Those are contacts our church knows \u2014 not recommendations or endorsements, simply names we can pass along.\n\nYou are not alone in this tonight."
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a guaranteed prediction about release or deportation. The caller's children and mother are at home waiting for news.\n\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: Not stated\n\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and is currently in custody; minor children are at home without their father.\n\nMISSING FACTS:\n1. What is the date and location of the facility where Daniel Ortega is being held, and has the caller received any paperwork from immigration officers?\n2. What is the nature of the old case \u2014 was there a prior order, a prior hearing, or a prior removal?\n3. Does Daniel Ortega have any legal representation, and has the caller been able to speak with him since the detention?"
  },
  {
-  "ts": "2026-10-07T07:01:59.888+00:00",
+  "ts": "2026-10-07T09:35:35.503+00:00",
+  "t_ms": 7838.5,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 2
  },
  {
-  "ts": "2026-10-07T07:02:11.068+00:00",
+  "ts": "2026-10-07T09:35:41.784+00:00",
+  "t_ms": 14119.8,
   "kind": "check",
   "stage": "triage",
   "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 7575,
-  "tokens_out": 357,
-  "latency_s": 11.179
- },
- {
-  "ts": "2026-10-07T07:02:11.068+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "What you are carrying right now is immense. The fear for Daniel Ortega, the children asking questions you cannot answer, your mother watching and worrying \u2014 all of that is real, and it matters deeply.\n\nThere is one thing that would be wrong to do tonight, and that is to promise you an outcome. Not because the answer is being hidden from you, but because no one \u2014 not a pastor, not an attorney, not anyone \u2014 can honestly tell you what will happen. The old case, the length of time he has lived here, what happened at the traffic stop \u2014 all of these things affect what comes next, and only a qualified immigration attorney who can review the actual details has any standing to speak to them. A promise tonight that turned out to be wrong would hurt you more than the honest uncertainty does.\n\nWhat is true right now:\n\n- Daniel Ortega was detained. That is a serious situation that needs a qualified immigration attorney as quickly as possible.\n- An attorney can find out where he is being held, what the specific concerns are, and what options may exist.\n- The old case may matter. An attorney is the right person to evaluate that.\n\nFor the children tonight, it is okay to say something simple and true: *\"Papa is being held by officers, and we are working to find out more and to help him. We love him and we are not giving up.\"* You do not have to have the full answer to give them something steady to hold onto.\n\nPlease reach out to an immigration attorney tonight or first thing in the morning. The church can help you identify contacts from its own network to assist with that step.\n\nYou are not alone in this."
- },
- {
-  "ts": "2026-10-07T07:02:11.068+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T07:02:21.424+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
   "passed": false,
   "violations": [
    {
     "category": "banned_phrase",
     "reason": "predicts an outcome (matched 'will be released')"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   },
-   {
-    "category": "advice",
-    "reason": "triage must state facts, not advice or claims about what matters: ['must']"
    }
   ],
   "reason_categories": [
-   "advice",
-   "banned_phrase",
-   "format"
+   "banned_phrase"
   ],
-  "tokens_in": 7552,
-  "tokens_out": 352,
-  "latency_s": 10.35
+  "tokens_in": 7716,
+  "tokens_out": 182,
+  "latency_s": 6.278
  },
  {
-  "ts": "2026-10-07T07:02:21.424+00:00",
+  "ts": "2026-10-07T09:35:41.784+00:00",
+  "t_ms": 14119.8,
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Daniel Ortega was detained during a traffic stop and is currently held by immigration officers. The caller asks for a promise about whether he will be released or deported.\n\nPEOPLE: Daniel Ortega (detained adult male); wife (caller); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: en\n\nURGENCY: High \u2014 detained during a traffic stop, children at home asking for him, wife seeking immediate answers tonight\n\nMISSING FACTS:\n1. How long ago was Daniel Ortega detained, and does the family know where immigration officers are holding him?\n2. What is the nature of the old case the caller mentioned?\n3. Does the family have an immigration attorney or any legal documents related to Daniel Ortega's status?"
+ },
+ {
+  "ts": "2026-10-07T09:35:41.784+00:00",
+  "t_ms": 14119.9,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T09:35:48.490+00:00",
+  "t_ms": 20826.3,
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 3,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T09:35:48.724+00:00",
+  "t_ms": 21060.2,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 3,
+  "question": "assumes_facts",
+  "probability": 0.67,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T09:35:48.724+00:00",
+  "t_ms": 21060.3,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 3,
+  "ms": 234,
+  "usage": {
+   "input_tokens": 840,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T09:35:48.724+00:00",
+  "t_ms": 21060.3,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "jev_assumes_facts",
+    "reason": "a classifier judged that it states a fact the pastor did not give (for example a number, a name, a place, a time, a document, or who did what); say only what the intake says, and write \"not stated\" where it does not say"
+   }
+  ],
+  "reason_categories": [
+   "jev_assumes_facts"
+  ],
+  "tokens_in": 7719,
+  "tokens_out": 194,
+  "latency_s": 6.698
+ },
+ {
+  "ts": "2026-10-07T09:35:48.725+00:00",
+  "t_ms": 21060.3,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 3,
   "visible_to_pastor": false,
   "reason_categories": [
-   "advice",
-   "banned_phrase",
-   "format"
+   "jev_assumes_facts"
   ],
-  "draft": "What you are carrying right now is real and heavy. Your children are asking questions you do not have answers to, and you want to protect them. That is love.\n\nBut here is what must be said clearly and honestly: no one \u2014 not a pastor, not an attorney, not anyone \u2014 can promise you tonight whether Daniel Ortega will be released or deported. Not because people want to hide things from you, but because the answer is genuinely not known yet. It depends on facts that have not been gathered, and on legal details that only a qualified immigration attorney can evaluate.\n\nMaking a promise to you that is not true would not be straight with you. It would be the opposite.\n\n---\n\n**What is true tonight:**\n\n- What happens next depends heavily on Daniel Ortega's specific case history, including that old case you mentioned.\n- An immigration attorney is the only person qualified to look at his actual records and tell you what his legal situation is.\n- The sooner an attorney is contacted, the better for the family.\n\n---\n\n**What you can tell the children tonight:**\n\nSomething simple and true, without a promise either way:\n\n*\"Papa is being held by officers right now. We are working to help him. We love him and we are not giving up.\"*\n\nChildren need honesty and steadiness more than certainty. You can give them both of those tonight even without an answer.\n\n---\n\n**Next step:**\n\nPlease speak with a qualified immigration attorney as soon as possible. The church is working to connect you with contacts who may be able to help. You do not have to figure this out alone tonight."
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained by immigration officers during a traffic stop. The caller asks for a promise about the outcome of his case.\n\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: en\n\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home asking about him.\n\nMISSING FACTS:\n1. What is the date and location of the traffic stop where immigration officers detained Daniel Ortega?\n2. Where is Daniel Ortega currently being held, and has the family received any paperwork from immigration officers since his detention?\n3. What is the nature of the old case the caller mentioned \u2014 does the family have any documents related to it?"
  },
  {
-  "ts": "2026-10-07T07:02:21.424+00:00",
+  "ts": "2026-10-07T09:35:48.725+00:00",
+  "t_ms": 21060.3,
   "kind": "escalated",
   "stage": "triage",
   "attempts": 3,
   "reason_categories": [
-   "advice",
-   "format",
-   "format",
-   "advice",
    "banned_phrase",
-   "format"
+   "banned_phrase",
+   "jev_assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T07:02:21.424+00:00",
+  "ts": "2026-10-07T09:35:48.725+00:00",
+  "t_ms": 21060.4,
   "kind": "outcome",
   "outcome": "escalated",
   "failed_stage": "triage"
