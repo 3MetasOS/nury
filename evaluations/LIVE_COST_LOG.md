@@ -124,3 +124,14 @@ Core (code/nury, code/playbooks) last commit `00fe7b1` (22:31:02), clean at star
 The validation pass cost about twice my estimate ($0.6) because gemini-3.1-pro spends many hidden reasoning tokens. Total spend since credit returned: slot A $0.2251 + C $0.9984 + D $2.0148 + D2 $3.1940 + E $3.3881 = $9.8204 metered (plus about $0.16 browser estimate). The red-team budget in the brief was under $5: panel runs $3.39, so $1.61 would remain for the attacker (slot F, about $1.1).
 
 Earlier runs (before the credit ran out) are in `FAILURE_LOG.md` and the commit messages; the merged estimate is in `LIVE_CHECKS_OWED.md`.
+
+## Slot F: Scripture live check (hack-jedi, 2026-10-07)
+
+| Run | What | Gloo cost (est., $3/$15 per 1M) |
+|---|---|---|
+| F1 | detention 01, 10, 14 and hospital h01, h03, all five stages. YouVersion was ON by mistake (the .env loads again when the client is built); every verse came from YouVersion | $0.4007 |
+| F2 | bank provider only, detention 01 and hospital h01 | $0.1986 |
+| F3 | YouVersion ON, detention 01, 10 and hospital h01 | $0.2726 |
+| | **Slot F total** (YouVersion calls: read only, no Gloo cost; none metered) | **$0.8719** |
+
+Cap was $2.50. Prompt rounds: 1 (WHY now speaks to the family).

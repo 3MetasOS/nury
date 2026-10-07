@@ -284,6 +284,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
 .seg span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);font:600 16px var(--sans)}
 .seg input:checked+span{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
 .seg input:focus-visible+span{outline:2px solid var(--amber-text);outline-offset:2px}
+.consent{font-size:14px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0}
 .leave-b{display:grid;gap:12px;padding:16px 20px 24px}
 @media (min-width:640px){
   .nv h1{font-size:36px}
@@ -472,6 +473,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
     <label for="lang">Family's language</label>
     <select id="lang"><option value="es">Spanish</option><option value="en">English</option></select>
     <label id="demo-row"><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
+    <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
     <div class="row two" style="margin-top:12px">
       <button class="btn" id="btn-demo">Use demo intake</button>
       <button class="btn primary" id="btn-start">Begin</button>
@@ -539,6 +541,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
 </section>
 <section id="v-case" class="hidden narrow">
   <button class="back" id="back-case">&larr; Cases</button>
+  <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
     <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
@@ -577,6 +580,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
   <div class="sheet-h"><h2 id="about-t">How this was made</h2><button class="iconbtn" style="margin-left:0" type="button" data-close aria-label="Close"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button></div>
   <div class="sheet-b nv">
     <p class="muted" style="margin-bottom:18px">Nury has one job: help a solo pastor in the first hours of a crisis. Here is what is under it, in plain words.</p>
+    <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
     <ol class="proof">
       <li data-claims="1"><h3>Gloo AI Studio and Claude Sonnet 4.6</h3><p>Every draft goes through Gloo AI Studio's guarded endpoint, using Claude Sonnet 4.6.</p></li>
       <li data-claims="16,17,18,19"><h3>Tokens, not names</h3><p>Before anything reaches the model, the names you protect, phone numbers, emails, addresses, dates and ID numbers become tokens. The real words come back when the draft returns.</p><p class="lim">This removes direct identifiers only. Context can still hint at who someone is, so check your list of protected names.</p></li>
@@ -748,7 +752,9 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
 /* ---- routing, with a guard so unsaved work is not lost by a tap on a tab ---- */
 let allowLeave=false,lastHash=location.hash||"#/",ignoreHash=false,pendingHash=null;
 function unsaved(){const v=document.body.dataset.view;return v==="pipe"||(v==="pkg"&&$("saved").classList.contains("hidden"))}
-function go(hash){if(location.hash===hash){route(false)}else location.hash=hash}
+function go(hash){
+  if(unsaved()&&!allowLeave){pendingHash=hash;openD($("leave"));return}      // every way out of unsaved work asks first
+  if(location.hash===hash){route(false)}else location.hash=hash}
 async function route(first){clearInterval(window.__navTimer);const hs=location.hash||"#/";let m;
   const ok=await loadData();
   document.querySelectorAll("#v-home,#v-cases").forEach(x=>x.hidden=true);
@@ -781,7 +787,7 @@ $("open-settings").onclick=()=>{const t=document.documentElement.dataset.theme;d
 $("settings-about").onclick=()=>{$("settings").close();openD($("about"))};
 document.querySelectorAll('input[name="th"]').forEach(r=>r.onchange=()=>{applyTheme(r.value);try{localStorage.setItem("nury-theme",r.value)}catch(e){}});
 $("leave-stay").onclick=()=>$("leave").close();
-$("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);allowLeave=true;const t=pendingHash||"#/";pendingHash=null;location.hash=t};
+$("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);allowLeave=true;const t=pendingHash||"#/";pendingHash=null;go(t);allowLeave=false};
 /* ---- cases filters ---- */
 $("q").oninput=function(){filt.q=this.value;shown=20;renderCases()};
 $("f-crisis").onclick=e=>{const b=e.target.closest("button");if(b){filt.crisis=b.dataset.v;shown=20;renderCases()}};

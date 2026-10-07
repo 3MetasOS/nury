@@ -186,7 +186,7 @@ section.blk{display:block}
 </main>
 
 <div class="startbar" id="startbar">
-  <button class="btn primary" type="button" data-start>Start this crisis</button>
+  <button class="btn primary" type="button" data-start>Begin the response</button>
   <small>About a minute of drafting. You approve each stage.</small>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -269,7 +269,7 @@ function render(){
    '<section class="blk" aria-labelledby="h-time" style="margin-bottom:12px"><h2 id="h-time">A note on time</h2><div class="time">'+ic("i-clock")+'<div><p>Nury drafts all five stages in about a minute.</p><p>That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.</p></div></div></section>'+
    '<p class="more"><a href="home.html#about">About this build</a></p>'+
    '</div>'+
-   '<aside class="aside" aria-label="Start"><div class="card"><h2 style="margin:0">Ready when you are</h2><p class="muted" style="font-size:15px">You will type what the family said, then confirm the names to protect.</p><button class="btn primary block" type="button" data-start>Start this crisis</button><p class="muted" style="font-size:14px">About a minute of drafting. You approve each stage.</p></div></aside></div>';
+   '<aside class="aside" aria-label="Start"><div class="card"><h2 style="margin:0">Ready when you are</h2><p class="muted" style="font-size:15px">You will type what the family said, then confirm the names to protect.</p><button class="btn primary block" type="button" data-start>Begin the response</button><p class="muted" style="font-size:14px">About a minute of drafting. You approve each stage.</p></div></aside></div>';
   window.scrollTo(0,0);
 }
 var tt;function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},3200)}

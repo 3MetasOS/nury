@@ -314,10 +314,15 @@ class StubHTTP:
         code = {"429": 429, "403": 403}.get(mode, 200)
         body = {}
         if "/passages/" in url:
+            vl = '<span class="yv-v" v="1"></span><span class="yv-vlbl">1</span>'
+            html = {"ok": f'<div><div class="q1">{vl}Dios es nuestro refugio y fortaleza,</div><div class="q2">nuestro pronto auxilio en las tribulaciones.</div></div>',
+                    "title": f'<div><div class="d">{vl}Al Músico principal: de los hijos de Coré.</div><div class="q1">Dios es nuestro refugio y fortaleza,</div><div class="q2">nuestro pronto auxilio en las tribulaciones.</div></div>',
+                    "long": f'<div><div class="q1">{vl}' + "palabra " * 60 + "</div></div>",
+                    "html": '<div><div class="zz">algo raro</div></div>'}
             body = {"id": url.rsplit("/", 1)[1], "reference": "Salmos 46:1",
-                    "content": ("palabra " * 60 if mode == "long" else "<b>x</b>" if mode == "html" else "Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.")}
+                    "content": html["ok" if mode in ("ok", "nocopyright", "429", "403") else mode]}
         else:
-            body = {"id": 7, "abbreviation": "RVR60", "copyright": "" if mode == "nocopyright" else "Sociedades Biblicas Unidas 1960"}
+            body = {"id": 7, "abbreviation": "RVR60", "copyright": "" if mode == "nocopyright" else "Derechos de autor © 2022 Autor. Licencia CC BY-SA 4.0.\nPara correcciones escribir a x@y.com\nCopyright © 2022 Author. CC BY-SA 4.0. Contact x@y.com"}
 
         class R:
             status_code = code
@@ -345,7 +350,7 @@ class Providers(Base):
         rec, au = self.go(http)
         self.assertEqual(rec.status, "approved", rec.attempts)
         self.assertIn("«Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.»", rec.draft)
-        self.assertIn("— Salmos 46:1, RVR60. Sociedades Biblicas Unidas 1960", rec.draft)
+        self.assertIn("— Salmos 46:1, RVR60. Derechos de autor © 2022 Autor. Licencia CC BY-SA 4.0.", rec.draft)
         self.assertNotIn(self.verse("psa46_1")["text"], rec.draft)
         self.assertEqual([e["provider"] for e in au.events if e["kind"] == "scripture"], ["youversion"])
         self.assertEqual(http.calls[0]["headers"]["X-YVP-App-Key"], "KEY123")
@@ -380,7 +385,24 @@ class Providers(Base):
                 self.assertNotIn(secret, blob)
             self.assertEqual(sorted(c["headers"]), ["Accept", "X-YVP-App-Key"])
             self.assertTrue(c["url"].startswith("https://api.youversion.com/v1/bibles/7"))
-        self.assertEqual(http.calls[0]["params"], {"format": "text"})
+        self.assertEqual(http.calls[0]["params"], {"format": "html"})
+
+    def test_a_psalm_title_is_dropped_by_the_class_rule_and_logged(self):
+        http = StubHTTP("title")
+        rec, au = self.go(http)
+        self.assertEqual(rec.status, "approved", rec.attempts)
+        self.assertIn("«Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.»", rec.draft)
+        self.assertNotIn("Al Músico", rec.draft)
+        tr = [e for e in au.events if e["kind"] == "scripture_trimmed"]
+        self.assertEqual(tr[0]["dropped"], ["d"])
+        self.assertEqual([e["provider"] for e in au.events if e["kind"] == "scripture"], ["youversion"])
+
+    def test_attribution_drops_email_lines_and_the_repeated_block_but_keeps_the_licence(self):
+        a = scrp.attribution("Derechos © 2022 A. Licencia CC BY-SA 4.0.\nVersión 1.1.\nCorrecciones: a@b.com\nCopyright © 2022 A. CC BY-SA 4.0. a@b.com")
+        self.assertEqual(a, "Derechos © 2022 A. Licencia CC BY-SA 4.0. Versión 1.1.")
+        self.assertEqual(scrp.attribution("Public Domain"), "Public Domain")
+        rec, _ = self.go(StubHTTP())
+        self.assertNotIn("@", rec.draft)
 
     def test_nothing_is_cached(self):
         http = StubHTTP()
@@ -403,7 +425,7 @@ class Providers(Base):
         bad = rec.draft.replace("refugio", "amparo")
         ctx = SimpleNamespace(scripture={"psa46_1": {"text": "Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.",
                                                      "reference": "Salmos 46:1", "translation": "RVR60",
-                                                     "copyright": "Sociedades Biblicas Unidas 1960"}}, scripture_cap=52)
+                                                     "copyright": "Derechos de autor © 2022 Autor. Licencia CC BY-SA 4.0."}}, scripture_cap=52)
         self.assertEqual(ck.verse_block_verbatim({}, rec.draft, ctx), [])
         self.assertEqual(ck.verse_block_verbatim({}, bad, ctx)[0]["category"], "scripture_altered")
 

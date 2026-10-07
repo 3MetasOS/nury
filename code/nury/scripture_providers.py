@@ -13,11 +13,25 @@ YouVersion rules, as far as the public developer docs state them (read 2026-10-0
 - GET /v1/bibles/{bible_id}/passages/{passage_id}, header X-YVP-App-Key, Accept: application/json.
 - The version name or abbreviation and the copyright must be shown with the text.
 - Availability depends on the app key and the licenses it accepted: a version that is not available is an error.
-- The docs we could read give no cache rule and no rate limit. So Nury caches nothing, and a 429 or any
-  error means "unavailable". Check the Platform terms again when the app key is issued.
+- The docs we could read give no cache rule and no rate limit. Responses carry Cache-Control hints
+  (passages: public, max-age=86400). Nury still caches nothing, and a 429 or any error means "unavailable".
+- The three versions Juan chose from (BSB 3034, VBL 3291, RVES 147) sit under the license "Public Domain and
+  Creative Commons" (GET /v1/licenses). That agreement is one line; it states no cache or rate rule.
+
+Superscriptions. The plain-text format puts a Psalm's title before verse 1 and no option removes it. The HTML
+format marks the title as its own element (class "d"). Rule: ask for HTML, drop elements with a title or heading
+class (d, s1..s4, ms, mr, r, sp), drop verse numbers and notes, keep the text of verse classes (p, q1..q4, m ...).
+Any class we do not know means "unavailable" and the bank is used. The text inserted is the result of that rule,
+and the verbatim check compares with it. The raw HTML length and the dropped classes go in the audit log.
+
+Attribution. The version name or abbreviation and the copyright are shown with every verse. The provider's
+copyright text is shown as returned, except that lines with an email address are removed and a second,
+repeated copyright block is cut. Public domain versions show "Public Domain".
 """
 
 import os
+import re
+from html.parser import HTMLParser
 from typing import Optional
 
 import requests
@@ -27,6 +41,81 @@ YV_BASE = "https://api.youversion.com"
 
 class ProviderUnavailable(Exception):
     pass
+
+
+_DROP_DIV = {"d", "s", "s1", "s2", "s3", "s4", "ms", "ms1", "ms2", "mr", "r", "sp", "h", "cl", "cd", "qa"}
+_KEEP_DIV = {"p", "m", "pm", "pmo", "pmc", "pi", "pi1", "pi2", "mi", "nb", "b", "q", "q1", "q2", "q3", "q4", "qr", "qc", "qm",
+             "qm1", "qm2", "li", "li1", "li2", "ph", "ph1", "ph2", "lh", "lf"}
+_DROP_SPAN = {"yv-vlbl", "yv-n", "f", "fr", "fq", "fk", "x"}
+_KEEP_SPAN = {"yv-v", "nd", "wj", "add", "tl", "qt", "sc", "bd", "it", "em", "sig", "w", "ord", "pn", "k"}
+
+
+class _Verse(HTMLParser):
+    """HTML -> (verse text, dropped classes). Unknown classes set .unknown."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack, self.out, self.dropped, self.unknown = [], [], set(), set()
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("div", "span", "p"):
+            cls = (dict(attrs).get("class") or "").split()
+            self.stack.append((tag, cls[0] if cls else ""))
+            if tag != "span":
+                self.out.append(" ")
+
+    def handle_endtag(self, tag):
+        if tag in ("div", "span", "p") and self.stack:
+            self.stack.pop()
+            if tag != "span":
+                self.out.append(" ")
+
+    def handle_data(self, data):
+        if not data.strip():
+            self.out.append(" ")
+            return
+        for tag, cls in self.stack:
+            if (tag == "div" and cls in _DROP_DIV) or (tag == "span" and cls in _DROP_SPAN):
+                if cls != "yv-vlbl":                      # a verse number is not a trim
+                    self.dropped.add(cls)
+                return
+        for tag, cls in reversed(self.stack):
+            if tag == "span" and cls:
+                if cls not in _KEEP_SPAN:
+                    self.unknown.add(cls)
+                    return
+            if tag == "div" and cls:
+                if cls not in _KEEP_DIV:
+                    self.unknown.add(cls)
+                    return
+                break
+        else:
+            self.unknown.add("(no class)")
+            return
+        self.out.append(data)
+
+
+def verse_from_html(html):
+    """(text, dropped classes). Raises ProviderUnavailable on a class we do not know."""
+    p = _Verse()
+    p.feed(html or "")
+    if p.unknown:
+        raise ProviderUnavailable(f"youversion html has classes we do not handle: {sorted(p.unknown)}")
+    return " ".join("".join(p.out).split()), sorted(p.dropped)
+
+
+def attribution(copyright_text):
+    """The copyright to show. Lines with an email are removed. A second copyright block is cut."""
+    lines, seen = [], 0
+    for ln in str(copyright_text or "").splitlines():
+        ln = ln.strip()
+        if not ln or re.search(r"\S+@\S+", ln):
+            continue
+        if "©" in ln:
+            seen += 1
+            if seen > 1:
+                break
+        lines.append(ln)
+    return " ".join(lines)
 
 
 class BankProvider:
@@ -65,20 +154,22 @@ class YouVersionProvider:
         bible, usfm = self.bibles.get(lang), entry.get("usfm")
         if not bible or not usfm or entry.get("origin") == "church":
             raise ProviderUnavailable("no YouVersion version or passage id for this verse")
-        p = self._get(f"/v1/bibles/{bible}/passages/{usfm}", format="text")
+        p = self._get(f"/v1/bibles/{bible}/passages/{usfm}", format="html")
         meta = self._get(f"/v1/bibles/{bible}")
-        text = " ".join(str(p.get("content", "")).split())
+        raw = str(p.get("content", ""))
+        text, dropped = verse_from_html(raw)
         name = meta.get("abbreviation") or meta.get("localized_abbreviation") or meta.get("title") or ""
-        copyright_ = " ".join(str(meta.get("copyright", "")).split())
-        if not text or "<" in text:
-            raise ProviderUnavailable("youversion gave no plain text")
+        copyright_ = attribution(meta.get("copyright"))
+        if not text:
+            raise ProviderUnavailable("youversion gave no verse text")
         if not name or not copyright_:
             raise ProviderUnavailable("youversion gave no version name or copyright, so it cannot be shown")
         if len(text.split()) > self.cap:
             raise ProviderUnavailable("youversion text is over the word cap")
         return {"id": entry["id"], "reference": p.get("reference") or entry["reference"], "text": text,
                 "translation": name, "copyright": copyright_, "themes_text": entry.get("themes_text", ""),
-                "origin": "playbook", "source": "youversion"}
+                "origin": "playbook", "source": "youversion",
+                "raw_chars": len(raw), "dropped": dropped}
 
 
 def default_chain(cap=52, env=None):

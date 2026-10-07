@@ -27,8 +27,8 @@ I had no browser, no shell and no way to list folders. Read this before you trus
 | Visibility of system status, recognition over recall (Nielsen's 10 heuristics) | A returning user should see what is open and where they stopped, not remember it. | "Continue where you left off", stage pips ("Stage 3 of 5. Waiting for you.") |
 | Dashboards in care and case tools (NN/g dashboard guidance; the "inbox plus next action" pattern in case-management tools) | Lead with the few items that need action, show a count summary, push the full list to its own page. | Home shows at most 3 open cases and count tiles. The full list lives on Cases. |
 | Cards versus lists (NN/g on cards and list views) | Cards suit few, rich items. Lists suit many items you scan and compare. | Home uses cards (status, progress, next action). Cases uses compact rows. |
-| Progressive disclosure (NN/g) | Show the decision first, details on demand. | Home start cards show one line. The detail page shows the workflow before intake. About sheet holds the technical claims. |
-| Thumb reach (Steve Hoober's studies of how people hold phones; Apple HIG 44 pt; Material 48 dp) | Primary actions low and large. | 56 px primary buttons, bottom tab bar on phone, a fixed Start bar on the crisis page, hero button full width. |
+| Progressive disclosure (NN/g) | Show the decision first, details on demand. | Home crisis cards show one line. The detail page shows the workflow before intake. About sheet holds the technical claims. |
+| Thumb reach (Steve Hoober's studies of how people hold phones; Apple HIG 44 pt; Material 48 dp) | Primary actions low and large. | 56 px primary buttons, bottom tab bar on phone, a fixed Begin bar on the crisis page, hero button full width. |
 | Accessibility (WCAG 2.2: 1.4.3 and 1.4.11 contrast, 2.4.7 focus visible, 2.5.8 target size, 4.1.3 status messages, 2.3.3 and `prefers-reduced-motion`) | AA text contrast, visible focus, status read aloud, motion off on request. | Section 10. |
 | Empty states (NN/g on empty states; "teach the interface, give one next step") | Say what will be here, why it is empty, and give one action. | First-visit Home and empty Cases. |
 | Trauma-informed, calm microcopy (for example Chayn's trauma-informed design principles) | Short, plain, active voice, no alarm, no blame, give control back. | Section 8. "Nury drafts. You decide." "Nothing was sent." |
@@ -52,7 +52,7 @@ Home  (#/)
 
 Rules:
 - Three tabs: Home, Cases, Our network. Bottom bar on phones (60 px tall), pills in the top bar at 960 px and up.
-- Task pages (Crisis detail, Intake, Protect, Pipeline, Package) hide the bottom tabs on phone. A task has one job and one exit. The back link and the fixed Start bar replace the tabs.
+- Task pages (Crisis detail, Intake, Protect, Pipeline, Package) hide the bottom tabs on phone. A task has one job and one exit. The back link and the fixed Begin bar replace the tabs.
 - Settings and About are sheets, not pages. Back and Escape close them. Focus returns to the button that opened them.
 - Coming-soon crises are not links. They have no detail page.
 - Leave room for more: a new crisis is a new card (data driven), a new area is a new tab and a new band. Do not add a fourth tab without a design pass. A place for sign-in is deliberately not designed.
@@ -62,23 +62,23 @@ Rules:
 ### Phone (390 px). One column, top to bottom.
 
 1. Top bar (60 px): lantern mark 28 px, "Nury" in Fraunces 600, settings button (48 px) at right. The tagline is hidden on phone.
-2. Hero card. Heading "Welcome back." (first visit: "Nury is ready."), one line of help, a full-width primary button "Start a new crisis" (56 px) that scrolls to section 4. A small lantern scene sits under the text. Radial amber glow from the top right.
+2. Hero card. Heading "Welcome back." (first visit: "Nury is ready."), one line of help, a full-width primary button "Respond to a crisis" (56 px) that scrolls to section 4. A small lantern scene sits under the text. Radial amber glow from the top right.
 3. "Continue where you left off": up to 3 case cards, link "See all N cases" at the right of the heading. Hidden when there are no cases. Replaced by the first-visit card (below).
-4. "Start a new crisis": two live cards (Detention, Hospital), then two dashed "Coming soon" cards. Each live card links to its crisis detail page.
+4. "A family needs help": two live cards (Detention, Hospital), then two dashed "Coming soon" cards. Each live card links to its crisis detail page.
 5. "Your cases" count tiles: All, In progress, Needs follow-up, Version 2, Saved. Each tile links to Cases with that filter. Shown only when there are more than 3 cases (otherwise Continue already shows all).
 6. "Our network" tile with its own picture and a button.
 7. "How this was made" strip with five short facts and the "About this build" link.
 8. Footer line: AI assistant disclaimer and "Nury never sends anything. You do."
 9. Bottom tab bar (fixed).
 
-Why Continue comes before Start on phone: a returning pastor is more often resuming than starting. The hero button is the one-tap path to Start, so a new crisis is never more than one tap away. Product owner may flip this (section 13).
+Why Continue comes before the crisis cards on phone: a returning pastor is more often resuming a case. The hero button is the one-tap path to responding, so a family in need is never more than one tap away. Product owner may flip this (section 13).
 
 ### Desktop (1280 px). Max width 1120 px.
 
 ```
 [ top bar: lantern Nury tagline | Home Cases Our network |           settings ]
 [ hero, full width: text and button (left) | lantern scene (right)           ]
-[ Continue where you left off (flex)        | Start a new crisis (392 px)     ]
+[ Continue where you left off (flex)        | A family needs help (392 px)    ]
 [ Your cases count tiles                    | Our network tile                ]
 [ How this was made strip, full width                                       ]
 ```
@@ -86,9 +86,9 @@ Why Continue comes before Start on phone: a returning pastor is more often resum
 The DOM order is the phone order. CSS `display:contents` plus `order` on phone, and two flex columns at 960 px and up.
 
 ### First visit (zero cases)
-- Heading "Nury is ready." Hero line: "When a family calls, start here. Nury drafts. You decide. Nury never sends anything."
+- Heading "Nury is ready." Hero line: "When a family calls, respond here. Nury drafts. You decide. Nury never sends anything."
 - The Continue slot becomes a card: "No cases yet." One sentence on what appears here, then three numbered steps (Choose the crisis, Tell Nury what the family said, Approve each stage then save).
-- No count tiles. Cases tab shows its own empty card with the lantern shelf scene and a Start button.
+- No count tiles. Cases tab shows its own empty card with the lantern shelf scene and a "Respond to a crisis" button.
 
 ## 4. Components and states
 
@@ -98,7 +98,7 @@ The DOM order is the phone order. CSS `display:contents` plus `order` on phone, 
 | Case row (Cases) | 40 px tile, title, crisis name, chips, time, chevron. At 640 px and up it is one line of columns. | Same status chips. No progress pips (the row stays scannable). Long title clamps at 2 lines. |
 | Status chip | Icon 14 px plus word, 13 px, 26 px tall. Meaning is never color alone. | In progress (amber fill, progress icon). Saved (muted, check). Version N (surface fill, v2 icon). Needs follow-up (dashed amber, flag). Green is not used for chips, because the brand reserves green for approved and red for rejected. Green appears only in the approved pips. |
 | Count tile | Big number in Fraunces, label under it. 68 px tall. | Zero counts still show "0". Links to Cases filtered. |
-| Start card | 56 px tile, Fraunces 19 title, one line of description, chevron. 96 px tall. | **Coming soon:** dashed border, muted, "Coming soon" tag, not a link, not focusable. |
+| Crisis card | 56 px tile, Fraunces 19 title, one line of description, chevron. 96 px tall. | **Coming soon:** dashed border, muted, "Coming soon" tag, not a link, not focusable. |
 | Search | 52 px field, 16 px text (stops iOS zoom), visible label for screen readers. | Empty result: "No cases match." with "Clear filters". |
 | Filter chips | 44 px tall toggle buttons with `aria-pressed`. Two rows, Crisis and Status. Scroll sideways inside their own row on phone. Wrap on desktop. | Pressed: amber fill and border. |
 | Count line | `role="status"`: "6 cases" or "2 of 6 cases shown". | Announced when filters change. |
@@ -167,7 +167,7 @@ Sections, in order (phone and desktop share the order):
 6. What Nury will never do (7 shared lines plus one crisis line, with a slash icon on each).
 7. A note on time.
 8. "About this build" link.
-9. Start. Phone: fixed bottom bar with a 56 px "Start this crisis" button and a small line "About a minute of drafting. You approve each stage." Desktop: sticky right column card "Ready when you are".
+9. Begin. Phone: fixed bottom bar with a 56 px "Begin the response" button and a small line "About a minute of drafting. You approve each stage." Desktop: sticky right column card "Ready when you are".
 
 The flow (vertical dashed rail, 44 px nodes):
 - Cap: "First, you and Nury get ready" (protect icon). You type what the family said, pick the family's language, tick the names to protect.
@@ -221,21 +221,21 @@ Copy is identical in Night and Day. Only the theme control changes (see the last
 | Tabs | Home, Cases, Our network |
 | Settings button (aria-label) | Settings and display |
 | Skip link | Skip to content |
-| Hero, returning | Welcome back. / Pick up a case, or start a new one. Nury drafts. You decide. |
-| Hero, first visit | Nury is ready. / When a family calls, start here. Nury drafts. You decide. Nury never sends anything. |
-| Hero button | Start a new crisis |
+| Hero, returning | Welcome back. / Pick up a case, or respond to a new one. Nury drafts. You decide. |
+| Hero, first visit | Nury is ready. / When a family calls, respond here. Nury drafts. You decide. Nury never sends anything. |
+| Hero button | Respond to a crisis |
 | Continue heading | Continue where you left off |
 | Continue heading, no cases | Your cases will wait here |
 | Continue link | All cases, or "See all 6 cases" when more than 3 |
-| First-visit card | No cases yet. / When a family calls, start a crisis. Save the finished package and it waits here, so you can open it later. / 1 Choose the crisis and see how it works. 2 Tell Nury what the family said. 3 Approve each stage, then save. |
+| First-visit card | No cases yet. / When a family calls, respond to the crisis here. Save the finished package and it waits here, so you can open it later. / 1 Choose the crisis and see how it works. 2 Tell Nury what the family said. 3 Approve each stage, then save. |
 | Case card action | Continue (in progress), Open (saved) |
 | Case card meta | {Crisis}, changed {time} |
 | Pips line | Stage 3 of 5. Waiting for you. |
 | Chips | In progress, Saved, Version 2, Needs follow-up |
 | Count tiles heading | Your cases |
 | Count tiles | All, In progress, Needs follow-up, Version 2, Saved |
-| Start heading | Start a new crisis |
-| Start help | Choose what the family is facing. You will see how it works before you start. |
+| Section heading | A family needs help |
+| Section help | Choose what the family is facing. You will see how it works before you begin the response. |
 | Detention card | Immigration detention or raid / A family member was detained or taken in a raid. |
 | Hospital card | Hospital emergency / A family member is in the emergency room or intensive care. |
 | Soon cards | Sudden death in a family, House fire or displacement, tag "Coming soon" |
@@ -251,7 +251,7 @@ Copy is identical in Night and Day. Only the theme control changes (see the last
 | Filter labels | Crisis (All, Detention, Hospital), Status (All, In progress, Needs follow-up, Version 2, Saved) |
 | Count line | 6 cases. / 2 of 6 cases shown. |
 | No match | No cases match. / Try another word, or clear the filters. / Clear filters |
-| Cases empty | No cases yet. / Finish a crisis and choose Save to case file. It will be here, ready to open. / Start a new crisis |
+| Cases empty | No cases yet. / Finish a crisis and choose Save to case file. It will be here, ready to open. / Respond to a crisis |
 | Crisis detail: back | All crises |
 | Crisis detail: chips | Available now, 5 stages, Family language: Spanish or English |
 | Crisis detail: section heads | What this covers, What you will get, How it works, What Nury will never do, A note on time |
@@ -261,8 +261,8 @@ Copy is identical in Night and Day. Only the theme control changes (see the last
 | Flow cap 2 | Then the package is yours / Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again as version 2 and keeps version 1 as it was. |
 | Stage columns | Nury produces, You decide |
 | Gate line | Your gate: Approve, Edit or Stop |
-| Start (phone bar) | Start this crisis / About a minute of drafting. You approve each stage. |
-| Start (desktop card) | Ready when you are / You will type what the family said, then confirm the names to protect. / Start this crisis / About a minute of drafting. You approve each stage. |
+| Begin (phone bar) | Begin the response / About a minute of drafting. You approve each stage. |
+| Begin (desktop card) | Ready when you are / You will type what the family said, then confirm the names to protect. / Begin the response / About a minute of drafting. You approve each stage. |
 | Time note | Nury drafts all five stages in about a minute. That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you. |
 | Save success (replaces current) | Saved in Nury. Nothing was sent. Open the case |
 | Save success, v2 | Saved in Nury as version 2, beside version 1. Nothing was sent. Open the case |
@@ -314,8 +314,8 @@ Type: H1 30 px phone, 36 px from 640 px (Fraunces 500). H2 22. H3 18 to 20. Body
 | New | Current | Change |
 |---|---|---|
 | Home view `#v-home` | `#v-select` | Replace. Keep `loadSelect()` name or rename and update `show()` list. |
-| Start cards | `#picks` and `loadSelect()` | Cards link to the crisis detail view. Keep `/api/playbooks`. Soon cards stay non-clickable. |
-| Crisis detail view `#v-crisis` | none | New. Its Start button calls the existing `choose(p)`. Back goes Home. |
+| Crisis cards | `#picks` and `loadSelect()` | Cards link to the crisis detail view. Keep `/api/playbooks`. Soon cards stay non-clickable. |
+| Crisis detail view `#v-crisis` | none | New. Its Begin button calls the existing `choose(p)`. Back goes Home. |
 | Continue cards | `#cases-list` and `loadCases()` (`.crow`) | New card markup, group versions, sort. `openCase(id)` unchanged. |
 | Cases view `#v-cases` | none (list was at the end of select) | New. Search and filters run in the browser over the `/api/cases` array. |
 | Our network | `/network` page and `#net-link` | Keep the page. Tab links there. Restyle later with the same band. |
@@ -334,7 +334,7 @@ Use `textContent` for titles from the server (the prototype uses `innerHTML` bec
 
 ## 13. Decisions for the product owner
 
-1. Order on phone: Continue first (my choice) or Start first. First visit is the same either way.
+1. Order on phone: Continue first (my choice) or the crisis cards first. First visit is the same either way.
 2. "Needs follow-up" is a new feature (a flag the pastor sets). Keep, or cut the chip.
 3. "In progress" depends on keeping unfinished runs. Is that wanted, and for how long?
 4. Cases saved on a server with no sign-in are visible to anyone who can reach the URL. I did not design a sign-in. You told me to leave it out, and the About sheet does not mention it. Please decide how this is protected before real families use it. The sheet already says saved cases are not encrypted.
@@ -350,8 +350,8 @@ Order matters. Stop where time runs out. Hour figures are my estimates, not meas
 |---|---|---|---|
 | P0 | Fix the 3 banned strings (section 8). Replace the Google Fonts link with self-hosted `@font-face` (find the files first). | 0.5 h | Never cut. |
 | P0 | Add tokens `--line-2`, `--ember`, `--glow`, `--scene`. Inline the icon sprite. | 0.5 h | Keep at least the crisis icons. |
-| P0 | Home view: hero, Continue (3 cards from `/api/cases`, no In progress yet), Start cards, first-visit card, footer. | 2 h | Keep the current list with new copy and the Start cards. |
-| P0 | Crisis detail view with the rail, flow, never list, time note and Start. Data in a JS object first, backend later. | 2 h | Drop the rail, keep the flow. Never drop the "never" list or the time note. |
+| P0 | Home view: hero, Continue (3 cards from `/api/cases`, no In progress yet), crisis cards, first-visit card, footer. | 2 h | Keep the current list with new copy and the crisis cards. |
+| P0 | Crisis detail view with the rail, flow, never list, time note and the Begin button. Data in a JS object first, backend later. | 2 h | Drop the rail, keep the flow. Never drop the "never" list or the time note. |
 | P0 | Built-with strip and About sheet. | 1 h | Strip only, link to the sheet. Never drop the limits item. |
 | P1 | Bottom tabs, hash routes, focus to H1 on route change. | 1 h | Keep Back links only. |
 | P1 | Cases view: search, two filter rows, rows, empty states. | 1.5 h | Search only. |
@@ -367,7 +367,7 @@ Cut order if time runs short: scenes, count tiles, Settings sheet, Needs follow-
 Acceptance checks (do these in a real browser at 390 and 1280 px, Night and Day):
 - No horizontal scroll on Home, Crisis detail, Cases, Network.
 - The tab bar does not cover the last content (main has 96 px bottom padding on phone).
-- Start is one tap from Home, and from the crisis page on phone without scrolling.
+- Responding to a crisis is one tap from Home, and Begin is reachable from the crisis page on phone without scrolling.
 - Zero cases, one case, six cases, the long title and a no-match filter all look right.
 - Tab through the page and see the focus ring on every control. Open and close both sheets with the keyboard.
 - Turn on reduced motion and see no animation.
@@ -380,3 +380,7 @@ Acceptance checks (do these in a real browser at 390 and 1280 px, Night and Day)
 - Routes in the prototype: `#/`, `#/cases`, `#/cases/inprogress|follow|v2|saved`, `#/network`, `#about`, `#start`. Clicking a case or Add a contact shows a toast, because those screens are not part of this work.
 - `crisis-detail.html` switches crisis with `#detention` or `#hospital`. The stage rail links use `#s1` to `#s5`. Reloading the page on one of those hashes shows the detention page. That is a prototype limit only.
 - Sample families are made up. Contacts are marked fictional. No external requests, no photos, no emoji.
+
+## 16. Copy rule (Juan, 2026-10-07)
+
+The pastor is responding to a family in need. We do not start crises. Use: respond, help, draft, review, approve, save, reopen. Hero button: "Respond to a crisis". Home section: "A family needs help". Crisis page button: "Begin the response". Intake button: "Begin". Halt card: "Try again". "New case" stays only on the saved-package screen.

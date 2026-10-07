@@ -322,6 +322,8 @@ def _fetch_verse(entry, lang, providers, ctx_ns, audit, stage_id):
     What is inserted is what the provider returned, and the verbatim check compares against exactly that."""
     chain = providers if providers is not None else scrp.default_chain(ctx_ns.scripture_cap)
     passage, notes = scrp.fetch(entry, lang, chain + ([scrp.BankProvider()] if not any(isinstance(p, scrp.BankProvider) for p in chain) else []))
+    if passage.get("dropped"):
+        audit.log("scripture_trimmed", stage=stage_id, verse=entry["id"], dropped=passage["dropped"], raw_chars=passage["raw_chars"])
     if notes:
         audit.log("scripture_fallback", stage=stage_id, verse=entry["id"], provider=passage["source"], reasons=notes)
     ctx_ns.scripture[passage["id"]] = passage

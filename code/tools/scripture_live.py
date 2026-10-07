@@ -36,9 +36,9 @@ def scenario(pat):
 def run(pat, mode):
     I, lang = scenario(pat)
     pb = "hospital" if pat.startswith("h") else "detention"
+    c = make_client(intake=I)                         # building the client loads .env again
     if mode == "bank":
-        os.environ.pop("YVP_APP_KEY", None)
-    c = make_client(intake=I)
+        os.environ.pop("YVP_APP_KEY", None)           # so pop the key after, not before
     c.allow_playbook(get_playbook(pb))
     raw = []
     orig = c.inner.ask
@@ -66,7 +66,7 @@ def run(pat, mode):
             if a["violations"]:
                 print(f"rejected attempt: stage={r.stage_id} n={a['n']} categories={sorted({v['category'] for v in a['violations']})}")
     for e in au.events:
-        if e["kind"] in ("scripture", "scripture_fallback"):
+        if e["kind"] in ("scripture", "scripture_fallback", "scripture_trimmed"):
             print("audit:", json.dumps({k: v for k, v in e.items() if k != "ts"}, ensure_ascii=False))
     return usd
 

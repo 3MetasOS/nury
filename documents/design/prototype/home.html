@@ -269,8 +269,8 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
       <section class="hero" aria-labelledby="h-home">
         <div>
           <h1 id="h-home">Welcome back.</h1>
-          <p id="hero-sub">Pick up a case, or start a new one. Nury drafts. You decide.</p>
-          <a class="btn primary" href="#start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Start a new crisis</a>
+          <p id="hero-sub">Pick up a case, or respond to a new one. Nury drafts. You decide.</p>
+          <a class="btn primary" href="#start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
         </div>
         <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-home"/></svg>
       </section>
@@ -281,7 +281,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
           <ul class="cardlist" id="cont-list"></ul>
           <div class="card first" id="first-run" hidden>
             <h2>No cases yet.</h2>
-            <p class="muted">When a family calls, start a crisis. Save the finished package and it waits here, so you can open it later.</p>
+            <p class="muted">When a family calls, respond to the crisis here. Save the finished package and it waits here, so you can open it later.</p>
             <ol class="steps3">
               <li>Choose the crisis and see how it works.</li>
               <li>Tell Nury what the family said.</li>
@@ -298,8 +298,8 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
 
       <div class="colB">
         <section class="start" id="start" aria-labelledby="h-start">
-          <div class="sec-h"><h2 id="h-start">Start a new crisis</h2></div>
-          <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you start.</p>
+          <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
+          <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
           <div class="pickgrid">
             <a class="pick" href="crisis-detail.html#detention">
               <span class="tile lg"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-detention"/></svg></span>
@@ -387,7 +387,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
       <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-cases"/></svg>
       <h2>No cases yet.</h2>
       <p>Finish a crisis and choose Save to case file. It will be here, ready to open.</p>
-      <a class="btn primary" href="#start" id="empty-start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Start a new crisis</a>
+      <a class="btn primary" href="#start" id="empty-start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
     </div>
   </section>
 
@@ -468,7 +468,7 @@ function row(c){var k=CR[c.crisis];
 function match(c,s){return s==="all"||(s==="inprogress"&&c.state==="inprogress")||(s==="saved"&&c.state==="saved")||(s==="v2"&&c.ver>1)||(s==="follow"&&c.follow)}
 function renderHome(){var d=DATA[mode],n=d.length;
   $("#h-home").textContent=n?"Welcome back.":"Nury is ready.";
-  $("#hero-sub").textContent=n?"Pick up a case, or start a new one. Nury drafts. You decide.":"When a family calls, start here. Nury drafts. You decide. Nury never sends anything.";
+  $("#hero-sub").textContent=n?"Pick up a case, or respond to a new one. Nury drafts. You decide.":"When a family calls, respond here. Nury drafts. You decide. Nury never sends anything.";
   $("#cont-list").innerHTML=d.slice(0,3).map(card).join("");
   $("#first-run").hidden=n>0;$("#see-all").hidden=n===0;$("#cont-list").hidden=n===0;
   $("#h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";

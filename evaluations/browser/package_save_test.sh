@@ -6,7 +6,7 @@ PORT=${PORT:-8099}; HERE="$(cd "$(dirname "$0")" && pwd)"; FAIL=0
 ev(){ agent-browser eval "$1" 2>&1 | tail -1; }
 check(){ if [ "$2" = "$3" ]; then echo "PASS $1"; else echo "FAIL $1 (got $2, want $3)"; FAIL=1; fi; }
 for VP in "1280 800" "390 844"; do set -- $VP; W=$1
-  agent-browser set viewport $1 $2 >/dev/null 2>&1; agent-browser open http://127.0.0.1:$PORT >/dev/null 2>&1; agent-browser wait ".pick" >/dev/null 2>&1
+  agent-browser set viewport $1 $2 >/dev/null 2>&1; agent-browser open http://127.0.0.1:$PORT >/dev/null 2>&1; agent-browser wait ".pk" >/dev/null 2>&1
   ev "$(cat $HERE/pkgstub.js)" >/dev/null
   ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 900 >/dev/null 2>&1
   check "$W: Save button has a layout box" "$(ev "document.getElementById('b-save').getBoundingClientRect().height>40")" "true"
