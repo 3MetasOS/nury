@@ -109,6 +109,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .back:hover{color:var(--text)}
 .rej{font-size:14px;color:var(--green);margin:0 0 10px}
 .hidden{display:none!important}
+.privacy-off{margin:0 0 14px;padding:12px 14px;border:1px solid var(--red);border-radius:var(--r);background:var(--red-soft);color:var(--text);font-weight:600}
 .dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
 .bar .row{margin-top:10px}
@@ -280,6 +281,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 <script src="/shell.js"></script>
 <main id="main">
 <p class="note" id="load-err" role="alert" hidden></p>
+<p class="privacy-off" id="privacy-off" role="alert" hidden>Privacy is off: names go to the model as typed.</p>
 
 <section class="nv" id="v-home" hidden>
   <div class="home" id="home">
@@ -327,7 +329,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <li>Claude Sonnet 4.6</li>
         <li>Tokens, not names, reach the model</li>
         <li id="built-checks">Named checks, 3 tries</li>
-        <li>Jev classifying every draft at run time, and before release a red team audit and human review</li>
+        <li>Jev classifying every draft at run time when it is reachable, and before release a red team audit and human review</li>
       </ul>
       <nav class="judges" aria-label="For judges and reviewers"><span class="mono">For judges and reviewers</span><a href="/how-it-was-built">How this was built</a><a href="/observability">Observability</a><a href="/self-improvement">Self-improvement</a></nav>
     </section>
@@ -575,7 +577,8 @@ const ic=(n,c)=>svgEl("i"+(c?" "+c:""),n);
 const sceneEl=id=>svgEl("scene",id);
 let pbs=[],pb=null,CASES=[],FEATURES={},filt={q:"",crisis:"all",status:"all"},shown=20;
 async function loadData(){
-  const [p,c,f]=await Promise.all([api("/api/playbooks"),api("/api/cases"),api("/api/features")]);
+  const [p,c,f,pv]=await Promise.all([api("/api/playbooks"),api("/api/cases"),api("/api/features"),api("/api/privacy")]);
+  $("privacy-off").hidden=!(pv&&pv.on===false);          // with privacy off the page says so, on every screen
   pbs=(p&&p.playbooks)||[];CASES=(c&&c.cases)||[];FEATURES=f||{};
   const err=$("load-err");err.hidden=!!(p&&p.playbooks);
   if(!p||!p.playbooks)err.textContent="Could not load the crisis list. Check that the server is running.";

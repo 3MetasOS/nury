@@ -206,7 +206,7 @@ def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
     s = (STATIC / "index.html").read_text(encoding="utf-8")
     assert "14 named checks" not in s, "the count is read from the registry (/api/features named_checks)"
     assert "a red team, human review" not in s
-    assert "Jev classifying every draft at run time, and before release a red team audit and human review" in s and 'id="built-checks"' in s
+    assert "Jev classifying every draft at run time when it is reachable, and before release a red team audit and human review" in s and 'id="built-checks"' in s
 
 
 def test_hand_written_notes_are_decoration_only_and_self_hosted():
@@ -297,3 +297,9 @@ def test_diagrams_are_drawn_from_data_and_have_text_alternatives():
     how = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
     assert how.count('class="adg"') == 2, "architecture and loop"
     assert 'class="adg"' in (STATIC / "network.html").read_text(encoding="utf-8")
+
+
+def test_privacy_off_banner_text_and_hook():
+    idx = (STATIC / "index.html").read_text(encoding="utf-8")
+    assert 'id="privacy-off"' in idx and "Privacy is off: names go to the model as typed." in idx
+    assert '$("privacy-off").hidden=!(pv&&pv.on===false)' in idx and '"/api/privacy"' in idx
