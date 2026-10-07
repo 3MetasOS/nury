@@ -62,7 +62,7 @@ Say (about 30 words): "We judged 46 synthetic scenarios: 29 pass, 2 fail, 15 wai
 Source: evaluations/results/build_comparison.md, build 9bc5c6d. These are judge results, not human review. Do not add the three counts into one pass rate.
 Fallback not needed: the final scorecards landed (2026-10-07 03:56).
 Say one failure, plainly: the tone score. If asked for another: a checklist once named a detainee locator that was not in our vetted sources; we fixed the prompt and the check.
-On the slide, not spoken: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier. Disclosed as third-party technology per the rules."
+On the slide, not spoken: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
 
 ## 2:22 to 2:32  Slide 9 (light): teamwork, and what is next
 "Built by one founder and a small team of AI agents. Next: real pastors, and an attorney to review our sources." (20 words, 8 s) Not done yet.

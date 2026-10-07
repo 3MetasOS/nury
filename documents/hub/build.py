@@ -151,6 +151,7 @@ MENU = [
     ("For judges and reviewers", "The pattern", "md", "documents/product/PATTERN.md"),
     ("For judges and reviewers", "CLI and MCP", "md", "documents/product/CLI_AND_MCP.md"),
     ("For judges and reviewers", "About page text", "md", "documents/product/ABOUT_PAGE.md"),
+    ("For judges and reviewers", "Alignment audit (table of facts)", "md", "documents/product/ALIGNMENT_AUDIT.md"),
     ("Architecture", "How this was built (page content)", "md", "documents/product/HOW_IT_WAS_BUILT.md"),
     ("Architecture", "How the engine thinks (walkthrough)", "md", "documents/product/ENGINE_WALKTHROUGH.md"),
     ("Architecture", "Technical reference (for engineers)", "md", "documents/product/TECHNICAL_REFERENCE.md"),

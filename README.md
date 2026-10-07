@@ -8,9 +8,9 @@ Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. 
 
 A family calls a church in the worst hour of its life. The pastor opens Nury, picks the crisis and types what the family said. Nury drafts five stages for the pastor to read: a case summary, a plain-language brief, a list of vetted contacts, a family checklist and a short pastoral message, with the family materials in the family's language. After every stage the pastor can Approve, Edit or Stop. Nothing reaches the family except through the pastor.
 
-Nury is not a pastor, counselor, doctor or lawyer, and never claims to be one. It gives legal and hospital information from vetted sources, never advice. Two playbooks are live: immigration detention or raid, and hospital emergency.
+Nury is not a pastor, counselor, doctor or lawyer, and never claims to be one. It gives legal and hospital information from vetted sources, never advice. Two playbooks are live: an immigration matter (a detention or a raid) and a hospital emergency.
 
-License: MIT. Disclosure: the Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
+License: MIT. Disclosure: The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
 
 ```
  pastor types ──► names become tokens ──► Claude Sonnet 4.6 writes a stage (Gloo AI Studio)
@@ -37,11 +37,22 @@ pip install -r code/requirements.txt
 cd code && python3 -m app.server          # http://127.0.0.1:8080  (PORT=9000 to change it)
 ```
 
-You will see the Nury home page with the crisis chooser, the cases list, the church network, an observability page and the "How this was built" documentation.
+You will see the Nury home page. Open it at http://127.0.0.1:8080. The app has these pages:
+
+- **Home**: the crisis chooser (Immigration matter and Hospital emergency run; Sudden loss and House fire say "coming soon").
+- **Cases**: every saved case. A case page has tabs for the summary, one tab per stage, People, Documents, Timeline, Intake, Changes and Log. Its **Export / Print** menu makes a family copy and a pastor copy as PDF, a zip of the case, or print views. PDF export needs Chrome or Chromium on the machine; without one, the page says so and gives the print view to save as PDF.
+- **Network**: the church's own contacts.
+- **About**: what Nury is, how it was made, and who made it.
+- **How this was built** (also in `documents/product/HOW_IT_WAS_BUILT.md`), **Observability**, **Self-improvement**, **What did not work**, **Economics**, **The pattern**, **Standards we use** and the **build log**. These are linked in the footer.
+- **Run your own case** (`/run-your-own`): how to connect a Gloo key.
 
 **Replay mode (the default with no key).** With no `GLOO_API_KEY`, the app runs a recorded run of each playbook's sample intake. The words the model wrote were recorded earlier on this build; everything else runs for real: the safety floor, the named checks, the correction loop, the approval gates, the audit log, the privacy layer, the case file and the Scripture insertion. Press "Use the sample intake" and approve the five stages (turn on the demo box to watch a draft be rejected and rewritten). A typed intake is refused with "This is a recorded run. Add a Gloo key to run your own." An edit you make at a gate is carried forward, but later stages stay the recorded ones. The Jev scores shown are the recorded ones, labelled so. `NURY_REPLAY=1` forces replay, `NURY_REPLAY=0` forces it off; with a key present and the variable unset, replay is off and Nury behaves exactly as before.
 
 **Live mode.** Export `GLOO_API_KEY` in your shell, or put it in a `.env` file at the repo root (gitignored), then restart the app. `JEV_API_KEY` turns the Jev gate on; without it drafts are checked by the code rules alone. `YVP_APP_KEY`, `YVP_BIBLE_ES` and `YVP_BIBLE_EN` turn on exact verse text from YouVersion; without them Nury uses a bank of verified public-domain verses. `NURY_FEEDBACK=on` (or `counts`, the stricter mode) records what a pastor changes (off by default). Keys come from the environment only. Never commit one: `python3 code/tools/scan_keys.py` checks the tracked files.
+
+## Built to grow
+
+A crisis is a defined workflow, kept as a folder of plain files: its stages, prompts, vetted sources and possible outcomes. Adding a crisis means adding a folder, not changing the engine. A rule is one small function, a line that registers it, one sentence for the rules page and a test. Scenarios and hostile intakes are plain files too. Start with [ADD_A_RULE](documents/product/ADD_A_RULE.md) and the playbook folder `code/playbooks/`. A person still approves the sources and the release.
 
 ## Repo map
 
@@ -76,7 +87,9 @@ Git-ignored on purpose: `.env`, `data/`, `cases/`, `network/`, `health/`, `node_
 | A playbook, and how to add a crisis | `code/playbooks/detention/`, `python3 code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md` |
 | The learning loop (built, off, nothing learned) | `code/nury/feedback.py`, `documents/product/LEARNING_LOOP.md` |
 | The observability ledger | `code/nury/ledger.py`, `documents/product/OBSERVABILITY.md` |
-| The command line and MCP server (read-only rule checks, no key) | `python -m nury.cli`, `python -m nury.mcp_server`, `documents/product/CLI_AND_MCP.md` |
+| The command line and MCP server (shipped; read-only rule checks, no key) | From `code/`: `python -m nury.cli rules` or `python -m nury.mcp_server`. Details in `documents/product/CLI_AND_MCP.md` |
+| PDF export of a case | `code/app/pdf_export.py` (needs Chrome or Chromium; falls back to the print view) |
+| What did not work, economics, the reusable pattern | `documents/product/WHAT_DID_NOT_WORK.md`, `ECONOMICS.md`, `PATTERN.md` (also in the app footer) |
 | The evaluation sets | `evaluations/scenarios*/` and `evaluations/network/` (detention 20, hospital 8, hostile 18, network 3, case file 5) |
 | The scorecards and honest limits | `evaluations/results/scorecard.md`, `evaluations/FAILURE_LOG.md` |
 
@@ -90,10 +103,10 @@ Git-ignored on purpose: `.env`, `data/`, `cases/`, `network/`, `health/`, `node_
 ## Tests
 
 ```
-cd code && ./test.sh                          # product tests: offline, no keys; 335 tests
+cd code && ./test.sh                          # product tests: offline, no keys; 336 tests
 cd ..
 python3 -m pip install pytest PyYAML markdown
-python3 -m pytest -q evaluations/tests        # evaluation tests; 88 tests
+python3 -m pytest -q evaluations/tests        # evaluation tests; 109 tests
 python3 evaluations/run.py --agent mock       # the harness against a mock agent: no network
 ```
 
