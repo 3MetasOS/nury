@@ -98,6 +98,20 @@ class Bank(Base):
         rec2, _, _ = self.run_past(Pastoral(reply("psa46_1")))      # an unapproved id is not allowed
         self.assertEqual(rec2.status, "escalated")
 
+    def test_the_dev_flag_shows_pending_verses_but_never_rejected_ones(self):
+        import os
+        a = json.loads((self.src / "approvals.json").read_text())
+        a["scr-psa34-18"] = "rejected"
+        (self.src / "approvals.json").write_text(json.dumps(a))
+        os.environ["NURY_ALLOW_PENDING"] = "1"
+        try:
+            ids = [e["id"] for e in scr.for_language(scr.load_bank(self.pb.dir, church=False), "es")]
+        finally:
+            del os.environ["NURY_ALLOW_PENDING"]
+        self.assertIn("psa23_4", ids)
+        self.assertNotIn("psa34_18", ids)
+        self.assertEqual([e["id"] for e in scr.for_language(scr.load_bank(self.pb.dir, church=False), "es")], ["psa46_1", "psa23_4"])
+
     def test_the_real_bank_fits_the_cap_has_sources_and_a_license(self):
         for pid, n in (("detention", 10), ("hospital", 12)):
             d = json.loads((pbm.PLAYBOOKS_DIR / pid / "sources" / "scripture.json").read_text())

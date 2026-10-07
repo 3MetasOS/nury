@@ -16,6 +16,7 @@ network/scripture.json. A verse ships only when its approval is "approved".
 """
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Optional
@@ -81,8 +82,9 @@ def load_bank(pb_dir: Path, church_root: Optional[str] = None, church: bool = Tr
     out = []
     for v in d.get("verses", []):
         _check_verse(v, cap, church=False)
-        if approvals.get(v.get("source_id")) != "approved":
-            continue
+        st = approvals.get(v.get("source_id"))
+        if st != "approved" and not (st in (None, "pending") and os.environ.get("NURY_ALLOW_PENDING") == "1"):
+            continue                                  # pending and rejected verses never ship; the dev flag lets pending ones show
         v = dict(v, origin="playbook", translation_es=tr.get("es", {}).get("name", ""),
                  translation_en=tr.get("en", {}).get("name", ""))
         out.append(v)
