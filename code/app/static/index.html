@@ -254,9 +254,10 @@ async function openCase(id){
   $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);
-  const names=Object.keys(c.pages);NAV={pages:c.pages,open:showPage};
+  const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","log.md"].indexOf(n)+2;
+  const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
-    b.textContent=n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
+    b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
   show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
 }
 function showPage(n){curPage=n;

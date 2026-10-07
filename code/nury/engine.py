@@ -154,13 +154,15 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     active = stage.skills if skills_enabled(skills) else []     # skills off: no text, no checks, no events
     base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields, active)
     user_input = pbm.build_input(stage, state)
-    vetted_blob = json.dumps(data, ensure_ascii=False) + "\n" + "\n".join(ctx.values())
+    sources_blob = json.dumps(data, ensure_ascii=False)
+    vetted_blob = sources_blob + "\n" + "\n".join(ctx.values())
     ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
 
     def all_violations(txt):
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
         v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
+        v += g.email_reasons(txt, sources_blob, vetted_blob, state.intake)
         for c in stage.checks + [c for sk in active for c in sk.checks]:
             v += CHECKS[c["name"]](c, txt, ctx_ns)
         return v

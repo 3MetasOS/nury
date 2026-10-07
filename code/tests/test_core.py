@@ -545,5 +545,37 @@ class BareDomains(unittest.TestCase):
         self.assertEqual(run_stage("resources", hs2, client=HFake(hok), playbook="hospital").status, "approved")
 
 
+class Emails(unittest.TestCase):
+    def test_invented_email_rejected_vetted_and_known_pass(self):
+        from nury import guardrails as g
+        vetted = json.dumps({"national": [{"name": "X", "url": "https://www.immigrationadvocates.org/nonprofit/legaldirectory/",
+                                           "email": "help@legalaid.example.org"}]})
+        e = lambda t, *k: g.email_reasons(t, vetted, *k)
+        self.assertEqual(e("Escriba a x@invented.org")[0]["category"], "ungrounded_claim")
+        self.assertTrue(e("Escriba a ayuda@detentionlocator.com hoy"))
+        self.assertEqual(e("Escriba a help@legalaid.example.org"), [])                     # vetted address
+        self.assertEqual(e("Escriba a info@immigrationadvocates.org"), [])                  # vetted domain
+        self.assertEqual(e("Escriba a maria@familia.net", "intake: maria@familia.net"), [])     # the family's own, in the intake
+        self.assertTrue(e("Escriba a otra@familia.net", "intake: maria@familia.net"))
+        self.assertEqual(e("Sin correos aquí. 8.11 y index.md"), [])
+
+    def test_stage_level_invented_email_escalates_both_playbooks(self):
+        bad = dict(CANNED, checklist=CHECK + "\nEscriba a ayuda@detentionlocator.org")
+        st = CaseState("x")
+        st.approved.update(triage=TRIAGE, rights=RIGHTS, attorney=ATTY)
+        r = run_stage("checklist", st, client=FakeClient(bad))
+        self.assertEqual(r.status, "escalated")
+        self.assertIn("ungrounded_claim", r.reason_categories)
+        hbad = dict(HCANNED, resources=HRES + " Escriba a ayuda@hospitalfinder.org")
+        hs = CaseState("x")
+        hs.approved.update(triage=HTRIAGE, info=HINFO)
+        r = run_stage("resources", hs, client=HFake(hbad), playbook="hospital")
+        self.assertEqual(r.status, "escalated")
+        # the family's own email in the intake is allowed to be repeated
+        ok = dict(CANNED, triage=TRIAGE + "\nContact: maria@familia.net")
+        r = run_stage("triage", CaseState("Maria, maria@familia.net, llamó"), client=FakeClient(ok))
+        self.assertEqual(r.status, "approved")
+
+
 if __name__ == "__main__":
     unittest.main()

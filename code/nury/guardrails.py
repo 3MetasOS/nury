@@ -127,3 +127,22 @@ def phone_reasons(text, *allowed_blobs):
     ok = {re.sub(r"\D", "", p)[-10:] for b in allowed_blobs for p in _PHONE.findall(b)}
     return [R("ungrounded_claim", f"phone number not in vetted sources: {p.strip()}")
             for p in _PHONE.findall(text) if re.sub(r"\D", "", p)[-10:] not in ok]
+
+
+# ---- email allowlist: an email must come from the vetted sources, the approved text, or the intake ----
+_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
+
+
+def email_reasons(text, vetted_blob, *known_blobs):
+    """Flag an email whose address is not already in the known text (approved context, intake) and whose
+    domain is not a vetted domain (a site or email domain in the vetted sources)."""
+    hosts = {_norm_url(u).split("/")[0] for u in allowed_urls_in(vetted_blob)}
+    hosts |= {m.group(1).lower() for m in _EMAIL_IN_TEXT.finditer(vetted_blob)}
+    known = "\n".join([vetted_blob, *known_blobs]).lower()
+    out = []
+    for m in _EMAIL_IN_TEXT.finditer(text):
+        addr, dom = m.group(0).lower(), m.group(1).lower()
+        if addr in known or any(dom == h or dom.endswith("." + h) or h.endswith("." + dom) for h in hosts):
+            continue
+        out.append(R("ungrounded_claim", f"email not in vetted sources: {m.group(0)}"))
+    return out

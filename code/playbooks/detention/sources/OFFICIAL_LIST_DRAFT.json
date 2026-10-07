@@ -1,0 +1,829 @@
+{
+ "status": "pending approval: every entry awaits Juan's decision on a canvas. Nothing here ships until approved.",
+ "drafted": "2026-10-06",
+ "by": "hack-ninja",
+ "state": "Colorado",
+ "scope_note": "Organizations only. Individual accredited representatives and private attorneys are not included. No private attorney is marked in the October 2026 pro bono list text I extracted.",
+ "caveat_for_family": "Listed does not mean recommended. The Department of Justice does not endorse any of these organizations.",
+ "read_at": "2026-10-06 build time, official justice.gov pages only",
+ "not_read_or_not_used": [
+  "https://www.justice.gov/eoir/recognized-organizations-and-accredited-representatives-roster (404, a wrong guess; not used)",
+  "https://www.justice.gov/eoir/recognized-organizations-and-accredited-representatives-roster-state-and-city (403, blocked; not used)",
+  "'Read This Before You Take Legal Advice' flyer (/eoir/UPILFlyer06222011.pdf) listed on the find-representation page: not read, not used",
+  "Recognized Organizations List and Accredited Representatives List PDFs: not read; the by-state roster covers the organizations"
+ ],
+ "other_states_note": {
+  "pro_bono_list": "Organized by immigration court location inside each state (Colorado: Aurora and Denver). Only states with an immigration court have a section. Each court section lists the providers for that court, plus referral services that repeat across courts. Cover page says updated quarterly.",
+  "roster": "Organized by state, then city. Lists recognized organizations; individual accredited representatives are in separate lists.",
+  "build_rule": "Same ingest per state: read both official files, quote, never add a provider that is not on them, keep the as-of dates."
+ },
+ "sources": [
+  {
+   "id": "eoir-pro-bono-list",
+   "title": "EOIR List of Pro Bono Legal Service Providers (full list PDF, header 'Updated October 2026')",
+   "url": "https://www.justice.gov/eoir/file/probonofulllist/dl",
+   "page": "https://www.justice.gov/eoir/list-pro-bono-legal-service-providers",
+   "as_of": "Updated October 2026 (PDF header); page 'Updated September 24, 2026'",
+   "read_via": "justice.gov, curl, then pdftotext",
+   "verification": "verbatim",
+   "quotes": [
+    "contains information on non-profit organizations and attorneys who have committed to providing at least 50 hours per year of pro bono legal services before the immigration court location where they appear on the List.",
+    "Published quarterly (January, April, July, and October)",
+    "EOIR does not endorse any of these organizations, referral services, or attorneys. In addition, EOIR does not participate in, nor is it responsible for, the representation decisions or performance of these organizations, referral services, or attorneys.",
+    "The List is not to be used by organizations or attorneys for the purpose of solicitation for paid legal services."
+   ],
+   "uses": [
+    "What the list is",
+    "Caveat: listed does not mean recommended"
+   ],
+   "phones": [],
+   "decision": "pending approval"
+  },
+  {
+   "id": "eoir-recognized-orgs-roster",
+   "title": "EOIR Recognized Organizations and Accredited Representatives Roster by State and City (PDF, 'Report Last Updated on: 10/04/26')",
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "page": "https://www.justice.gov/eoir/recognition-accreditation-roster-reports",
+   "as_of": "10/04/26 (report); roster page itself says 'Updated April 28, 2025'",
+   "read_via": "justice.gov, curl, then pdftotext",
+   "verification": "verbatim",
+   "quotes": [
+    "The contact information posted in these rosters is provided to the R&A Program by the Recognized Organizations.",
+    "Each Recognized Organization has a duty to notify the R&A Program, through formal correspondence, of any changes to its contact information, such as name, address, and telephone number."
+   ],
+   "uses": [
+    "What the roster is",
+    "Contact details can be out of date"
+   ],
+   "phones": [],
+   "decision": "pending approval"
+  },
+  {
+   "id": "eoir-ra-program",
+   "title": "EOIR Recognition and Accreditation (R&A) Program",
+   "url": "https://www.justice.gov/eoir/recognition-and-accreditation-program",
+   "as_of": "Updated April 29, 2026",
+   "read_via": "justice.gov, curl, text",
+   "verification": "verbatim",
+   "quotes": [
+    "These representatives are accredited through the R&A Program, which aims to increase the availability of competent immigration legal representation for low-income and indigent persons, thereby promoting the effective and efficient administration of justice.",
+    "Accredited Representatives may only provide immigration legal services through Recognized Organizations. Only non-profit, federally tax-exempt entities may apply to be recognized."
+   ],
+   "uses": [
+    "What 'recognized' means"
+   ],
+   "phones": [],
+   "decision": "pending approval"
+  },
+  {
+   "id": "rmian",
+   "title": "Rocky Mountain Immigrant Advocacy Network (RMIAN)",
+   "kind": "non-profit organization",
+   "on_lists": [
+    "pro_bono_list",
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/file/probonofulllist/dl",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Aurora Immigration Court list: RMIAN*, 7301 N. Federal Blvd., Suite 300, Westminster, CO 80030, Tel: (303) 433-2812, www.rmian.org",
+    "To request services for someone who is detained, please go to www.rmian.org/detention-program or leave a message on the detained hotline at (303) 866-9308",
+    "RMIAN offers free legal representation, information, and pro se support for unrepresented individuals detained by Immigration and Customs Enforcement (ICE) in Aurora, Colorado",
+    "Denver Immigration Court list: To request services for someone who is not detained, please go to www.rmian.org/childrens-program or leave a message on the non-detained hotline at (720) 543-8898",
+    "Recognized Organization: Rocky Mountain Immigrant Advocacy Network (RMIAN). Status Active. Date recognized 07/20/16. Recognition expiration 12/04/26."
+   ],
+   "phones": [
+    "(303) 433-2812",
+    "(303) 866-9308",
+    "(720) 543-8898"
+   ],
+   "offices": [
+    "7301 N. Federal Blvd., Suite 300, Westminster, CO 80030"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster recognition expires 12/04/26 (about two months from the report date)."
+   ],
+   "decision": "pending approval",
+   "web": "www.rmian.org",
+   "immigration_courts_on_list": [
+    "Aurora",
+    "Denver"
+   ]
+  },
+  {
+   "id": "connect-immigration",
+   "title": "Connect Immigration",
+   "kind": "non-profit organization",
+   "on_lists": [
+    "pro_bono_list",
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/file/probonofulllist/dl",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Connect Immigration*, 305 McGregor Drive, Gypsum, CO 81637, Tel: (720) 674-1919, immigration@connectchurchcolorado.com, www.connectchurchcolorado.com/immigration",
+    "Please call for an appointment",
+    "Languages: Spanish and English",
+    "Recognized Organization: Connect Immigration. Status Active. Date recognized 11/26/24. Recognition expiration 11/26/30. Offices on the roster: Eagle, 248 Grand Avenue, (970) 393-6479; Lakewood, 355 S. Teller Street, Suite 200, (720) 940-5333."
+   ],
+   "phones": [
+    "(720) 674-1919",
+    "(970) 393-6479",
+    "(720) 940-5333"
+   ],
+   "offices": [
+    "305 McGregor Drive, Gypsum, CO 81637",
+    "248 Grand Avenue, Eagle, CO 81631",
+    "355 S. Teller Street, Suite 200, Lakewood, CO 80226"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Gypsum and Eagle are in the mountains. Lakewood is the Denver-area office."
+   ],
+   "decision": "pending approval",
+   "web": "www.connectchurchcolorado.com/immigration",
+   "languages_on_list": "Spanish and English",
+   "immigration_courts_on_list": [
+    "Aurora",
+    "Denver"
+   ]
+  },
+  {
+   "id": "colorado-asylum-center",
+   "title": "Colorado Asylum Center",
+   "kind": "non-profit organization",
+   "on_lists": [
+    "pro_bono_list"
+   ],
+   "url": "https://www.justice.gov/eoir/file/probonofulllist/dl",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Colorado Asylum Center*, 517 16th Avenue, Denver, CO 80203, Tel: (303) 376-9907, www.coasylum.org",
+    "Asylum applications and Notices of Appeals only",
+    "By appointment only",
+    "Text (303) 376-9907 once with request for appointment (text only)"
+   ],
+   "phones": [
+    "(303) 376-9907"
+   ],
+   "offices": [
+    "517 16th Avenue, Denver, CO 80203"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Narrow scope: asylum applications and Notices of Appeals only. Probably not useful for a detention call. Text only."
+   ],
+   "decision": "pending approval",
+   "web": "www.coasylum.org",
+   "immigration_courts_on_list": [
+    "Denver"
+   ]
+  },
+  {
+   "id": "aba-detention-hotline",
+   "title": "ABA Commission on Immigration Detention Information Hotline",
+   "kind": "referral service",
+   "on_lists": [
+    "pro_bono_list"
+   ],
+   "url": "https://www.justice.gov/eoir/file/probonofulllist/dl",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "ABA Commission on Immigration Detention Information Hotline**, 1050 Connecticut Avenue, NW, Unit 400, Washington, DC 20036, immcenter@americanbar.org",
+    "Pro se case assistance for detained respondents only",
+    "To contact on behalf of an individual detained by ICE or BOP, email immcenter@americanbar.org",
+    "Respondents detained at Department of Defense (DOD) military facilities (including Guantanamo) should contact our toll-free hotline at 1 (855) 641-6081"
+   ],
+   "phones": [
+    "1 (855) 641-6081"
+   ],
+   "offices": [
+    "1050 Connecticut Avenue, NW, Unit 400, Washington, DC 20036"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Pro se help only, for detained people. The speed dial '2150#' works only from inside a detention facility. Email is the route for a family member."
+   ],
+   "decision": "pending approval",
+   "web": "www.americanbar.org/groups/public_interest/immigration/",
+   "immigration_courts_on_list": [
+    "Aurora",
+    "Denver"
+   ]
+  },
+  {
+   "id": "roster-slvirc",
+   "title": "San Luis Valley Immigrant Resource Center",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: San Luis Valley Immigrant Resource Center. Status Active. Date recognized 02/21/24. Recognition expiration 02/21/30. City: Alamosa. Address: 225 6th Street, Suite B, Alamosa, CO 81101. Phone: (719) 587-3225."
+   ],
+   "phones": [
+    "(719) 587-3225"
+   ],
+   "offices": [
+    "225 6th Street, Suite B, Alamosa, CO 81101"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-ilc-boulder",
+   "title": "Immigrant Legal Center of Boulder County",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Immigrant Legal Center of Boulder County. Status Active. Date recognized 05/19/17. Recognition expiration 02/03/32. City: Boulder. Address: 948 North Street, Suite 8, Boulder, CO 80304. Phone: (303) 444-1522."
+   ],
+   "phones": [
+    "(303) 444-1522"
+   ],
+   "offices": [
+    "948 North Street, Suite 8, Boulder, CO 80304"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-cc-central-co",
+   "title": "Catholic Charities of Central Colorado",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Catholic Charities of Central Colorado. Status Active (Pending Renewal). Date recognized 02/06/08. Recognition expiration 05/29/26*. Marked pending renewal. City: Colorado Springs. Address: 228 N. Cascade Avenue, Colorado Springs, CO 80903. Phone: (719) 866-6515."
+   ],
+   "phones": [
+    "(719) 866-6515"
+   ],
+   "offices": [
+    "228 N. Cascade Avenue, Colorado Springs, CO 80903"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-hope-immigration",
+   "title": "Hope Immigration Inc.",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Hope Immigration Inc.. Status Active. Date recognized 07/10/26. Recognition expiration 07/10/28. City: Colorado Springs. Address: 1826 E Platte Ave., Suite 200, Colorado Springs, CO 80909. Phone: (719) 602-5066."
+   ],
+   "phones": [
+    "(719) 602-5066"
+   ],
+   "offices": [
+    "1826 E Platte Ave., Suite 200, Colorado Springs, CO 80909"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-immigrant-hope-atlanta",
+   "title": "Immigrant Hope - Atlanta (Colorado Springs Extension Office)",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Immigrant Hope - Atlanta (Colorado Springs Extension Office). Status Active (Pending Renewal). Date recognized 10/22/13. Recognition expiration 01/24/26*. Marked pending renewal. City: Colorado Springs. Address: 3445 Oro Blanco Drive, Colorado Springs, CO 80917. Phone: (970) 233-3219."
+   ],
+   "phones": [
+    "(970) 233-3219"
+   ],
+   "offices": [
+    "3445 Oro Blanco Drive, Colorado Springs, CO 80917"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-lfs-rocky-mountains",
+   "title": "Lutheran Family Services Rocky Mountains",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Lutheran Family Services Rocky Mountains. Status Active. Date recognized 06/07/05. Recognition expiration 05/23/29. City: Denver and Colorado Springs. Address: 1035 Osage Street, Suite 700, Denver, CO 80204; Colorado Springs extension: 108 E St Vrain, Suite 14, CO 80903. Phone: (303) 980-5400; (719) 314-0212."
+   ],
+   "phones": [
+    "(303) 980-5400",
+    "(719) 314-0212"
+   ],
+   "offices": [
+    "1035 Osage Street, Suite 700, Denver, CO 80204; Colorado Springs extension: 108 E St Vrain, Suite 14, CO 80903"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-integrated-community",
+   "title": "Integrated Community",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Integrated Community. Status Active (Pending Renewal). Date recognized 08/11/16. Recognition expiration 06/08/26*. Marked pending renewal. City: Craig and Steamboat Springs. Address: Craig: 555 Breeze Street, Suite 110, CO 81625; Steamboat Springs: 443 Oak Street, CO 80487. Phone: (970) 439-0595; (970) 871-4599."
+   ],
+   "phones": [
+    "(970) 439-0595",
+    "(970) 871-4599"
+   ],
+   "offices": [
+    "Craig: 555 Breeze Street, Suite 110, CO 81625; Steamboat Springs: 443 Oak Street, CO 80487"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-cccs-denver",
+   "title": "Catholic Charities and Community Services of the Archdiocese of Denver, Inc.",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Catholic Charities and Community Services of the Archdiocese of Denver, Inc.. Status Active. Date recognized 11/14/24. Recognition expiration 11/14/30. City: Denver. Address: 6240 Smith Road, Denver, CO 80216. Phone: (303) 742-4971."
+   ],
+   "phones": [
+    "(303) 742-4971"
+   ],
+   "offices": [
+    "6240 Smith Road, Denver, CO 80216"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-ecdc-acc",
+   "title": "ECDC African Community Center (ACC)",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: ECDC African Community Center (ACC). Status Active (Pending Renewal). Date recognized 09/23/24. Recognition expiration 09/23/26*. Marked pending renewal. City: Denver. Address: 925 S Niagara Street, Suite 200, Denver, CO 80224. Phone: (303) 399-4500."
+   ],
+   "phones": [
+    "(303) 399-4500"
+   ],
+   "offices": [
+    "925 S Niagara Street, Suite 200, Denver, CO 80224"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-irc-denver",
+   "title": "International Rescue Committee, Inc. (Denver Extension Office)",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: International Rescue Committee, Inc. (Denver Extension Office). Status Active. Date recognized 02/23/96. Recognition expiration 01/13/32. City: Denver. Address: 1873 S. Bellaire Street, Suite 500, Denver, CO 80222. Phone: (720) 328-6655."
+   ],
+   "phones": [
+    "(720) 328-6655"
+   ],
+   "offices": [
+    "1873 S. Bellaire Street, Suite 500, Denver, CO 80222"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-justice-and-mercy",
+   "title": "Justice and Mercy Legal Aid Center",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Justice and Mercy Legal Aid Center. Status Active. Date recognized 12/03/24. Recognition expiration 12/02/30. City: Denver. Address: 5400 Washington Street, Denver, CO 80216. Phone: (303) 839-1008."
+   ],
+   "phones": [
+    "(303) 839-1008"
+   ],
+   "offices": [
+    "5400 Washington Street, Denver, CO 80216"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-ctr-trauma-resilience",
+   "title": "The Center for Trauma & Resilience",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: The Center for Trauma & Resilience. Status Active. Date recognized 09/16/25. Recognition expiration 09/16/31. City: Denver. Address: P.O. Box 18975, Denver, CO 80218. Phone: (303) 860-0660."
+   ],
+   "phones": [
+    "(303) 860-0660"
+   ],
+   "offices": [
+    "P.O. Box 18975, Denver, CO 80218"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-companeros",
+   "title": "Companeros: Four Corners Immigrant Resource Center",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Companeros: Four Corners Immigrant Resource Center. Status Active. Date recognized 12/17/24. Recognition expiration 12/17/30. City: Durango. Address: 1099 Main Avenue, Suite 215, Durango, CO 81301. Phone: (970) 375-9406."
+   ],
+   "phones": [
+    "(970) 375-9406"
+   ],
+   "offices": [
+    "1099 Main Avenue, Suite 215, Durango, CO 81301"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-immigrant-hope-greeley",
+   "title": "Immigrant Hope - Greeley",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Immigrant Hope - Greeley. Status Active (Pending Renewal). Date recognized 08/09/24. Recognition expiration 08/09/26*. Marked pending renewal. City: Evans. Address: 3001 8th Avenue, #170, Evans, CO 80620. Phone: (970) 413-4303."
+   ],
+   "phones": [
+    "(970) 413-4303"
+   ],
+   "offices": [
+    "3001 8th Avenue, #170, Evans, CO 80620"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-alianza-norco",
+   "title": "Alianza NORCO",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Alianza NORCO. Status Active (Pending Renewal). Date recognized 07/24/24. Recognition expiration 07/23/26*. Marked pending renewal. City: Fort Collins. Address: 525 W Oak Street, Suite 106, Fort Collins, CO 80521. Phone: (970) 893-9034."
+   ],
+   "phones": [
+    "(970) 893-9034"
+   ],
+   "offices": [
+    "525 W Oak Street, Suite 106, Fort Collins, CO 80521"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-bethany-immigration",
+   "title": "Bethany Immigration Services",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Bethany Immigration Services. Status Active. Date recognized 06/16/15. Recognition expiration 03/05/27. City: Frisco. Address: P.O. Box 4964, Frisco, CO 80443. Phone: (970) 389-1480."
+   ],
+   "phones": [
+    "(970) 389-1480"
+   ],
+   "offices": [
+    "P.O. Box 4964, Frisco, CO 80443"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-mountain-dreamers",
+   "title": "Mountain Dreamers",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Mountain Dreamers. Status Active. Date recognized 11/22/24. Recognition expiration 11/22/26. City: Frisco. Address: 619 Main Street, Suite 7B, Frisco, CO 80443. Phone: (970) 368-6354."
+   ],
+   "phones": [
+    "(970) 368-6354"
+   ],
+   "offices": [
+    "619 Main Street, Suite 7B, Frisco, CO 80443"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-littleton-irc",
+   "title": "Littleton Immigrant Resources Center",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Littleton Immigrant Resources Center. Status Active (Pending Renewal). Date recognized 12/07/10. Recognition expiration 05/01/26*. Marked pending renewal. City: Littleton. Address: 6014 S. Datura Street, Littleton, CO 80120. Phone: (303) 795-3968."
+   ],
+   "phones": [
+    "(303) 795-3968"
+   ],
+   "offices": [
+    "6014 S. Datura Street, Littleton, CO 80120"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-chan",
+   "title": "Colorado Hosting Asylum Network",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Colorado Hosting Asylum Network. Status Active. Date recognized 02/26/23. Recognition expiration 02/25/29. City: Pagosa Springs. Address: 264 Village Drive, Pagosa Springs, CO 81147. Phone: (303) 408-5418."
+   ],
+   "phones": [
+    "(303) 408-5418"
+   ],
+   "offices": [
+    "264 Village Drive, Pagosa Springs, CO 81147"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-cc-southern-co",
+   "title": "Catholic Charities of the Diocese of Pueblo, Inc. dba Catholic Charities of Southern Colorado",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Catholic Charities of the Diocese of Pueblo, Inc. dba Catholic Charities of Southern Colorado. Status Active. Date recognized 07/24/25. Recognition expiration 07/18/31. City: Pueblo. Address: 516 N Main Street, Pueblo, CO 81003. Phone: (719) 544-4233."
+   ],
+   "phones": [
+    "(719) 544-4233"
+   ],
+   "offices": [
+    "516 N Main Street, Pueblo, CO 81003"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  },
+  {
+   "id": "roster-tri-county-health",
+   "title": "Tri-County Health Network",
+   "kind": "recognized organization (roster)",
+   "on_lists": [
+    "roster"
+   ],
+   "url": "https://www.justice.gov/eoir/media/1398081/dl?inline",
+   "read_via": "official PDF from justice.gov, text extracted at build time (pdftotext)",
+   "verification": "verbatim",
+   "quotes": [
+    "Recognized Organization: Tri-County Health Network. Status Active. Date recognized 02/10/25. Recognition expiration 02/10/31. City: Telluride. Address: 238 E. Colorado Avenue, Suite 8, Telluride, CO 81435. Phone: (970) 708-7096."
+   ],
+   "phones": [
+    "(970) 708-7096"
+   ],
+   "offices": [
+    "238 E. Colorado Avenue, Suite 8, Telluride, CO 81435"
+   ],
+   "uses": [
+    "Official list: legal service providers in Colorado"
+   ],
+   "label_for_family": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+   "flags": [
+    "Roster does not say whether services are free. Do not call it free."
+   ],
+   "decision": "pending approval"
+  }
+ ]
+}
