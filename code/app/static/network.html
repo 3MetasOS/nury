@@ -10,14 +10,13 @@
 <link rel="stylesheet" href="/shell.css">
 <link rel="stylesheet" href="/diagrams.css">
 <style>
-main{max-width:720px;margin:0 auto;padding:16px 16px 24px}
+main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
 @media(min-width:960px){main{padding:24px 24px 56px}}
-h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0 0 8px;color:var(--amber-text)}
+.hidden{display:none!important}
 a{color:var(--amber-text);overflow-wrap:anywhere}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .lede{color:var(--muted);margin:6px 0 16px;max-width:60ch}
 .banner{background:var(--red-soft);border:1px solid var(--red);border-radius:var(--r);padding:12px 14px;margin:0 0 16px;font-size:.95rem}
 .banner b{color:var(--red)}
-.bar{display:grid;gap:10px;grid-template-columns:1fr;margin:0 0 14px}
 @media(min-width:560px){.bar{grid-template-columns:1fr 200px auto}}
 input,select,textarea{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:11px 12px;font:inherit;min-height:44px}
 textarea{min-height:76px;resize:vertical}
@@ -27,17 +26,11 @@ label{display:block;font-size:.85rem;color:var(--muted);margin:12px 0 5px}
 .btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
 .btn.danger{color:var(--red)}.btn.sm{min-height:40px;padding:8px 12px;font-size:.88rem}
 .btn[disabled]{opacity:.5;cursor:not-allowed}
-.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
-.row{padding:16px 0;border-bottom:1px solid var(--line)}
-.row h2{font:500 1.15rem/1.3 var(--serif);margin:0 0 2px;overflow-wrap:anywhere}
-.meta{color:var(--muted);font-size:.88rem}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
 .chip{font-size:.78rem;padding:2px 9px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
 .chip.k{border-color:var(--amber-line);color:var(--amber-text)}
-.contact{margin:8px 0 0;overflow-wrap:anywhere}
 .note{margin:8px 0 0;font-size:.9rem;color:var(--muted);border-left:2px solid var(--line);padding-left:10px}
 .acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.empty{padding:28px 0;color:var(--muted)}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin:0 0 16px}
 .panel h2{font:500 1.2rem var(--serif);margin:0 0 4px}
 .grid2{display:grid;gap:0 12px;grid-template-columns:1fr}@media(min-width:560px){.grid2{grid-template-columns:1fr 1fr}}
@@ -47,16 +40,85 @@ label{display:block;font-size:.85rem;color:var(--muted);margin:12px 0 5px}
 .hint{font-size:.82rem;color:var(--muted);margin:4px 0 0}
 details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-height:44px;display:flex;align-items:center}
 @media(prefers-reduced-motion:no-preference){.row{animation:in .3s cubic-bezier(.16,1,.3,1)}@keyframes in{from{opacity:0;transform:translateY(4px)}}}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 20px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);text-decoration:none;cursor:pointer}
+.cta.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.cta.block{width:100%}.cta:hover{border-color:var(--amber-line)}
+.tile{width:48px;height:48px;border-radius:12px;background:var(--amber-soft);color:var(--amber-text);display:grid;place-items:center;flex:none}
+.tile.lg{width:56px;height:56px;border-radius:14px}
+.scene{display:block;width:100%;height:auto;aspect-ratio:8/3;color:var(--scene)}
+.scs{display:flex;flex-wrap:wrap;gap:6px}
+.sc{display:inline-flex;align-items:center;gap:4px;min-height:26px;padding:0 9px;border-radius:99px;font:600 13px/1 var(--sans);border:1px solid var(--line-2);color:var(--text);background:transparent;white-space:nowrap}
+.sc .i{width:14px;height:14px}
+.sc.s-saved{color:var(--muted)}.sc.s-v2{background:var(--surface-2)}
+.sc.s-follow{border-style:dashed;border-color:var(--amber-line);color:var(--amber-text)}
+.sc.tag{color:var(--muted);font-weight:500}.sc.on{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
+.ct{font:500 18px/1.3 var(--serif);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:block;font-size:13px;color:var(--muted);margin:2px 0 8px}
+.cbody{min-width:0;display:block}
+.go{display:flex;align-items:center;gap:2px;align-self:center;color:var(--amber-text);font:600 14px var(--sans)}.go .gl{display:none}
+.linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
+.band .kicker{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.band p{color:var(--muted);max-width:52ch}
+.band .hnote{margin-top:8px;width:auto;max-width:100%}.band .hnote .hn-t{white-space:normal}.band .scene{max-width:260px;margin-top:4px}
+.band.cases{background:var(--surface)}
+.band.network{background:var(--surface)}.band.network .scene,.netcard .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
+.fbar{position:sticky;top:77px;z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;margin-bottom:6px;background:var(--bg)}
+.fbar .search{flex:1 1 220px;min-width:180px}.fbar .search input{min-height:44px}.fbar .search .i{top:10px}
+.fgroup.seg{flex:none;display:inline-flex;gap:0;padding:3px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface-2);overflow:visible}
+.fgroup.seg{box-sizing:border-box;height:44px}.fgroup.seg button{border:0;background:transparent;min-height:36px;height:36px;padding:0 14px}.fgroup.seg button b{font-weight:600;margin-left:4px;opacity:.8}
+.fgroup.seg button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text)}
+.fbar{align-items:flex-start}.fbar .search,.fbar .fgroup.seg{align-self:flex-start}.fbar .search input{height:44px;min-height:44px;box-sizing:border-box}.fbar #f-crisis{flex:1 1 100%;margin:0;padding-left:0;padding-right:0}
+.dayh{list-style:none;margin:16px 0 0;color:var(--muted)}.dayh:first-child{margin-top:0}
+.lrow.fu{box-shadow:inset 3px 0 0 var(--amber)}
+.lrow .mline{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:4px}.lrow .mline .meta{margin:0;font-size:14px;color:var(--muted)}
+.search{position:relative}.search .i{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none}
+.search input{width:100%;min-height:52px;padding:0 14px 0 46px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:16px var(--sans)}
+.fgroup{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scrollbar-width:thin}
+.fgroup button{flex:none;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
+.fgroup button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
+.lrow{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 12px 14px 14px;min-height:88px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
+.lrow .tile{width:48px;height:48px;border-radius:12px}
+.fgroup.seg{margin:0}.tile svg{width:30px;height:30px}
+.band h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0;color:var(--text)}
+.band .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
+@media(min-width:640px){.go .gl{display:inline}}
+@media(min-width:960px){.band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}}
+.rows{display:grid;gap:10px;list-style:none;margin:0;padding:0}
+.empty{padding:28px 0;color:var(--muted)}
+.lrow .sv{margin:6px 0 0;font-size:15px;color:var(--text)}.lrow .ct2{margin:4px 0 0;font-size:14px;overflow-wrap:anywhere}
+.lrow button.go{background:none;border:0;cursor:pointer;min-height:44px;padding:0 4px}
+.fbar .addbtn{flex:none;min-height:44px;height:44px;padding:0 18px}
+.fbar #kf{flex:1 1 100%;margin:0;padding-left:0;padding-right:0}
+#form-dialog{max-width:560px}
+#form-dialog .fb{padding:8px 20px 20px;overflow:auto}
+.leave-b{display:grid;gap:12px;padding:16px 20px 24px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;max-width:min(92vw,460px);padding:12px 16px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:15px;display:flex;align-items:center;gap:10px}
+.toast[hidden]{display:none}@media(min-width:960px){.toast{bottom:28px}}
+.cta.block{width:100%}
+
 </style>
 </head>
 <body data-nav="network">
 <script src="/shell.js"></script>
 <main id="main">
-<h1 id="h-net" tabindex="-1" data-note="only people your church has vetted" data-arrow="up" data-rot="-1.5">Our network</h1>
-<p class="lede">People our church has worked with. Nury lists them first, labeled as the church's own contacts. It never ranks or recommends them. The app saves it on the server. There is no sign-in yet.</p>
-<figure class="fig" style="margin:14px 0 18px"><figcaption class="mono" style="color:var(--muted);font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px">How a contact becomes yours</figcaption><svg class="adg" viewBox="0 0 560 316" role="img" aria-label="How a contact becomes part of your network: your church adds it, it is saved as your church's own, it is listed first labelled as the church's own, and Nury never ranks or recommends it."><g class="bx hi"><rect x="12" y="4" width="380" height="56" rx="6"/><text x="26" y="28" class="bt">Your church adds the contact</text><text x="26" y="47" class="bs">You enter the name and how to reach them.</text></g><path d="M200 60 V82" class="ba"/><path d="M195 76 L200 83 L205 76" class="ba"/><g class="bx "><rect x="12" y="88" width="380" height="56" rx="6"/><text x="26" y="112" class="bt">Saved as your church&#x27;s own</text><text x="26" y="131" class="bs">It goes in the network list. Nothing is checked outside the church.</text></g><path d="M200 144 V166" class="ba"/><path d="M195 160 L200 167 L205 160" class="ba"/><g class="bx "><rect x="12" y="172" width="380" height="56" rx="6"/><text x="26" y="196" class="bt">Listed first, labelled as yours</text><text x="26" y="215" class="bs">In the attorney or resources stage, before any official list.</text></g><path d="M200 228 V250" class="ba"/><path d="M195 244 L200 251 L205 244" class="ba"/><g class="bx "><rect x="12" y="256" width="380" height="56" rx="6"/><text x="26" y="280" class="bt">Never ranked or recommended</text><text x="26" y="299" class="bs">Listed does not mean recommended.</text></g><text x="404" y="30.0" class="bh">(you are the one</text><text x="404" y="50.0" class="bh">who vouches)</text></svg></figure>
+<div class="band network">
+  <div><h1 id="h-net" tabindex="-1" data-note="contacts your church has vetted; Nury lists them first, as yours" data-arrow="up" data-rot="-0.5">Our network</h1></div>
+  <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-network"/></svg>
+</div>
 <div id="banner" class="banner" hidden><b>Fictional demo contacts.</b> These are made up for the demo and are read only. A real network is never mixed with them.</div>
-
+<div class="fbar">
+  <div class="fgroup seg" role="group" aria-label="Where they serve" id="f-scope">
+    <button type="button" data-v="all" aria-pressed="true">All <b></b></button>
+    <button type="button" data-v="state" aria-pressed="false">In our state <b></b></button>
+    <button type="button" data-v="any" aria-pressed="false">Any state <b></b></button>
+  </div>
+  <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search contacts</label><input id="q" type="search" placeholder="Search name, city, service, tag" autocomplete="off"></div>
+  <button class="cta primary addbtn" id="add-btn" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Add a contact</button>
+  <div class="fgroup" role="group" aria-label="Type of help" id="kf"></div>
+</div>
+<ul class="rows" id="list"></ul>
+<p class="empty" id="empty" hidden>No contacts yet. Add the people your church has worked with. Nury lists them first when they fit a family's place and language.</p>
 <section class="panel" id="home-panel">
   <h2>Our church's place</h2>
   <p class="meta">Used when a case does not say which state the family is in.</p>
@@ -68,15 +130,19 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   <p class="err" id="h-msg" role="status"></p>
   <p class="notice" id="h-warn" hidden>No place is set. When a case does not say which state the family is in, Nury lists only contacts marked "serves any state". Set your church's state so contacts in that state are listed.</p>
 </section>
-
-<div class="bar">
-  <input id="q" type="search" placeholder="Search name, city, service, tag" aria-label="Search">
-  <select id="kf" aria-label="Filter by kind"></select>
-  <button class="btn primary" id="add-btn">Add a contact</button>
-</div>
-
-<section class="panel" id="form" hidden>
-  <h2 id="form-title">Add a contact</h2>
+<figure class="fig" style="margin:14px 0 18px"><figcaption class="mono" style="color:var(--muted);font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px">How a contact becomes yours</figcaption><svg class="adg" viewBox="0 0 560 316" role="img" aria-label="How a contact becomes part of your network: your church adds it, it is saved as your church's own, it is listed first labelled as the church's own, and Nury never ranks or recommends it."><g class="bx hi"><rect x="12" y="4" width="380" height="56" rx="6"/><text x="26" y="28" class="bt">Your church adds the contact</text><text x="26" y="47" class="bs">You enter the name and how to reach them.</text></g><path d="M200 60 V82" class="ba"/><path d="M195 76 L200 83 L205 76" class="ba"/><g class="bx "><rect x="12" y="88" width="380" height="56" rx="6"/><text x="26" y="112" class="bt">Saved as your church&#x27;s own</text><text x="26" y="131" class="bs">It goes in the network list. Nothing is checked outside the church.</text></g><path d="M200 144 V166" class="ba"/><path d="M195 160 L200 167 L205 160" class="ba"/><g class="bx "><rect x="12" y="172" width="380" height="56" rx="6"/><text x="26" y="196" class="bt">Listed first, labelled as yours</text><text x="26" y="215" class="bs">In the attorney or resources stage, before any official list.</text></g><path d="M200 228 V250" class="ba"/><path d="M195 244 L200 251 L205 244" class="ba"/><g class="bx "><rect x="12" y="256" width="380" height="56" rx="6"/><text x="26" y="280" class="bt">Never ranked or recommended</text><text x="26" y="299" class="bs">Listed does not mean recommended.</text></g><text x="404" y="30.0" class="bh">(you are the one</text><text x="404" y="50.0" class="bh">who vouches)</text></svg></figure>
+<details style="margin-top:22px">
+  <summary>Import or export</summary>
+  <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>
+  <div class="acts"><button class="btn sm" id="exp">Export file</button>
+  <label class="btn sm" style="margin:0;display:inline-flex;align-items:center" for="imp">Import file</label><input type="file" id="imp" accept="application/json" hidden></div>
+  <p class="err" id="io-msg" role="status"></p>
+</details>
+</main>
+<dialog class="sheet" id="form-dialog" aria-labelledby="form-title">
+  <div class="sheet-h"><h2 id="form-title">Add a contact</h2><button class="cta" type="button" id="f-cancel" style="min-height:48px">Cancel</button></div>
+  <div class="fb" id="form">
+  
   <label for="f-name">Name</label><input id="f-name" autocomplete="off">
   <div class="grid2">
     <div><label for="f-kind">Kind</label><select id="f-kind"></select></div>
@@ -98,71 +164,93 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   <label for="f-note">Your note</label><textarea id="f-note" maxlength="500"></textarea>
   <p class="hint">Your note is for you only. Nury never sends it to a model and never puts it in a family message.</p>
   <p class="err" id="f-err" role="alert"></p>
-  <div class="acts"><button class="btn primary" id="f-save">Save</button><button class="btn" id="f-cancel">Cancel</button></div>
-</section>
 
-<ul class="list" id="list"></ul>
-<p class="empty" id="empty" hidden>No contacts yet. Add the people your church has worked with. Nury lists them first when they fit a family's place and language.</p>
-
-<details style="margin-top:22px">
-  <summary>Import or export</summary>
-  <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>
-  <div class="acts"><button class="btn sm" id="exp">Export file</button>
-  <label class="btn sm" style="margin:0;display:inline-flex;align-items:center" for="imp">Import file</label><input type="file" id="imp" accept="application/json" hidden></div>
-  <p class="err" id="io-msg" role="status"></p>
-</details>
-</main>
+    <div class="acts"><button class="cta primary" id="f-save" type="button">Save</button><button class="cta hidden" id="f-used" type="button">Mark as used</button><button class="cta danger hidden" id="f-del" type="button">Remove contact</button></div>
+  </div>
+</dialog>
+<dialog class="sheet" id="confirm" aria-labelledby="confirm-t" aria-describedby="confirm-b">
+  <div class="sheet-h"><h2 id="confirm-t"></h2></div>
+  <div class="leave-b"><p class="meta" id="confirm-b"></p>
+    <button class="cta primary block" type="button" id="confirm-ok"></button>
+    <button class="cta block" type="button" id="confirm-no">Cancel</button></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-t"></span></div>
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const KIND={pro_bono_immigration_attorney:"Pro bono immigration attorney",legal_aid:"Legal aid",medicare_medicaid_help:"Medicare and Medicaid help",social_services:"Social services",interpreter:"Interpreter",other:"Other"};
-let S={entries:[],kinds:[],readonly:false,fictional:false,home:{city:"",state:""}},editing=null,confirming=null;
+let S={entries:[],kinds:[],readonly:false,fictional:false,home:{city:"",state:""}},editing=null,scope="all",kind="";
 async function api(method,path,body){
   const r=await fetch(path,{method,headers:{"Content-Type":"application/json"},body:body===undefined?undefined:JSON.stringify(body)});
   const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||"Something went wrong");return j}
+/* one confirm dialog for every change to the church network; focus starts on Cancel, Escape cancels */
+function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
+function askConfirm({title,body,ok}){return new Promise(res=>{const d=$("confirm");$("confirm-t").textContent=title;$("confirm-b").textContent=body;$("confirm-ok").textContent=ok;let out=false;
+  const fin=v=>{out=v;d.close()};$("confirm-ok").onclick=()=>fin(true);$("confirm-no").onclick=()=>fin(false);
+  d.addEventListener("close",()=>res(out),{once:true});openD(d);$("confirm-no").focus()})}
+let toastTimer=null;
+function toast(text){const t=$("toast");$("toast-t").textContent=text;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.hidden=true},6000)}
 async function load(){S=await api("GET","/api/network");paint()}
+const inScope=(e,s)=>s==="all"||(s==="any"&&e.nationwide)||(s==="state"&&!e.nationwide);
 function paint(){
   $("banner").hidden=!S.fictional;
   document.querySelectorAll("#add-btn,#h-save,#imp").forEach(e=>e.disabled=S.readonly);
   $("h-city").value=S.home.city;$("h-state").value=S.home.state;
   [$("h-city"),$("h-state")].forEach(e=>e.disabled=S.readonly);
   $("h-warn").hidden=!!S.home.state;
-  const kopts=S.kinds.map(k=>`<option value="${k}">${esc(KIND[k]||k)}</option>`).join("");
-  $("f-kind").innerHTML=kopts;$("kf").innerHTML=`<option value="">All kinds</option>`+kopts;
+  $("f-kind").innerHTML=S.kinds.map(k=>`<option value="${k}">${esc(KIND[k]||k)}</option>`).join("");
+  document.querySelectorAll("#f-scope button").forEach(b=>{b.setAttribute("aria-pressed",String(b.dataset.v===scope));b.querySelector("b").textContent=String(S.entries.filter(e=>inScope(e,b.dataset.v)).length)});
+  const present=S.kinds.filter(k=>S.entries.some(e=>e.kind===k));
+  $("kf").replaceChildren(...[["","All"],...present.map(k=>[k,KIND[k]||k])].map(([v,l])=>{const b=document.createElement("button");b.type="button";b.dataset.v=v;b.textContent=l;b.setAttribute("aria-pressed",String(v===kind));return b}));
   list()}
 function list(){
-  const q=$("q").value.trim().toLowerCase(),k=$("kf").value;
-  const rows=S.entries.filter(e=>(!k||e.kind===k)&&(!q||[e.name,e.city,e.state,e.services,(e.tags||[]).join(" ")].join(" ").toLowerCase().includes(q)));
+  const q=$("q").value.trim().toLowerCase();
+  const rows=S.entries.filter(e=>inScope(e,scope)&&(!kind||e.kind===kind)&&(!q||[e.name,e.city,e.state,e.services,(e.tags||[]).join(" ")].join(" ").toLowerCase().includes(q)));
   $("empty").hidden=rows.length>0||S.entries.length>0;
-  $("list").innerHTML=rows.map(e=>`<li class="row" data-id="${esc(e.id)}">
-  <h2>${esc(e.name)}</h2>
-  <div class="meta">${esc(KIND[e.kind]||e.kind)}${e.city||e.state?" · "+esc([e.city,e.state].filter(Boolean).join(", ")):""}${e.nationwide?" · serves any state":""}</div>
-  ${e.services?`<div style="margin-top:6px">${esc(e.services)}</div>`:""}
-  <div class="contact">${e.phone?`<a href="tel:${esc(e.phone.replace(/[^\d+]/g,""))}">${esc(e.phone)}</a>`:""}${e.phone&&e.url?" · ":""}${e.url?`<a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">${esc(e.url.replace(/^https?:\/\//,""))}</a>`:""}</div>
-  <div class="chips">${(e.languages||[]).map(l=>`<span class="chip">${l==="es"?"Spanish":"English"}</span>`).join("")}${(e.tags||[]).map(t=>`<span class="chip k">${esc(t)}</span>`).join("")}${e.last_used?`<span class="chip">last used ${esc(e.last_used)}</span>`:""}</div>
-  ${e.note?`<div class="note">${esc(e.note)}</div>`:""}
-  ${S.readonly?"":`<div class="acts">${confirming===e.id?`<span class="meta" style="align-self:center">Delete this contact?</span><button class="btn sm danger" data-act="del-yes">Yes, delete</button><button class="btn sm" data-act="del-no">Keep it</button>`:`<button class="btn sm" data-act="used">Mark used today</button><button class="btn sm" data-act="edit">Edit</button><button class="btn sm danger" data-act="del">Delete</button>`}</div>`}
-  </li>`).join("")}
+  const out=[];
+  S.kinds.forEach(k=>{const g=rows.filter(e=>e.kind===k);if(!g.length)return;
+    out.push(`<li class="dayh mono" aria-hidden="true">${esc(KIND[k]||k)}</li>`);
+    g.forEach(e=>out.push(`<li><div class="lrow" data-id="${esc(e.id)}"><span class="tile" aria-hidden="true"><svg class="i" focusable="false"><use href="/icons.svg#i-resources"/></svg></span>
+    <span class="cbody"><span class="ct">${esc(e.name)}</span>
+      <span class="mline"><span class="meta">${esc(KIND[e.kind]||e.kind)}${e.city||e.state?" \u00b7 "+esc([e.city,e.state].filter(Boolean).join(", ")):""}${e.nationwide?" \u00b7 serves any state":""}</span>
+        <span class="scs"><span class="sc s-saved">Vetted</span><span class="sc tag">${S.fictional?"Fictional demo":"Your church's own"}</span>${(e.languages||[]).map(l=>`<span class="sc tag">${l==="es"?"Spanish":"English"}</span>`).join("")}</span></span>
+      ${e.services?`<span class="sv" style="display:block">${esc(e.services)}</span>`:""}
+      <span class="ct2" style="display:block">${e.phone?`<a href="tel:${esc(e.phone.replace(/[^\d+]/g,""))}">${esc(e.phone)}</a>`:""}${e.phone&&e.url?" \u00b7 ":""}${e.url?`<a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">${esc(e.url.replace(/^https?:\/\//,""))}</a>`:""}</span></span>
+    ${S.readonly?"":`<button class="go" type="button" data-act="edit" aria-label="Edit ${esc(e.name)}"><span class="gl">Edit</span><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-chev"/></svg></button>`}</div></li>`))});
+  $("list").innerHTML=out.join("")}
 function openForm(e){
-  editing=e?e.id:null;$("form").hidden=false;$("form-title").textContent=e?"Edit contact":"Add a contact";
+  editing=e?e.id:null;$("form-title").textContent=e?"Edit contact":"Add a contact";
+  $("f-del").classList.toggle("hidden",!e);$("f-used").classList.toggle("hidden",!e);
   const v=e||{};$("f-name").value=v.name||"";$("f-kind").value=v.kind||"other";$("f-last").value=v.last_used||"";
   $("f-services").value=v.services||"";$("f-phone").value=v.phone||"";$("f-url").value=v.url||"";$("f-city").value=v.city||"";
   $("f-state").value=v.state||"";$("l-es").checked=(v.languages||["es","en"]).includes("es");$("l-en").checked=(v.languages||["es","en"]).includes("en");
   $("f-nation").checked=!!v.nationwide;$("f-tags").value=(v.tags||[]).join(", ");$("f-note").value=v.note||"";$("f-err").textContent="";
-  $("f-name").focus();$("form").scrollIntoView({behavior:"smooth",block:"start"})}
+  openD($("form-dialog"));$("f-name").focus()}
 function readForm(){return{name:$("f-name").value,kind:$("f-kind").value,last_used:$("f-last").value,services:$("f-services").value,phone:$("f-phone").value,url:$("f-url").value,city:$("f-city").value,state:$("f-state").value,languages:[$("l-es").checked&&"es",$("l-en").checked&&"en"].filter(Boolean),nationwide:$("f-nation").checked,tags:$("f-tags").value.split(",").map(t=>t.trim()).filter(Boolean),note:$("f-note").value}}
 $("add-btn").onclick=()=>openForm(null);
-$("f-cancel").onclick=()=>{$("form").hidden=true};
-$("f-save").onclick=async()=>{try{editing?await api("PUT","/api/network/"+editing,readForm()):await api("POST","/api/network",readForm());$("form").hidden=true;await load()}catch(e){$("f-err").textContent=e.message}};
-$("h-save").onclick=async()=>{try{S=await api("POST","/api/network/home",{city:$("h-city").value,state:$("h-state").value});$("h-msg").className="err ok";$("h-msg").textContent="Saved.";paint()}catch(e){$("h-msg").className="err";$("h-msg").textContent=e.message}};
-$("list").onclick=async ev=>{const b=ev.target.closest("[data-act]");if(!b)return;const id=b.closest(".row").dataset.id,a=b.dataset.act;
-  try{if(a==="edit")openForm(S.entries.find(x=>x.id===id));
-  else if(a==="used"){await api("POST","/api/network/"+id+"/used");await load()}
-  else if(a==="del"){confirming=id;list()}else if(a==="del-no"){confirming=null;list()}
-  else if(a==="del-yes"){await api("DELETE","/api/network/"+id);confirming=null;await load()}}catch(e){$("io-msg").textContent=e.message}};
-$("q").oninput=list;$("kf").onchange=list;
+$("f-cancel").onclick=()=>$("form-dialog").close();
+$("f-save").onclick=async()=>{
+  const ok=await askConfirm(editing?{title:"Save changes to this contact?",body:"The change applies to every case from now on.",ok:"Save changes"}:{title:"Add this contact to your network?",body:"Nury lists it first when it fits a family's place and language.",ok:"Add contact"});
+  if(!ok)return;
+  try{editing?await api("PUT","/api/network/"+editing,readForm()):await api("POST","/api/network",readForm());$("form-dialog").close();toast(editing?"Contact saved.":"Contact added.");await load()}catch(e){$("f-err").textContent=e.message}};
+$("f-del").onclick=async()=>{
+  if(!await askConfirm({title:"Remove this contact?",body:"It leaves your network. Saved cases keep what they already say.",ok:"Remove contact"}))return;
+  try{await api("DELETE","/api/network/"+editing);$("form-dialog").close();toast("Contact removed.");await load()}catch(e){$("f-err").textContent=e.message}};
+$("f-used").onclick=async()=>{
+  if(!await askConfirm({title:"Mark this contact as used today?",body:"It records today as the last time you used them.",ok:"Mark as used"}))return;
+  try{await api("POST","/api/network/"+editing+"/used");$("form-dialog").close();toast("Marked as used.");await load()}catch(e){$("f-err").textContent=e.message}};
+$("h-save").onclick=async()=>{
+  if(!await askConfirm({title:"Save your church's place?",body:"Nury uses it when a case does not say which state the family is in.",ok:"Save place"}))return;
+  try{S=await api("POST","/api/network/home",{city:$("h-city").value,state:$("h-state").value});$("h-msg").className="err ok";$("h-msg").textContent="Saved.";paint()}catch(e){$("h-msg").className="err";$("h-msg").textContent=e.message}};
+$("list").onclick=ev=>{const b=ev.target.closest("[data-act]");if(!b)return;const id=b.closest(".lrow").dataset.id;if(b.dataset.act==="edit")openForm(S.entries.find(x=>x.id===id))};
+$("q").oninput=list;
+$("f-scope").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;scope=b.dataset.v;paint()};
+$("kf").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;kind=b.dataset.v;paint()};
+document.querySelectorAll("dialog.sheet").forEach(d=>d.addEventListener("click",e=>{if(e.target===d&&d.id!=="confirm")d.close()}));
 $("exp").onclick=async()=>{const j=await api("GET","/api/network/export");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(j,null,2)],{type:"application/json"}));a.download="our-network.json";a.click()};
-$("imp").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const r=await api("POST","/api/network/import",{entries:j.entries||[]});S=r;paint();$("io-msg").className="err ok";$("io-msg").textContent=`Added ${r.added}.`}catch(e){$("io-msg").className="err";$("io-msg").textContent=e.message}ev.target.value=""};
+$("imp").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;let j;try{j=JSON.parse(await f.text())}catch(e){$("io-msg").textContent="That file is not valid.";return}
+  if(!await askConfirm({title:"Import these contacts?",body:"Nury adds the contacts from the file. If one entry is wrong, nothing is imported.",ok:"Import contacts"})){ev.target.value="";return}
+  try{const r=await api("POST","/api/network/import",{entries:j.entries||[]});S=r;paint();$("io-msg").className="err ok";$("io-msg").textContent=`Added ${r.added??"the"} contacts.`}catch(e){$("io-msg").className="err";$("io-msg").textContent=e.message}ev.target.value=""};
 load().catch(e=>{$("io-msg").textContent=e.message});
 </script>
 </body>
