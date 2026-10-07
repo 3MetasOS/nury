@@ -287,14 +287,23 @@ def build_about(out=None, src=None, data=None):
         return re.sub(r"^<p>(.*)</p>$", r"\1", h.strip(), flags=re.S)
     parts = []
     parts.append(f'<section class="sec" aria-labelledby="a-what"><h2 id="a-what">What Nury is</h2>{md(sec.get("what nury is") or d["fallback"]["what"])}</section>')
-    blocks = []
-    for para in re.split(r"\n{2,}", sec.get("how it was made", "")):
-        m = re.match(r"^\*\*(.+?)\.?\*\*\s*(.*)$", para.strip(), re.S)
-        if m:
-            blocks.append((m.group(1).strip().rstrip("."), m.group(2).strip()))
+    def blocks_of(text):
+        bl, rest = [], []
+        for para in re.split(r"\n{2,}", text or ""):
+            m = re.match(r"^\*\*(.+?)\.?\*\*\s*(.*)$", para.strip(), re.S)
+            if m:
+                bl.append((m.group(1).strip().rstrip("."), m.group(2).strip()))
+            elif para.strip():
+                rest.append(para.strip())
+        return bl, rest
+    def grid(bl):
+        return '<div class="blocks">' + "".join(f'<div class="blk"><p class="mono">{html.escape(a)}</p><p>{inline(b)}</p></div>' for a, b in bl) + "</div>"
+    grow, grow_rest = blocks_of(sec.get("built to grow"))
+    if grow:
+        parts.append(f'<section class="sec" aria-labelledby="a-grow"><h2 id="a-grow">Built to grow</h2>{grid(grow)}{md(chr(10).join(grow_rest)) if grow_rest else ""}</section>')
+    blocks, _rest = blocks_of(sec.get("how it was made"))
     if blocks:
-        cards = "".join(f'<div class="blk"><p class="mono">{html.escape(a)}</p><p>{inline(b)}</p></div>' for a, b in blocks)
-        parts.append(f'<section class="sec" aria-labelledby="a-how"><h2 id="a-how">How it was made</h2><div class="blocks">{cards}</div></section>')
+        parts.append(f'<section class="sec" aria-labelledby="a-how"><h2 id="a-how">How it was made</h2>{grid(blocks)}</section>')
     parts.append(f'<section class="sec" aria-labelledby="a-where"><h2 id="a-where">Where it came from</h2>{md(sec.get("where it came from") or d["fallback"]["origin"])}</section>')
     if sec.get("credits"):
         parts.append(f'<section class="sec credits" aria-labelledby="a-cred"><h2 id="a-cred">Credits</h2>{md(sec["credits"])}</section>')
