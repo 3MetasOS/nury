@@ -86,13 +86,11 @@ class Session:
         strip = None
         if self.current:
             mine = [e for e in ev if e.get("stage") == self.current]
-            calls = [e for e in mine if e["kind"] == "gloo_call"]
             fails = [e for e in mine if e["kind"] in ("draft_rejected", "gloo_block")]
             if fails:
-                n = len(calls)
                 last_check = [e for e in mine if e["kind"] == "check"]
                 strip = ("passed" if (self.waiting or (last_check and last_check[-1]["passed"]))
-                         else f"Draft rejected by guardrail. Regenerating ({min(n + 1, 3)} of 3).")
+                         else f"Draft rejected by guardrail. Regenerating ({min(len(fails) + 1, 3)} of 3).")
         log = [{k: v for k, v in e.items() if k not in ("draft", "detail")} for e in ev]
         return {"id": self.id, "stages": stages, "gate": gate, "strip": strip, "halted": self.halted,
                 "error": self.error, "done": self.done, "log": log, "language": self.state.language,
