@@ -909,3 +909,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 09:58: intake and run and final pages LOCKED (Juan). Next: a few small new features (Juan: nothing major, simple adjustments).
 - 10:09: LinkedIn update post published by Juan (Home, Network in dark mode, Cases; fictional demo data stated; wording: 'a second check', no scenario counts).
 - 10:15: About page (Juan): a footer link under the logo to a new About page: what Nury is, how it was made (Gloo AI Studio, YouVersion, Jev, the hand-built engine, the evaluation), where it came from (the hackathon, kept as history), and a quiet memorial section for Nury Peláez with a photo slot; the memorial text is Juan's (option 1), pending his final approval.
+- 10:23: About page (Juan): add 'Built to grow': crises are defined workflows that people can add, rules can be added, evaluations can be added.
