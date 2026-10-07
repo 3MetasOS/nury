@@ -328,6 +328,8 @@ def build_wdnw(out=None, src=None):
     text = Path(src or WDNW_SRC).read_text(encoding="utf-8")
     def inline(t):
         return re.sub(r"^<p>(.*)</p>$", r"\1", markdown.markdown(t.strip(), extensions=["sane_lists"]).strip(), flags=re.S)
+    pre = re.split(r"(?m)^## ", re.sub(r"(?m)^# .*\n", "", text, count=1), maxsplit=1)[0]
+    intro = "".join(f"<p>{inline(x)}</p>" for x in re.split(r"\n{2,}", pre.strip()) if x.strip() and not x.strip().startswith("Written 20"))
     cards, closing, group = [], "", None
     for m in re.finditer(r"(?ms)^(##|###) (.+?)\n(.*?)(?=^##+ |\Z)", text):
         lvl, head, body = m.group(1), m.group(2).strip(), m.group(3)
@@ -359,7 +361,7 @@ def build_wdnw(out=None, src=None):
     chips = "".join(f'<button class="fchip" type="button" data-g="{g}" aria-pressed="{"true" if g == "all" else "false"}">{html.escape(t)}</button>' for g, t in WDNW_CHIPS)
     tpl = (Path(__file__).resolve().parent / "wdnw_template.html").read_text(encoding="utf-8")
     page = (tpl.replace("@@TITLE@@", "What did not work").replace("@@DESC@@", html.escape("What we tried that did not work, what happened, what we changed, and what we do not know."))
-            .replace("@@CHIPS@@", chips).replace("@@ITEMS@@", "\n".join(cards)).replace("@@CLOSING@@", closing))
+            .replace("@@INTRO@@", intro).replace("@@CHIPS@@", chips).replace("@@ITEMS@@", "\n".join(cards)).replace("@@CLOSING@@", closing))
     Path(out or WDNW_OUT).write_text(page, encoding="utf-8")
     return len(page), len(cards)
 

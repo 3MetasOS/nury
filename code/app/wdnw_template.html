@@ -15,7 +15,7 @@ main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
 h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0;color:var(--text)}
 a{color:var(--amber-text)}a:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:12px;display:grid;gap:8px;background:var(--surface)}
-.band .hnote{margin-top:8px;width:auto;max-width:100%}.band .hnote .hn-t{white-space:normal}
+.band p{margin:0;color:var(--muted);max-width:68ch;line-height:1.55}.band .hnote{margin-top:8px;width:auto;max-width:100%}.band .hnote .hn-t{white-space:normal}
 @media(min-width:960px){.band{padding:24px 28px}}
 .filters{position:sticky;top:var(--hh,76px);z-index:10;background:var(--bg);padding:8px 0;margin:0 0 8px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin}
 .fchip{flex:none;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
@@ -49,7 +49,7 @@ code{font:.9em ui-monospace,monospace;background:var(--surface-2);padding:1px 5p
 <body data-nav="how">
 <script src="/shell.js"></script>
 <main id="main">
-<div class="band"><h1 id="h-wdnw" tabindex="-1" data-note="what we tried that failed, and what we do not know yet" data-arrow="up" data-rot="-1.2">What did not work</h1></div>
+<div class="band"><h1 id="h-wdnw" tabindex="-1" data-note="what we tried that failed, and what we do not know yet" data-arrow="up" data-rot="-1.2">What did not work</h1>@@INTRO@@</div>
 <div class="filters" role="group" aria-label="Show">@@CHIPS@@</div>
 <p class="empty" id="f-status" role="status" aria-live="polite" hidden></p>
 <div class="grid" id="items">
