@@ -17,6 +17,7 @@ from . import scripture as scr
 from . import scripture_providers as scrp
 from . import jev_gate
 from . import pricing
+from . import readability
 from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
@@ -277,6 +278,11 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         rec.attempts.append({"n": attempt, "text": text, "violations": violations})
         if not violations:
             draft = scr.assemble(parts) if parts else text
+            if stage.audience == "family":      # advisory only: a number in the audit log, never a gate
+                rd = readability.of_draft(parts["own"] if parts else text, lang)
+                if rd:
+                    m["readability"] = rd
+                    audit.log("readability", stage=stage_id, attempt=attempt, advisory=True, **rd)
             if parts:
                 v = parts["verse"]
                 rec.scripture = {"id": v["id"], "reference": v["reference"], "translation": v["translation"]} if v else None

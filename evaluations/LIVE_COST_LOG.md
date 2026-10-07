@@ -174,3 +174,7 @@ Plus Jev judge calls (typed questions on each run) on the same key. The previous
 ### Slot I (aborted start): final re-run on fe1fd7b, stopped by the HOLD (hack-artisans, 2026-10-07)
 
 Started detention at 01:31:57 on fe1fd7b; stopped about two minutes later when hack-sensei's HOLD (one more prompt-text commit) arrived. The harness writes results at the end of a set, so nothing was stored and no result was used. Spend: at most the first one or two scenarios (under $0.15 Gloo, not metered because the run was killed). The c317050 results are saved in `results/before_final2/` and are still the current files in `results/`.
+
+### Plain-language prompts, live checks (hack-jedi, 2026-10-07)
+
+One job at a time, Jev gate on, privacy on. Detention 01 and 14, hospital h01, hospital h08, attackers a02, a05, a14, a16: 8 scenarios, 8 pass, about $0.68 Gloo (cap 2.0). One extra empty start (wrong scenario selector, nothing ran, no cost). Samples and reading levels: `documents/product/PLAIN_LANGUAGE_SAMPLES.md`.

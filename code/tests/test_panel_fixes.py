@@ -148,6 +148,33 @@ class Triage(unittest.TestCase):
                 self.assertIn(line, text, (pid, s.id))
                 self.assertEqual(text.split("\n")[0][:5], "Task:")                      # the task line is still first
 
+    def test_every_family_prompt_carries_the_plain_language_rules_and_keeps_its_guard_lines(self):
+        rules = ("Plain-language rules. They change how you write, never what you may say.", "about 15 words", "6th to 8th grader",
+                 "No fear language", "plain Spanish", "do not translate word for word")
+        guard = {"rights": ("(ACLU Know Your Rights)", "urges the family to speak with an immigration attorney", "Do not add any point that is not listed"),
+                 "info": ("care team", "Do not add any point that is not listed", "Say nothing about the patient's condition"),
+                 "attorney": ("Copy every name, phone number, and link exactly", "Listed does not mean recommended", "Never write that any of these providers is free"),
+                 "resources": ("Copy every name, phone number, and link exactly", "Do not recommend a specific hospital"),
+                 "checklist": ("DO TONIGHT", "DO NOT DO", "General information only"),
+                 "pastoral": ("under 120 words", "Do not promise any action", "You never write Scripture", "VERSE:", "WHY:", "MESSAGE:")}
+        for pid in ("detention", "hospital"):
+            pb = get_playbook(pid)
+            for s in [x for x in pb.stages if x.id != "triage"]:
+                for lang in ("en", "es"):
+                    text = pbm.render_prompt(s, pb, lang, None, {})
+                    self.assertEqual(text.split("\n")[0][:5], "Task:", (pid, s.id))        # the task line is still first
+                    self.assertEqual(text.split("\n")[1][:13], "Context note:", (pid, s.id))
+                    for n in rules + guard[s.id]:
+                        self.assertIn(n, text, (pid, s.id, n))
+        det = pbm.render_prompt(get_playbook("detention").registry["checklist"], get_playbook("detention"), "en", None, {})
+        self.assertIn("Start every action line with the verb", det)
+        self.assertIn("GATHER THESE DOCUMENTS", det)
+
+    def test_the_triage_prompts_are_not_given_the_plain_language_rules(self):
+        for pid in ("detention", "hospital"):
+            pb = get_playbook(pid)
+            self.assertNotIn("Plain-language rules", pbm.render_prompt(pb.registry["triage"], pb, "en", None, {}))
+
     def test_the_triage_prompts_forbid_advice(self):
         for pid in ("detention", "hospital"):
             pb = get_playbook(pid)
