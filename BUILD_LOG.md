@@ -736,3 +736,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 118. 2026-10-07 01:21 MDT — Documentation requests (Juan)
 
 - Juan: add the learning loop to the documentation and the architecture, and write a very technical document with the details, such as the network retry. Assigned to hack-ninja (offline): the learning loop in ARCHITECTURE.md, HOW_IT_WAS_BUILT.md, the diagrams text and the hub; and `documents/product/TECHNICAL_REFERENCE.md` for engineers: the retry policy (which errors, the schedule, jitter, maximum attempts, its interaction with the correction loop, Jev's 8-second fail-open and YouVersion's fallback, what is logged, the tuning variables, the tests), the audit hook and monotonic durations, the ledger format and the price table, the Jev gate lines, the YouVersion provider, the privacy pipeline, an error taxonomy, an environment-variable reference, data folders and retention, the HTTP API reference, and the CI and test commands. hack-jedi fact-checks it after the triage fix.
+
+## 119. 2026-10-07 01:23 MDT — Wrap-up mode (Juan)
+
+- Juan: no more technical work except bug fixes; improve the storytelling, the documentation and the rest. Scope from now: bug fixes, the triage robustness fix (the last core change), one final commit, a full re-run of every set, the scorecards and the review canvas, the video capture, the documentation and the story. Cut and kept as planned: the feedback chips wiring, the Improvement page and the consent-sentence switch (the learning loop stays built offline and documented as such).
