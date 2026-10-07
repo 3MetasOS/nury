@@ -40,7 +40,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei. Part 1 is the single table of 
 
 ## Part 2. Documents checked
 
-I searched 29 documents for the patterns of an old fact: old counts (14 checks, five layers, fifteen questions, seven judges, old test counts), old card titles, the word "package", "when Jev is reachable", old time and cost, old results, "solo pastor", an old build named as final, an unknown Jev price, "not yet run", and old page names. I also compared the Jev disclosure line with the verbatim text.
+I searched 30 documents for the patterns of an old fact: old counts (14 checks, five layers, fifteen questions, seven judges, old test counts), old card titles, the word "package", "when Jev is reachable", old time and cost, old results, "solo pastor", an old build named as final, an unknown Jev price, "not yet run", and old page names. I also compared the Jev disclosure line with the verbatim text.
 
 Files checked: `README.md`, `ARCHITECTURE.md`, `FEATURES.md`, `TECH_CLAIMS.md`, `TECHNICAL_REFERENCE.md`, `HOW_IT_WAS_BUILT.md`, `ENGINE_WALKTHROUGH.md`, `OBSERVABILITY.md`, `LEARNING_LOOP.md`, `ADD_A_RULE.md`, `PATTERN.md`, `ECONOMICS.md`, `STANDARDS_PAGE.md`, `STANDARDS_ALIGNMENT.md`, `CLI_AND_MCP.md`, `ABOUT_PAGE.md`, `WHAT_DID_NOT_WORK.md`, `JUDGES_CARDS.md`, `PLAIN_LANGUAGE_SAMPLES.md`, `FINAL_PAGE_GUIDE.md`, `OBSERVABILITY_EVALS_TEXT.md`, `PI_REVIEW.md`, `CODE_REVIEW.md`, `description.txt`, `description_two_playbooks.txt`, `SUBMISSION_NOTES.md`, `TECH_STORY.md`, `PITCH_SCRIPT.md`, `FINALIST_SCRIPT.md`, `ERIC_LINES.md`.
 
