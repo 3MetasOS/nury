@@ -21,6 +21,8 @@ Play the 90-second video, or run the app live on the locked intake. Speak over i
 [90s] At the end, the pastor has a package. Copy, not Send. Nury never sends. The pastor does.
 
 ## 1:35 to 2:10  Slide 4 and 5: why it works  (Innovation, Use of AI)
+Nury is a crisis-management engine. It runs playbooks. The first playbook is a detention, and that is what you just saw.
+[ONLY AFTER SENSEI CONFIRMS THE REFACTOR LANDED] Adding a crisis is adding a folder. Do not mention a second crisis unless it runs with scored scenarios.
 Two ideas make this safe enough for a crisis.
 First, the approval gate. The agent drafts. The pastor decides. Nothing reaches the family except through the pastor's hands.
 Second, the self-correction loop. Every draft is checked. Unsafe drafts are rejected and regenerated, up to three tries, then handed to the pastor. The pastor never sees the unsafe one.
