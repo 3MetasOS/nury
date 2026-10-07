@@ -1,6 +1,7 @@
-# Product runtime: the engine and the app need only the Python standard library and requests.
-# Pinned to the version the tests and live runs used (Python 3.12). Evaluation and docs tools are listed below.
+# What `code/test.sh` needs, and what the app needs. Pinned to the versions the tests and live runs used (Python 3.12).
+# The app itself uses only the standard library and requests. PyYAML is here because one product test runs the
+# evaluation harness (evaluations/run.py), which reads its scenario files with it.
 requests==2.32.5
+PyYAML==6.0.3
 
-# Not needed to run the product. Only for the evaluation harness (evaluations/), its tests, and the docs build:
-#   pytest, PyYAML, markdown   (install them yourself when you work on evaluations/ or code/app/build_docs.py)
+# For the evaluation tests, the docs build and the coverage of this repo: pip install -r code/requirements-dev.txt

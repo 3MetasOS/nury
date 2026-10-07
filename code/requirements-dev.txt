@@ -1,0 +1,4 @@
+# Everything the tests and the docs build need, pinned. Install: pip install -r code/requirements-dev.txt
+-r requirements.txt
+pytest==9.1.1
+Markdown==3.11

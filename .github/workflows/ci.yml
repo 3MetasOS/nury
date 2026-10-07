@@ -30,8 +30,7 @@ jobs:
 
       - name: Install
         run: |
-          python3 -m pip install -r code/requirements.txt
-          python3 -m pip install pytest PyYAML markdown
+          python3 -m pip install -r code/requirements-dev.txt
 
       - name: Product tests (offline)
         run: code/test.sh
