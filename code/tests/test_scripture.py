@@ -9,6 +9,8 @@ from types import SimpleNamespace
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from nury import checks as ck  # noqa: E402
 from nury import playbook as pbm  # noqa: E402
 from nury import scripture as scr  # noqa: E402
@@ -45,6 +47,7 @@ class Base(unittest.TestCase):
     approve = "all"
 
     def setUp(self):
+        nonet.scrub()
         self.tmp = Path(tempfile.mkdtemp())
         shutil.copytree(pbm.PLAYBOOKS_DIR, self.tmp, dirs_exist_ok=True)
         self.src = self.tmp / self.PB / "sources"

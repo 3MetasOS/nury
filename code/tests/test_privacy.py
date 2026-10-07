@@ -11,6 +11,8 @@ from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from nury import casefile as cf  # noqa: E402
 from nury import gloo_client  # noqa: E402
 from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, approve_all, run_pipeline, scripted_gate  # noqa: E402

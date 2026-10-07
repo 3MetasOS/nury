@@ -8,6 +8,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from nury import playbook as pbm  # noqa: E402
 from nury.audit import AuditLog  # noqa: E402
 from nury.engine import (UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome, get_playbook,  # noqa: E402

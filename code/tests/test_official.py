@@ -5,6 +5,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from nury import officiallist as ol  # noqa: E402
 from nury.engine import CaseState, run_stage  # noqa: E402
 from test_core import ATTY, CANNED, FakeClient, RIGHTS, official_lines  # noqa: E402

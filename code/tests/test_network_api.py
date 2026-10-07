@@ -7,6 +7,8 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from app import network_api as api  # noqa: E402
 
 

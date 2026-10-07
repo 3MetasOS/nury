@@ -5,6 +5,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import nonet  # noqa: E402,F401
 from nury import playbook as pbm  # noqa: E402
 from nury.engine import CaseState, get_playbook, run_stage  # noqa: E402
 from nury.privacy import Pseudonymizer  # noqa: E402
