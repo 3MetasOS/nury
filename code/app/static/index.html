@@ -198,9 +198,9 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .fbar{position:sticky;top:77px;z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;margin-bottom:6px;background:var(--bg)}
 .fbar .search{flex:1 1 220px;min-width:180px}.fbar .search input{min-height:44px}.fbar .search .i{top:10px}
 .fgroup.seg{flex:none;display:inline-flex;gap:0;padding:3px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface-2);overflow:visible}
-.fgroup.seg button{border:0;background:transparent;min-height:40px}.fgroup.seg button b{font-weight:600;margin-left:4px;opacity:.8}
+.fgroup.seg{box-sizing:border-box;height:44px}.fgroup.seg button{border:0;background:transparent;min-height:36px;height:36px;padding:0 14px}.fgroup.seg button b{font-weight:600;margin-left:4px;opacity:.8}
 .fgroup.seg button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text)}
-.fbar #f-crisis{flex:1 1 100%}
+.fbar{align-items:flex-start}.fbar .search,.fbar .fgroup.seg{align-self:flex-start}.fbar .search input{height:44px;min-height:44px;box-sizing:border-box}.fbar #f-crisis{flex:1 1 100%;margin:0;padding-left:0;padding-right:0}
 .dayh{list-style:none;margin:16px 0 0;color:var(--muted)}.dayh:first-child{margin-top:0}
 .lrow.fu{box-shadow:inset 3px 0 0 var(--amber)}
 .lrow .mline{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:4px}.lrow .mline .meta{margin:0;font-size:14px;color:var(--muted)}
