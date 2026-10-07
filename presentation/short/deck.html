@@ -483,6 +483,7 @@ const CHOREO={
  'so-what':[R(1,'.cl3 li:nth-child(1)','rise'),R(2,'.cl3 li:nth-child(2)','rise'),R(3,'.cl3 li:nth-child(3)','rise'),R(3,'.hand','hand',0,350)],
  'close':[R(1,'.brandrow','fade'),R(1,'.tagl, .sub','rise',300,350),R(2,'.photo2, .fine','fade',150,150),R(2,'.mem','fade',0,520)]
 };
+const OPEN={'the-call':[1,2]};   // slide 1 opens by itself: steps 1 and 2 play 0.8 s apart after 0.5 s; the rest wait for Space
 const CHOREO_SHORT={'the-demo':[R(1,'.film','rise')]};
 const BACKUP=[R(1,'.stack ~ *:not(.pill):not(aside)','rise',90)];
 function init(){all.forEach(s=>{const nm=s.dataset.name;if(TRACK==='short'&&nm==='the-demo'){s.querySelectorAll('.demo2 *').forEach(e=>{delete e.dataset.s})}else if(PREP[nm])PREP[nm](s);let rules=(TRACK==='short'&&CHOREO_SHORT[nm])||CHOREO[nm];if(!rules&&s.dataset.part==='backup')rules=BACKUP;
@@ -500,7 +501,8 @@ function playRest(s){clearT();for(let k=s._step+1;k<=s._n;k++)timers.push(setTim
 function setAutoMark(){document.getElementById('n').textContent=(auto?'AUTO · ':'')+(cur().dataset.part==='backup'?'backup':'')}
 return {
  init,
- enter(s,mode){clearT();s._step=(mode==='fresh'&&!isStatic())?0:s._n;applyPend(s);setAutoMark();if(mode==='fresh'&&auto&&s._n&&!isStatic())playRest(s)},
+ enter(s,mode){clearT();s._step=(mode==='fresh'&&!isStatic())?0:s._n;applyPend(s);setAutoMark();if(mode==='fresh'&&auto&&s._n&&!isStatic())playRest(s);
+  else if(mode==='fresh'&&!isStatic()&&OPEN[s.dataset.name])OPEN[s.dataset.name].forEach((k,j)=>timers.push(setTimeout(()=>{if(cur()!==s||s._step>=k)return;s._step=k;reveal(s,k);setLab(s)},500+j*800)))},
  next(){clearT();const s=cur();if(s._step<s._n&&!isStatic()){s._step++;reveal(s,s._step);setLab(s)}else go(i+1,'fresh')},
  prev(){clearT();const s=cur();if(s._step>0&&!isStatic()){unreveal(s,s._step);s._step--;setLab(s)}else go(i-1,'final')},
  toggleAuto(){auto=!auto;clearT();const s=cur();setAutoMark();if(auto&&s._step<s._n&&!isStatic())playRest(s)},
