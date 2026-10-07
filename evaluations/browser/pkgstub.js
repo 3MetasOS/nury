@@ -7,6 +7,6 @@ window.__realApi=window.__realApi||api;
 window.__saveCalls=[];
 window.api=async(p,b)=>{
  if(p.startsWith("/api/session/")&&p.endsWith("/save")){window.__saveCalls.push(p);return window.__saveReply||{id:"detention-20261007-120000-abcd",path:"code/cases/detention-20261007-120000-abcd"}}
- if(p.startsWith("/api/session/")){return{id:"x",playbook:{id:"detention",title:"Immigration detention or raid"},stages:[st("triage","1. Triage"),st("rights","2. Rights brief"),st("attorney","3. Attorney resources"),st("checklist","4. Family checklist"),st("pastoral","5. Pastoral message")],log:[],strip:null,halted:null,error:null,sources_list:[],done:true,package:{},map_svg:null,progress:{phase:"idle"}}}
+ if(p.startsWith("/api/session/")){return{id:"x",playbook:{id:"detention",title:"Immigration matter"},stages:[st("triage","1. Triage"),st("rights","2. Rights brief"),st("attorney","3. Attorney resources"),st("checklist","4. Family checklist"),st("pastoral","5. Pastoral message")],log:[],strip:null,halted:null,error:null,sources_list:[],done:true,package:{},map_svg:null,progress:{phase:"idle"}}}
  return await window.__realApi(p,b)};
 })();

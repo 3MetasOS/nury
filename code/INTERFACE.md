@@ -68,10 +68,10 @@ StageResult(stage_id, title,
 
 ```json
 {"playbooks": [
-  {"id": "detention",     "title": "Immigration detention or raid", "description": "...", "status": "live"},
+  {"id": "detention",     "title": "Immigration matter", "description": "...", "status": "live"},
   {"id": "hospital",      "title": "Hospital emergency",            "description": "...", "status": "live"},
-  {"id": "sudden-death",  "title": "Sudden death in a family",      "description": "Coming soon. Not available yet.", "status": "soon"},
-  {"id": "house-fire",    "title": "House fire or displacement",    "description": "Coming soon. Not available yet.", "status": "soon"}
+  {"id": "sudden-death",  "title": "Sudden loss",      "description": "Coming soon. Not available yet.", "status": "soon"},
+  {"id": "house-fire",    "title": "House fire",    "description": "Coming soon. Not available yet.", "status": "soon"}
 ]}
 ```
 
