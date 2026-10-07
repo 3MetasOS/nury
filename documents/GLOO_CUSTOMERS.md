@@ -8,3 +8,9 @@
 ## What this means for our target
 - Gloo's core customer is the **church and ministry leader**, including very small churches, and **denominations and networks** that serve many of them. A solo pastor is squarely inside that audience. The solo pastor is the sharpest persona; "denominations and networks could offer Nury to every small-church pastor" is a true and strong distribution line (a Q and A line, not a built feature).
 - Not found: a number for how many Gloo customers are solo pastors. Do not claim one.
+
+## Gloo and immigration: what we found (2026-10-07)
+- **No public statement from Gloo about immigration** turned up in the searches (company pages, press coverage, the 2026 hackathon announcement and landing page). Not finding one is not the same as a view; we assume nothing.
+- What is public: Gloo describes itself as a faith-and-flourishing technology company ("to serve those who serve"); the hackathon theme is "Building Together: Humans, Agents and the Future of Flourishing" for "the faith ecosystem". The 2026 landing page does not state faith or values requirements for entrants.
+- Our own copy of the official rules (read 2026-10-05, see `documents/prework/PREWORK.md`) says the code of conduct bars **overtly political** projects. Nury is built for pastoral care and legal information with an attorney referral, never advocacy; no agency names on screen; humanitarian framing.
+- Open question for the venue (Juan): ask an organizer or mentor whether crisis support for families facing immigration enforcement is in scope. A one-line answer settles it.
