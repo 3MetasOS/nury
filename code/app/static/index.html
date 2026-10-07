@@ -707,7 +707,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
   const langs=(p.languages||[]).map(l=>LANGNAME[l]||l).join(" or ");
   const never=(d.common_never||[]).map(t=>t.replace("{domain}",d.domain||"legal or medical"));if(d.never_extra)never.push(d.never_extra);
   const rail=h("ol",{class:"rail","aria-label":`The ${n} stages`}),flow=h("ol",{class:"flow"});
-  flow.append(h("li",null,h("span",{class:"node cap glow"},ic("i-protect")),h("div",{class:"capcard"},h("h3",null,"First, you and Nury get ready"),
+  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-protect")),h("div",{class:"capcard"},h("h3",null,"First, you and Nury get ready"),
     h("p",null,"You type what the family said, in your own words, and pick the family’s language. Nury proposes names to protect. You tick the ones to hide. Tokens, not names, go to the model."))));
   st.forEach((s,i)=>{const x=ds[i]||{},title=s.title,icon=x.icon||"i-triage";
     rail.append(h("li",{class:"n"},h("a",{href:"#s"+(i+1),"aria-label":`Stage ${i+1}, ${title}`},ic(icon)),h("span",null,x.short||title)));
@@ -731,7 +731,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
     h("p",{class:"sm",style:"margin:0"},h("a",{class:"linkbtn",href:"/how-it-was-built"},ic("i-build","sm"),"How this was built")));
   const aside=h("aside",{class:"aside","aria-label":"Begin"},h("div",{class:"nvcard"},h("h2",null,"Ready when you are"),
     h("p",{class:"muted sm"},"You will type what the family said, then confirm the names to protect."),
-    h("button",{class:"cta primary block",type:"button","data-begin":""},"Begin the response"),h("p",{class:"muted sm"},"About a minute of drafting. You approve each stage.")));
+    h("button",{class:"cta primary block glow",type:"button","data-begin":""},"Begin the response"),h("p",{class:"muted sm"},"About a minute of drafting. You approve each stage.")));
   $("crisis-page").replaceChildren(h("section",{class:"cband","aria-labelledby":"h1c"},
     h("div",null,h("span",{class:"kick"},ic(d.icon||"i-lantern","sm"),"Crisis"),h("h1",{id:"h1c",tabindex:"-1",style:"margin-top:8px"},p.title),h("p",{class:"lead"},d.lead||p.description),
       h("div",{class:"scs",style:"margin-top:12px"},h("span",{class:"sc on"},"Available now"),h("span",{class:"sc tag"},`${n} stages`),langs&&h("span",{class:"sc tag"},"Family language: "+langs))),
