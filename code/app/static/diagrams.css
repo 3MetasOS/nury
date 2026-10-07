@@ -1,0 +1,25 @@
+/* diagrams drawn from data: line drawings, one accent, mono labels */
+.dgm{width:100%;max-width:640px;height:auto;display:block;overflow:visible}
+.dgm .dg-line{fill:none;stroke:var(--line-2);stroke-width:2;stroke-linecap:round;stroke-dasharray:1 0}
+.dgm .dg-node{fill:var(--bg);stroke:var(--line-2);stroke-width:2}
+.dgm .dg-node.on,.dgm .dg-node.approved{stroke:var(--amber-text);fill:var(--amber-soft)}
+.dgm .dg-node.edited{stroke:var(--amber-text);fill:var(--amber-soft);stroke-dasharray:3 2}
+.dgm .dg-node.stopped{stroke:var(--red);fill:var(--red-soft)}
+.dgm .dg-node.pending{stroke:var(--line-2);stroke-dasharray:4 3}
+.dgm .dg-gate{fill:var(--bg);stroke:var(--amber-text);stroke-width:2;stroke-linejoin:round}
+.dgm .dg-num{font:600 14px var(--sans);fill:var(--text)}
+.dgm .dg-title{font:600 17px var(--serif);fill:var(--text)}
+.dgm .dg-desc{font:400 13px var(--sans);fill:var(--muted)}
+.dgm .dg-mono{font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;fill:var(--muted)}
+.dgm .dg-cap{font:600 12px var(--sans);fill:var(--text)}
+.dgm .dg-stop{fill:none;stroke:var(--amber-text);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:5 4}
+.dgm .dg-stoptxt{font:400 18px "Gochi Hand","Bradley Hand",cursive;fill:var(--text)}
+@media (max-width:639px){.dgm .dg-stop,.dgm .dg-stoptxt{display:none}}
+@media print{.dgm{max-width:100%}}
+
+.adg{width:100%;max-width:600px;height:auto;display:block}
+.adg .bx rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.5}.adg .bx.hi rect{stroke:var(--amber-text);fill:var(--amber-soft)}
+.adg .bt{font:600 16px var(--serif);fill:var(--text)}.adg .bs{font:400 12.5px var(--sans);fill:var(--muted)}
+.adg .ba,.adg .bl{fill:none;stroke:var(--amber-text);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.adg .bl{stroke-dasharray:5 4}
+.adg .bh{font:400 17px "Gochi Hand","Bradley Hand",cursive;fill:var(--text)}
+@media(max-width:639px){.adg .bh{font-size:14px}}

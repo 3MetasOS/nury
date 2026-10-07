@@ -27,6 +27,10 @@
     <a href="/how-it-was-built" data-nav="how">How this was built</a>
     <a href="/observability" data-nav="ops">Observability</a>
     <a href="/self-improvement" data-nav="improve">Self-improvement</a>
+    <a href="/what-did-not-work" data-nav="wdnw">What did not work</a>
+    <a href="/economics" data-nav="economics">Economics</a>
+    <a href="/pattern" data-nav="pattern">The pattern</a>
+    <a href="/standards" data-nav="standards">Standards we use</a>
   </nav>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>

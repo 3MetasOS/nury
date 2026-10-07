@@ -149,6 +149,9 @@ def build(runs_path, out_dir):
     notes = Path(__file__).parent / "scorecard_notes.md"
     if notes.exists():
         L += ["", "## Notes on the build", "", notes.read_text().strip(), ""]
+    cmpf = Path(__file__).parent / "results" / "build_comparison.md"
+    if cmpf.exists() and Path(out_dir).resolve() == (Path(__file__).parent / "results").resolve():
+        L += ["", cmpf.read_text(encoding="utf-8").replace("# Build comparison", "## Build comparison", 1), ""]
     L += ["", "## Failures and review items", ""]
     bad = [r for r in runs if r["final"] not in ("pass", "human_pass")]
     if not bad:

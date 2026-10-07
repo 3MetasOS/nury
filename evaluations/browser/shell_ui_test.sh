@@ -26,6 +26,10 @@ JS
 JS
   check "$T header: the Day/Night switch is a 36 px control, centred, with at least 12 px of air above and below" "$(ev "$J")" "true"
   check "$T header: at least 12 px of padding above the content of the bar" "$(ev "parseFloat(getComputedStyle(document.querySelector('header.top .wrap')).paddingTop)>=12")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const vis=e=>e.getBoundingClientRect().height>0&&getComputedStyle(e).display!=='none';const T='An AI Crisis Response Agent';const h=document.querySelector('header.top .brand .tg'),f=document.querySelector('footer.sitefoot .lockup .tg');return !!h&&!!f&&h.textContent===T&&f.textContent===T&&[...document.querySelectorAll('main .lockup, main .brand, #final-body .lockup')].filter(vis).length===0})()
+JS
+  check "$T logo: the lockup is in the header and in the footer, and in no page body" "$(ev "$J")" "true"
   check "$T header: no link to a page for judges" "$(ev "![...document.querySelectorAll('header.top a')].some(a=>/how-it-was-built|observability|improvement/.test(a.getAttribute('href')))")" "true"
   read -r -d '' J <<'JS'
 (()=>{const f=document.querySelector('footer.sitefoot');return /For judges and reviewers/.test(f.textContent)&&JSON.stringify([...f.querySelectorAll('.fnav a')].map(a=>a.textContent.trim()))==='["How this was built","Observability","Self-improvement"]'&&!/Improvement\b/.test(f.textContent.replace(/Self-improvement/g,''))})()

@@ -10,6 +10,7 @@
 
 <link rel="stylesheet" href="/shell.css">
 <link rel="stylesheet" href="/final.css">
+<link rel="stylesheet" href="/diagrams.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
@@ -465,6 +466,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <button class="back" id="back-case">&larr; Cases</button>
   <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
+    <figure class="dfig hidden" id="case-strip"></figure>
     <button class="cta hidden" type="button" id="case-follow" aria-pressed="false" style="margin-top:12px"></button><p class="note" id="case-follow-msg" role="status" style="margin:6px 0 0"></p>
     <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
@@ -514,6 +516,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 </dialog>
 
 <script src="/final.js"></script>
+<script src="/diagrams.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const LANG={es:"Spanish",en:"English",pt:"Portuguese",fr:"French"};
@@ -646,7 +649,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
   const left=h("div",null,
     d.covers&&blk("h-cov","What this covers",h("ul",{class:"dots"},d.covers.map(t=>h("li",null,t))),h("p",{class:"callout"},"If anyone is in immediate danger, call 911 first.")),
     blk("h-get","What you will get",h("ul",{class:"give"},gives)),
-    blk("h-how","How it works",rail,h("p",{class:"legend"},ic("i-gate"),"Each diamond is a gate. Nothing moves on until you decide."),flow),
+    blk("h-how","How it works",h("figure",{class:"dfig"},NuryDiagram.flow(st),h("figcaption",{class:"sm muted"},"The path of one response. Each diamond is your gate: nothing moves on until you decide. The cards below say the same in words.")),flow),
     never.length&&blk("h-never","What Nury will never do",h("ul",{class:"never nvcard"},never.map(t=>h("li",null,ic("i-never"),h("span",null,t))))),
     blk("h-time","A note on time",h("div",{class:"time"},ic("i-clock"),h("div",null,h("p",null,"Nury drafts all five stages in about a minute."),
       h("p",null,"That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.")))),
@@ -712,6 +715,10 @@ async function openCase(id){
     fb.disabled=false;
     if(r&&r.ok){c.meta.needs_follow_up=on;paintF(on);$("case-follow-msg").textContent=on?"Marked. It shows first on Home and in Cases.":"Cleared."}
     else $("case-follow-msg").textContent=(r&&r.error)||"Could not save the mark. Try again."};
+  {const fig=$("case-strip");fig.replaceChildren();
+   const stg=Object.keys(c.pages||{}).filter(k=>/^0\d-[a-z]+\.md$/.test(k)).sort().map(k=>({id:k.slice(3,-3),title:((c.pages[k].match(/^#\s*(.+)$/m)||[])[1])||k,state:(c.meta.edited||[]).includes(k.slice(3,-3))?"edited":"approved"}));
+   fig.classList.toggle("hidden",!stg.length);
+   if(stg.length){fig.append(NuryDiagram.strip(stg),h("figcaption",{class:"sm muted"},"Each stage of this case: approved as drafted, or edited by the pastor."))}}
   $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);

@@ -255,3 +255,28 @@ def test_only_the_header_and_the_footer_carry_the_logo():
         assert n == 0, f"{f.name} has {n} in-page lockups (the header and the footer carry the logo)"
     css = (STATIC / "final.css").read_text(encoding="utf-8")
     assert ".fp-lock{display:none}" in css and ".fp-lock{display:block" in css.split("@media print")[1], "screen: no logo in the final page body; print: one"
+
+
+def test_footer_links_and_document_pages():
+    js = (STATIC / "shell.js").read_text(encoding="utf-8")
+    foot = js.split("const footer = `")[1].split("`;")[0]
+    for href in ("/how-it-was-built", "/observability", "/self-improvement", "/what-did-not-work", "/economics", "/pattern", "/standards"):
+        assert f'href="{href}"' in foot, href
+    assert "Standards we use" in foot and "What did not work" in foot
+    for name in ("standards", "what-did-not-work", "economics", "pattern"):
+        page = (STATIC / f"{name}.html").read_text(encoding="utf-8")
+        assert '<script src="/shell.js"></script>' in page and "<header" not in page and 'class="lockup"' not in page, name
+    std = (STATIC / "standards.html").read_text(encoding="utf-8")
+    assert std.count('class="fr ') == 6 and 'role="img"' in std, "the six functions are drawn with a text alternative"
+    assert "Not known." in (STATIC / "what-did-not-work.html").read_text(encoding="utf-8")
+
+
+def test_diagrams_are_drawn_from_data_and_have_text_alternatives():
+    js = (STATIC / "diagrams.js").read_text(encoding="utf-8")
+    assert "function flow(stages" in js and "function strip(stages" in js and 'role: "img"' in js and "aria-label" in js
+    assert "innerHTML" not in js, "server text goes in with textContent"
+    idx = (STATIC / "index.html").read_text(encoding="utf-8")
+    assert "NuryDiagram.flow(st)" in idx and "NuryDiagram.strip(stg)" in idx and 'id="case-strip"' in idx
+    how = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
+    assert how.count('class="adg"') == 2, "architecture and loop"
+    assert 'class="adg"' in (STATIC / "network.html").read_text(encoding="utf-8")

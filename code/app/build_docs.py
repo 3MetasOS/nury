@@ -32,6 +32,53 @@ def flow_html():
     return f'<ol class="pipe" aria-label="The pipeline, step by step">{li}</ol>'
 
 
+def _box(x, y, w, h, title, sub, cls=""):
+    return (f'<g class="bx {cls}"><rect x="{x}" y="{y}" width="{w}" height="{h}" rx="6"/><text x="{x + 14}" y="{y + 24}" class="bt">{html.escape(title)}</text>'
+            f'<text x="{x + 14}" y="{y + 43}" class="bs">{html.escape(sub)}</text></g>')
+
+
+def _arrow(x, y1, y2):
+    return f'<path d="M{x} {y1} V{y2 - 6}" class="ba"/><path d="M{x - 5} {y2 - 12} L{x} {y2 - 5} L{x + 5} {y2 - 12}" class="ba"/>'
+
+
+def arch_svg():
+    """The architecture in one picture: pastor -> privacy layer -> Claude via Gloo -> named rules -> Jev -> (up to 3 tries) -> pastor gate -> audit. Vertical, readable at 390 px."""
+    steps = [("The pastor", "Types what the family said. Picks the names to hide.", ""), ("Privacy layer", "Names, phones, emails, addresses and dates become tokens.", ""),
+             ("Claude Sonnet 4.6, through Gloo", "Writes the draft from the vetted sources only.", "hi"), ("Named rules", "Plain code: the stage's rules and the safety floor.", ""),
+             ("Jev gate", "Classifies the draft with yes or no questions.", ""), ("The pastor's gate", "Approve, Edit or Stop. Only a draft that passed is shown.", "hi"),
+             ("Audit log", "Every check and every gate, with reasons only.", "")]
+    W, BH, GAP = 560, 56, 30
+    H = len(steps) * (BH + GAP) - GAP + 8
+    out = [f'<svg class="adg" viewBox="0 0 {W} {H}" role="img" aria-label="Architecture: the pastor, the privacy layer, Claude through Gloo, named rules, the Jev gate, then the pastor\'s gate and the audit log. A draft that fails a rule or Jev goes back to Claude with the reasons, up to three tries, then the work goes to the pastor.">']
+    for i, (t, sub, cls) in enumerate(steps):
+        y = 4 + i * (BH + GAP)
+        out.append(_box(20, y, 400, BH, t, sub, cls))
+        if i < len(steps) - 1:
+            out.append(_arrow(220, y + BH, y + BH + GAP))
+    # the retry loop: from Jev (index 4) back up to Claude (index 2)
+    y_j, y_c = 4 + 4 * (BH + GAP) + BH / 2, 4 + 2 * (BH + GAP) + BH / 2
+    out.append(f'<path d="M420 {y_j} C 520 {y_j}, 520 {y_c}, 426 {y_c}" class="bl"/><path d="M434 {y_c - 6} L424 {y_c} L434 {y_c + 6}" class="bl"/>')
+    out.append(f'<text x="446" y="{(y_j + y_c) / 2 - 6}" class="bh">fails? back with</text><text x="446" y="{(y_j + y_c) / 2 + 14}" class="bh">the reasons,</text><text x="446" y="{(y_j + y_c) / 2 + 34}" class="bh">3 tries</text>')
+    out.append("</svg>")
+    return "".join(out)
+
+
+def loop_svg():
+    """The self-improvement loop: feedback -> report -> candidate -> test -> a person approves -> release. A person decides; nothing applies itself."""
+    steps = [("Feedback", "What the pastor changed, without names."), ("Report", "Counts by crisis and stage."), ("Candidate", "A proposed prompt line, rule, question or scenario."),
+             ("Test", "Run against the evaluation set; no regression allowed."), ("A person approves", "Written in the candidate's review file."), ("Release", "A normal commit. Nothing applies itself.")]
+    W, BH, GAP = 560, 52, 26
+    H = len(steps) * (BH + GAP) - GAP + 8
+    out = [f'<svg class="adg" viewBox="0 0 {W} {H}" role="img" aria-label="The self-improvement loop: feedback, report, candidate, test, a person approves, release. Nothing changes without a person approving it.">']
+    for i, (t, sub) in enumerate(steps):
+        y = 4 + i * (BH + GAP)
+        out.append(_box(20, y, 400, BH, t, sub, "hi" if t == "A person approves" else ""))
+        if i < len(steps) - 1:
+            out.append(_arrow(220, y + BH, y + BH + GAP))
+    out.append("</svg>")
+    return "".join(out)
+
+
 def build():
     md = SRC.read_text(encoding="utf-8")
     md = re.sub(r"## Contents\n.*?(?=\n## 1\.)", "", md, count=1, flags=re.S)       # the page builds its own contents
@@ -55,6 +102,13 @@ def build():
     # the first diagram gets a real flow and the text version folds under it
     body = body.replace('<h3 id="the-pipeline">', '<h3 id="the-pipeline">', 1)
     body = re.sub(r'(<h3 id="the-pipeline">.*?</h3>)\s*(<pre[^>]*>.*?</pre>)', lambda x: x.group(1) + flow_html() + '<details class="astext"><summary>The same pipeline as text</summary>' + x.group(2) + '</details>', body, count=1, flags=re.S)
+    # diagrams: the architecture after the text version of the pipeline, the loop after the learning-loop heading
+    if '<details class="astext">' in body:
+        i = body.index('<details class="astext">'); j = body.index("</details>", i) + len("</details>")
+        body = body[:j] + f'<figure class="fig"><figcaption class="mono">The architecture in one picture</figcaption>{arch_svg()}</figure>' + body[j:]
+    mm = re.search(r'<h3 id="[^"]*learning-loop[^"]*">.*?</h3>\s*(<p>.*?</p>)', body, re.S)
+    if mm:
+        body = body[:mm.end()] + f'<figure class="fig"><figcaption class="mono">The loop, with a person in control</figcaption>{loop_svg()}</figure>' + body[mm.end():]
     h1 = re.search(r"<h1[^>]*>(.*?)</h1>", body, re.S)
     body = re.sub(r"<h1[^>]*>.*?</h1>", "", body, count=1, flags=re.S)
     tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n, _ in toc)
@@ -114,8 +168,90 @@ def build_log():
     return len(page), len(entries)
 
 
+STD_SRC = ROOT / "documents" / "product" / "STANDARDS_PAGE.md"
+STD_OUT = Path(__file__).resolve().parent / "static" / "standards.html"
+
+
+def functions_diagram(md):
+    """Inline SVG from the six-functions table: function -> where it lives in Nury -> how far it goes. Vertical, readable at 390 px. The table below it is the text alternative."""
+    import textwrap
+    m = re.search(r"## The six case-management functions.*?\n(\|.*?)(?=\n\n|\Z)", md, re.S)
+    rows = []
+    for line in (m.group(1).splitlines() if m else []):
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) == 3 and not set("".join(cells)) <= set("-: ") and cells[0] != "Function":
+            rows.append(cells)
+    if not rows:
+        return ""
+    W, RH = 600, 92
+    out = [f'<svg class="fdiag" viewBox="0 0 {W} {RH * len(rows) + 8}" role="img" aria-label="The six case management functions and where Nury covers them: ' +
+           "; ".join(f"{html.escape(a)}: {html.escape(c.split('.')[0])}" for a, b, c in rows) + '">']
+    for i, (fn, where, how) in enumerate(rows):
+        y = i * RH + 8
+        kind = "yes" if how.startswith("Yes") else "partly" if how.startswith("Partly") else "barely" if how.startswith("Barely") else "no"
+        label = {"yes": "Yes", "partly": "Partly", "barely": "Barely", "no": "Not built"}[kind]
+        short = textwrap.wrap(where.split(". ")[0].rstrip("."), 30)[:3]
+        out.append(f'<g class="fr {kind}">')
+        out.append(f'<rect x="4" y="{y}" width="150" height="56" rx="6" class="fbox"/><text x="16" y="{y + 34}" class="ffn">{html.escape(fn)}</text>')
+        out.append(f'<path d="M154 {y + 28} C 178 {y + 24}, 188 {y + 32}, 214 {y + 28} M206 {y + 22} L214 {y + 28} L205 {y + 34}" class="farrow"/>')
+        out.append(f'<rect x="218" y="{y}" width="248" height="56" rx="6" class="fbox2"/>')
+        for k, ln in enumerate(short):
+            out.append(f'<text x="230" y="{y + 22 + k * 15}" class="fwh">{html.escape(ln)}</text>')
+        out.append(f'<rect x="480" y="{y + 12}" width="110" height="32" rx="16" class="fpill"/><text x="535" y="{y + 33}" text-anchor="middle" class="fst">{label}</text>')
+        out.append("</g>")
+    out.append("</svg>")
+    return "".join(out)
+
+
+def build_standards():
+    text = STD_SRC.read_text(encoding="utf-8")
+    body_md = text.split("\n---\n", 1)[1] if "\n---\n" in text else text
+    body_md = re.sub(r"## Closing line for the page\n+", "", body_md)
+    m = markdown.Markdown(extensions=["tables", "fenced_code", "toc", "sane_lists"], extension_configs={"toc": {"slugify": slug, "permalink": False, "toc_depth": "2-3"}})
+    body = m.convert(body_md)
+    toc = [(t["id"], t["name"]) for t in m.toc_tokens]
+    body = re.sub(r'<h([23]) id="([^"]+)">(.*?)</h\1>', lambda x: f'<h{x.group(1)} id="{x.group(2)}">{x.group(3)}<a class="anc" href="#{x.group(2)}" aria-label="Link to this section">#</a></h{x.group(1)}>', body)
+    body = body.replace("<table>", '<div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>').replace("</table>", "</table></div>")
+    diag = functions_diagram(body_md)
+    marker = '<h2 id="the-six-case-management-functions-and-the-five-stages">'
+    if diag and marker in body:
+        i = body.index(marker); j = body.index("</p>", i) + 4
+        body = body[:j] + f'<figure class="fig">{diag}<figcaption>Where each function lives in Nury. The table below says the same in words.</figcaption></figure>' + body[j:]
+    tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n in toc)
+    tpl = (Path(__file__).resolve().parent / "standards_template.html").read_text(encoding="utf-8")
+    page = tpl.replace("@@TITLE@@", "Case management standards").replace("@@DESC@@", "The case management and trauma-informed standards that informed Nury, what it does and does not do, and what we could not verify.").replace("@@TOC@@", tocs).replace("@@BODY@@", body)
+    STD_OUT.write_text(page, encoding="utf-8")
+    return len(page), len(toc)
+
+
+SIMPLE_DOCS = [("WHAT_DID_NOT_WORK.md", "what-did-not-work.html", "What did not work", "What we tried that did not work, what happened, what we changed, and what we do not know."),
+               ("ECONOMICS.md", "economics.html", "Economics", "What a Nury package costs, where the time goes, and what could break the economics."),
+               ("PATTERN.md", "pattern.html", "The pattern", "The approve-gated stage pipeline for high-stakes drafting, and when to reuse it.")]
+
+
+def build_simple(src_name, out_name, title, desc):
+    """A static document page in the shared shell, rendered from documents/product/<src_name>. The page keeps its 'Not known' lines and every number as written."""
+    text = (ROOT / "documents" / "product" / src_name).read_text(encoding="utf-8")
+    text = re.sub(r"(?m)^# .*\n", "", text, count=1)
+    text = re.sub(r"(?m)^Written 20\d\d-.*\n", "", text)
+    m = markdown.Markdown(extensions=["tables", "fenced_code", "toc", "sane_lists"], extension_configs={"toc": {"slugify": slug, "permalink": False, "toc_depth": "2-3"}})
+    body = m.convert(text)
+    toc = [(t["id"], t["name"]) for t in m.toc_tokens]
+    body = re.sub(r'<h([23]) id="([^"]+)">(.*?)</h\1>', lambda x: f'<h{x.group(1)} id="{x.group(2)}">{x.group(3)}<a class="anc" href="#{x.group(2)}" aria-label="Link to this section">#</a></h{x.group(1)}>', body)
+    body = body.replace("<table>", '<div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>').replace("</table>", "</table></div>")
+    tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n in toc)
+    tpl = (Path(__file__).resolve().parent / "standards_template.html").read_text(encoding="utf-8")
+    page = (tpl.replace("@@TITLE@@", html.escape(title)).replace("@@DESC@@", html.escape(desc)).replace("@@TOC@@", tocs).replace("@@BODY@@", body))
+    (Path(__file__).resolve().parent / "static" / out_name).write_text(page, encoding="utf-8")
+    return len(page)
+
+
 if __name__ == "__main__":
     n, t = build()
     print(f"wrote {OUT} ({n} bytes, {t} sections)")
     n, e = build_log()
     print(f"wrote {LOG_OUT} ({n} bytes, {e} entries)")
+    n, t = build_standards()
+    print(f"wrote {STD_OUT} ({n} bytes, {t} sections)")
+    for a, b, c, d in SIMPLE_DOCS:
+        print(f"wrote {b} ({build_simple(a, b, c, d)} bytes)")
