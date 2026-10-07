@@ -3,6 +3,7 @@
 Needs GLOO_API_KEY in the environment or repo-root .env. Never prints or stores it.
 Cost shows only if NURY_PRICE_IN / NURY_PRICE_OUT (USD per 1M tokens) are set; else None.
 """
+import json
 import os
 import sys
 import time
@@ -31,18 +32,28 @@ class _Capture:
     checked for protected names at the boundary. Only counts leave this class; the strings stay in memory."""
 
     def __init__(self, inner):
-        self.inner, self.bodies = inner, []
+        self.inner, self.bodies, self.parts = inner, [], []
 
     def ask(self, user_input, instructions=None, **kw):
         self.bodies.append(f"{user_input or ''}\n{instructions or ''}")
+        self.parts.append((user_input or "", instructions or ""))
         return self.inner.ask(user_input, instructions=instructions, **kw)
 
     def respond(self, user_input, instructions=None, **kw):
         self.bodies.append(f"{user_input or ''}\n{instructions or ''}")
+        self.parts.append((user_input or "", instructions or ""))
         return self.inner.respond(user_input, instructions=instructions, **kw)
 
     def __getattr__(self, name):
         return getattr(self.inner, name)
+
+
+def _static_text(pbid):
+    from nury import guardrails
+    pb = get_playbook(pbid)
+    parts = [guardrails.boundary(pb.boundary), json.dumps(pb.disclaimer, ensure_ascii=False)] + [s.prompt for s in pb.stages]
+    parts += [json.dumps(v, ensure_ascii=False) for v in pb.sources.values()]
+    return "\n".join(parts)
 
 
 def _contains(text, term):
@@ -136,7 +147,11 @@ def _run(sc, t0, pbid, ids, fi, kw):
     # Boundary check: no protected value (names the pastor confirmed or added, phones, emails...) in any string sent to the model.
     pmap = client.map() if hasattr(client, "map") else {}
     values = [v for v in pmap.values() if isinstance(v, str) and v.strip()]
-    leaks = sum(1 for b in cap.bodies for v in values if _contains(b, v))
+    # The family's content travels in the user input: every protected value must be absent there. The instructions are the
+    # playbook's own prompts: a value that already occurs in that static text (a junk "name" such as "Write" that the
+    # privacy layer proposed from a sentence-initial word) cannot identify anyone, so it is not counted there.
+    static = _static_text(pbid)
+    leaks = sum(1 for u, ins in cap.parts for v in values if _contains(u, v) or (_contains(ins, v) and not _contains(static, v)))
     expect = (sc.get("flags") or {}).get("expect_protected", [])
     protected_present = {t: any(_contains(v, t) for v in values) for t in expect}
     pkg = None if halted else {str(s["n"]): s["final_text"] for s in stages}

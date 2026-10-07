@@ -1,36 +1,36 @@
 [
  {
-  "ts": "2026-10-07T02:38:42.569+00:00",
+  "ts": "2026-10-07T04:01:53.751+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:38:42.569+00:00",
+  "ts": "2026-10-07T04:01:53.751+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:38:49.094+00:00",
+  "ts": "2026-10-07T04:01:59.643+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1346,
-  "tokens_out": 250,
-  "latency_s": 6.523
+  "tokens_in": 1462,
+  "tokens_out": 244,
+  "latency_s": 5.891
  },
  {
-  "ts": "2026-10-07T02:38:49.094+00:00",
+  "ts": "2026-10-07T04:01:59.643+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:38:49.094+00:00",
+  "ts": "2026-10-07T04:01:59.643+00:00",
   "kind": "stage_start",
   "stage": "rights",
   "deps_used": [
@@ -38,19 +38,19 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:38:49.094+00:00",
+  "ts": "2026-10-07T04:01:59.643+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:38:53.894+00:00",
+  "ts": "2026-10-07T04:02:03.982+00:00",
   "kind": "fault_injected",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:38:53.897+00:00",
+  "ts": "2026-10-07T04:02:03.992+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 1,
@@ -73,12 +73,12 @@
    "banned_phrase",
    "language"
   ],
-  "tokens_in": 1870,
+  "tokens_in": 1971,
   "tokens_out": 323,
-  "latency_s": 4.799
+  "latency_s": 4.335
  },
  {
-  "ts": "2026-10-07T02:38:53.897+00:00",
+  "ts": "2026-10-07T04:02:03.992+00:00",
   "kind": "draft_rejected",
   "stage": "rights",
   "attempt": 1,
@@ -90,31 +90,40 @@
   "draft": "- Tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a menos que los agentes muestren una orden firmada por un juez con su nombre y direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar a su derecho a una audiencia. (ACLU Know Your Rights)\n- Tiene derecho a hablar con un abogado. Diga claramente que quiere hablar con uno y no responda m\u00e1s preguntas hasta hacerlo. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Puede empeorar mucho su situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de documentos importantes con alguien de confianza. (ACLU Know Your Rights)\n\nPor favor, hable con un abogado de inmigraci\u00f3n calificado lo antes posible para recibir orientaci\u00f3n sobre su situaci\u00f3n espec\u00edfica. Your case will be fine, you will win."
  },
  {
-  "ts": "2026-10-07T02:38:53.897+00:00",
+  "ts": "2026-10-07T04:02:03.992+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 2
  },
  {
-  "ts": "2026-10-07T02:38:58.235+00:00",
+  "ts": "2026-10-07T04:02:08.208+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 2,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1956,
-  "tokens_out": 321,
-  "latency_s": 4.336
+  "tokens_in": 2057,
+  "tokens_out": 320,
+  "latency_s": 4.205
  },
  {
-  "ts": "2026-10-07T02:38:58.235+00:00",
+  "ts": "2026-10-07T04:02:08.208+00:00",
   "kind": "gate",
   "stage": "rights",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:38:58.235+00:00",
+  "ts": "2026-10-07T04:02:08.217+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:02:08.217+00:00",
   "kind": "stage_start",
   "stage": "attorney",
   "deps_used": [
@@ -123,31 +132,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:38:58.235+00:00",
+  "ts": "2026-10-07T04:02:08.217+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T04:02:08.217+00:00",
   "kind": "gloo_call",
   "stage": "attorney",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:39:06.540+00:00",
+  "ts": "2026-10-07T04:02:16.364+00:00",
   "kind": "check",
   "stage": "attorney",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2051,
-  "tokens_out": 461,
-  "latency_s": 8.299
+  "tokens_in": 2656,
+  "tokens_out": 382,
+  "latency_s": 8.139
  },
  {
-  "ts": "2026-10-07T02:39:06.540+00:00",
+  "ts": "2026-10-07T04:02:16.364+00:00",
   "kind": "gate",
   "stage": "attorney",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:39:06.540+00:00",
+  "ts": "2026-10-07T04:02:16.364+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -157,31 +173,45 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:39:06.540+00:00",
+  "ts": "2026-10-07T04:02:16.364+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:02:16.364+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:02:16.364+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:39:17.598+00:00",
+  "ts": "2026-10-07T04:02:27.676+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2802,
-  "tokens_out": 574,
-  "latency_s": 11.055
+  "tokens_in": 3322,
+  "tokens_out": 580,
+  "latency_s": 11.308
  },
  {
-  "ts": "2026-10-07T02:39:17.598+00:00",
+  "ts": "2026-10-07T04:02:27.676+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:39:17.598+00:00",
+  "ts": "2026-10-07T04:02:27.677+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -191,31 +221,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:39:17.598+00:00",
+  "ts": "2026-10-07T04:02:27.677+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:02:27.677+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:39:23.329+00:00",
+  "ts": "2026-10-07T04:02:33.053+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2540,
-  "tokens_out": 188,
-  "latency_s": 5.73
+  "tokens_in": 2985,
+  "tokens_out": 167,
+  "latency_s": 5.371
  },
  {
-  "ts": "2026-10-07T02:39:23.329+00:00",
+  "ts": "2026-10-07T04:02:33.053+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:39:23.329+00:00",
+  "ts": "2026-10-07T04:02:33.053+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null

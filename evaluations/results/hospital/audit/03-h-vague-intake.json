@@ -1,193 +1,207 @@
 [
  {
-  "ts": "2026-10-07T02:40:28.415+00:00",
+  "ts": "2026-10-07T04:14:58.204+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:40:28.415+00:00",
+  "ts": "2026-10-07T04:14:58.204+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:40:37.510+00:00",
+  "ts": "2026-10-07T04:15:03.726+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 6978,
-  "tokens_out": 317,
-  "latency_s": 9.094
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 7187,
+  "tokens_out": 168,
+  "latency_s": 5.52
  },
  {
-  "ts": "2026-10-07T02:40:37.510+00:00",
-  "kind": "draft_rejected",
+  "ts": "2026-10-07T04:15:03.726+00:00",
+  "kind": "gate",
   "stage": "triage",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "Something in those words \u2014 *Please come* \u2014 carries so much. The fear, the urgency, the need to not be alone in this moment. That matters deeply.\n\nIf you are a family member reaching out, please know you are not alone right now.\n\n**The most important thing you can do right now is stay with the people who are with you, and let the hospital care team guide you.**\n\n---\n\nHere is what can help right now:\n\n**At the hospital:**\n- Ask to speak with the **charge nurse** or the **attending physician** \u2014 they can tell you what is happening and what the next steps are.\n- If your mom was just brought in, ask the front desk or triage staff: **\"Where is my mother and who is caring for her?\"**\n- Hospitals have a **patient advocate** or **social worker** \u2014 you can ask for one. They help families understand what is happening.\n\n**For you, right now:**\n- Try to have one person be the main contact with the medical team \u2014 it helps keep information clear.\n- If you have questions you don't understand, it is okay to say: *\"Can you say that again in simpler words?\"*\n- You do not have to face this alone.\n\n---\n\nA pastor is on the way to be with you.\n\nIs there anything specific you need help with right now \u2014 information, a prayer, or something else? You can share as much or as little as you want."
+  "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:40:37.510+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T02:40:41.166+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 7055,
-  "tokens_out": 105,
-  "latency_s": 3.655
- },
- {
-  "ts": "2026-10-07T02:40:41.166+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "Something happened to your mom, and you're reaching out for help \u2014 that's exactly the right thing to do.\n\nRight now, the most important step is to stay with the people around you and talk directly with the hospital care team. They are the ones who can tell you what is happening and what your mom needs.\n\nIf you are trying to reach your pastor, please call or text them directly \u2014 they want to hear from you.\n\nIs there something specific I can help you with right now?"
- },
- {
-  "ts": "2026-10-07T02:40:41.166+00:00",
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T02:40:48.959+00:00",
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "format",
-    "reason": "missing label SITUATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label PEOPLE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label LOCATION"
-   },
-   {
-    "category": "format",
-    "reason": "missing label FAMILY LANGUAGE"
-   },
-   {
-    "category": "format",
-    "reason": "missing label URGENCY"
-   },
-   {
-    "category": "format",
-    "reason": "missing label MISSING FACTS"
-   },
-   {
-    "category": "format",
-    "reason": "MISSING FACTS must list exactly 3 numbered items"
-   }
-  ],
-  "reason_categories": [
-   "format"
-  ],
-  "tokens_in": 7062,
-  "tokens_out": 272,
-  "latency_s": 7.792
- },
- {
-  "ts": "2026-10-07T02:40:48.959+00:00",
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "format"
-  ],
-  "draft": "What you're carrying right now is heavy, and you don't have to carry it alone.\n\nNury is a drafting assistant for your pastor \u2014 not a person who can come to you physically. But your pastor wants to be there for your family, and this message will help make that happen quickly.\n\n**Please contact your pastor directly** so they can come to you. If you have their phone number, call or text them now.\n\n---\n\nWhile you wait, here are a few things that may help in these first moments:\n\n**At the hospital:**\n- Ask the hospital staff where your family can wait together.\n- Let the care team know you are there and that you are her family.\n- You can ask the staff questions about what is happening and what comes next \u2014 they are there to help you.\n\n**You don't have to have the right words right now.** It's okay to feel scared, overwhelmed, or uncertain. Just being present matters.\n\n---\n\nIf you are in a moment of crisis and need someone to talk to right now, please reach out to a trusted person \u2014 a friend, a family member, or a church leader who can be with you.\n\nYour pastor cares about your family. Reach out to them directly so they can come."
- },
- {
-  "ts": "2026-10-07T02:40:48.959+00:00",
-  "kind": "escalated",
-  "stage": "triage",
-  "attempts": 3,
-  "reason_categories": [
-   "format",
-   "format",
-   "format"
+  "ts": "2026-10-07T04:15:03.726+00:00",
+  "kind": "stage_start",
+  "stage": "info",
+  "deps_used": [
+   "triage"
   ]
  },
  {
-  "ts": "2026-10-07T02:40:48.959+00:00",
+  "ts": "2026-10-07T04:15:03.726+00:00",
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:12.318+00:00",
+  "kind": "check",
+  "stage": "info",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2358,
+  "tokens_out": 727,
+  "latency_s": 8.588
+ },
+ {
+  "ts": "2026-10-07T04:15:12.318+00:00",
+  "kind": "gate",
+  "stage": "info",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:15:12.318+00:00",
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:15:12.319+00:00",
+  "kind": "stage_start",
+  "stage": "resources",
+  "deps_used": [
+   "triage",
+   "info"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:12.319+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T04:15:12.319+00:00",
+  "kind": "gloo_call",
+  "stage": "resources",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "check",
+  "stage": "resources",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2912,
+  "tokens_out": 366,
+  "latency_s": 8.608
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "gate",
+  "stage": "resources",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "info",
+   "resources"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:15:20.931+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:35.728+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4119,
+  "tokens_out": 712,
+  "latency_s": 14.793
+ },
+ {
+  "ts": "2026-10-07T04:15:35.728+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:15:35.728+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "info",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:35.728+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:15:35.728+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:40.043+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3488,
+  "tokens_out": 139,
+  "latency_s": 4.309
+ },
+ {
+  "ts": "2026-10-07T04:15:40.043+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:15:40.043+00:00",
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "triage"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

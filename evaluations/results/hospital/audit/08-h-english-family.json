@@ -1,36 +1,36 @@
 [
  {
-  "ts": "2026-10-07T02:44:05.591+00:00",
+  "ts": "2026-10-07T04:18:52.126+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:44:05.591+00:00",
+  "ts": "2026-10-07T04:18:52.126+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:44:10.568+00:00",
+  "ts": "2026-10-07T04:18:58.467+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1337,
-  "tokens_out": 163,
-  "latency_s": 4.976
+  "tokens_in": 7222,
+  "tokens_out": 223,
+  "latency_s": 6.338
  },
  {
-  "ts": "2026-10-07T02:44:10.568+00:00",
+  "ts": "2026-10-07T04:18:58.468+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:44:10.568+00:00",
+  "ts": "2026-10-07T04:18:58.468+00:00",
   "kind": "stage_start",
   "stage": "info",
   "deps_used": [
@@ -38,31 +38,39 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:44:10.568+00:00",
+  "ts": "2026-10-07T04:18:58.468+00:00",
   "kind": "gloo_call",
   "stage": "info",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:44:17.897+00:00",
+  "ts": "2026-10-07T04:19:06.599+00:00",
   "kind": "check",
   "stage": "info",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2079,
-  "tokens_out": 476,
-  "latency_s": 7.326
+  "tokens_in": 2246,
+  "tokens_out": 563,
+  "latency_s": 8.126
  },
  {
-  "ts": "2026-10-07T02:44:17.897+00:00",
+  "ts": "2026-10-07T04:19:06.599+00:00",
   "kind": "gate",
   "stage": "info",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:44:17.897+00:00",
+  "ts": "2026-10-07T04:19:06.599+00:00",
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:19:06.599+00:00",
   "kind": "stage_start",
   "stage": "resources",
   "deps_used": [
@@ -71,31 +79,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:44:17.897+00:00",
+  "ts": "2026-10-07T04:19:06.599+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T04:19:06.599+00:00",
   "kind": "gloo_call",
   "stage": "resources",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:44:23.766+00:00",
+  "ts": "2026-10-07T04:19:14.956+00:00",
   "kind": "check",
   "stage": "resources",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2128,
-  "tokens_out": 274,
-  "latency_s": 5.867
+  "tokens_in": 2756,
+  "tokens_out": 285,
+  "latency_s": 8.353
  },
  {
-  "ts": "2026-10-07T02:44:23.766+00:00",
+  "ts": "2026-10-07T04:19:14.956+00:00",
   "kind": "gate",
   "stage": "resources",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:44:23.766+00:00",
+  "ts": "2026-10-07T04:19:14.956+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -105,31 +120,45 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:44:23.766+00:00",
+  "ts": "2026-10-07T04:19:14.956+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:19:14.956+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:19:14.956+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:44:37.838+00:00",
+  "ts": "2026-10-07T04:19:25.928+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2933,
-  "tokens_out": 610,
-  "latency_s": 14.064
+  "tokens_in": 3653,
+  "tokens_out": 566,
+  "latency_s": 10.967
  },
  {
-  "ts": "2026-10-07T02:44:37.838+00:00",
+  "ts": "2026-10-07T04:19:25.928+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:44:37.838+00:00",
+  "ts": "2026-10-07T04:19:25.928+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -139,31 +168,38 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:44:37.839+00:00",
+  "ts": "2026-10-07T04:19:25.928+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:19:25.928+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:44:42.576+00:00",
+  "ts": "2026-10-07T04:19:30.693+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2642,
-  "tokens_out": 141,
-  "latency_s": 4.733
+  "tokens_in": 3150,
+  "tokens_out": 140,
+  "latency_s": 4.756
  },
  {
-  "ts": "2026-10-07T02:44:42.576+00:00",
+  "ts": "2026-10-07T04:19:30.693+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:44:42.576+00:00",
+  "ts": "2026-10-07T04:19:30.693+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null

@@ -49,6 +49,7 @@ def main():
     run_agent = get_agent(a.agent)
     if a.jev:
         from judges import jev_judges
+    CORE0 = core_info()
     runs = []
     for sc in load_scenarios(only, a.playbook or ("detention" if a.scenarios == "scenarios" else None), a.scenarios):
         t0 = time.time()
@@ -74,13 +75,26 @@ def main():
                      "metrics": metrics(traj), "trajectory": traj})
         print(f"{sc['number']:02d} {sc['id']:<24} {status}")
     Path(a.out).mkdir(parents=True, exist_ok=True)
-    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "playbook": a.playbook or a.scenarios, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "privacy": getattr(sys.modules.get("adapter_nury"), "PRIVACY", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
+    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "core": {"start": CORE0, "end": core_info()}, "playbook": a.playbook or a.scenarios, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "privacy": getattr(sys.modules.get("adapter_nury"), "PRIVACY", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
     audit_dir = Path(a.out) / "audit"
     audit_dir.mkdir(exist_ok=True)
     for r in runs:  # one audit log per run, committed as evidence
         (audit_dir / f"{r['number']:02d}-{r['id']}.json").write_text(json.dumps(r["trajectory"].get("audit_log", []), indent=1, default=str))
     import report
     report.build(Path(a.out) / "runs.json", Path(a.out))
+
+
+def core_info():
+    """What code produced a result: repo head, the last commit that touched the core (code/nury, code/playbooks),
+    and whether the core has uncommitted changes. Taken at the START of a run and checked again at the end."""
+    import subprocess
+    root = HERE.parent
+
+    def git(*args):
+        return subprocess.run(["git", *args], cwd=root, capture_output=True, text=True).stdout.strip()
+    return {"repo_head": git("rev-parse", "--short", "HEAD"),
+            "core_last_commit": git("log", "-1", "--format=%h %ci", "--", "code/nury", "code/playbooks"),
+            "core_dirty": bool(git("status", "--porcelain", "code/nury", "code/playbooks"))}
 
 
 def status_of(det, jev, jev_err, err):
