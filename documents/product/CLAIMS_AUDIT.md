@@ -208,7 +208,7 @@ Change list against the 8a28a18 fill. Judge results, not human verdicts. The fou
 | Detention (20), pass / fail / awaiting | 12 / 6 / 2 | **11 / 1 / 8** | deck slide 8, descriptions, pitch |
 | Hospital (8) | 5 / 1 / 2 | **5 / 0 / 3** | same |
 | Hostile intakes (18) | 11 / 2 / 5 | **13 / 1 / 4** (triage escalations 1 to 0) | same |
-| All 46 | 28 / 9 / 9 | **29 / 2 / 15** | descriptions: "46 scenarios, judged: 29 pass, 2 fail, 15 undecided." (both 250 words) |
+| All 46 | 28 / 9 / 9 | **29 / 2 / 15** | descriptions: "46 scenarios, judged: 29 pass, 2 fail, 15 undecided." (both 240 words by wc, 244 by the strictest counter) |
 | Cost and time per package | 6 to 9 cents, 33 to 49 s | detention $0.0638 and 34.2 s, hospital $0.0887 and 49.5 s: **6 to 9 cents, 34 to 50 s** | caption in deck, scripts, TECH_STORY, treatments, HOW_IT_WAS_BUILT, ECONOMICS |
 | Tone, detention | 2.60 to 2.85 (five below 3) | **3.04 to 3.32** (hospital 3.14) | WHAT_DID_NOT_WORK item 1 rewritten |
 | Claim "plainer text scores colder" | stated | **withdrawn**: never proven (the judge moves up to 0.75 between identical runs); the five fails became "awaiting review" because scores crossed 3.0, a judge threshold | deck slide 8, README, PATTERN, WHAT_DID_NOT_WORK |
