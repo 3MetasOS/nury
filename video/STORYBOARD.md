@@ -1,6 +1,6 @@
 # Nury demo video: storyboard and shot list (90 s)
 
-Owner: hack-video. Status: DRAFT v1 for hack-sensei. VO wording to be agreed with hack-ninja.
+Owner: hack-video. Status: v1.1. VO wording and intake are LOCKED in `presentation/SHARED_DEMO.md` (that file wins over the VO column below). Finalist re-timing is in `presentation/FINALIST_SCRIPT.md`. VO is TTS until Juan supplies a recording (swap in if it arrives before Oct 7, 17:00 MDT). Scratch VO: `video/build_vo.sh`.
 Recording starts only when hack-sensei says the app works (expected Oct 7, ~15:00 MDT).
 
 ## Story in one line
