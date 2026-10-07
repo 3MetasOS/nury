@@ -60,6 +60,43 @@ def check_case_dir(d, playbook, rejected_snippets=(), secrets=(), edit_marker=No
     return bad
 
 
+def tree_hash(d):
+    import hashlib
+    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(d).iterdir()) if p.is_file()}
+
+
+def revise_and_check(sc, saved, root, ids, secrets, cf, run_scripted):
+    """Save v2 beside v1 with the same helpers the app uses. v1 must stay byte-identical."""
+    sys.path.insert(0, str(HERE.parent / "code"))
+    import app.server as srv
+    srv.CASES_ROOT = root
+    v1_dir, v1_before = Path(saved["path"]), tree_hash(saved["path"])
+    rv = dict(sc["revise"], case_id=saved["id"])
+    intake, meta = srv.revision_intake(saved["id"], rv["step"], rv["result"], rv["note"])
+    state2, results2, audit2 = run_scripted(intake, sc["output_language"], {}, playbook=sc["playbook"])
+    new_id = srv.next_version_id(saved["id"])
+    r2 = cf.save_case(state2, audit2, playbook=sc["playbook"], root=root, case_id=new_id)
+    d2 = Path(r2["path"])
+    (d2 / "intake.md").write_text("# Intake\n\n" + intake.strip() + "\n", encoding="utf-8")
+    srv.write_changes(d2, new_id, rv, ids)
+    bad = []
+    if not new_id.endswith("-v2"):
+        bad.append(f"v2 id is {new_id}")
+    if tree_hash(v1_dir) != v1_before:
+        bad.append("v1 files changed after saving v2")
+    ch = (d2 / "changes.md").read_text(encoding="utf-8") if (d2 / "changes.md").exists() else ""
+    if rv["note"].strip() not in ch:
+        bad.append("changes.md does not hold the pastor's words")
+    if "does not predict" not in ch:
+        bad.append("changes.md lacks the no-prediction line")
+    bad += [f"v2: {p}" for p in check_case_dir(d2, sc["playbook"], [], secrets)]
+    t1 = (v1_dir / "01-triage.md").read_text(encoding="utf-8")
+    t2 = (d2 / "01-triage.md").read_text(encoding="utf-8")
+    if t1 == t2:
+        bad.append("v2 triage is identical to v1: the update did not change the case summary")
+    return bad
+
+
 def run_live():
     import yaml
     sys.path.insert(0, str(HERE.parent / "code"))
@@ -84,11 +121,14 @@ def run_live():
         with tempfile.TemporaryDirectory() as root:
             try:
                 saved = cf.save_case(state, audit, playbook=sc["playbook"], root=root)
+                (Path(saved["path"]) / "intake.md").write_text("# Intake\n\n" + sc["intake"].strip() + "\n", encoding="utf-8")
                 problems = check_case_dir(saved["path"], sc["playbook"], snippets, secrets, sc.get("edit_marker"))
                 if len(list(Path(saved["path"]).glob("0*-*.md"))) != len(ids):
                     problems.append("stage page count does not match the playbook")
                 if fi and not rejected:
                     problems.append("fault was not injected: no rejected draft to test against")
+                if sc.get("revise"):
+                    problems += revise_and_check(sc, saved, root, ids, secrets, cf, run_scripted)
             except Exception as e:
                 problems = [f"save failed: {type(e).__name__}: {str(e)[:100]}"]
         out.append({"id": sc["id"], "pass": not problems, "problems": problems, "rejected_drafts": len(rejected)})

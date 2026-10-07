@@ -36,10 +36,21 @@ def prices():
     return out
 
 
+_FINDING = re.compile(r'"stage"\s*:\s*"(.*?)"\s*,\s*"quote"\s*:\s*"(.*?)"\s*,\s*"category"\s*:\s*"(\w+)"\s*,\s*"reason"\s*:\s*"(.*?)"\s*\}', re.S)
+
+
 def _json(text):
+    """Strict JSON first. Some reviewers leave quotes unescaped inside the quoted sentence; then pull the fields
+    out by pattern. The quote is still checked against the real text, so an invented quote is flagged."""
     t = re.sub(r"^```(?:json)?|```$", "", (text or "").strip(), flags=re.M).strip()
     a, b = t.find("{"), t.rfind("}")
-    return json.loads(t[a:b + 1])
+    try:
+        return json.loads(t[a:b + 1])
+    except Exception:
+        found = [{"stage": m[0], "quote": m[1], "category": m[2], "reason": m[3]} for m in _FINDING.findall(t)]
+        if found or re.search(r'"findings"\s*:\s*\[\s*\]', t):
+            return {"findings": found, "lenient_parse": True}
+        raise
 
 
 def _norm(s):

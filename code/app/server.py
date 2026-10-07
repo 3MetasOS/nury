@@ -10,6 +10,7 @@ import re
 import threading
 import uuid
 import urllib.parse
+import difflib
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -26,6 +27,75 @@ CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # local only, 
 CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
 GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
+
+
+RESULT_LABEL = {"hoped": "went as hoped", "not_hoped": "did not go as hoped", "unknown": "unknown"}
+
+
+def base_id(cid):
+    return re.sub(r"-v\d+$", "", cid)
+
+
+def versions_of(cid):
+    """All saved versions of one case, v1 first. v1 has the base id; later ones end in -vN."""
+    b = base_id(cid)
+    ids = [c["id"] for c in cf.list_cases(CASES_ROOT) if base_id(c["id"]) == b]
+    return sorted(ids, key=lambda i: (0, 0) if i == b else (1, int(i.rsplit("-v", 1)[1])))
+
+
+def next_version_id(cid):
+    b = base_id(cid)
+    nums = [1 if i == b else int(i.rsplit("-v", 1)[1]) for i in versions_of(cid)]
+    return f"{b}-v{max(nums or [1]) + 1}"
+
+
+def original_intake(pages):
+    t = pages.get("intake.md")
+    if t:
+        return re.sub(r"^# .*\n+", "", t).strip()
+    # Cases saved before intake.md existed: the approved triage is the structured intake.
+    t = next((v for k, v in sorted(pages.items()) if k.startswith("01-")), "")
+    return re.sub(r"^# .*\n+", "", t.split("\n---\n")[0]).strip()   # drop the page footer (links, disclaimer)
+
+
+def revision_intake(case_id, step, result, note):
+    """Original intake plus a dated update in the pastor's words. A record, never a prediction."""
+    c = cf.load_case(case_id, CASES_ROOT)
+    day = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    update = (f"UPDATE FROM THE PASTOR ({day}). Step: {step or 'not named'}. "
+              f"Result: {RESULT_LABEL.get(result, 'unknown')}. What happened, in the pastor's words: {note.strip()}")
+    return original_intake(c["pages"]) + "\n\n" + update, c["meta"]
+
+
+def diff_pages(a_text, b_text):
+    out = []
+    for line in difflib.ndiff(a_text.splitlines(), b_text.splitlines()):
+        tag = line[:2]
+        if tag in ("+ ", "- ", "  "):
+            out.append({"t": {"+ ": "add", "- ": "del", "  ": "same"}[tag], "x": line[2:]})
+    return out
+
+
+def write_changes(d, new_id, rv, stage_ids):
+    """changes.md and revision.json for a revised case. Written next to the new version; v1 is never touched."""
+    d = Path(d)
+    old = cf.load_case(rv["case_id"], CASES_ROOT)["pages"]
+    new = {p.name: p.read_text(encoding="utf-8") for p in d.glob("0*-*.md")}
+    rows = []
+    for name in sorted(new):
+        title = re.sub(r"\.md$", "", re.sub(r"^\d+-", "", name))
+        n = sum(1 for x in difflib.ndiff(old.get(name, "").splitlines(), new[name].splitlines()) if x[:2] in ("+ ", "- "))
+        rows.append(f"- {title}: {'unchanged' if n == 0 else str(n) + ' lines differ'}")
+    text = ("# What changed\n\n"
+            f"This is version {new_id.rsplit('-v', 1)[1]} of the case. It sits beside the earlier version, which is unchanged.\n\n"
+            "## What the pastor reported\n\n"
+            f"- Step: {rv.get('step') or 'not named'}\n- Result: {RESULT_LABEL.get(rv.get('result'), 'unknown')}\n"
+            f"- What happened: {rv.get('note', '').strip()}\n\n"
+            "## Stages drafted again\n\n" + ", ".join(stage_ids) + "\n\n"
+            "## Compared with the earlier version\n\n" + "\n".join(rows) + "\n\n"
+            "Nury records what the pastor reported and drafts again. It does not predict what will happen next.\n")
+    (d / "changes.md").write_text(text, encoding="utf-8")
+    (d / "revision.json").write_text(json.dumps({"revises": rv["case_id"], "step": rv.get("step"), "result": rv.get("result")}), encoding="utf-8")
 
 
 def playbooks():
@@ -55,9 +125,11 @@ def safe_event(e):
 
 
 class Session:
-    def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None):
+    def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None, revision=None):
         self.id = uuid.uuid4().hex[:12]
         self.pb = get_playbook(playbook_id)
+        self.intake = intake
+        self.revision = revision      # {case_id, step, result, note} when this run revises a saved case
         # One privacy client per session: its token map lives here. The pastor's confirmed list is the list that counts.
         self.client = make_client(protected=protected) if protected is not None else make_client(intake=intake)
         self.state = CaseState(intake, language)
@@ -109,10 +181,18 @@ class Session:
 
     def save(self):
         """Save the approved package to a local case folder. Raises cf.CaseError unless every stage is approved or edited."""
-        r = cf.save_case(self.state, self.audit, playbook=self.pb.id, root=CASES_ROOT,
+        new_id = next_version_id(self.revision["case_id"]) if self.revision else None
+        r = cf.save_case(self.state, self.audit, playbook=self.pb.id, root=CASES_ROOT, case_id=new_id,
                          privacy=self.client if isinstance(self.client, PrivacyClient) else None)
         self.case_id = r["id"]
-        return {"id": r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
+        d = Path(r["path"])
+        (d / "intake.md").write_text("# Intake\n\n" + self.intake.strip() + "\n", encoding="utf-8")   # the pastor's own words, local only
+        if self.revision:
+            self._write_changes(d, r["id"])
+        return {"id": r["id"], "version": r["id"] if not self.revision else r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
+
+    def _write_changes(self, d, new_id):
+        write_changes(d, new_id, self.revision, [s.id for s in self.pb.stages])
 
     def map_svg(self):
         try:
@@ -213,6 +293,17 @@ class H(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(b)))
             self.end_headers()
             self.wfile.write(b)
+        elif p.startswith("/api/case/") and "/compare/" in p:
+            parts = p.split("/")   # ['', 'api', 'case', A, 'compare', B]
+            a, b = urllib.parse.unquote(parts[3]), urllib.parse.unquote(parts[5])
+            if not (CASE_ID.match(a) and CASE_ID.match(b)):
+                return self._json({"error": "bad id"}, 400)
+            try:
+                ca, cb = cf.load_case(a, CASES_ROOT)["pages"], cf.load_case(b, CASES_ROOT)["pages"]
+            except Exception:
+                return self._json({"error": "case not found"}, 404)
+            names = sorted(n for n in set(ca) | set(cb) if re.match(r"0\d-", n))
+            self._json({"a": a, "b": b, "pages": {n: diff_pages(ca.get(n, ""), cb.get(n, "")) for n in names}})
         elif p == "/api/cases":
             self._json({"cases": cf.list_cases(CASES_ROOT)})
         elif p.startswith("/api/case/") and p.endswith("/export"):
@@ -234,7 +325,9 @@ class H(BaseHTTPRequestHandler):
             if not CASE_ID.match(cid):
                 return self._json({"error": "bad id"}, 400)
             try:
-                self._json(cf.load_case(cid, CASES_ROOT))
+                c = cf.load_case(cid, CASES_ROOT)
+                c["versions"] = versions_of(cid)
+                self._json(c)
             except Exception:
                 self._json({"error": "case not found"}, 404)
         elif p == "/api/privacy":
@@ -251,8 +344,23 @@ class H(BaseHTTPRequestHandler):
         p, b = self.path, self._body()
         if p == "/api/propose-terms":
             self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
+        elif p == "/api/revision-preview":
+            try:
+                intake, meta = revision_intake(b.get("case_id", ""), b.get("step", ""), b.get("result", ""), b.get("note", ""))
+            except Exception:
+                return self._json({"error": "case not found"}, 404)
+            self._json({"intake": intake, "playbook": meta["playbook"], "language": meta.get("language", "es")})
         elif p == "/api/run":
             intake = (b.get("intake") or "").strip()
+            rev = b.get("revise") if isinstance(b.get("revise"), dict) else None
+            if rev:
+                if not CASE_ID.match(str(rev.get("case_id", ""))) or not str(rev.get("note", "")).strip():
+                    return self._json({"error": "Say what happened, then start."}, 400)
+                try:
+                    intake, meta = revision_intake(rev["case_id"], rev.get("step", ""), rev.get("result", ""), rev["note"])
+                except Exception:
+                    return self._json({"error": "case not found"}, 404)
+                b["playbook"], b["language"] = meta["playbook"], meta.get("language", "es")
             if not intake:
                 return self._json({"error": "Type what the family told you."}, 400)
             pid = b.get("playbook") or "detention"
@@ -262,7 +370,8 @@ class H(BaseHTTPRequestHandler):
             try:
                 prot = b.get("protected")
                 prot = [{"term": str(t.get("term", "")).strip(), "kind": t.get("kind", "person")} for t in prot if str(t.get("term", "")).strip()] if isinstance(prot, list) else None
-                s = Session(pid, intake, b.get("language", "es"), bool(b.get("demo_guardrail")), prot)
+                s = Session(pid, intake, b.get("language", "es"), bool(b.get("demo_guardrail")), prot,
+                            {"case_id": rev["case_id"], "step": rev.get("step", ""), "result": rev.get("result", ""), "note": rev["note"]} if rev else None)
             except PlaybookError:
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s

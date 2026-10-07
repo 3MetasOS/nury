@@ -48,6 +48,13 @@ a.lnk{color:var(--amber);text-decoration:underline;text-underline-offset:3px;cur
 .term .n{font:500 18px var(--serif)}.term .k{margin-left:auto;font-size:12px;color:var(--muted);flex:none}
 .addrow{display:flex;gap:8px;margin-top:12px}.addrow input{flex:1;min-width:0;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
 .addrow select{width:auto;flex:none}.addrow .btn{width:auto;min-height:48px}
+.vers{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0}
+.fld2{display:block;margin-top:14px;font-size:14px;color:var(--muted)}
+.radio{display:flex;align-items:center;gap:12px;min-height:48px;padding:4px 2px;cursor:pointer;font-size:16px;color:var(--text)}
+.radio input{width:22px;height:22px;accent-color:var(--amber);flex:none}
+.dl{font:13px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;padding:1px 6px;border-radius:4px}
+.dl.add{background:var(--green-soft);color:var(--green)}.dl.del{background:var(--red-soft);color:var(--red);text-decoration:line-through}
+.dl.same{color:var(--muted)}
 .disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
@@ -182,11 +189,32 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 <section id="v-case" class="hidden">
   <button class="back" id="back-case">&larr; All crises</button>
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
+    <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
+  <div class="card"><button class="btn" id="b-changed" style="min-height:56px">Something changed</button>
+    <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare versions</button></div>
+  <div class="card hidden" id="revise">
+    <h2>What happened?</h2>
+    <p class="note" style="margin:0">Nury records what you tell it and drafts the case again. It does not predict what will happen next.</p>
+    <label class="fld2" for="rv-step">Which step</label><select id="rv-step"></select>
+    <fieldset style="border:0;padding:0;margin:14px 0 0"><legend class="note" style="padding:0">How did it go</legend>
+      <label class="radio"><input type="radio" name="rv-res" value="hoped"> Went as hoped</label>
+      <label class="radio"><input type="radio" name="rv-res" value="not_hoped"> Did not go as hoped</label>
+      <label class="radio"><input type="radio" name="rv-res" value="unknown" checked> Unknown</label></fieldset>
+    <label class="fld2" for="rv-note">What happened, in your words</label><textarea id="rv-note" style="min-height:120px"></textarea>
+    <div class="row two" style="margin-top:14px"><button class="btn" id="rv-cancel">Cancel</button><button class="btn primary" id="rv-go">Draft again</button></div>
+    <p class="note" id="rv-err"></p></div>
   <div class="card hidden" id="case-map"><h2>Next steps</h2><img class="mapimg" id="case-map-img" alt="Next steps map"></div>
   <div class="chips" id="case-chips" role="tablist"></div>
   <div class="card"><div id="case-page" class="plain"></div></div>
   <p class="note">Read-only. This case stays on this computer.</p>
+</section>
+
+<section id="v-compare" class="hidden">
+  <button class="back" id="back-compare">&larr; Back to the case</button>
+  <div class="card"><h2 id="cmp-title">Compare versions</h2><p class="note" style="margin:0" id="cmp-sub"></p>
+    <div class="chips" id="cmp-chips" role="tablist" style="margin-top:10px"></div></div>
+  <div class="card"><div id="cmp-body"></div></div>
 </section>
 
 <section id="v-pkg" class="hidden">
@@ -233,7 +261,7 @@ function fmt(el,text){
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-select","v-intake","v-protect","v-pipe","v-pkg","v-case"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const show=v=>["v-select","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   return r.json();
@@ -272,10 +300,13 @@ async function openCase(id){
   $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);
-  const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","log.md"].indexOf(n)+2;
+  const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
   const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
     b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
+  const vs=c.versions||[c.meta.id];$("case-vers").classList.toggle("hidden",vs.length<2);
+  $("case-vers").replaceChildren(...vs.map((v,i)=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent="v"+(i+1);b.setAttribute("aria-label","Version "+(i+1));b.onclick=()=>openCase(v);return b}));
+  $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
   show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
 }
 function showPage(n){curPage=n;
@@ -283,6 +314,34 @@ function showPage(n){curPage=n;
   fmt($("case-page"),curCase.pages[n]);window.scrollTo({top:0})}
 $("case-copy").onclick=()=>navigator.clipboard.writeText(curCase.pages[curPage]).then(()=>{$("case-copy").textContent="Copied";setTimeout(()=>$("case-copy").textContent="Copy this page",1500)});
 $("back-case").onclick=()=>{NAV=null;loadSelect()};
+let reviseCtx=null;
+$("b-changed").onclick=()=>{
+  const lines=(curCase.pages["04-checklist.md"]||curCase.pages[Object.keys(curCase.pages).find(k=>/^04-/.test(k))]||"").split("\n")
+    .map(l=>l.match(/^\s*(?:[-*\u2022]|\d+[.)])\s+(.*)$/)).filter(Boolean).map(m=>m[1].replace(/\*\*/g,"").slice(0,110));
+  $("rv-step").replaceChildren(...[...lines,"Something else (describe it below)"].map(t=>{const o=document.createElement("option");o.value=t;o.textContent=t;return o}));
+  $("rv-note").value="";$("rv-err").textContent="";$("revise").classList.remove("hidden");$("rv-note").focus()};
+$("rv-cancel").onclick=()=>$("revise").classList.add("hidden");
+$("rv-go").onclick=async()=>{
+  const note=$("rv-note").value.trim();if(!note){$("rv-err").textContent="Write what happened first.";return}
+  reviseCtx={case_id:curCase.meta.id,step:$("rv-step").value,result:document.querySelector('input[name="rv-res"]:checked').value,note};
+  const pv=await api("/api/revision-preview",reviseCtx);if(pv.error){$("rv-err").textContent=pv.error;return}
+  pb=pbs.find(p=>p.id===pv.playbook)||{id:pv.playbook};$("lang").value=pv.language||"es";$("intake").value=pv.intake;$("demo").checked=false;
+  const r=await api("/api/propose-terms",{intake:pv.intake});
+  if(!r.on){startRun(null);return}
+  termList=(r.terms||[]).map(t=>({term:t.term,kind:t.kind,count:t.count,on:!!t.suggested}));
+  $("protect-err").textContent="";$("add-term").value="";drawTerms();
+  $("back-protect").onclick=$("b-protect-back").onclick=()=>show("v-case");show("v-protect")};
+$("b-compare").onclick=async()=>{
+  const vs=curCase.versions;const a=vs[vs.length-2],b=vs[vs.length-1];
+  const d=await api(`/api/case/${encodeURIComponent(a)}/compare/${encodeURIComponent(b)}`);
+  if(d.error){return}
+  $("cmp-sub").textContent=`Red lines are only in v${vs.length-1}. Green lines are new in v${vs.length}.`;
+  const names=Object.keys(d.pages);
+  const draw=n=>{$("cmp-chips").querySelectorAll(".chip").forEach(c=>c.classList.toggle("on",c.dataset.p===n));
+    $("cmp-body").replaceChildren(...d.pages[n].map(l=>{const e=document.createElement("div");e.className="dl "+l.t;e.textContent=(l.t==="add"?"+ ":l.t==="del"?"- ":"  ")+l.x;return e}))};
+  $("cmp-chips").replaceChildren(...names.map(n=>{const c=document.createElement("button");c.className="chip";c.dataset.p=n;c.textContent=n.replace(/\.md$/,"").replace(/^\d+-/,"");c.onclick=()=>draw(n);return c}));
+  draw(names.find(n=>d.pages[n].some(l=>l.t!=="same"))||names[0]);show("v-compare")};
+$("back-compare").onclick=()=>show("v-case");
 function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
@@ -301,6 +360,7 @@ function drawTerms(){
     const k=document.createElement("span");k.className="k";k.textContent=t.kind==="place"?"place":"person"+(t.count?` \u00b7 ${t.count}\u00d7`:"");
     l.append(c,n,k);return l}))}
 $("btn-start").onclick=async()=>{
+  reviseCtx=null;$("back-protect").onclick=$("b-protect-back").onclick=()=>show("v-intake");
   $("intake-err").textContent="";
   if(!$("intake").value.trim()){$("intake-err").textContent="Type what the family told you.";return}
   const r=await api("/api/propose-terms",{intake:$("intake").value});
@@ -318,6 +378,7 @@ $("b-protect-go").onclick=()=>startRun(termList.filter(t=>t.on).map(t=>({term:t.
 async function startRun(protectedList){
   const body={playbook:pb.id,intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked};
   if(protectedList)body.protected=protectedList;
+  if(reviseCtx)body.revise=reviseCtx;
   const r=await api("/api/run",body);
   if(r.error){const e=protectedList?$("protect-err"):$("intake-err");e.textContent=r.error;return}
   sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
@@ -376,7 +437,7 @@ async function poll(){
     $("b-save").onclick=async()=>{$("b-save").disabled=true;const r=await api(`/api/session/${sid}/save`,{});
       if(r.error){$("save-err").textContent=r.error;$("b-save").disabled=false;return}
       $("b-save").textContent="Saved";sv.classList.remove("hidden");sv.replaceChildren();
-      sv.append(document.createTextNode(`Saved on this computer in ${r.path}. It stays here. Nothing was sent. `));
+      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`${vm?`Saved as version ${vm[1]}, beside the earlier version. `:"Saved "}on this computer in ${r.path}. It stays here. Nothing was sent. `));
       const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a)};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;

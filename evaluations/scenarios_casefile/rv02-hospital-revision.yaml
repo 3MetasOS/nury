@@ -1,0 +1,15 @@
+id: rv02-hospital-revision
+playbook: hospital
+intake: Pastor, it's Rosa Delgado from our congregation. My father, Luis, was brought to St. Mary's Hospital
+  emergency room about an hour ago. They said it might be his heart. I'm in the waiting room with my mother.
+  We speak Spanish at home and the staff keeps talking fast. I don't understand what they are telling
+  us and I'm scared. What should we do right now?
+output_language: es
+pastor_actions: {}
+revise:
+  step: Ask the care team for an interpreter
+  result: hoped
+  note: The nurse arranged a Spanish interpreter. The family now understands the daily update. They still
+    have questions about the visiting hours.
+expected: v1 saves. v2 saves beside v1 as -v2 with changes.md. v1 files are unchanged. The update appears
+  only as the pastor's own words; no prediction. Same file checks as the other case-file scenarios.

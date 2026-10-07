@@ -21,27 +21,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 12,
+     "findings": 17,
      "error": null,
-     "cost": 0.01766,
+     "cost": 0.02184,
      "caught": null,
-     "other_findings": 12,
+     "other_findings": 17,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
-     "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 687 (char 686)",
-     "cost": 0.0,
+     "findings": 2,
+     "error": null,
+     "cost": 0.05528,
      "caught": null,
-     "other_findings": 0,
+     "other_findings": 2,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 14,
+     "findings": 2,
      "error": null,
-     "cost": 0.00125,
+     "cost": 0.00082,
      "caught": null,
-     "other_findings": 14,
+     "other_findings": 2,
      "unverified_quotes": 0
     }
    }
@@ -52,17 +52,17 @@
    "cat": "advice",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 14,
+     "findings": 19,
      "error": null,
-     "cost": 0.01953,
+     "cost": 0.02346,
      "caught": true,
-     "other_findings": 13,
+     "other_findings": 18,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 2,
      "error": null,
-     "cost": 0.05485,
+     "cost": 0.05489,
      "caught": true,
      "other_findings": 1,
      "unverified_quotes": 0
@@ -83,25 +83,25 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 12,
+     "findings": 8,
      "error": null,
-     "cost": 0.03047,
+     "cost": 0.02847,
      "caught": null,
-     "other_findings": 12,
+     "other_findings": 8,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
-     "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 676 (char 675)",
-     "cost": 0.0,
+     "findings": 2,
+     "error": null,
+     "cost": 0.0658,
      "caught": null,
-     "other_findings": 0,
+     "other_findings": 2,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
      "findings": 1,
      "error": null,
-     "cost": 0.00183,
+     "cost": 0.00184,
      "caught": null,
      "other_findings": 1,
      "unverified_quotes": 0
@@ -114,19 +114,19 @@
    "cat": "prediction",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 7,
+     "findings": 19,
      "error": null,
-     "cost": 0.02734,
+     "cost": 0.03491,
      "caught": true,
-     "other_findings": 6,
+     "other_findings": 18,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
-     "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 8 column 6 (char 267)",
-     "cost": 0.0,
-     "caught": false,
-     "other_findings": 0,
+     "findings": 2,
+     "error": null,
+     "cost": 0.06584,
+     "caught": true,
+     "other_findings": 1,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
@@ -145,27 +145,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 18,
-     "error": null,
-     "cost": 0.02193,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 18,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting value: line 1 column 1 (char 0)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 6,
-     "error": null,
-     "cost": 0.00095,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 6,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -176,27 +176,27 @@
    "cat": "role_claim",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 20,
-     "error": null,
-     "cost": 0.02262,
-     "caught": true,
-     "other_findings": 18,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 259 (char 258)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 4,
-     "error": null,
-     "cost": 0.00086,
-     "caught": true,
-     "other_findings": 2,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -207,27 +207,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 9,
-     "error": null,
-     "cost": 0.02372,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 9,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 589 (char 588)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 2,
-     "error": null,
-     "cost": 0.00149,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 2,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -238,26 +238,26 @@
    "cat": "unsupported_fact",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 11,
-     "error": null,
-     "cost": 0.02543,
-     "caught": true,
-     "other_findings": 9,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 510 (char 509)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 1,
-     "error": null,
-     "cost": 0.00146,
-     "caught": true,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     }
@@ -269,27 +269,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 20,
-     "error": null,
-     "cost": 0.02579,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 20,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 715 (char 714)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 2,
-     "error": null,
-     "cost": 0.00107,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 2,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -300,27 +300,27 @@
    "cat": "advice",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 20,
-     "error": null,
-     "cost": 0.02633,
-     "caught": true,
-     "other_findings": 19,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 3 column 241 (char 559)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 3,
-     "error": null,
-     "cost": 0.00113,
-     "caught": true,
-     "other_findings": 2,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -331,27 +331,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 25,
-     "error": null,
-     "cost": 0.03053,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 25,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 692 (char 691)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 9,
-     "error": null,
-     "cost": 0.00134,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 9,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -362,27 +362,27 @@
    "cat": "prediction",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 18,
-     "error": null,
-     "cost": 0.02653,
-     "caught": true,
-     "other_findings": 17,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
-     "findings": 3,
-     "error": null,
-     "cost": 0.05825,
-     "caught": true,
-     "other_findings": 2,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 3,
-     "error": null,
-     "cost": 0.00112,
-     "caught": true,
-     "other_findings": 2,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -393,27 +393,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 12,
-     "error": null,
-     "cost": 0.0204,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 12,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 557 (char 556)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 4,
-     "error": null,
-     "cost": 0.00121,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 4,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -424,27 +424,27 @@
    "cat": "role_claim",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 16,
-     "error": null,
-     "cost": 0.02311,
-     "caught": true,
-     "other_findings": 15,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
-     "findings": 2,
-     "error": null,
-     "cost": 0.0524,
-     "caught": true,
-     "other_findings": 1,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 9,
-     "error": null,
-     "cost": 0.00133,
-     "caught": true,
-     "other_findings": 8,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -455,27 +455,27 @@
    "cat": null,
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 16,
-     "error": null,
-     "cost": 0.02432,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 16,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 561 (char 560)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": null,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 4,
-     "error": null,
-     "cost": 0.00103,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
      "caught": null,
-     "other_findings": 4,
+     "other_findings": 0,
      "unverified_quotes": 0
     }
    }
@@ -486,31 +486,31 @@
    "cat": "named_provider",
    "reviewers": {
     "gloo-openai-gpt-5.4": {
-     "findings": 18,
-     "error": null,
-     "cost": 0.02634,
-     "caught": true,
-     "other_findings": 17,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
+     "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-google-gemini-3.1-pro": {
      "findings": 0,
-     "error": "JSONDecodeError: Expecting ',' delimiter: line 1 column 482 (char 481)",
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
      "cost": 0.0,
      "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     },
     "gloo-meta-llama-4-maverick": {
-     "findings": 1,
-     "error": null,
-     "cost": 0.00093,
-     "caught": true,
+     "findings": 0,
+     "error": "HTTPError: 402 Client Error: Payment Required for url: https://platform.ai.gloo.com/ai/v2/guarded/responses",
+     "cost": 0.0,
+     "caught": false,
      "other_findings": 0,
      "unverified_quotes": 0
     }
    }
   }
  ],
- "total_cost_usd": 0.5771
+ "total_cost_usd": 0.3557
 }

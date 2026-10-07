@@ -53,6 +53,7 @@ def build(runs_path, out_dir):
     (out / "results.json").write_text(json.dumps({"aggregate": agg, "runs": slim}, indent=1, ensure_ascii=False))
     L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + [f"# Nury Evaluation Scorecard: {d.get('playbook', 'detention')} playbook", "",
          f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.",
+         (f"Privacy layer: {'on' if d.get('privacy') else 'off'} (names, phones, emails, addresses, dates and ID numbers are replaced by tokens before anything reaches the model)." if d.get("privacy") is not None else "Privacy layer: not recorded."),
          (f"Model: `{d['pricing']['model']}`. Price: ${d['pricing']['usd_per_1m_in']} per 1M input tokens, ${d['pricing']['usd_per_1m_out']} per 1M output tokens (Gloo /platform/v2/models). Cache pricing not used." if d.get("pricing") and d["pricing"].get("usd_per_1m_in") else "Model and price: not recorded."), "",
          "## Summary", "",
          f"- Scenarios run: {agg['scenarios']}. Passed by the judges: {agg['judge_pass']}. Passed after human review: {agg['human_pass']}. "

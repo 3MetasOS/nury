@@ -18,7 +18,11 @@ if MODEL == "gloo-anthropic-claude-sonnet-4.6":
     os.environ.setdefault("NURY_PRICE_OUT", "15.00")
 PRICES = {"model": MODEL, "usd_per_1m_in": os.environ.get("NURY_PRICE_IN"), "usd_per_1m_out": os.environ.get("NURY_PRICE_OUT")}
 
-from nury.engine import get_playbook, run_scripted  # noqa: E402  (after price defaults)
+from nury.audit import AuditLog  # noqa: E402
+from nury.engine import CaseState, get_playbook, run_pipeline, scripted_gate  # noqa: E402  (after price defaults)
+from nury.privacy import make_client, privacy_enabled  # noqa: E402
+
+PRIVACY = privacy_enabled()   # on by default; NURY_PRIVACY=off for an A/B. The scorecard records it.
 
 
 
@@ -47,8 +51,14 @@ def run(sc):
     if fi:
         fi = dict(fi, stage=ids[fi["stage"] - 1])
     kw = {"playbook": pbid}
-    state, results, audit = run_scripted(sc["intake"], sc["output_language"], _decisions(sc["pastor_actions"], ids),
-                                         fault_injection=fi, **kw)
+    # Same path as run_scripted, plus the privacy client (protects every suggested person in the intake)
+    # and the gate wrapper that protects a name the pastor adds in an edit.
+    state, audit = CaseState(sc["intake"], sc["output_language"]), AuditLog()
+    client = make_client(intake=sc["intake"])
+    gate = scripted_gate(_decisions(sc["pastor_actions"], ids))
+    if hasattr(client, "wrap_gate"):
+        gate = client.wrap_gate(gate)
+    results = run_pipeline(pbid, state, gate, client, audit, fault_injection=fi)
     stages, halted, halt_stage, escalated = [], False, None, False
     for r in results:
         n = ids.index(r.stage_id) + 1 if r.stage_id in ids else len(stages) + 1
@@ -72,4 +82,4 @@ def run(sc):
     pkg = None if halted else {str(s["n"]): s["final_text"] for s in stages}
     return {"scenario_id": sc["id"], "stages": stages, "halted": halted, "halt_stage": halt_stage,
             "escalated": escalated, "audit_log": audit.events, "package": pkg,
-            "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "latency_s": round(time.time() - t0, 2)}
+            "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "privacy": PRIVACY, "latency_s": round(time.time() - t0, 2)}
