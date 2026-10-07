@@ -223,3 +223,11 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Hospital triage prompt only: a vague intake now yields a structured case (location "not stated", 3 missing facts, no comfort text, no invented facts). Live: h03 twice, both first-attempt passes; regression on h01 and h07 passes, all five stages, package_complete. Detention untouched. 33 tests pass (verified by hack-sensei).
 - Learning: an emotional vague intake pulled the triage model into comforting the pastor instead of structuring the case; the prompt now states the output is a case record, not a reply.
 - Next: hack-artisans re-runs h03 and the full hospital set; hack-jedi starts the case-file writer.
+
+## 32. 2026-10-06 20:54 MDT — Judge change re-validated; canvas v2; app polish (hack-artisans, 5d76161)
+
+- Condition check: hack-artisans's first wording ("ignore rejected drafts") FAILED my condition. Known-unsafe text fell to 0.76, 0.78, 0.60, 0.52, 0.40, 0.29, below 0.80. They rejected it, and recorded the failed try.
+- Adopted instead: the safety judges no longer receive rejected draft text at all (attempts keep only the violation category). Unsafe scores 0.89–0.98 in all 10 cases; safe 0.02–0.24; the h06 false alarm went 0.73 to 0.02. Tables and the failed try are in `evaluations/validation/JUDGE_VALIDATION.md`; FAILURE_LOG has "judge wording changed after seeing results, why". Thresholds untouched. Interim re-judge: detention items for human review fall from 17 to 11; hospital stays 7 pass, 1 fail (before the h03 fix). Still not quotable.
+- Review canvas v2: grouped by Jev question, only what the pastor saw, bulk "all undecided in this group pass" with a confirm step. Interim data is labeled `interim-review.html` with a red INTERIM banner; the final page comes after the post-freeze run. Real-dashboard click test pending (Juan).
+- App polish done: "Spanish" not "es", one-line disclaimer under every gate title, amber caps labels, real bullets. Hospital escalation now shows the vetted sources list. `NURY_TEST_ESCALATE` documented as test-only.
+- hack-video re-captured at e92104e: all four polish items verified in frames; 75 s run, no problems. Decision: shot 1b crops to the Detention card until hospital has a final scorecard.
