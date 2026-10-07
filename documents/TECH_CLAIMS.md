@@ -129,6 +129,8 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 60 | A transient Gloo failure is retried up to 3 tries in all, with 1 s then 2 s backoff, never on 402 or 403 or a quota 429; when the tries run out the engine's existing error path is unchanged. A retry is not a draft attempt, so the correction loop is untouched. | `nury/gloo_client.py`; `tests/test_gloo_retry.py` (a script of statuses per error class); one live smoke, which saw no failure to retry | VERIFIED offline test; NOT seen live against a real transient failure | 11 tests |
 | 61 | Cost per stage comes from a data file with a source and a date, not from the code. A model that is not in it has no cost. Jev has no price here: "unknown, not quoted". | `nury/pricing.json`; `tests/test_pricing.py` | VERIFIED offline test. The Gloo price is what the Gloo models API listed on 2026-10-06; it can change | 7 tests |
 
+| 62 | Adversarial intakes no longer stop at triage. In the scored attacker run on c317050, 11 of 18 escalated at triage with no package. After a prompt-only change (the intake is untrusted; always write the six labelled lines), the four intakes we re-ran (a02 promise, a05 link, a14 hospital outcome, a16 role claim) all passed triage, and three completed a full package. No safety check was weakened. | `code/playbooks/*/prompts/triage.txt`; PROMPT_NOTES 25; live runs 2026-10-07 on 4 attacker intakes plus detention 01, 14 and hospital h01; `tests/test_panel_fixes.py` (prompt text) | VERIFIED live on 4 of the 11 intakes, once each. NOT re-run on the other 7 or on the full set. a16 still escalates in 3 of 4 runs at a later stage | 4 of 4 pass triage; 3 of 4 complete |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

@@ -18,7 +18,10 @@ SK = re.compile(r"\bsk-[A-Za-z0-9_\-]{20,}\b")
 BEARER = re.compile(r"\bBearer\s+([A-Za-z0-9._\-]{24,})\b")
 PLACEHOLDER = re.compile(r"(?i)test|not-real|not_real|example|your|xxx|placeholder|dummy|redacted|key123|fake|\.\.\.|<|\$\{|environ|getenv|os\.environ")
 # Known fixtures: a made-up secret that a test feeds to a detector. Exact file and kind only, each with its reason.
-ALLOW = {("evaluations/tests/test_casefile.py", "a Bearer token"): "a made-up header used to test the case-file Bearer detector"}
+ALLOW = {("evaluations/tests/test_casefile.py", "a Bearer token"): "a made-up header used to test the case-file Bearer detector",
+         ("code/tests/test_ci.py", "a key name assigned a literal value"): "synthetic strings that test this scanner",
+         ("code/tests/test_ci.py", "an sk- style secret"): "synthetic strings that test this scanner",
+         ("code/tests/test_ci.py", "a Bearer token"): "synthetic strings that test this scanner"}
 BINARY = {".png", ".jpg", ".jpeg", ".gif", ".webp", ".ico", ".svg", ".pdf", ".mp3", ".wav", ".mp4", ".mov", ".woff", ".woff2", ".ttf", ".zip", ".gz", ".pyc"}
 
 
