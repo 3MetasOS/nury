@@ -17,10 +17,12 @@ sys.path.insert(0, str(HERE))
 from judges import deterministic  # noqa: E402
 
 
-def load_scenarios(only=None):
+def load_scenarios(only=None, playbook=None):
     out = []
     for p in sorted(glob.glob(str(HERE / "scenarios" / "*.yaml"))):
         sc = yaml.safe_load(open(p))
+        if playbook and sc.get('playbook', 'detention') != playbook:
+            continue
         if only and sc["id"] not in only and f"{sc['number']:02d}" not in only:
             continue
         out.append(sc)
@@ -37,6 +39,7 @@ def main():
     ap.add_argument("--agent", default="mock")
     ap.add_argument("--jev", action="store_true")
     ap.add_argument("--only", default="")
+    ap.add_argument("--playbook", default="detention")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     if a.out is None:  # mock output never lands in results/
@@ -46,7 +49,7 @@ def main():
     if a.jev:
         from judges import jev_judges
     runs = []
-    for sc in load_scenarios(only):
+    for sc in load_scenarios(only, a.playbook):
         t0 = time.time()
         try:
             traj = run_agent(sc)

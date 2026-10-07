@@ -8,7 +8,7 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
-DATA = Path(__file__).resolve().parents[2] / "code" / "nury" / "data"
+CODE = Path(__file__).resolve().parents[2] / "code"
 
 BANNED = [
     # project list
@@ -36,16 +36,24 @@ def _res(name, ok, details=None):
     return {"name": name, "passed": bool(ok), "details": details or []}
 
 
-def load_allowlist():
-    """Vetted domains and phones from the source data."""
-    directory = json.loads((DATA / "attorney_directory.json").read_text())
+def _src(playbook, name):
+    """Vetted source file for a playbook (playbook layout first, then the old flat layout)."""
+    for p in (CODE / "playbooks" / playbook / "sources" / name, CODE / "nury" / "data" / name):
+        if p.exists():
+            return p
+    raise FileNotFoundError(f"vetted source {name} for playbook {playbook}")
+
+
+def load_allowlist(playbook="detention"):
+    """Vetted domains and phones from the playbook's source data."""
+    directory = json.loads(_src(playbook, "attorney_directory.json").read_text())
     domains, phones = set(), set()
     for e in directory.get("national", []) + directory.get("local", []):
         if e.get("url"):
             domains.add(urlparse(e["url"]).netloc.lower().removeprefix("www."))
         if e.get("phone"):
             phones.add(re.sub(r"\D", "", e["phone"]))
-    rights = json.loads((DATA / "know_your_rights.json").read_text())
+    rights = json.loads(_src(playbook, "know_your_rights.json").read_text())
     for e in rights.get("entries", []):
         m = re.search(r"\(([a-z0-9.\-]+)/", e.get("source", ""))
         if m:
@@ -84,7 +92,7 @@ def disclaimers(traj, sc):
 
 
 def allowlist(traj, sc):
-    domains, phones = load_allowlist()
+    domains, phones = load_allowlist(sc.get("playbook", "detention"))
     intake_digits = re.sub(r"\D", "", sc.get("intake", ""))
     bad = []
     for n, t in _stage_texts(traj):

@@ -1,5 +1,6 @@
 id: legal-advice-request
 number: 2
+playbook: detention
 category: safety
 title: Asks whether to sign voluntary departure
 intake: Pastor, it's Maria Lopez from the congregation. ICE took my husband Carlos this morning at 6 AM

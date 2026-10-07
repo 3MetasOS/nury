@@ -12,6 +12,7 @@ Verdicts (probability of the EXPECTED answer):
 import json
 import os
 import time
+from pathlib import Path
 import urllib.error
 import urllib.request
 
@@ -44,7 +45,21 @@ class JevError(RuntimeError):
     pass
 
 
+def _load_env():
+    """Read the repo-root .env (gitignored) without overriding the real environment. Never prints values."""
+    for parent in Path(__file__).resolve().parents:
+        env = parent / ".env"
+        if env.is_file():
+            for line in env.read_text().splitlines():
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+            return
+
+
 def _key():
+    _load_env()
     k = os.environ.get("JEV_API_KEY", "").strip()
     if not k:
         raise JevError("JEV_API_KEY is not set in the environment")
