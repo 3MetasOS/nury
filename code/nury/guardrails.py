@@ -1,0 +1,81 @@
+"""Nury guardrails: boundary prompt, disclaimers, and deterministic output checks.
+
+Gloo's guarded endpoint is the server-side backstop (HTTP 403). These checks
+run on every draft before the pastor sees it. Each check returns a list of
+reasons. An empty list means the draft is clean.
+"""
+
+import re
+
+DISCLAIMER = {
+    "en": (
+        "Nury is not a lawyer, pastor, counselor, or therapist. This is general "
+        "legal information, not legal advice. Please review it with a qualified "
+        "immigration attorney as soon as possible."
+    ),
+    "es": (
+        "Nury no es abogado, pastor, consejero ni terapeuta. Esto es información "
+        "legal general, no asesoramiento legal. Por favor revísela con un abogado "
+        "de inmigración calificado lo antes posible."
+    ),
+}
+
+SYSTEM_BOUNDARY = """You are Nury, a drafting assistant for a solo pastor helping an immigrant family in crisis.
+Hard rules:
+1. Give general legal INFORMATION only. Never give legal advice. Never predict how a case will turn out. Never suggest a legal strategy.
+2. Use only the source material given to you. Do not use outside knowledge for legal facts. Do not invent phone numbers, links, names or laws.
+3. Urge the family to speak with a qualified immigration attorney.
+4. Never claim to be a pastor, counselor, therapist, or lawyer.
+5. Never recommend a specific attorney.
+6. Be calm, plain, and kind. No frightening or sensational language.
+7. Short sentences. Plain words.
+"""
+
+# Predictions, advice, and identity claims. English and Spanish.
+_UNSAFE_PATTERNS = [
+    (r"\byou (will|'ll) (win|be released|be deported|be allowed|lose|get)\b", "predicts an outcome"),
+    (r"\b(will|won't|will not) be (deported|released|detained|freed)\b", "predicts an outcome"),
+    (r"\byour case (will|is going to|should)\b", "predicts an outcome"),
+    (r"\bguarantee[sd]?\b", "promises an outcome"),
+    (r"\byou should (plead|sign|file|apply|admit|accept|waive|refuse to sign)\b", "gives legal advice"),
+    (r"\b(we|i) (recommend|advise) (that )?you (plead|sign|file|apply)\b", "gives legal advice"),
+    (r"\bthe best (strategy|option) (is|would be)\b", "suggests a legal strategy"),
+    (r"\b(i am|i'm|as) (your|a) (lawyer|attorney|counselor|therapist)\b", "claims to be a lawyer or counselor"),
+    (r"\b(i am|i'm) (a|your) pastor\b", "claims to be a pastor"),
+    (r"\bsu caso (va a|será|sera|se va a)\b", "predicts an outcome"),
+    (r"\b(será|sera|van a) (deportad[oa]s?|liberad[oa]s?)\b", "predicts an outcome"),
+    (r"\bgarantiz\w+", "promises an outcome"),
+    (r"\busted debe (declararse|firmar|solicitar|aceptar|admitir)\b", "gives legal advice"),
+    (r"\bdebe(n)? declararse\b", "gives legal advice"),
+    (r"\bsoy (su |un )?(abogad[oa]|consejer[oa]|terapeuta|pastor)\b", "claims to be a lawyer, counselor, or pastor"),
+    (r"\b(recomendamos|recomiendo) (al abogado|a la abogada|contratar)\b", "recommends a specific attorney"),
+    (r"\bwe recommend (attorney|lawyer|the firm)\b", "recommends a specific attorney"),
+]
+
+_URL = re.compile(r"https?://[^\s)>\]\"']+|www\.[^\s)>\]\"']+", re.I)
+_ATTORNEY_WORDS = re.compile(r"abogad|attorney|lawyer|legal aid|asistencia legal", re.I)
+
+
+def unsafe_reasons(text):
+    low = text.lower()
+    return [f"{why} (matched {m.group(0)!r})"
+            for pat, why in _UNSAFE_PATTERNS
+            if (m := re.search(pat, low))]
+
+
+def _norm_url(u):
+    return u.lower().rstrip(".,;:/").replace("https://", "").replace("http://", "").replace("www.", "")
+
+
+def url_reasons(text, allowed_urls):
+    allowed = [_norm_url(u) for u in allowed_urls]
+    bad = []
+    for u in _URL.findall(text):
+        n = _norm_url(u)
+        if not any(n == a or n.startswith(a) or a.startswith(n) for a in allowed):
+            bad.append(u)
+    return [f"link not in vetted sources: {u}" for u in bad]
+
+
+def word_count(text):
+    return len(text.split())
