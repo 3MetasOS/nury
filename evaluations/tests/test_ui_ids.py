@@ -172,3 +172,10 @@ def test_how_it_was_built_has_no_computer_or_device_wording():
     """The documentation may say 'a local .env file' (a file name). It may not say where the pastor's data sits."""
     s = re.sub(r"<style>.*?</style>", "", (STATIC / "how-it-was-built.html").read_text(encoding="utf-8"), flags=re.S)
     assert not re.search(r"this computer|your computer|local computer|your device|this device|on-?device|stays? on (this|your)", s, re.I)
+
+
+def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
+    s = (STATIC / "index.html").read_text(encoding="utf-8")
+    assert "14 named checks" not in s, "the count is read from the registry (/api/features named_checks)"
+    assert "a red team, human review" not in s
+    assert "Jev checks every draft; typed judges and a red team test it before release" in s and 'id="built-checks"' in s

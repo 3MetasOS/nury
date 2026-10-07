@@ -474,7 +474,12 @@ class H(BaseHTTPRequestHandler):
                 chips = [{"slug": c, "label": _f.CHIP_LABELS[c]} for c in _f.CHIPS] if fb else []
             except Exception:
                 pass
-            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up"),
+            try:
+                from nury import checks as _checks
+                n_checks = len(_checks.REGISTRY)
+            except Exception:
+                n_checks = None
+            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up"), "named_checks": n_checks,
                         "feedback": fb, "consent_sentence": sentence if fb else "", "chips": chips})
         elif p == "/":
             b = (STATIC / "index.html").read_bytes()

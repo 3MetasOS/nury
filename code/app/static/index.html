@@ -321,8 +321,8 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <li>Gloo AI Studio, guarded endpoint</li>
         <li>Claude Sonnet 4.6</li>
         <li>Tokens, not names, reach the model</li>
-        <li>14 named checks, 3 tries</li>
-        <li>Jev typed judges, a red team, human review</li>
+        <li id="built-checks">Named checks, 3 tries</li>
+        <li>Jev checks every draft; typed judges and a red team test it before release</li>
       </ul>
       <a class="linkbtn" href="/how-it-was-built" id="home-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="/icons.svg#i-build"/></svg>How this was built</a>
     </section>
@@ -588,6 +588,7 @@ function renderHome(){const fam=families(),n=fam.length;
   $("home").classList.toggle("has-cases",n>0);
   $("h-home").textContent=n?"Welcome back.":"Nury is ready.";
   $("hero-sub").textContent=n?"Pick up a case, or respond to a new one. Nury drafts. You decide.":"When a family calls, respond here. Nury drafts. You decide. Nury never sends anything.";
+  $("built-checks").textContent=(FEATURES.named_checks?FEATURES.named_checks+" named checks":"Named checks")+", 3 tries";   // the count is read from the registry, never typed here
   $("cont-list").replaceChildren(...fam.slice(0,3).map(mkCase));
   $("first-run").hidden=n>0;$("see-all").hidden=n===0;$("cont-list").hidden=n===0;
   $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
