@@ -903,3 +903,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 08:49: Juan asked if the build log is updated: BUILD_LOG.md is current (latest entry 08:49, 146 headings); the in-app Build log page is a generated copy and was behind; rebuild plus automatic regeneration at server start ordered. Note: times quoted in chat messages today drifted from the real clock; the log entries use the real clock.
 - 09:11: glow locked (Juan).
 - 09:13: GitHub pushes fail with an Internal Server Error on any branch (SSH and HTTPS; fetch works; status page green). Commits stay local; retry later; a mirror repository is the fallback if it lasts until noon (Juan: keep working, it will fix itself).
+- 09:25: case detail page LOCKED (Juan), with the Export/Print menu and PDFs.
