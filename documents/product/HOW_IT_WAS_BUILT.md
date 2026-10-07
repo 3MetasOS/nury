@@ -651,6 +651,22 @@ After the pastor approves a package, one tap saves it as a **case**: linked page
 - **Needs follow-up.** A flag on a saved case, with no reminder and no date. The server route is built (BUILT, offline); the button in the app is IN PROGRESS.
 - **Not built:** a case update loop where Nury proposes page edits (PLANNED), a possible-paths map (PLANNED), a printable PDF (NOT BUILT).
 
+<a id="scripture"></a>
+
+### Scripture: where the verses come from
+
+The model never writes a verse. It picks an id from a verified list, and the engine inserts the exact text.
+
+- **The list.** Twelve verses that Juan approved, each with its reference. The text comes from one of two places. The first is a bank of public-domain texts we checked: Reina-Valera 1909 (Spanish) and the World English Bible (English). The second is YouVersion, when the app holds a YouVersion key: the Berean Standard Bible in English (version id 3034) and the Biblia Libre Versión Bíblica in Spanish (version id 3291).
+- **What shows.** The version name and its copyright are shown with every verse, as YouVersion's rules require.
+- **What leaves the app.** Only a passage id and a version id go to YouVersion. No name and no case text ever does.
+- **Checks.** A verbatim check (`verse_block_verbatim`) confirms the verse in the draft is exactly the text we inserted. A word cap applies: a verse over the cap is treated as unavailable. Psalm titles and verse numbers are removed under a fixed rule, and any markup we do not recognize counts as unavailable.
+- **If YouVersion is unavailable** (no key, an error, or a verse over the cap), the verified bank is used, and the audit log records which source was used.
+- **In the scored runs.** On the final build `9bc5c6d`, 44 of the 45 verses in the detention, hospital, hostile-intake and network runs came from YouVersion. One (Psalm 23:4, hostile intake a12) came from the bank. The audit event does not record why. On the earlier build `c317050`, all 31 verses in its scored runs came from YouVersion with no fallback.
+- **Limits.** Counts are from audit files of synthetic runs. No pastor has said whether a verse fits a message. Nury caches nothing from YouVersion, and a 429 or any error means "unavailable".
+
+Code: `code/nury/scripture.py`, `code/nury/scripture_providers.py`.
+
 ## 9. From hackathon to real product
 
 Nury today is a working demo on two crises, tested on synthetic families. The table says what stands between it and a church using it on real families. Nothing in it exists yet unless the status says so.
