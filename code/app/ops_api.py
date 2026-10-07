@@ -1,4 +1,4 @@
-"""GET /api/ops: read-only totals from the run ledger. No text, no names, no case ids.
+"""GET /api/ops: read-only view of the run ledger, in the shape the ops page renders. No text, no names, no case ids.
 
 Separate from server.py. To mount it, server.py needs these lines:
 
@@ -37,4 +37,4 @@ def handle(method, path):
             since = v
         else:
             return _out(400, {"error": "since must be seconds or an ISO UTC time"})
-    return _out(200, ledger.summarize(since))
+    return _out(200, ledger.ops_view(since))

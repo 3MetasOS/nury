@@ -81,15 +81,16 @@ def stage_line(run_id, playbook, language, rec, events, duration_ms=None):
     for e in events:
         if e.get("kind") == "jev_gate" and e.get("stage") == rec.stage_id and e.get("question") not in (None, "*"):
             q = _slug(e["question"], "question")
-            d = jev.setdefault(q, {"decisions": {}, "max_probability": 0.0, "last_probability": None})
+            d = jev.setdefault(q, {"decisions": {}, "max_probability": 0.0, "last_probability": None, "probs": []})
             dec = _slug(e["decision"], "decision")
             d["decisions"][dec] = d["decisions"].get(dec, 0) + 1
             p = _num(e.get("probability"), "probability")
             if p is not None:
+                d["probs"].append(round(p, 3))
                 d["max_probability"] = max(d["max_probability"], p)
                 d["last_probability"] = p
         if e.get("kind") == "jev_gate" and e.get("stage") == rec.stage_id and e.get("decision") in ("unavailable", "skipped"):
-            jev.setdefault("*", {"decisions": {}, "max_probability": 0.0, "last_probability": None})["decisions"][e["decision"]] = 1
+            jev.setdefault("*", {"decisions": {}, "max_probability": 0.0, "last_probability": None, "probs": []})["decisions"][e["decision"]] = 1
     provider = next((e.get("provider") for e in events if e.get("kind") == "scripture" and e.get("stage") == rec.stage_id), None)
     skills = sorted({_slug(s["name"], "skill") + "@" + _slug(str(s["version"]), "skill version").replace("@", "") for s in (m.get("skills") or [])})
     return {
@@ -279,4 +280,59 @@ def summarize(since=None, root=None):
         "rejections_by_category": dict(sorted(cats.items())),
         "jev_by_question": dict(sorted(jev.items())),
         "scripture_provider_mix": prov,
+    }
+
+
+_OUTCOME = {"package_complete": "complete", "escalated": "escalated", "stopped_by_pastor": "stopped", "blocked": "error"}
+
+
+def ops_view(since=None, root=None, limit=50):
+    """The shape the ops page renders (agreed with the app): numbers and short enums only."""
+    rows = _read(root, since)
+    runs = [r for r in rows if r["type"] == "run"]
+    stages = [r for r in rows if r["type"] == "stage"]
+    pk = sorted((r for r in runs if r["outcome"] == "package_complete"), key=lambda r: r["ts"])
+    costs = [r["cost_usd"] for r in pk if r.get("cost_usd") is not None]
+    lats = [(r.get("latency_s") or 0) + (r.get("jev_ms") or 0) / 1000 for r in pk]
+    written = sum(s["attempts"] for s in stages)
+    accepted = sum(1 for s in stages if s["status"] in ("approved", "edited", "stopped"))
+    rejected = max(0, written - accepted)
+    lat = {}
+    for s in stages:
+        lat.setdefault(s["stage"], []).append((s.get("latency_s") or 0) + (s.get("jev_ms") or 0) / 1000)
+    cats = {}
+    for s in stages:
+        for c, n in s["rule_categories"].items():
+            cats[c] = cats.get(c, 0) + n
+    jev = {}
+    for s in stages:
+        for q, d in s["jev"].items():
+            j = jev.setdefault(q, {"pass": 0, "uncertain": 0, "reject": 0, "unavailable": 0, "probs": []})
+            for dec, n in d["decisions"].items():
+                if dec in j:
+                    j[dec] += n
+            j["probs"].extend(d.get("probs") or [])
+    mix = {"youversion": 0, "bank": 0, "none": 0}
+    for s in stages:
+        if s["stage"] == "pastoral" and s["status"] in ("approved", "edited", "stopped"):
+            mix[s["scripture_provider"] if s.get("scripture_provider") in mix else "none"] += 1
+    return {
+        "source": "ledger", "generated": _now(),
+        "headline": {
+            "packages": len(pk),
+            "cost_avg": round(sum(costs) / len(costs), 4) if costs else None,
+            "cost_p95": _pct(costs, 95),
+            "latency_p50_s": _pct(lats, 50), "latency_p95_s": _pct(lats, 95),
+            "escalation_rate": round(sum(1 for r in runs if r["outcome"] == "escalated") / len(runs), 4) if runs else None,
+            "rejection_rate": round(rejected / written, 4) if written else None,
+        },
+        "latency_by_stage": [{"stage": k, "p50": _pct(v, 50), "p95": _pct(v, 95), "n": len(v)} for k, v in sorted(lat.items())],
+        "cost_series": [{"t": r["ts"], "cost": r["cost_usd"]} for r in pk if r.get("cost_usd") is not None],
+        "rejections_by_category": dict(sorted(cats.items())),
+        "jev_by_question": dict(sorted(jev.items())),
+        "provider_mix": mix,
+        "runs": [{"t": r["ts"], "crisis": r["playbook"], "stages": r["stages"], "attempts": r["attempts"], "cost": r.get("cost_usd"),
+                  "latency_s": round((r.get("latency_s") or 0) + (r.get("jev_ms") or 0) / 1000, 3),
+                  "outcome": _OUTCOME.get(r["outcome"], "error")}
+                 for r in sorted(runs, key=lambda r: r["ts"], reverse=True)[:limit]],
     }

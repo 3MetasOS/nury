@@ -59,7 +59,7 @@ class Lines(Base):
         s, run = self.lines()
         self.assertEqual((s["type"], s["playbook"], s["stage"], s["language"], s["attempts"], s["escalated"]), ("stage", "detention", "triage", "es", 3, False))
         self.assertEqual(s["rule_categories"], {"banned_phrase": 2, "jev_assumes_facts": 1})
-        self.assertEqual(s["jev"]["assumes_facts"], {"decisions": {"uncertain": 1}, "max_probability": 0.33, "last_probability": 0.33})
+        self.assertEqual(s["jev"]["assumes_facts"], {"decisions": {"uncertain": 1}, "max_probability": 0.33, "last_probability": 0.33, "probs": [0.33]})
         self.assertEqual((s["tokens_in"], s["tokens_out"], s["cost_usd"], s["latency_s"], s["jev_ms"], s["duration_ms"]), (1000, 200, 0.01, 4.0, 150, 5200))
         self.assertEqual((s["skills"], s["scripture_provider"]), (["voice@1.0.0"], "youversion"))
         self.assertTrue(s["ts"].endswith("+00:00"))
@@ -74,7 +74,7 @@ class Lines(Base):
     def test_unavailable_and_skipped_jev_decisions_are_counted(self):
         r = ledger.Recorder("detention", "es", self.root)
         r.stage_done(rec(), [{"kind": "jev_gate", "stage": "triage", "attempt": 1, "question": "*", "probability": None, "decision": "unavailable", "reason": "Timeout: slow"}])
-        self.assertEqual(self.lines()[0]["jev"], {"*": {"decisions": {"unavailable": 1}, "max_probability": 0.0, "last_probability": None}})
+        self.assertEqual(self.lines()[0]["jev"], {"*": {"decisions": {"unavailable": 1}, "max_probability": 0.0, "last_probability": None, "probs": []}})
 
     def test_a_string_that_is_not_a_slug_stops_the_write_and_nothing_is_written(self):
         r = ledger.Recorder("detention", "es", self.root)
@@ -142,7 +142,7 @@ class Summary(Base):
             r = ledger.Recorder("detention", "es", self.root)
             ev = [jev("triage", "assumes_facts", 0.2 + 0.2 * i, "pass" if i == 0 else "uncertain" if i == 1 else "reject"),
                   {"kind": "scripture", "stage": "pastoral", "verse": "x", "provider": "youversion" if i < 2 else "bank"}]
-            r.stage_done(rec("triage", attempts=att, cats=["banned_phrase"] * (att - 1), latency_s=2.0 + i, cost_usd=0.02, escalated=outcome == "escalated"), ev)
+            r.stage_done(rec("triage", status="escalated" if outcome == "escalated" else "approved", attempts=att, cats=["banned_phrase"] * (att - 1), latency_s=2.0 + i, cost_usd=0.02, escalated=outcome == "escalated"), ev)
             r.stage_done(rec("pastoral", latency_s=5.0, cost_usd=0.03), ev)
             r.finish({"outcome": outcome, "failed_stage": "triage" if outcome == "escalated" else None})
 
@@ -173,6 +173,35 @@ class Summary(Base):
         self.assertEqual((s["runs"], s["cost_per_package_usd"], s["escalation_rate_runs"]), (0, None, None))
 
 
+class View(Base):
+    def test_the_ops_view_has_exactly_the_agreed_shape_and_numbers(self):
+        Summary.seed(self)
+        v = ledger.ops_view(root=self.root)
+        self.assertEqual(sorted(v), ["cost_series", "generated", "headline", "jev_by_question", "latency_by_stage", "provider_mix",
+                                     "rejections_by_category", "runs", "source"])
+        self.assertEqual(sorted(v["headline"]), ["cost_avg", "cost_p95", "escalation_rate", "latency_p50_s", "latency_p95_s", "packages", "rejection_rate"])
+        h = v["headline"]
+        self.assertEqual((h["packages"], h["cost_avg"], h["cost_p95"], h["escalation_rate"]), (2, 0.05, 0.05, round(1 / 3, 4)))
+        # six stages wrote 1 + 2 + 3 + 3 = 9 drafts... attempts: triage 1,2,3 and pastoral 1,1,1 = 9 written; accepted 5 (the escalated one has none)
+        self.assertEqual(h["rejection_rate"], round(4 / 9, 4))
+        self.assertEqual(v["rejections_by_category"], {"banned_phrase": 3})
+        self.assertEqual(v["jev_by_question"]["assumes_facts"]["reject"], 1)
+        self.assertEqual(len(v["jev_by_question"]["assumes_facts"]["probs"]), 3)
+        self.assertEqual(v["provider_mix"], {"youversion": 2, "bank": 1, "none": 0})
+        self.assertEqual([x["outcome"] for x in v["runs"]], ["escalated", "complete", "complete"])
+        self.assertEqual(sorted(v["runs"][0]), ["attempts", "cost", "crisis", "latency_s", "outcome", "stages", "t"])
+        self.assertEqual(len(v["cost_series"]), 2)
+        self.assertLessEqual(v["cost_series"][0]["t"], v["cost_series"][1]["t"])
+        self.assertEqual(sorted(v["latency_by_stage"][0]), ["n", "p50", "p95", "stage"])
+
+    def test_the_view_holds_no_text_and_an_empty_ledger_is_fine(self):
+        Summary.seed(self)
+        blob = json.dumps(ledger.ops_view(root=self.root))
+        self.assertNotRegex(blob, r"[A-Z][a-z]+ [a-z]+ [a-z]+")
+        e = ledger.ops_view(root=self.root + "/none")
+        self.assertEqual((e["headline"]["packages"], e["headline"]["cost_avg"], e["runs"]), (0, None, []))
+
+
 class OpsApi(Base):
     def test_get_returns_the_summary_and_nothing_else_is_allowed(self):
         os.environ["NURY_LEDGER_DIR"] = self.root
@@ -180,7 +209,8 @@ class OpsApi(Base):
             Summary.seed(self)
             status, ctype, body = ops_api.handle("GET", "/api/ops?since=3600")
             self.assertEqual((status, ctype.split(";")[0]), (200, "application/json"))
-            self.assertEqual(json.loads(body)["runs"], 3)
+            v = json.loads(body)
+            self.assertEqual((v["source"], v["headline"]["packages"], len(v["runs"])), ("ledger", 2, 3))
             for m in ("POST", "PUT", "DELETE"):
                 self.assertEqual(ops_api.handle(m, "/api/ops")[0], 405)
             self.assertEqual(ops_api.handle("GET", "/api/ops?since=yesterday")[0], 400)
