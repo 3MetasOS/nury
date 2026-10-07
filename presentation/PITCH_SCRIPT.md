@@ -1,40 +1,40 @@
 # Nury: 3-minute pitch script (deck v2, with the technical story)
 
-Speaker: Juan Peláez (3Metas). Target 2:55 at most with the memorial, at a calm pace. Slides are named in the deck footer. Press `n` for notes, `g` for the slide index, `G` to show gated items, `b` for backup, `f` for clean mode.
+Speaker: Juan Peláez (3Metas). Target 2:55 at most (now 2:45), at a calm pace. Slides are named in the deck footer. Press `n` for notes, `g` for the slide index, `G` to show gated items, `b` for backup, `f` for clean mode.
 Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
 `[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
 Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
 Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from `documents/TECH_CLAIMS.md`, VERIFIED rows only.
 
-## Timing table (13 talk slides at 2.5 words a second; the arc is night, lantern, light, dawn)
-Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, What we built, Close, Memorial). Total 2:55 with the memorial (the limit), 2:39 without. Limit 2:55.
+## Timing table (12 talk slides at 2.5 words a second; the arc is night, lantern, light, dawn)
+Juan chose version B on 2026-10-07: no separate memorial slide. The Close carries two lines, "In memory of Tía Nury" and "08-2026", and Juan stays silent on them. Total 2:45, limit 2:55. The demo slot grew from 38 s to 44 s; 10 s of the freed time stay unused as margin.
 | # | Slide (title in the deck) | Act | Time | Length |
 |---|---|---|---|---|
 | 1 | The call | Night | 0:00 to 0:11 | 11 s |
 | 2 | The name | Lantern | 0:11 to 0:17 | 6 s |
 | 3 | One engine | Light | 0:17 to 0:29 | 12 s |
-| 4 | The demo (Eric's film) | Light | 0:29 to 1:07 | 38 s |
-| 5 | What the family gets | Light | 1:07 to 1:15 | 8 s |
-| 6 | Built to grow | Light | 1:15 to 1:25 | 10 s |
-| 7 | How it is built | Light | 1:25 to 1:39 | 14 s |
-| 8 | Use of AI | Light | 1:39 to 1:53 | 14 s |
-| 9 | The evaluation system | Light | 1:53 to 2:09 | 16 s |
-| 10 | Impact | Light | 2:09 to 2:22 | 13 s |
-| 11 | What we built | Light | 2:22 to 2:34 | 12 s |
-| 12 | Close | Dawn | 2:34 to 2:39 | 5 s |
-| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:39 to 2:55 | 16 s |
+| 4 | The demo (Eric's film) | Light | 0:29 to 1:13 | 44 s |
+| 5 | What the family gets | Light | 1:13 to 1:21 | 8 s |
+| 6 | Built to grow | Light | 1:21 to 1:31 | 10 s |
+| 7 | How it is built | Light | 1:31 to 1:45 | 14 s |
+| 8 | Use of AI | Light | 1:45 to 1:59 | 14 s |
+| 9 | The evaluation system | Light | 1:59 to 2:15 | 16 s |
+| 10 | Impact | Light | 2:15 to 2:28 | 13 s |
+| 11 | What we built | Light | 2:28 to 2:40 | 12 s |
+| 12 | Close (dawn, with the two memory lines) | Dawn | 2:40 to 2:45 | 5 s |
 
 ## 1. The call (night)  [90s]
 The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." (29 words, 11 s)
 
 ## 2. The name (lantern)  [90s]
-The slide turns from paper to light. "This is Nury." Pause. The entry builds itself in about 2 seconds. Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
+The slide turns from paper to light. "This is Nury." Pause. The entry builds itself in about 2 seconds. Then "see also: lantern" appears on its own. Do not say her name here. The Close carries "In memory of Tía Nury" silently.
 
 ## 3. One engine (label in the deck: "03 · The product")
 "Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." (29 words, 12 s)
 Say nothing more about the coming-soon cards.
 
-## 4. The demo  [90s]
+## 4. The demo  [90s]  (44 s slot)
+Timing: "Here is one call, start to finish." (0 to 2.8 s). A short breath. The film starts at about 3.5 s and runs 27 s (to about 30.5 s). The slide shows "How this case went" ticking. "A draft that failed was held back. Nury never sends. The pastor does." (31.5 to 36.7 s). Hold the slide to 44 s so the room can read the five approved stages.
 Eric's film plays and Juan stays silent while it plays (rows 5 to 7, about 27 s). No wifi, no credit, same voice. Do not run the live app on stage.
 - Before (3 s): "Here is one call, start to finish."
 - The film plays. Juan says nothing.
@@ -69,22 +69,15 @@ One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the
 ## 12. Close (dawn)  [90s]
 "The next call will come. Nury is there when the pastor picks up." (5 s) A small note on the slide: "In memory of Tía Nury, 08-2026." Juan says nothing about the note (he may, or not). The About pill is gone.
 
-## 13. Memorial (dawn)  [90s]  [ONLY AFTER JUAN APPROVES THE TEXT IN WRITING]
-Option 1 of `MEMORIAL.md`, Juan's words, verbatim (about 16 s). The words are on the slide; Juan chooses whether anyone reads them. The slide is hidden until approval (press `G` to preview). Do not edit, shorten or humanize the text. Do not add a photo unless Juan provides one.
-
-## Memorial: two versions of the timing (Juan chooses)
-With the note on the close, the separate memorial slide is optional. What it adds: the words that say who Nury is named for and why (Juan's Option 1). What the note alone gives: a quiet tribute, with no explanation. Without the slide, the name's story goes unsaid on stage.
-| Version | Slides | Total | Close ends | Notes |
-|---|---|---|---|---|
-| A. With the memorial slide | 13 | 2:55 (the limit) | 2:39, memorial 2:39 to 2:55 | The slide is gated: needs Juan's written approval. Read aloud in full it is about 17 s, so 2:56. |
-| B. Without it (note on the close only) | 12 | 2:39 | 2:39 | 16 s free. Give them back to the demo (38 s to 44 s) or leave a calm ending. The pitch then ends on "Nury is there when the pastor picks up." |
+## Memorial: decided (version B)
+No separate memorial slide. The Close carries two lines, "In memory of Tía Nury" and "08-2026". Juan stays silent on them and may say them or not. The long text (Option 1 in `MEMORIAL.md`) is not used on a slide. The ending: "Nury is there when the pastor picks up."
 
 ## 90-second cut
-Slides 1, 2, 4, 7, 12 and the memorial: about 11 + 10 + 34 + 14 + 5 + 16 = 90 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
+Slides 1, 2, 4, 7 and 12: about 11 + 6 + 34 + 14 + 5 = 70 s with the demo at its short length (3 s before, the 27 s film, a few seconds after); add slide 8 for 84 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
 
 ## Backup slides (do not speak; use for questions). Press `b`.
 What broke and what changed. Four evaluation layers, with what each cannot do. The evaluation system in detail. Privacy that is tested. Informed by case-management practice (not in the talk). Cases, export and PDF. Where Nury fits. Credits.
-Gated, hidden until Juan approves in writing: the memorial only.
+Nothing is gated now.
 For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, how we know the guardrails work, hallucinated links, personal information, and what Jev adds.
 
 ## Rules for the speaker

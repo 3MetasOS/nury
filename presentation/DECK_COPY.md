@@ -2,7 +2,7 @@
 
 Written 2026-10-07 by hack-ninja for hack-artisans (visual design) and hack-sensei. hack-artisans owns the look of `presentation/deck.html`. hack-ninja owns these words, `PITCH_SCRIPT.md`, `FINALIST_SCRIPT.md` and the claims check.
 
-Limits per slide: headline up to 8 words, one supporting line up to 15 words, up to three labels of 1 to 4 words, no paragraphs. Every number comes from `documents/product/ALIGNMENT_AUDIT.md`. Slide names are the URL anchors in the current deck. The talk has 13 slides, not 12: "The evaluation system" was added on sensei's order. The current deck (c57f421) has more text on some slides than this file allows. Cut to this file.
+Limits per slide: headline up to 8 words, one supporting line up to 15 words, up to three labels of 1 to 4 words, no paragraphs. Every number comes from `documents/product/ALIGNMENT_AUDIT.md`. Slide names are the URL anchors in the current deck. The talk has 12 slides: "The evaluation system" was added on sensei's order. The current deck (c57f421) has more text on some slides than this file allows. Cut to this file.
 
 Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-es-1280.png` is broken (2560x48): do not use it. Other images: `images/family-copy-p1.png`, `images/pastor-copy-p2.png` (real PDF pages), `images/app/export-menu.png`. Crops used now are in `images/app/`.
 
@@ -21,7 +21,7 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Line: A given name from Arabic nur, light. An AI Crisis Response Agent.
 - Labels: noun · /NOO-ree/ · see also: lantern
 - Spoken (6 s): "This is Nury." Entry builds in about 2.4 s. The tagline sits BELOW the logo.
-- Notes: Do not say her name here: it appears once, in the memorial. Sources in NAME_ENTRY.md.
+- Notes: Do not say her name here. The Close carries "In memory of Tía Nury" silently. Sources in NAME_ENTRY.md.
 - Screens: none.
 
 ### 3. one-engine
@@ -32,11 +32,11 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Notes: Stage names per crisis from `stages.json` (immigration: Triage, Rights brief, Attorney resources, Family checklist, Pastoral message; hospital: Triage, Family information brief, Hospital resources, Family checklist, Pastoral message). Both live ones have five; the engine allows any number. Do not say "the one you saw". Criterion: Concept and Product.
 - Screens: `03-chooser-1280.png` (optional thumbnail).
 
-### 4. the-demo
+### 4. the-demo (44 s slot)
 - Headline: One call. Start to finish.
 - Line: Nothing moves on without the pastor. Nothing is sent.
 - Labels: Pick the crisis · Read each stage · Approve, edit or stop
-- Spoken: before (3 s) "Here is one call, start to finish." Film plays (27 s), Juan silent. After (4 s) "A draft that failed was held back. Nury never sends. The pastor does."
+- Spoken: before (about 3 s) "Here is one call, start to finish." Film plays (27 s, from about 3.5 s), Juan silent. After (about 5 s, from about 31.5 s) "A draft that failed was held back. Nury never sends. The pastor does."
 - Notes: Eric's film plays; no live app on stage. If the film fails, show the screens and say the three lines. Real screens, made-up family.
 - Screens: `03-chooser-1280.png`, `04-intake-1280.png`, `05-gate-1280.png`, `07-case-overview-1280.png`.
 
@@ -107,18 +107,12 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 ### 12. close (dawn)
 - Headline: Nury. An AI Crisis Response Agent.
 - Line: The next call will come. Nury is there when the pastor picks up.
-- Labels: a small note, "In memory of Tía Nury, 08-2026" (no About pill; the close stays silent on the note, Juan may say it or not)
+- Labels: two small lines, "In memory of Tía Nury" and "08-2026" (no About pill; the close stays silent on them, Juan may say them or not)
 - Always on slide: Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice. Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.
 - Spoken (5 s): "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here.
 - Screens: none (lanterns photo).
 
-### 13. memorial (gated; hidden until Juan approves in writing)
-- Text, Juan's words, Option 1, VERBATIM, nobody edits, shortens or humanizes:
-  "Nury is named for my aunt, Nury Peláez. / She served her church for 83 years, in the small things and the big ones, / always with a smile, always with Jesus in her heart. / She passed away a month ago. This is for her."
-- Labels: none. Nothing else on screen. A hidden slot for one portrait if Juan sends one.
-- Spoken (16 s): Juan chooses whether anyone reads it.
-- Notes: Pending Juan's written approval. Do not show or publish as approved.
-- Screens: none.
+### (Memorial slide removed: Juan chose version B on 2026-10-07; the Close carries the two memory lines.)
 
 ## Backups (not spoken; press b)
 
@@ -140,7 +134,7 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Say "case", never "package". Say "pass, fail, waiting for a person"; judge results are not human verdicts; never quote a pass rate.
 - Tagline always below the logo. No team or product names of other entries.
 - No claim that a pastor, attorney or family has used Nury.
-- Keep verbatim: the Jev disclosure line, the memorial text, disclaimers.
+- Keep verbatim: the Jev disclosure line, the two memory lines ("In memory of Tía Nury", "08-2026"), disclaimers.
 - Keys never appear.
 
 ## Claims I could not verify
