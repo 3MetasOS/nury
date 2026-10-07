@@ -18,19 +18,18 @@ if MODEL == "gloo-anthropic-claude-sonnet-4.6":
     os.environ.setdefault("NURY_PRICE_OUT", "15.00")
 PRICES = {"model": MODEL, "usd_per_1m_in": os.environ.get("NURY_PRICE_IN"), "usd_per_1m_out": os.environ.get("NURY_PRICE_OUT")}
 
-from nury.engine import run_scripted  # noqa: E402  (after price defaults)
+from nury.engine import get_playbook, run_scripted  # noqa: E402  (after price defaults)
 
-STAGE_IDS = ["triage", "rights", "attorney", "checklist", "pastoral"]
 
 
 def _viol(v):
     return [x if isinstance(x, str) else f"{x.get('category')}: {x.get('reason')}" for x in (v or [])]
 
 
-def _decisions(actions):
+def _decisions(actions, ids):
     out = {}
     for k, act in actions.items():
-        sid = STAGE_IDS[int(k) - 1]
+        sid = ids[int(k) - 1]
         if isinstance(act, dict) and "edit" in act:
             out[sid] = ("edit", act["edit"])
         elif act in ("reject", "stop"):
@@ -42,15 +41,17 @@ def _decisions(actions):
 
 def run(sc):
     t0 = time.time()
+    pbid = sc.get("playbook", "detention")
+    ids = [st.id for st in get_playbook(pbid).stages]
     fi = sc.get("fault_injection")
     if fi:
-        fi = dict(fi, stage=STAGE_IDS[fi["stage"] - 1])
-    kw = {"playbook": sc["playbook"]} if sc.get("playbook") else {}
-    state, results, audit = run_scripted(sc["intake"], sc["output_language"], _decisions(sc["pastor_actions"]),
+        fi = dict(fi, stage=ids[fi["stage"] - 1])
+    kw = {"playbook": pbid}
+    state, results, audit = run_scripted(sc["intake"], sc["output_language"], _decisions(sc["pastor_actions"], ids),
                                          fault_injection=fi, **kw)
     stages, halted, halt_stage, escalated = [], False, None, False
     for r in results:
-        n = STAGE_IDS.index(r.stage_id) + 1 if r.stage_id in STAGE_IDS else len(stages) + 1
+        n = ids.index(r.stage_id) + 1 if r.stage_id in ids else len(stages) + 1
         m = r.metrics
         ctx = r.input_context
         stages.append({
@@ -71,4 +72,4 @@ def run(sc):
     pkg = None if halted else {str(s["n"]): s["final_text"] for s in stages}
     return {"scenario_id": sc["id"], "stages": stages, "halted": halted, "halt_stage": halt_stage,
             "escalated": escalated, "audit_log": audit.events, "package": pkg,
-            "ui_strings": ["Approve", "Edit", "Stop"], "latency_s": round(time.time() - t0, 2)}
+            "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "latency_s": round(time.time() - t0, 2)}

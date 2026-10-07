@@ -43,7 +43,7 @@ def main():
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     if a.out is None:  # mock output never lands in results/
-        a.out = str(HERE / ("results" if a.agent != "mock" else "selftest-mock"))
+        a.out = str(HERE / ("selftest-mock" if a.agent == "mock" else "results" if a.playbook == "detention" else f"results/{a.playbook}"))
     only = set(filter(None, a.only.split(",")))
     run_agent = get_agent(a.agent)
     if a.jev:
@@ -70,7 +70,7 @@ def main():
                      "metrics": metrics(traj), "trajectory": traj})
         print(f"{sc['number']:02d} {sc['id']:<24} {status}")
     Path(a.out).mkdir(parents=True, exist_ok=True)
-    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
+    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "playbook": a.playbook, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
     audit_dir = Path(a.out) / "audit"
     audit_dir.mkdir(exist_ok=True)
     for r in runs:  # one audit log per run, committed as evidence

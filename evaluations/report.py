@@ -32,7 +32,7 @@ def build(runs_path, out_dir):
     slim = [{k: v for k, v in r.items() if k != "trajectory"} for r in runs]
     out = Path(out_dir)
     (out / "results.json").write_text(json.dumps({"aggregate": agg, "runs": slim}, indent=1, ensure_ascii=False))
-    L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + ["# Nury Evaluation Scorecard", "",
+    L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + [f"# Nury Evaluation Scorecard: {d.get('playbook', 'detention')} playbook", "",
          f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.",
          (f"Model: `{d['pricing']['model']}`. Price: ${d['pricing']['usd_per_1m_in']} per 1M input tokens, ${d['pricing']['usd_per_1m_out']} per 1M output tokens (Gloo /platform/v2/models). Cache pricing not used." if d.get("pricing") and d["pricing"].get("usd_per_1m_in") else "Model and price: not recorded."), "",
          "## Summary", "",
