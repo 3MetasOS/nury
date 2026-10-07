@@ -67,6 +67,7 @@ a.lnk{color:var(--amber-text);text-decoration:underline;text-underline-offset:3p
 .dl.add{background:var(--green-soft);color:var(--green)}.dl.del{background:var(--red-soft);color:var(--red);text-decoration:line-through}
 .dl.same{color:var(--muted)}
 .disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
+.hint{margin:12px 0 0;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
 .btn.primary{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
@@ -180,6 +181,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <p class="rej hidden" id="g-rej"></p>
     <div id="g-draft" class="family"></div>
     <textarea id="g-edit" class="hidden family"></textarea>
+    <p class="hint hidden" id="g-hint">Keep only what you will do. Edit anything you will not.</p>
     <div class="disc" id="g-disc"></div>
     <div class="metrics" id="g-metrics"></div>
     <div class="row dock" id="g-btns">
@@ -468,7 +470,7 @@ async function poll(){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;
-      $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');rawDraft=g.draft;fmt($("g-draft"),g.draft);$("g-disc").textContent=g.disclaimer;$("g-disc1").textContent=oneLine(g.disclaimer);
+      $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');rawDraft=g.draft;fmt($("g-draft"),g.draft);$("g-hint").classList.toggle("hidden",g.id!=="pastoral");$("g-disc").textContent=g.disclaimer;$("g-disc1").textContent=oneLine(g.disclaimer);
       const rj=g.metrics.self_corrections;$("g-rej").classList.toggle("hidden",!rj);
       $("g-rej").textContent=rj===1?"Rejected once, regenerated, passed.":`Rejected ${rj} times, regenerated, passed.`;
       $("g-draft").className=g.id==="triage"?"plain":"family";
