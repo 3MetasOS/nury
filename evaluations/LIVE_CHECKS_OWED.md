@@ -38,3 +38,19 @@ Unit costs, measured: detention pipeline about $0.055 (20 runs cost $1.09), hosp
 - Jev judge calls go to the TypeSafe API with `JEV_API_KEY`. I have assumed that is a separate balance from the Gloo wallet. Please confirm.
 - One 16-token probe call was made at about 21:50 MDT to confirm the 402, before the pause message was read. No other live call since.
 - Regenerate the review canvas and scorecards after the final runs (`make_review_canvas.py`, offline, free).
+
+## Owed after the 402 pause (hack-artisans, 2026-10-07)
+
+All need credit and sensei's "credits back". One job at a time. Before the first one: a single plain Gloo call to confirm the key works (a 402 mid-set would score as errors).
+
+| Order | What | Command (from evaluations/) | Estimate (Gloo) |
+|---|---|---|---|
+| 1 | Detention, all 20, on the final commit | `python3 run.py --agent nury --jev --out results` | $1.5 |
+| 2 | Hospital, all 8 | `python3 run.py --agent nury --jev --playbook hospital --out results/hospital` | $0.7 |
+| 3 | Attacker a01 to a18 (record stage and categories of any escalation) | `python3 run.py --agent nury --jev --scenarios scenarios_attacker --out results/attacker` | $1.2 |
+| 4 | Network n01 to n03 | `NURY_DEMO_NETWORK=1 python3 run.py --agent nury --jev --scenarios network --out results/network` | $0.2 |
+| 5 | Case-file cf01 to cf05 | `python3 casefile_check.py` | $0.3 |
+| 6 | Regenerate: scorecards (`python3 report.py <dir>/runs.json`), `python3 tone_compare.py`, `python3 make_review_canvas.py` | offline | none |
+
+Total about $3.9 of Gloo credit, plus Jev on its own key. The c317050 results are kept in `results/before_final2/`. The scorecard note (`scorecard_final_note.md`) must list every commit since c317050: b47cc92 (descriptions), 1e019ea (infrastructure), fe1fd7b and the later-stage context commit (prompt text), and name the final commit id.
+Not owed live: the smoke-evaluation button on the Observability page (off by default; tests never confirm it).
