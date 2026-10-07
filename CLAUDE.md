@@ -30,7 +30,7 @@ Nury is a crisis-management engine that runs playbooks. A crisis is data: a fold
 - `GLOO_API_KEY` and `JEV_API_KEY` come from the environment. Never in a file, commit, or message.
 - Every meaningful step is a commit dated Oct 6–8. Author is Juan Pelaez (set on this repo). Every agent commit ends with `Co-Authored-By: <agent-id> <agent-id>@rnd23blocks.aimaestro.local`.
 - Agents talk over AMP. Route work; do not do another agent's job.
-- Submission text carries: "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules." (Corrected 2026-10-07 by Juan: he did not develop Jev; he uses it. Never write "my project" or "prior project" about Jev.)
+- Submission text carries: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules." (Corrected 2026-10-07 by Juan: he did not develop Jev; he uses it. Never write "my project" or "prior project" about Jev.)
 - Short sentences, active voice, plain words.
 
 ## Deadlines (MDT)
