@@ -22,9 +22,12 @@ with sync_playwright() as p:
     vis("Respond to a crisis").click(); page.wait_for_timeout(1500)
     if ONLY: page.evaluate("document.querySelectorAll('#chooser-list a, #chooser-list > *').forEach(e=>{if(!/Immigration detention/.test(e.innerText))e.style.display='none'})")
     mark("selector"); page.wait_for_timeout(3200)
-    page.locator('a[href="#/crisis/detention"]:visible').first.click(force=True); page.wait_for_timeout(2200); mark("crisis")
+    # click the Detention card's own link in the page (a mouse click on the sheet can land on the neighbouring card while it animates), then VERIFY it is Detention
+    page.evaluate("[...document.querySelectorAll(\"a[href$='/crisis/detention']\")].find(a => a.offsetParent).click()"); page.wait_for_timeout(2200); mark("crisis")
+    if "Immigration detention" not in page.inner_text("body"): raise RuntimeError("not on the Detention page: stop before any Gloo call")
     vis("Begin the response").click(); page.wait_for_timeout(1800); mark("intake_empty")
     vis("Use demo intake").click(); page.wait_for_timeout(2200); mark("intake")
+    if "Maria" not in page.input_value("#intake") and "Maria" not in page.inner_text("body"): raise RuntimeError("the intake is not the Detention demo (Maria): stop before any Gloo call")
     page.check("#demo"); page.wait_for_timeout(700)
     if DRY:
         mark("end"); n = cast.stop(out / "run.mp4"); b.close(); (out / "marks.txt").write_text("\n".join(marks) + "\n"); print("dry run:", n, "frames\n" + "\n".join(marks)); sys.exit()
