@@ -90,5 +90,5 @@ Memorial: the film is option 3 (8 s); the deck and live pitch are option 2, unle
 - The Eric lines are new ElevenLabs generations: one take per line, a few retakes.
 - Row 3's window shot shows a lit window and shoes by a door, with no people. The "Synthetic family. Not real people." caption stays on screen.
 - The memorial text is not approved yet. The portrait slot stays hidden until Juan sends a photo.
-- No scorecard number is on screen. The tech beat shows only VERIFIED rows. If one of them changes, change the caption. The red team is not a caption unless hack-sensei confirms the panel is validated for the film. When he does, the caption is: "A red team from other model makers audits it before release. It advises; a person decides." (about 2 s, row 8). L8 already names Jev out loud.
+- No scorecard number is on screen. The tech beat shows only VERIFIED rows. If one of them changes, change the caption. The red team is not a caption unless hack-sensei confirms the panel is validated for the film. When he does, the caption is: "A red team from other model makers audits it before release. It advises; we decide what to change." (about 2 s, row 8). L8 already names Jev out loud.
 - The pad, ticks and foley are made in code; if taste says they sound thin, the fallback is a licensed track, which needs a license check first.

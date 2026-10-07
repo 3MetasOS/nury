@@ -408,6 +408,17 @@ No real pastor has used Nury. We built a loop for learning from use, and we test
 
 The research behind the pattern (reflect on what went wrong, propose a change, score it, keep it only if it scores better) is in `LEARNING_LOOP.md`, read from abstracts only. We left out everything that lets an agent change itself.
 
+<a id="outside-review"></a>
+
+### Outside review (the red team)
+
+Three models from three other makers read sample drafts and flagged problems: OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick, all through Gloo AI Studio. None is Claude, on purpose.
+
+- **How we checked the reviewers first.** On 8 drafts with planted problems, all three caught 8 of 8. They also flagged safe drafts, so they over-flag. Llama sometimes quoted text that is not in the draft: once in validation and four times in the run on 28 scenarios.
+- **When it ran.** By hand, before release, on an earlier build (core `00fe7b1`). It was **not re-run on the final build**, and it is **not part of the app at run time**. The product never calls it.
+- **What came out.** 55 corroborated findings (two or more reviewers quoted about the same sentence) across 25 scenarios. People read them.
+- **What it is.** Advice only. It cannot pass or fail a run, and it never changes a result. We decide what to change.
+
 ## 4. The rules
 
 A rule in Nury is a test a draft must pass. There are three kinds, and the order matters.
