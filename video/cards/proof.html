@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Nury proof card</title><link rel="stylesheet" href="card.css"></head>
+<body><main class="stage"><p class="line" id="line"></p><p class="src" id="src"></p></main>
+<script>
+// Real scorecard numbers only. Use: proof.html?pass=..&n=..&caught=..&src=..  Without all three, the page stays blank on purpose.
+const q=new URLSearchParams(location.search),e=s=>String(s).replace(/[&<>"]/g,'');
+if(q.get('pass')&&q.get('n')&&q.get('caught')){
+ document.getElementById('line').innerHTML=`<b>${e(q.get('pass'))}</b> of <b>${e(q.get('n'))}</b> scenarios passed. <b>${e(q.get('caught'))}</b> unsafe drafts caught and regenerated.`;
+ document.getElementById('src').textContent=e(q.get('src')||'Scorecard in our build document.');}
+</script></body></html>
