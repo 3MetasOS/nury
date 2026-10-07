@@ -88,18 +88,19 @@ def f():
                                     "usd": round(sum(o[1]["usd"] for o in out), 4), "s": sum(o[1]["s"] for o in out)}, "forced rejection on stage 2, one retry, then passes"
 
 
-CHECKS = {"a": a, "b": b, "c": c, "d": d, "e": e, "f": f}
+CHECKS = {"a": a, "b": b, "c": c, "d": d, "f": f}          # e (h03, h07) is skipped: the scored hospital run covers it
+EXTRA = {"e": e}
 
 if __name__ == "__main__":
     args = [x for x in sys.argv[1:] if not x.startswith("--")]
     if "--list" in sys.argv:
         for k, fn in CHECKS.items():
             print(k, fn.__name__, "-", (fn.__doc__ or "").strip() or "see tools/live_checks.py")
-        print("pipelines: a1 b1 c1 d1 e2 f2 = 8; about $0.60")
+        print("pipelines: a1 b1 c1 d1 f2 = 6; about $0.45 (e, h03 and h07, is not run: the scored hospital set covers it)")
         sys.exit(0)
     total = 0.0
     for k in (args or CHECKS):
-        passed, m, what = CHECKS[k]()
+        passed, m, what = {**CHECKS, **EXTRA}[k]()
         total += m["usd"]
         print(f"[{k}] {'PASS' if passed else 'FAIL'}  {what}  | tokens in {m['tin']} out {m['tout']}  ${m['usd']}  {m['s']}s", flush=True)
     print(f"total ${round(total, 3)}")

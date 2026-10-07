@@ -52,6 +52,8 @@ class Cases(unittest.TestCase):
             for target in re.findall(r"\]\(([^)#]+)\)", p.read_text()):
                 if not target.startswith("http"):
                     self.assertTrue((d / target).is_file(), f"{p.name} -> {target}")
+        self.assertEqual((d / "intake.md").read_text().split("\n")[4], "intake")                  # the original words, saved
+        self.assertIn("[Intake](intake.md)", idx)
         self.assertIn("Maria (wife)", (d / "people.md").read_text())
         self.assertIn("- [ ] Identificaciones de la familia", (d / "documents.md").read_text())
         self.assertIn("approved by the pastor", (d / "01-triage.md").read_text())

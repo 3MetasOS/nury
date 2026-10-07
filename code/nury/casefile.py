@@ -216,6 +216,11 @@ def _people_md(state):
     return "\n".join(lines + ["", "[Index](index.md)", ""])
 
 
+def _intake_md(state):
+    return "\n".join(["# Intake", "", "What the pastor typed, exactly. A later update is added below it, never over it.", "",
+                      state.intake.strip(), "", "[Index](index.md)", ""])
+
+
 def _documents_md(state):
     chk = checklist_sections(state.approved.get("checklist", ""))
     key = "GATHER THESE DOCUMENTS" if "GATHER THESE DOCUMENTS" in chk else "WHAT TO BRING AND ASK"
@@ -270,7 +275,7 @@ def _index_md(pb, state, case_id, created, stages, svg_name="nextsteps.svg"):
              f"Next step: {nxt}", "", f"![Next-steps map]({svg_name})", "", "## Pages", ""]
     for i, s in enumerate(stages, 1):
         lines.append(f"- [{s.title}]({i:02d}-{s.id}.md)")
-    lines += ["- [People](people.md)", "- [Documents](documents.md)", "- [Timeline](timeline.md)", "- [Log](log.md)",
+    lines += ["- [Intake](intake.md)", "- [People](people.md)", "- [Documents](documents.md)", "- [Timeline](timeline.md)", "- [Log](log.md)",
               f"- [Next-steps map]({svg_name})", "", "---",
               pb.disclaimer["en"], "", "Nothing here is sent anywhere. The pastor shares it.", ""]
     return "\n".join(lines)
@@ -329,7 +334,7 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     pages, stages = _stage_pages(pb, state)
     svg = nextsteps_svg(pb, state, pb.title)
     files = {"index.md": _index_md(pb, state, cid, created, stages), **pages,
-             "people.md": _people_md(state), "documents.md": _documents_md(state),
+             "intake.md": _intake_md(state), "people.md": _people_md(state), "documents.md": _documents_md(state),
              "timeline.md": _timeline_md(audit), "log.md": _log_md(audit), "nextsteps.svg": svg}
     pmap = privacy.map() if privacy is not None and hasattr(privacy, "map") else None
     manifest = {"id": cid, "playbook": pb.id, "title": pb.title, "created": created, "language": state.language,

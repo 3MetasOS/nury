@@ -56,7 +56,11 @@ def build(draft_path=None, approvals_path=None):
         phones = s.get("phones", [])
         email = ""
         if any(re.search(r"email is the route", f, re.I) for f in s.get("flags", [])):
-            # The toll-free number on that page is for people held at military facilities. The family route is email.
+            # Why email and not the phone (Juan approved the entry; hack-sensei decided on this route). The DOJ pro bono list says:
+            #   "To contact on behalf of an individual detained by ICE or BOP, email immcenter@americanbar.org"
+            #   "Respondents detained at Department of Defense (DOD) military facilities (including Guantanamo)
+            #    should contact our toll-free hotline at 1 (855) 641-6081"
+            # So the toll-free number is for people held at military facilities. A family member emails.
             m = re.search(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", " ".join(s.get("quotes", [])))
             email, phones = (m.group(0) if m else ""), []
         entries.append({
