@@ -44,7 +44,7 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 3. **For each stage** (detention: triage, rights, attorney resources, checklist, pastoral message; hospital: triage, information, resources, checklist, pastoral message):
    1. **Build the prompt.** Floor rules, skill text, the playbook's stage prompt, the vetted sources, and the earlier approved or edited text. `engine.py`, `playbook.py`, `skills.py`.
    2. **Tokenize.** The privacy client swaps protected values for tokens. The token map stays in the app.
-   3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is 5 Gloo calls (TECH_CLAIMS 1). A Gloo HTTP 403 counts as a failed try.
+   3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is 5 Gloo calls (TECH_CLAIMS 1). A package is one full run of the five stages; the app calls it a case. A Gloo HTTP 403 counts as a failed try.
    4. **Detokenize.** Tokens become the real names again. A mangled token is repaired; an unknown token makes Nury ask again, twice at most.
    5. **Named checks.** The stage's checks plus the floor run in plain code. Any violation sends the draft back.
    6. **Jev gate.** *BUILT, live verified on 3 scenarios.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At or over the question's line (0.50, or 0.60 for `assumes_facts`), the draft is rejected and the reason category is `jev_<question>`. From 0.30 up to the line the draft passes and the audit logs "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate.

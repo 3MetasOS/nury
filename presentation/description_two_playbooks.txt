@@ -4,7 +4,7 @@ Nury is a crisis-management engine. A crisis is a defined workflow, a folder of 
 
 It is 2 AM. A pastor's phone rings. A panicked family says a relative was detained. No lawyer, only a phone.
 
-Nury turns that call into a package. The pastor types what the family said. Nury runs five stages: triage, a plain-language rights brief, attorney resources, a family checklist, and a pastoral message. Family materials come out in Spanish.
+Nury turns that call into a response. The pastor types what the family said. Nury runs five stages: triage, a plain-language rights brief, attorney resources, a family checklist, and a pastoral message. Family materials come out in Spanish.
 
 After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
 

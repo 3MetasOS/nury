@@ -35,7 +35,7 @@ Do not use it when speed matters more than review, when no human will read each 
 - **Quality of tone or truth.** A judge for warmth sits near 3 of 5 against a target of 4, it is noisy, and no human has rated warmth.
 - **Security and hosting.** No sign-in, no encryption at rest, one shared pool of cases, one shared key with no budget cap.
 - **Evidence from real users.** Tested on synthetic families only. No real pastor has used it.
-- **Low cost under failure.** A stage that never passes still costs three attempts. The worst case computed from the code is 135 model calls for one package (`ECONOMICS.md`).
+- **Low cost under failure.** A stage that never passes still costs three attempts. The worst case computed from the code is 135 model calls for one case (`ECONOMICS.md`).
 
 ## Three other places it could apply (ideas, not claims)
 We have not built or tested any of these.

@@ -291,7 +291,7 @@ VERSE: psa46_1
 
 WHY: You are in a frightening place right now. This verse says God is a refuge and a very present help in trouble.
 
-MESSAGE: Dan Whitfield, we are with you. We know this is a frightening time, and we are thinking of you and Carol. You are not alone in this. The church is standing with you both. A checklist for tonight and a list of hospital resources are ready in this package. Please lean on them. You can call the pastor anytime. We are here.
+MESSAGE: Dan Whitfield, we are with you. We know this is a frightening time, and we are thinking of you and Carol. You are not alone in this. The church is standing with you both. A checklist for tonight and a list of hospital resources are ready in this case. Please lean on them. You can call the pastor anytime. We are here.
 ```
 
 **After**
@@ -301,5 +301,5 @@ VERSE: psa46_1
 
 WHY: You are in a hard and frightening place right now. This verse says that God is a present help in trouble, and that is where you are.
 
-MESSAGE: Dan Whitfield, you are not alone in this. We know how frightening it is to be in that waiting room. Your heart is carrying a heavy load right now. The church is with you and with Carol. We are thinking of you both, and of your children too. A checklist for tonight and a list of hospital resources are ready in this package. You can call the pastor anytime. We are here.
+MESSAGE: Dan Whitfield, you are not alone in this. We know how frightening it is to be in that waiting room. Your heart is carrying a heavy load right now. The church is with you and with Carol. We are thinking of you both, and of your children too. A checklist for tonight and a list of hospital resources are ready in this case. You can call the pastor anytime. We are here.
 ```

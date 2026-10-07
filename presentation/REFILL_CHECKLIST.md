@@ -22,15 +22,15 @@ hack-artisans re-runs all five sets on it (about 45 minutes). Last scorecards in
 | Tone range, detention / hospital | 2.60 to 2.85 / 2.87 to 3.07 | |
 | Hostile triage escalations | 1 of 18 | |
 | Reading level (Spanish INFLESZ, English grade) | about 72, 5.2 to 5.4 | |
-| Jev tokens per package (from the audit files, see ECONOMICS section 3.6) | 8,220 detention, 11,486 hospital | |
+| Jev tokens per case (from the audit files, see ECONOMICS section 3.6) | 8,220 detention, 11,486 hospital | |
 | Product tests, evaluation tests | 270, 86 | recount (`code/test.sh`, `pytest evaluations/tests`) |
 
 ## 2. Where each goes
-1. **Deck** (`presentation/deck_template.html`, then `python3 presentation/build_deck.py`): slide "08 Impact" table (3 rows, cost, time), the four bullets, the notes; backup "Why two judges" final row; slide 7 "A full package" row (`33 to 49 s, 6 to 9 cents`).
+1. **Deck** (`presentation/deck_template.html`, then `python3 presentation/build_deck.py`): slide "08 Impact" table (3 rows, cost, time), the four bullets, the notes; backup "Why two judges" final row; slide 7 "A full case" row (`33 to 49 s, 6 to 9 cents`).
 2. **Descriptions**: the one sentence `46 scenarios, judged: 28 pass, 9 fail, 9 undecided.` in `description.txt` and `description_two_playbooks.txt`. Keep the two-playbooks file at 250 words or fewer (`python3 -c "print(len(open('presentation/description_two_playbooks.txt').read().split()))"`).
 3. **Pitch** (`PITCH_SCRIPT.md`): the impact section (about 30 words) and nothing else.
-4. **Captions "A full package: 33 to 49 s, 6 to 9 cents"**: `deck_template.html`, `ERIC_LINES.md`, `FINALIST_SCRIPT.md` (two rows), `TECH_STORY.md` (row 30 and the caption list), `TREATMENTS.md`, `treatments/data.py`, `treatments/frames.py`; tell hack-video (`tech.json`, `NuryA.tsx`).
-5. **`documents/product/HOW_IT_WAS_BUILT.md`**: the paragraph "On the final build, a full package took ..." (section 2). Warn hack-artisans to rebuild the page before editing.
+4. **Captions "A full case: 33 to 49 s, 6 to 9 cents"**: `deck_template.html`, `ERIC_LINES.md`, `FINALIST_SCRIPT.md` (two rows), `TECH_STORY.md` (row 30 and the caption list), `TREATMENTS.md`, `treatments/data.py`, `treatments/frames.py`; tell hack-video (`tech.json`, `NuryA.tsx`).
+5. **`documents/product/HOW_IT_WAS_BUILT.md`**: the paragraph "On the final build, a full case took ..." (section 2). Warn hack-artisans to rebuild the page before editing.
 6. **`documents/product/ECONOMICS.md`**: table in section 1 and the Jev tokens in 3.6. **`WHAT_DID_NOT_WORK.md`**: items 1, 2, 5 (tone and hostile-intake numbers).
 7. **`CLAIMS_AUDIT.md`**: append a section 1f with the change list.
 8. Rebuild: `python3 presentation/treatments/build.py`, `python3 documents/hub/build.py`, fit check at 1280x720, 1920x1080, 390x844 in default and `?gated` views.

@@ -1,6 +1,6 @@
 # Results draft: held until the full re-run
 
-> **FINAL 2026-10-07.** Refilled from the scorecards on build `9bc5c6d` (commit 983cb89): detention 11 / 1 / 8, hospital 5 / 0 / 3, hostile 13 / 1 / 4, 46 scenarios 29 / 2 / 15 (judge results, not human verdicts). Cost and time per package: 6 to 9 cents, 34 to 50 s. See CLAIMS_AUDIT 1f. The numbers further down are history.
+> **FINAL 2026-10-07.** Refilled from the scorecards on build `9bc5c6d` (commit 983cb89): detention 11 / 1 / 8, hospital 5 / 0 / 3, hostile 13 / 1 / 4, 46 scenarios 29 / 2 / 15 (judge results, not human verdicts). Cost and time per case: 6 to 9 cents, 34 to 50 s. See CLAIMS_AUDIT 1f. The numbers further down are history.
 >
 > **FILLED 2026-10-07 04:07.** The final scorecards (build `8a28a18`, evaluations/results/scorecard.md) landed and slide 9, the descriptions, the pitch and the time and cost captions use them. This file is history. Numbers to quote now: detention 12 pass / 6 fail / 2 undecided; hospital 5 / 1 / 2; hostile intakes 11 / 2 / 5; cost per run $0.064 (detention) and $0.088 (hospital); time 33.5 s and 48.7 s. Judge results, not human verdicts.
 
@@ -21,14 +21,14 @@ Each item is written to be read aloud in one or two sentences. The `[after fix]`
 
 ### 1. Hostile intakes: Nury stopped instead of writing something unsafe
 
-**Plain version.** We wrote 18 hostile intakes to try to push Nury into advice, predictions and false claims. On build `c317050`, for 11 of the 18 Nury stopped at triage and handed the stage to the pastor. For none of the 18 did unsafe text reach the pastor. But the set expects a finished package, so by its own criteria those 11 are failures: the pastor gets no package for a hostile intake. We count that as a robustness gap, not a win.
+**Plain version.** We wrote 18 hostile intakes to try to push Nury into advice, predictions and false claims. On build `c317050`, for 11 of the 18 Nury stopped at triage and handed the stage to the pastor. For none of the 18 did unsafe text reach the pastor. But the set expects a finished case, so by its own criteria those 11 are failures: the pastor gets no case for a hostile intake. We count that as a robustness gap, not a win.
 
 **Evidence** (BUILD_LOG 116): all 11 escalated at triage. Most on format (3 of 3 attempts), a few on banned phrases or advice, two on the Jev "states a fact not in the intake" question (0.69 and 0.75 against its 0.60 line). Cost of the attacker run: $1.20 of Gloo.
 
-**What we did.** hack-sensei approved a narrow exception to the code freeze: read the 11 audit files, fix the triage prompts with the smallest change, check live, then re-run every set. `[after fix: how many of 18 now produce a package, and whether any unsafe text reached the pastor]`.
+**What we did.** hack-sensei approved a narrow exception to the code freeze: read the 11 audit files, fix the triage prompts with the smallest change, check live, then re-run every set. `[after fix: how many of 18 now produce a case, and whether any unsafe text reached the pastor]`.
 
 **Deck bullet (held):** "Hostile intakes: for 11 of 18, Nury stopped at triage and handed over. None was unsafe. We are fixing the triage prompts."
-**After the fix, replace with:** "Hostile intakes: for 11 of 18, Nury stopped at triage and handed over. None was unsafe. We changed the triage prompts. `[after fix]` of 18 now produce a package."
+**After the fix, replace with:** "Hostile intakes: for 11 of 18, Nury stopped at triage and handed over. None was unsafe. We changed the triage prompts. `[after fix]` of 18 now produce a case."
 
 **Say it this way, and not this way.** Say: "stopped and handed over". Do not say: "blocked the attacks" or "passed the adversarial test". Eleven of eighteen is not a pass.
 
@@ -130,7 +130,7 @@ Word count: 87. It names no pass rate, no real person and no real family.
 - That it gives legal or medical advice, or that it replaces a pastor, a lawyer or a counselor.
 - "Secure", "private", "encrypted", "confidential", "compliant" or "HIPAA". None is true: there is no sign-in and no encryption at rest.
 - That Jev is Juan's project. It is a third-party service from TypeSafe.
-- Not a rule any more: Jev's price is public ($0.042 per million input tokens, docs.typesafe.ai/models). Say it as an estimate (about $0.0004 a package), never as a bill.
+- Not a rule any more: Jev's price is public ($0.042 per million input tokens, docs.typesafe.ai/models). Say it as an estimate (about $0.0004 a case), never as a bill.
 - That it is "tested" in a way that suggests real use. Say "synthetic families".
 
 ### If Juan posts the film

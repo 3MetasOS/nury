@@ -58,7 +58,7 @@ If asked for more, go to the backup slide "Why two judges" (press `b`): who each
 
 ## 2:09 to 2:22  Slide 8 (light): impact and execution
 Do NOT read the disclosure aloud: it is on the slide. Speak only the numbers and one failure (about 30 words).
-Say (about 30 words): "We judged 46 synthetic scenarios: 29 pass, 2 fail, 15 wait for a person. A package costs 6 to 9 cents and takes 34 to 50 seconds. The tone score is still well under the target, and no human has rated warmth."
+Say (about 30 words): "We judged 46 synthetic scenarios: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents and takes 34 to 50 seconds. The tone score is still well under the target, and no human has rated warmth."
 Source: evaluations/results/build_comparison.md, build 9bc5c6d. These are judge results, not human review. Do not add the three counts into one pass rate.
 Fallback not needed: the final scorecards landed (2026-10-07 03:56).
 Say one failure, plainly: the tone score. If asked for another: a checklist once named a detainee locator that was not in our vetted sources; we fixed the prompt and the check.

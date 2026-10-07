@@ -321,7 +321,7 @@ All routes below are committed. The server has 27 route branches since `ca6d9aa`
 | `GET /api/privacy` | `{"on": bool}`: whether tokenization is on. | |
 | `POST /api/propose-terms` | Body `{"intake"}`. Returns names the pastor may protect. Empty when privacy is off. | |
 | `POST /api/run` | Body `{intake, playbook, language, protected, demo_guardrail, revise}`. Starts a session on a background thread and returns `{"id"}`. 400 on an empty intake, an unavailable crisis, or a bad revision. **This starts real Gloo (and Jev) calls.** | The intake or any draft. |
-| `GET /api/session/<id>` | The session view: stages, the gate, a progress phase, the audit **through `safe_event`**, the package once done, and the next-steps map. 404 `no such session`. | A rejected draft, a Gloo error body, or the token map. |
+| `GET /api/session/<id>` | The session view: stages, the gate, a progress phase, the audit **through `safe_event`**, the package once done (a package is one full run of the five stages; the app calls it a case), and the next-steps map. 404 `no such session`. | A rejected draft, a Gloo error body, or the token map. |
 | `POST /api/session/<id>/decision` | Body `{action: approve\|edit\|stop, text}`. `edit` needs text. Returns `{"ok": bool}`. 400 `bad request`. | |
 | `POST /api/session/<id>/save` | Saves the approved package as a case. 400 unless every stage is approved or edited. Returns `{id, version, path}`. | |
 | `POST /api/feedback` | Body `{session, stage, chip}`. Records a reason chip when `NURY_FEEDBACK` is on and the chip is one of the five. Returns `{"ok": bool}`. | |

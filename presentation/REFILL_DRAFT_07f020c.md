@@ -18,7 +18,7 @@ Source: `evaluations/results/build_comparison.md` (commit 4db17af). **Detention,
 
 ## What would change, if hospital stays as printed (4 / 1 / 3, 12 / 3 / 3)
 - Totals across detention, hospital, hostile: pass 28 (12 + 4 + 12), fail 5 (1 + 1 + 3), undecided 13 (7 + 3 + 3), of 46. Description sentence: `46 scenarios, judged: 28 pass, 5 fail, 13 undecided.` (same word count).
-- Package caption: `A full package: 32 to 44 s, 6 to 8 cents` (detention 32 s and $0.0625; hospital 43.6 s and $0.0805).
+- Case caption: `A full case: 32 to 44 s, 6 to 8 cents` (detention 32 s and $0.0625; hospital 43.6 s and $0.0805).
 - Deck slide 8 table, cost row `$0.06 and $0.08`, time row `32 s and 44 s`.
 
 ## Claims that are NO LONGER TRUE and must be rewritten (honest wording)
@@ -28,4 +28,4 @@ Source: `evaluations/results/build_comparison.md` (commit 4db17af). **Detention,
 4. Hostile intakes: "11 of 18 stopped at triage; after a fix, 1 does" stays true (1 escalation).
 
 ## Files to touch after the mini re-run
-`deck_template.html` (slide 8 table, four bullets, notes; slide 7 package row; build with `build_deck.py`), `description.txt`, `description_two_playbooks.txt` (recount, 250 or fewer), `PITCH_SCRIPT.md` (impact), `FINALIST_SCRIPT.md` and `ERIC_LINES.md` (package caption, two rows), `TECH_STORY.md` (row 30, caption list, tone sentences), `treatments` (data.py, frames.py, then `treatments/build.py`), `documents/product/ECONOMICS.md` (section 1 table), `WHAT_DID_NOT_WORK.md` (items 1, 2, 5), `HOW_IT_WAS_BUILT.md` (the "On the final build" paragraph), `RESULTS_DRAFT.md`, `CLAIMS_AUDIT.md` (section 1f: the change list), hub rebuild, fit check, and tell hack-video the caption and hack-artisans to rebuild pages.
+`deck_template.html` (slide 8 table, four bullets, notes; slide 7 case row; build with `build_deck.py`), `description.txt`, `description_two_playbooks.txt` (recount, 250 or fewer), `PITCH_SCRIPT.md` (impact), `FINALIST_SCRIPT.md` and `ERIC_LINES.md` (case caption, two rows), `TECH_STORY.md` (row 30, caption list, tone sentences), `treatments` (data.py, frames.py, then `treatments/build.py`), `documents/product/ECONOMICS.md` (section 1 table), `WHAT_DID_NOT_WORK.md` (items 1, 2, 5), `HOW_IT_WAS_BUILT.md` (the "On the final build" paragraph), `RESULTS_DRAFT.md`, `CLAIMS_AUDIT.md` (section 1f: the change list), hub rebuild, fit check, and tell hack-video the caption and hack-artisans to rebuild pages.

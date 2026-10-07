@@ -93,7 +93,7 @@ def tech(c1=AMB, bg=INK):
         b += f'<rect x="{x-48}" y="150" width="96" height="46" rx="10" fill="{DEEP}" stroke="{c1}" stroke-width="2"/>' + txt(x, 178, l, 13, TXT, "middle", 400, "Arial,sans-serif")
         if i: b += f'<path d="M{xs[i-1]+48} 173 H{x-48}" stroke="{c1}" stroke-width="2"/>'
     b += txt(320, 240, "leak test 90 checks, 0 found  ·  judge unsafe 0.89–0.98, safe 0.02–0.24", 14, MUT, "middle", 400, "Arial,sans-serif")
-    b += txt(320, 262, "a full package: 34 to 50 s, 6 to 9 cents", 14, MUT, "middle", 400, "Arial,sans-serif")
+    b += txt(320, 262, "a full case: 34 to 50 s, 6 to 9 cents", 14, MUT, "middle", 400, "Arial,sans-serif")
     b += txt(320, 298, "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and", 9.5, "#6f6a5f", "middle", 400, "Arial,sans-serif")
     b += txt(320, 311, "as a run-time draft classifier; disclosed as third-party technology per the rules.", 9.5, "#6f6a5f", "middle", 400, "Arial,sans-serif")
     return b

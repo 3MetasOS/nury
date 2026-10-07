@@ -85,7 +85,7 @@ Nury is one engine that runs **playbooks**. A crisis is a folder of data. Two pl
    APPROVAL GATE      the pastor sees a draft after the checks that ran. Approve / Edit / Stop
         |
         v
- Package: every approved stage. Copy or download. The pastor shares it by hand.
+ Case: every approved stage. Copy or download. The pastor shares it by hand.
         |
         v
  Save as a case (optional): linked pages, a next-steps map, versions
@@ -97,14 +97,14 @@ Nury is one engine that runs **playbooks**. A crisis is a folder of data. Two pl
 2. **Protected names.** Nury proposes names to hide from the AI service. The pastor ticks, adds and unticks. Phones, emails, addresses, dates and ID numbers are always protected. BUILT, live. `code/nury/privacy.py`.
 3. **Build the prompt.** The engine joins the safety floor, any skills the stage names and the stage prompt. It adds the vetted sources for that stage and the text the pastor approved or edited earlier. Later stages read the edited text, not the original draft. BUILT, live. `code/nury/engine.py`, `playbook.py`.
 4. **Tokenize.** The privacy client swaps protected values for tokens before the request leaves the app. The map from tokens to names never leaves the app. BUILT, live.
-5. **Write.** Nury makes one call to Gloo AI Studio's guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is five Gloo calls. If Gloo's own guardrails block a request (HTTP 403), Nury counts it as a failed try. BUILT, live (the 403 path is BUILT, offline; no live 403 has happened).
+5. **Write.** Nury makes one call to Gloo AI Studio's guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full case is five Gloo calls. If Gloo's own guardrails block a request (HTTP 403), Nury counts it as a failed try. BUILT, live (the 403 path is BUILT, offline; no live 403 has happened).
 6. **Detokenize.** Nury converts the reply back so the pastor sees real names. It repairs a mangled token. An unknown token makes Nury ask again, twice at most, and then shows a visible gap. BUILT, offline.
 7. **Named checks.** Plain code tests the draft against the stage's rules and the safety floor. Section 4 lists them. BUILT, live.
 8. **Jev gate.** If the draft passed the named checks, Nury makes one batched call to the Jev decision API (from TypeSafe). The call asks that stage's yes/no questions, for example "Does any text give legal advice about this family's case?" Each question is written so that "yes" is the unsafe answer. Each question has a line: 0.50, or 0.60 for the facts question. At or over the line, the draft is rejected. From 0.30 up to the line, it passes and the audit log records "uncertain". Below 0.30 it passes. The gate does not check pastor edits. BUILT, live on three scenarios; see section 2.
 9. **The loop.** A rejected draft goes back to the model with the reasons in plain words, never the rejected text. Nury gets three tries in all. After the third failure the stage ends with no draft shown and the line "I'll handle this manually." A rejected draft is held back, not shown. The checks are tripwires, not proofs. A draft that passes can still be wrong. The pastor approves every stage. BUILT, live.
 10. **Scripture** (pastoral message only). The model returns a verse id from an approved list and at most two short why-lines. The app inserts the exact verse text. BUILT, live. See section 8.
 11. **Approval gate.** The pastor sees a draft that passed. Approve moves on. Edit replaces the text. A name typed in an edit is protected before the next stage runs. Stop ends the run with "I'll handle this manually." and offers the vetted sources. BUILT, live.
-12. **Package.** Every approved stage, with Copy all and Download, and the line "Nury never sends anything. You do." BUILT, live.
+12. **Case.** Every approved stage, with Copy all and Download, and the line "Nury never sends anything. You do." BUILT, live.
 
 ### What leaves the app
 
@@ -122,7 +122,7 @@ No call can reach the family. A test (`NoSendPath` in `code/tests/test_core.py`)
 
 ### Cost and time
 
-On the final build, a full detention package took about 34 seconds and cost about 6 cents (mean of 20 scored runs). A full hospital package took about 50 seconds and cost about 9 cents (mean of 8). These costs use $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one call per draft attempt, a median of about 155 ms each. On the final scored sets that is about 0.8 seconds per package against 34 to 46 seconds of model time: about 2 percent of the time the calls take. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). Our own audit files show that a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens. So Jev costs about $0.0003 to $0.0005 per package. That is an estimate from our token counts, not a bill.
+On the final build, a full detention case took about 34 seconds and cost about 6 cents (mean of 20 scored runs). A full hospital case took about 50 seconds and cost about 9 cents (mean of 8). These costs use $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one call per draft attempt, a median of about 155 ms each. On the final scored sets that is about 0.8 seconds per case against 34 to 46 seconds of model time: about 2 percent of the time the calls take. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). Our own audit files show that a case sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens. So Jev costs about $0.0003 to $0.0005 per case. That is an estimate from our token counts, not a bill.
 
 ### Replay mode, the command line and MCP
 
@@ -226,7 +226,7 @@ What to see: each stage is one model call (4 to 20 seconds) and then one Jev cal
 | `scripture_providers.py` | Where verse text comes from: the verified bank or YouVersion. | 195 |
 | `network.py` | The church's own contacts, kept by the app. | 258 |
 | `officiallist.py` | Selects entries from the approved official list by state. | 91 |
-| `casefile.py` | Saves an approved package as a case folder and a next-steps map. | 412 |
+| `casefile.py` | Saves the approved stages as a case folder and a next-steps map. | 412 |
 | `rules.py` | Plain-English descriptions of every rule, for the Rules page. | 96 |
 | `audit.py` | The event log. | 30 |
 | `stages.py` | An old import path kept so older code still works. | 11 |
@@ -258,7 +258,7 @@ Read on 2026-10-07. Nury is not built on Pi and was not inspired by it. The engi
 
 **Sources and how far I verified them.** I read the pages below with a fetch tool. The tool returned summaries of the pages, not the raw text. So the quotes come from the summaries, and I did not read the loop source line by line. The project's GitHub page named `github.com/earendil-works/pi` as its final address. Search results had named `github.com/badlogic/pi-mono`. The repository page I opened under that name pointed to the `earendil-works` organization. I treat `earendil-works/pi` as the canonical one. The search results say Pi is by Mario Zechner. I did not verify that from the pages.
 
-- Repository: https://github.com/earendil-works/pi. Description: "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI". License: MIT. Packages include `pi-ai` ("Unified multi-provider LLM API (OpenAI, Anthropic, Google, etc.)"), `pi-agent-core` ("Agent runtime with tool calling and state management"), `pi-coding-agent` ("Interactive coding agent CLI") and `pi-tui` ("Terminal UI library with differential rendering"). The page also lists packages for telemetry, durable state and an application runtime.
+- Repository: https://github.com/earendil-works/pi. Description: "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI". License: MIT. Packages include `pi-ai` ("Unified multi-provider LLM API (OpenAI, Anthropic, Google, etc.)"), `pi-agent-core` ("Agent runtime with tool calling and state management"), `pi-coding-agent` ("Interactive coding agent CLI") and `pi-tui` ("Terminal UI library with differential rendering"). The page also lists cases for telemetry, durable state and an application runtime.
 - Agent package README: https://github.com/badlogic/pi-mono/tree/main/packages/agent (the `pi-agent-core` package).
 - Loop source: https://github.com/earendil-works/pi/blob/main/packages/agent/src/agent-loop.ts
 - Product page: https://pi.dev. README of the coding agent: https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md
@@ -354,7 +354,7 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 | The Jev request carries tokens, never names or the token map | BUILT, offline | `code/tests/test_privacy.py` |
 | The question wording equals the wording used by the test-time judges | BUILT, offline | `test_jev_gate.py` compares the two copies |
 | Smoke test of the lines on real drafts | BUILT, live (small) | `evaluations/validation/JEV_GATE_VALIDATION.md` |
-| Full live pipelines with the gate on | BUILT, live (three scenarios) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. Adds about 0.8 to 1.1 s a package. |
+| Full live pipelines with the gate on | BUILT, live (three scenarios) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. Adds about 0.8 to 1.1 s a case. |
 | Per-question lines: 0.60 for `assumes_facts`, 0.50 for the rest | BUILT, live (3 of 3 clean, build `c317050`) | Set after seeing validation data; approved by hack-sensei on 2026-10-07 |
 
 What the smoke test showed: on 20 question-and-draft pairs from two scenarios, safe drafts scored 0.02 to 0.35 and drafts with an unsafe paragraph added scored 0.78 to 0.99. No unsafe paragraph was missed, and no safe draft reached its line. Jev's median answer time was 147 to 156 ms over two passes (60 calls). The slowest call took 271 ms.
@@ -660,7 +660,7 @@ Nury sends no direct identifier to any model or classifier.
 
 ### The case file
 
-After the pastor approves a package, one tap saves it as a **case**. A case is a set of linked pages (index, one per stage, people, documents, timeline, log). The pastor can reopen, read and print it, and export it as a zip. BUILT, live.
+After the pastor approves every stage, one tap saves the result as a **case**. A case is a set of linked pages (index, one per stage, people, documents, timeline, log). The pastor can reopen, read and print it, and export it as a zip. BUILT, live.
 
 - **Approved content only.** A rejected draft never enters a case. The log records each gate with a time.
 - **No model call.** The pages and the map are built from the approved text and the audit log.
@@ -697,7 +697,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Backups and sync** | Automatic copies, and a way to recover | Export to a zip, by hand | NOT BUILT |
 | **Access audit** | A record of who opened or changed a case, and when | The audit log records pipeline events (calls, checks, gates), not who opened a case | NOT BUILT |
 | **Hosting and secrets** | A hosted service, with keys held in a secrets manager and rotated | A Python server run by hand. Keys come from the environment or a local `.env`. | NOT BUILT |
-| **Observability and cost** | Dashboards for errors, slow stages, Gloo and Jev spend, and cost per package | Per-run tokens, seconds and dollars are recorded in each run. A full package cost about 6 cents (detention, mean of 20 scored runs) to 9 cents (hospital, mean of 8) on the final build, in 34 to 50 seconds. No dashboard, no alerts. | PLANNED (the numbers exist; the dashboard does not) |
+| **Observability and cost** | Dashboards for errors, slow stages, Gloo and Jev spend, and cost per case | Per-run tokens, seconds and dollars are recorded in each run. A full case cost about 6 cents (detention, mean of 20 scored runs) to 9 cents (hospital, mean of 8) on the final build, in 34 to 50 seconds. No dashboard, no alerts. | PLANNED (the numbers exist; the dashboard does not) |
 | **Evaluation in CI** | The offline tests and a scored set run on every change, and a regression blocks the merge | Tests and scenarios are run by hand | NOT BUILT |
 | **Human review queue** | Judges' uncertain cases go to a reviewer inside the product, with decisions recorded | A review page for Juan, built from test runs | NOT BUILT (the test-time page is BUILT, live) |
 | **Content governance** | Legal and medical sources reviewed by professionals, a native Spanish speaker reading the output, a schedule for updating official lists, and a named owner for each | Sources approved by Juan from official pages. No professional review. No native-speaker review. No update schedule. | NOT BUILT |
@@ -723,7 +723,7 @@ This is a suggested order, not a plan we have committed to.
 2. **Then make the content trustworthy:** professional review of the legal and medical sources, native-speaker review of the Spanish, an owner and a schedule for each official list.
 3. **Then make change safe:** evaluation in CI with regression gates, a human review queue, and a rule and workflow editor with review and staged rollout.
 4. **Then widen:** more crises, more languages, more states, mobile and offline, teams and handoff, reminders.
-5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability, terms and data retention). Watch cost and time per package. Put Nury in front of real pastors early and carefully, once the consent process and legal review are in place.
+5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability, terms and data retention). Watch cost and time per case. Put Nury in front of real pastors early and carefully, once the consent process and legal review are in place.
 
 ## Honest limits, in one place
 

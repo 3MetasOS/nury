@@ -94,7 +94,7 @@ What to see: each stage is one model call (4 to 20 seconds) and then one Jev cal
 | `scripture_providers.py` | Where verse text comes from: the verified bank or YouVersion. | 195 |
 | `network.py` | The church's own contacts, kept by the app. | 258 |
 | `officiallist.py` | Selects entries from the approved official list by state. | 91 |
-| `casefile.py` | Saves an approved package as a case folder and a next-steps map. | 412 |
+| `casefile.py` | Saves the approved stages as a case folder and a next-steps map. | 412 |
 | `rules.py` | Plain-English descriptions of every rule, for the Rules page. | 96 |
 | `audit.py` | The event log. | 30 |
 | `stages.py` | An old import path kept so older code still works. | 11 |
