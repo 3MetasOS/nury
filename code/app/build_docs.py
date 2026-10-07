@@ -85,6 +85,12 @@ def loop_svg():
 def build(out=None):
     md = SRC.read_text(encoding="utf-8")
     md = re.sub(r"## Contents\n.*?(?=\n## 1\.)", "", md, count=1, flags=re.S)       # the page builds its own contents
+    short = ""
+    ms = re.search(r"<!--\s*in-short\s*-->(.*?)<!--\s*/in-short\s*-->", md, re.S)
+    if ms:                                                   # the 'In short' block is a card above the contents, not part of the article
+        inner = re.sub(r"(?m)^#{1,6} .*\n", "", ms.group(1)).strip()
+        short = '<aside class="inshort" aria-labelledby="inshort-l"><p class="mono" id="inshort-l">In short</p>' + markdown.markdown(inner, extensions=["sane_lists"]) + "</aside>"
+        md = md[:ms.start()] + md[ms.end():]
     md = md.replace("<!--LIVE:RULES-->", '\n<div class="live" data-live="rules" markdown="0"></div>\n')
     md = md.replace("<!--LIVE:PLAYBOOKS-->", '\n<div class="live" data-live="playbooks" markdown="0"></div>\n')
     md = md.replace("<!--LIVE:SCORECARD-->", "")
@@ -115,7 +121,7 @@ def build(out=None):
     h1 = re.search(r"<h1[^>]*>(.*?)</h1>", body, re.S)
     body = re.sub(r"<h1[^>]*>.*?</h1>", "", body, count=1, flags=re.S)
     tocs = "".join(f'<li><a href="#{i}">{html.escape(n)}</a></li>' for i, n, _ in toc)
-    page = TEMPLATE.replace("@@TOC@@", tocs).replace("@@BODY@@", body).replace("@@NOTE@@", html.escape(NOTE)).replace("@@DISCLOSE@@", html.escape(DISCLOSE))
+    page = TEMPLATE.replace("@@INSHORT@@", short).replace("@@TOC@@", tocs).replace("@@BODY@@", body).replace("@@NOTE@@", html.escape(NOTE)).replace("@@DISCLOSE@@", html.escape(DISCLOSE))
     assert 'data-live="rules"' in page and 'data-live="playbooks"' in page, "live markers lost"
     Path(out or OUT).write_text(page, encoding="utf-8")
     return len(page), len(toc)

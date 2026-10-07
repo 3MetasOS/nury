@@ -14,6 +14,8 @@ main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
 .doc{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
 .hero-doc{padding:8px 0 4px}.hero-doc h1{font:600 clamp(1.8rem,7vw,2.6rem)/1.12 var(--serif);margin:0 0 8px;color:var(--amber-text)}
 .hero-doc p{margin:0 0 10px;max-width:68ch;color:var(--muted)}
+.inshort{grid-column:1/-1;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px}.inshort .mono{margin:0 0 8px;color:var(--amber-text);text-transform:uppercase;letter-spacing:.06em}.inshort p:not(.mono){margin:0 0 10px;font:400 17px/1.65 var(--sans);color:var(--text);max-width:none}.inshort p:last-child{margin-bottom:0}.inshort ul,.inshort ol{margin:0 0 10px;padding-left:22px;font:400 17px/1.65 var(--sans)}
+@media(min-width:960px){.inshort{padding:24px 28px}}
 .toc{border:1px solid var(--line);border-radius:14px;background:var(--surface);align-self:start}
 .toc summary{cursor:pointer;min-height:48px;display:flex;align-items:center;padding:0 16px;font:600 16px var(--sans)}
 .toc ol{list-style:none;margin:0;padding:0 8px 12px}
@@ -54,6 +56,7 @@ td:first-child code{white-space:nowrap}
 .stg .kv .lab{border:0;background:none;color:var(--muted);font:600 .8rem var(--sans)}
 .rt tr:target td{background:var(--amber-soft)}
 .disclose{margin-top:36px}
+@media print{.inshort{border-color:#bbb}}
 @media(min-width:960px){
   main{padding:24px 24px 24px}
   .doc{grid-template-columns:260px minmax(0,1fr);gap:40px}
@@ -82,6 +85,7 @@ td:first-child code{white-space:nowrap}
     <div class="hero-doc">
       <h1 id="top" tabindex="-1">How Nury was built</h1>
     </div>
+    @@INSHORT@@
     <details class="toc" id="toc"><summary>Contents</summary><nav aria-label="On this page"><ol>@@TOC@@</ol></nav></details>
     <article id="doc">
 @@BODY@@
