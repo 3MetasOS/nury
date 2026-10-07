@@ -3,9 +3,9 @@
 Owner: **hack-sensei**. I own this file and `BUILD_LOG.md`.
 
 ## What Nury is
-Crisis-response agent for a solo pastor. Flagship demo: an immigration detention or raid, the 2 AM call. The pastor picks the crisis and Nury runs five stages. Brand line: "Nury — the crisis-response agent for solo pastors." Name locked. Humanitarian framing, never political.
+An AI crisis response agent for churches and the pastors who answer the call. Flagship demo: an immigration detention or raid, the 2 AM call. The pastor picks the crisis and Nury runs five stages. Brand line: "Nury — An AI Crisis Response Agent." (Changed 2026-10-07 by Juan: no "solo pastors" in the tagline or any positioning; a wider market.) Name locked. Humanitarian framing, never political.
 
-Specific user: a solo pastor, no staff, no lawyer on the line, taking a panicked call from an immigrant family on a Sunday afternoon or late at night, on a phone.
+Story character in the demo (a character, not a market limit): a pastor taking a panicked call from an immigrant family on a Sunday afternoon or late at night, on a phone.
 
 ## The five stages
 1. Triage: raw intake to structured case (situation, people, location, family language, urgency + reason, 3 missing facts). Factual, no advice.
