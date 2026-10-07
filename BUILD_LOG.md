@@ -457,3 +457,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan listened: Eric says "Nury" correctly with the normal spelling. No respelling is needed.
 - Juan asked for a dictionary-style entry of "Nury"/"Nuri" at the start of the presentation (and a 3-second version in the video): the real meaning and its relation to light. hack-ninja researches with citable sources first and reports what could not be verified. Juan decides which origin the entry features. Gated until he approves the text.
+
+## 70. 2026-10-06 22:31 MDT — Pastoral fix reconciled (hack-jedi, commit 00fe7b1); final core
+
+- Two of our messages crossed: hack-jedi first shipped the strict version (invitations only, 452c488), then my note asked to keep the true part; commit 00fe7b1 adds one line to both pastoral prompts: the church is with them, and a checklist for tonight and a list of people to contact (hospital: hospital resources) are ready in this package. The check does not flag "are ready", only searching, preparing, sending, calling back, visiting and time words. 91 offline tests pass.
+- Live check on the five flagged scenarios (privacy off for readability, all five stages, $0.36): no invented action in any pastoral message; every pastoral stage passed on the first attempt. Before and after, from hack-jedi: BEFORE "La iglesia está buscando un abogado de inmigración que pueda orientarles lo antes posible. También estamos preparando una lista de pasos concretos"; "Estoy preparando dos cosas para ayudarles esta noche... Se las enviamos muy pronto". AFTER: "En este paquete hay una lista de pasos para esta noche y una lista de personas que pueden contactar. Por favor, léanlos con calma."
+- Known small limits: three detention messages say "Lo más importante ahora es hablar con un abogado" (a priority ranking in the pastor's voice; the required referral, left as is); h07 says "No están solas" (a feminine plural slip in a family message; not a safety issue; frozen).
+- The final core is 00fe7b1. The re-run of both full sets must use it; a run started on 452c488 is discarded and logged.
