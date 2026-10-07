@@ -82,3 +82,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Bug fixed: the strip said 3 of 3 on attempt 2.
 - hack-sensei check: server starts and serves the page (HTTP 200); the page says Nury never sends; a scan of tracked files finds no API key.
 - Not done: manual continue after an escalation; no browser screenshots yet. The 20-scenario baseline must re-run after hack-jedi's edits before any number is quoted.
+
+## 12. 2026-10-06 19:55 MDT — Jev key stored locally
+
+- Juan supplied the Jev key; stored in the gitignored `.env` as JEV_API_KEY. Not in any tracked file, commit, or message. Used at eval time only; product runtime stays pure Gloo.
+- Learning: the key appeared once in the session transcript. Rotate it after the hackathon.
