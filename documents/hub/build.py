@@ -132,7 +132,7 @@ START_HERE = wrap("Start here", """
 MENU = [
     ("Overview", "Start here", "raw", START_HERE),
     ("Overview", "README", "md", "README.md"),
-    ("Overview", "Product (locked)", "md", "documents/prework/PRODUCT.md"),
+    ("Overview", "Product (original brief; positioning superseded)", "md", "documents/prework/PRODUCT.md"),
     ("Overview", "Judging notes", "md", "documents/prework/JUDGING.md"),
     ("Overview", "Features: built vs not built", "md", "documents/FEATURES.md"),
     ("Overview", "Technical claims (verified)", "md", "documents/TECH_CLAIMS.md"),
