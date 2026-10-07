@@ -10,7 +10,7 @@ export type Proof = {pass?: number | string; n?: number | string; caught?: numbe
 export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
-const C = {bg: '#f6f1e7', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
+const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
 const D = {bg: '#080a0e', text: '#ece7dc', muted: '#a79f8d', amber: '#e8a33d'}; // dark phone interior (lock card)
 const serif = '"Fraunces", Georgia, serif';
 const sans = '"Inter", -apple-system, sans-serif';
@@ -84,7 +84,7 @@ const Fade: React.FC<{dur: number; children: React.ReactNode}> = ({dur, children
 
 const Backdrop: React.FC = () => (
   <AbsoluteFill>
-    <AbsoluteFill style={{background: 'linear-gradient(180deg, #f6f1e7, #eee7d7)'}} />
+    <AbsoluteFill style={{background: 'linear-gradient(180deg, #f7f3ea, #efe9db)'}} />
     {/* fine static grain: breaks up banding in flat light gradients after H.264 */}
     <svg width="100%" height="100%" style={{position: 'absolute', inset: 0, opacity: 0.07, mixBlendMode: 'multiply'}}>
       <filter id="g"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" /><feColorMatrix values="0 0 0 0 0.3  0 0 0 0 0.25  0 0 0 0 0.15  0 0 0 0.9 0" /></filter>
@@ -170,7 +170,7 @@ const Caption: React.FC<{text: string; dur: number}> = ({text, dur}) => {
   const o = interpolate(f, [0, 8, dur - 8, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <div style={{position: 'absolute', left: 0, right: 0, bottom: 46, textAlign: 'center', opacity: o}}>
-      <span style={{fontFamily: sans, fontSize: 34, color: C.text, background: 'rgba(246,241,231,.94)', boxShadow: '0 2px 14px rgba(70,45,10,.14)', padding: '10px 22px', borderRadius: 12, textWrap: 'balance' as any}}>{text}</span>
+      <span style={{fontFamily: sans, fontSize: 34, color: C.text, background: 'rgba(247,243,234,.94)', boxShadow: '0 2px 14px rgba(70,45,10,.14)', padding: '10px 22px', borderRadius: 12, textWrap: 'balance' as any}}>{text}</span>
     </div>
   );
 };

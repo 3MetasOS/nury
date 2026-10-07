@@ -23,8 +23,8 @@ esc = lambda t: t.replace("\\","\\\\").replace(":","\\:").replace("'","\u2019").
 tmp = Path(tempfile.mkdtemp()); segs = []; audio = []; t0 = 0.0
 def run(a): subprocess.run(["ffmpeg","-y","-loglevel","error",*a], check=True)
 for i,(sid,kind,dur,fr,to,label,vo) in enumerate(S):
-    out = tmp / f"{i:02d}.mp4"; bg = f"color=c=0xf6f1e7:s=1920x1080:r=30:d={dur}"
-    caps = "".join(f",drawtext=fontfile={HEL}:text='{esc(VO[k])}':fontsize=34:fontcolor=0x0d1015:box=1:boxcolor=0xf6f1e7@0.94:boxborderw=12:x=(w-text_w)/2:y=h-90:enable='between(t,{at},{at+VOLEN[k]+0.5})'" for k,at in vo)
+    out = tmp / f"{i:02d}.mp4"; bg = f"color=c=0xf7f3ea:s=1920x1080:r=30:d={dur}"
+    caps = "".join(f",drawtext=fontfile={HEL}:text='{esc(VO[k])}':fontsize=34:fontcolor=0x0d1015:box=1:boxcolor=0xf7f3ea@0.94:boxborderw=12:x=(w-text_w)/2:y=h-90:enable='between(t,{at},{at+VOLEN[k]+0.5})'" for k,at in vo)
     fade = f",fade=t=in:d=0.33,fade=t=out:st={dur-0.33}:d=0.33"
     if kind == 'clip':
         a = M[fr[0]]+fr[1]; b = M[to[0]]+to[1]; rate = min(4,max(0.85,(b-a)/dur))

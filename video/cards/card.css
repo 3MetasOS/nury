@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap');
-:root{--bg:#f6f1e7;--surface:#efe8d8;--amber:#b8680f;--text:#0d1015;--muted:#5b5547;--serif:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif}
+:root{--bg:#f7f3ea;--surface:#efe8d8;--amber:#b8680f;--text:#0d1015;--muted:#5b5547;--serif:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,sans-serif}
 *{box-sizing:border-box;margin:0}
 html,body{width:1920px;height:1080px;background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
 body{display:grid;place-items:center;
-  background:linear-gradient(180deg,#f6f1e7,#eee7d7)}
+  background:linear-gradient(180deg,#f7f3ea,#efe9db)}
 .stage{display:grid;justify-items:center;gap:36px;text-align:center;padding:0 160px}
 h1{font:600 188px/1 var(--serif);color:var(--amber);letter-spacing:-.02em}
 .tag{font:400 54px/1.25 var(--serif);max-width:1300px;text-wrap:balance}
