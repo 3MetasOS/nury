@@ -337,3 +337,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan added credit in Gloo Studio. hack-sensei's one-line test call returned HTTP 200 ("ready", 869 in / 4 out tokens).
 - Rule: one live job at a time on the key (Gloo rate limits showed up when two runs shared it); each agent reports to hack-sensei when done and hack-sensei releases the next. Order: (A) hack-artisans smoke test; (B) hack-jedi owed live checks; (C) hack-artisans case-file, revision, app end-to-end and network scenarios; (D) fixes; (E) core freeze declared by hack-sensei once B and C pass (target about 01:00); (F) final scored runs with Jev; (G) panel; (H) attacker scenarios; (I) skills before/after; (J) hack-video final capture after F. Every live script logs tokens and dollars per run.
+
+## 49. 2026-10-06 21:33 MDT — Architecture diagrams updated; small fixes (hack-jedi, commits fbc08fc, 27cc98f)
+
+- `documents/architecture/diagrams.html` now has ten tabs: Context, Layers, Playbook, Run flow, Correction, Privacy, Sources, Skills, Case file, Evals. Items not yet checked live are labeled "built, live check pending" (DOJ list, church network, revision, red-team panel, attacker runs); privacy, skills and the case file are marked as live-measured. Checked by hack-sensei at 390 px: no horizontal scroll, 11 SVGs.
+- Smaller items: the ABA email-only reason is recorded in PROMPT_NOTES and in a code comment; the network screen shows a visible notice when no church place is set; `save_case` writes `intake.md` (the pastor's words, exactly), so revisions append below it; the owed live checks narrowed to about 6 pipelines ($0.45).
