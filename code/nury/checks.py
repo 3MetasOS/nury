@@ -37,8 +37,8 @@ def cited_bullets(p, text, ctx):
 
 
 def ends_with_referral(p, text, ctx):
-    ok = g._ATTORNEY_WORDS.search(text[-p.get("tail", 400):])
-    return [] if ok else [g.R("missing_attorney_referral", "must end by urging an attorney")]
+    ok = re.search(p["pattern"], text[-p.get("tail", 400):], re.I)
+    return [] if ok else [g.R("missing_referral", p.get("reason", "must end by urging the family to see a professional"))]
 
 
 def vetted_links_present(p, text, ctx):

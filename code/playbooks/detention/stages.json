@@ -25,7 +25,7 @@
     ],
     "checks": [
       {"name": "cited_bullets", "source": "rights", "list": "entries", "field": "source"},
-      {"name": "ends_with_referral"}
+      {"name": "ends_with_referral", "pattern": "abogad|attorney|lawyer|legal aid|asistencia legal", "reason": "must end by urging an attorney"}
     ]
   },
   {

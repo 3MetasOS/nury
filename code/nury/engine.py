@@ -143,14 +143,14 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     fault = _fault_for(stage_id, fault_injection)
     m = _new_metrics()
     ctx = {d: state.approved[d] for d in stage.deps if d in state.approved}
-    base_ins = g.SYSTEM_BOUNDARY + "\n" + pbm.render_prompt(stage, pb, lang, state, fields)
+    base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields)
     user_input = pbm.build_input(stage, state)
     vetted_blob = json.dumps(data, ensure_ascii=False) + "\n" + "\n".join(ctx.values())
     ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
 
     def all_violations(txt):
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
-        v = g.unsafe_reasons(txt) + g.language_reasons(txt, lang)
+        v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
         for c in stage.checks:
             v += CHECKS[c["name"]](c, txt, ctx_ns)

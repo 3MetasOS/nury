@@ -51,6 +51,8 @@ class Playbook:
     stages: list
     outcomes: dict
     dir: Path
+    boundary: dict = field(default_factory=dict)       # domain words the engine's rules template fills in
+    extra_banned: list = field(default_factory=list)   # [{"pattern", "why"}] added to the floor
     sources: dict = field(default_factory=dict)    # name -> loaded JSON
 
     @property
@@ -70,12 +72,12 @@ def list_playbooks():
 
 
 def _validate_disclaimer(d):
-    """Safety floor: every disclaimer must say Nury is an AI and not a lawyer or pastor."""
-    must = {"en": ("ai assistant", "not a lawyer", "pastor", "not legal advice"),
-            "es": ("asistente de ia", "abogado", "pastor", "no asesoramiento legal")}
+    """Safety floor: every disclaimer says Nury is an AI assistant, not a pastor or a professional, and gives no advice."""
+    must = {"en": ("ai assistant", "pastor", r"\bnot an? \w+", r"\badvice\b"),
+            "es": ("asistente de ia", "pastor", r"\bno (es|soy) ", r"asesoramiento|consejo")}
     for lang, needles in must.items():
         t = d.get(lang, "").lower()
-        missing = [n for n in needles if n not in t]
+        missing = [n for n in needles if not re.search(n, t)]
         if missing:
             raise PlaybookError(f"disclaimer[{lang}] is missing required wording: {missing}")
 
@@ -86,6 +88,9 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
         raise PlaybookError(f"no playbook {playbook_id!r} in {d.parent}")
     pj = json.loads((d / "playbook.json").read_text(encoding="utf-8"))
     _validate_disclaimer(pj["disclaimer"])
+    need = ("who", "domain", "professional", "professional_kind")
+    if any(k not in pj.get("boundary", {}) for k in need):
+        raise PlaybookError(f"playbook.json needs boundary fields {need}")
     stages = []
     for sj in json.loads((d / "stages.json").read_text(encoding="utf-8")):
         for c in sj.get("checks", []):
@@ -117,7 +122,7 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
             sources[spec["name"]] = json.loads((d / "sources" / spec["file"]).read_text(encoding="utf-8"))
     return Playbook(pj["id"], pj["title"], pj["description"], pj["languages"],
                     pj.get("default_family_language", "es"), pj["disclaimer"], pj["draft_label"],
-                    stages, outcomes, d, sources)
+                    stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
 
 
 # ---------- prompt and source rendering ----------

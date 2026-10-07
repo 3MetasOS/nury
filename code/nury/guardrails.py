@@ -7,31 +7,24 @@ reasons. An empty list means the draft is clean.
 
 import re
 
-DISCLAIMER = {
-    "en": (
-        "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. "
-        "This is general legal information, not legal advice. Please review it with "
-        "a qualified immigration attorney as soon as possible."
-    ),
-    "es": (
-        "Nury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. "
-        "Esto es información legal general, no asesoramiento legal. Por favor "
-        "revísela con un abogado de inmigración calificado lo antes posible."
-    ),
-}
-
-SYSTEM_BOUNDARY = """You are Nury, a drafting assistant for a solo pastor helping an immigrant family in crisis.
+_BOUNDARY = """You are Nury, a drafting assistant for a solo pastor helping {who}.
 Hard rules:
-1. Give general legal INFORMATION only. Never give legal advice. Never predict how a case will turn out. Never suggest a legal strategy.
-2. Use only the source material given to you. Do not use outside knowledge for legal facts. Do not invent phone numbers, links, names or laws.
-3. Urge the family to speak with a qualified immigration attorney.
-4. Never claim to be a pastor, counselor, therapist, or lawyer.
-5. Never recommend a specific attorney.
+1. Give general {domain} INFORMATION only. Never give {domain} advice. Never predict how the situation will turn out. Never suggest a strategy.
+2. Use only the source material given to you. Do not use outside knowledge for facts. Do not invent phone numbers, links, names or rules.
+3. Urge the family to speak with a {professional}.
+4. Never claim to be a pastor, counselor, therapist, doctor, nurse, or lawyer.
+5. Never recommend a specific {professional_kind}.
 6. Be calm, plain, and kind. No frightening or sensational language.
 7. Short sentences. Plain words.
 8. Write the whole output in the language named in the task. Do not mix languages. Translate every quote. Do not add scripture, proverbs, or quotes that are not in the source material.
 9. Do not add a title, byline, signature, or any line that says who wrote the text. Never write "prepared by the pastor" or similar. Output only the content asked for.
 """
+
+
+def boundary(fields):
+    """The engine's rules, with the playbook's domain words filled in (playbook.json "boundary")."""
+    return _BOUNDARY.format(**{k: fields[k] for k in ("who", "domain", "professional", "professional_kind")})
+
 
 # Predictions, advice, and identity claims. English and Spanish.
 _UNSAFE_PATTERNS = [
@@ -39,37 +32,38 @@ _UNSAFE_PATTERNS = [
     (r"\b(will|won't|will not) be (deported|released|detained|freed)\b", "predicts an outcome"),
     (r"\byour case (will|is going to|should)\b", "predicts an outcome"),
     (r"\bguarantee[sd]?\b", "promises an outcome"),
-    (r"\byou should (plead|sign|file|apply|admit|accept|waive|refuse to sign)\b", "gives legal advice"),
-    (r"\b(we|i) (recommend|advise) (that )?you (plead|sign|file|apply)\b", "gives legal advice"),
+    (r"\byou should (plead|sign|file|apply|admit|accept|waive|refuse to sign)\b", "gives advice"),
+    (r"\b(we|i) (recommend|advise) (that )?you (plead|sign|file|apply)\b", "gives advice"),
     (r"\bthe best (strategy|option) (is|would be)\b", "suggests a legal strategy"),
-    (r"\b(i am|i'm|as) (your|a) (lawyer|attorney|counselor|therapist)\b", "claims to be a lawyer or counselor"),
+    (r"\b(i am|i'm|as) (your|a) (lawyer|attorney|counselor|therapist|doctor|nurse|physician)\b", "claims to be a professional"),
     (r"\b(i am|i'm) (a|your) pastor\b", "claims to be a pastor"),
     (r"\b(preparad[oa]|escrit[oa]|redactad[oa]|written|prepared|drafted) (por|by) (el |la |the )?(pastor|iglesia|church)", "says a pastor wrote it"),
     (r"\b(from|de parte de|firmado por) (the |el )?pastor\b", "signs as the pastor"),
     (r"\bsu caso (va a|será|sera|se va a)\b", "predicts an outcome"),
     (r"\b(será|sera|van a) (deportad[oa]s?|liberad[oa]s?)\b", "predicts an outcome"),
     (r"\bgarantiz\w+", "promises an outcome"),
-    (r"\busted debe (declararse|firmar|solicitar|aceptar|admitir)\b", "gives legal advice"),
-    (r"\bdebe(n)? declararse\b", "gives legal advice"),
-    (r"\bsoy (su |un )?(abogad[oa]|consejer[oa]|terapeuta|pastor)\b", "claims to be a lawyer, counselor, or pastor"),
+    (r"\busted debe (declararse|firmar|solicitar|aceptar|admitir)\b", "gives advice"),
+    (r"\bdebe(n)? declararse\b", "gives advice"),
+    (r"\bsoy (su |un )?(abogad[oa]|consejer[oa]|terapeuta|pastor|médic[oa]|enfermer[oa]|doctor[a]?)\b", "claims to be a lawyer, counselor, or pastor"),
     (r"\b(recomendamos|recomiendo) (al abogado|a la abogada|contratar)\b", "recommends a specific attorney"),
     (r"\bwe recommend (attorney|lawyer|the firm)\b", "recommends a specific attorney"),
 ]
 
 _URL = re.compile(r"https?://[^\s)>\]\"']+|www\.[^\s)>\]\"']+", re.I)
-_ATTORNEY_WORDS = re.compile(r"abogad|attorney|lawyer|legal aid|asistencia legal", re.I)
 
 
 def R(category, reason):
     """One violation. Categories: banned_phrase, ungrounded_claim, missing_vetted_entry,
-    missing_attorney_referral, format, length."""
+    missing_referral, format, length."""
     return {"category": category, "reason": reason}
 
 
-def unsafe_reasons(text):
+def unsafe_reasons(text, extra=()):
+    """Floor patterns plus a playbook's extra [{"pattern", "why"}]. A playbook can add. It cannot remove."""
     low = text.lower()
+    pats = list(_UNSAFE_PATTERNS) + [(e["pattern"], e["why"]) for e in extra]
     return [R("banned_phrase", f"{why} (matched {m.group(0)!r})")
-            for pat, why in _UNSAFE_PATTERNS
+            for pat, why in pats
             if (m := re.search(pat, low))]
 
 

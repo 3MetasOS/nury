@@ -151,7 +151,11 @@ class Playbooks(unittest.TestCase):
         (d / "sources").mkdir()
         shutil.copy(self.src / "outcomes.json", d)
         pj = json.loads((self.src / "playbook.json").read_text())
-        pj.update(id="hospital", title="Hospital emergency")
+        pj.update(id="hospital", title="Hospital emergency", description="A family member is in the hospital.",
+                  disclaimer={"en": "Nury is an AI assistant, not a doctor, nurse, or pastor. This is general information, not medical advice. Please ask the hospital care team.",
+                              "es": "Nury es un asistente de IA, no es médico, enfermero ni pastor. Esto es información general, no consejo médico. Por favor pregunte al equipo del hospital."},
+                  boundary={"who": "a family with a loved one in the hospital", "domain": "medical",
+                            "professional": "hospital care team", "professional_kind": "doctor"})
         (d / "playbook.json").write_text(json.dumps(pj))
         shutil.copy(self.src / "prompts" / "triage.txt", d / "prompts")
         (d / "prompts" / "note.txt").write_text("Task: write a short note in {{lang_name}} from {{vetted_points}}")
@@ -164,13 +168,21 @@ class Playbooks(unittest.TestCase):
                           "groups": [{"list": "items", "line": "- {t}: {es}"}]}],
              "checks": [{"name": "max_words", "limit": 50}]}]))
         pb = pbm.load_playbook("hospital", self.tmp)
+        seen = []
         class C(FakeClient):
             def ask(self, u, instructions=None, **kw):
+                seen.append(instructions)
                 t = TRIAGE if "structured case" in instructions else "Hay visitas. Hable con un abogado."
                 return t, {"latency_s": 0, "input_tokens": 1, "output_tokens": 1, "model": "f"}
         st, rs, _ = run_scripted("intake", client=C(), playbook=pb)
         self.assertEqual([r.status for r in rs], ["approved", "approved"])
         self.assertEqual(st.outcome["outcome"], "package_complete")
+        everything = "\n".join(seen) + json.dumps(pb.disclaimer) + pb.title + pb.description
+        self.assertNotIn("immigra", everything.lower())
+        self.assertNotIn("legal", "\n".join(seen).lower().replace("legal aid", ""))
+        self.assertIn("medical", seen[0])
+        self.assertIn("hospital care team", seen[0])
+        self.assertNotIn("immigra", rs[1].shown_text.lower())
 
     def test_playbook_cannot_drop_disclaimer_floor(self):
         d = self._copy()
