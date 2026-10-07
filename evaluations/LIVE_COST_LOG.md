@@ -152,7 +152,7 @@ detention 01 and hospital h01, YouVersion on: **$0.1765** (cap $0.30). Both pack
 | G2 | detention 01, 14, h01 with the gate on, first code (14 crashed my script after escalating: 3 Jev rejects at triage) | $0.11 | 5 calls for 01 |
 | G3 | detention 14 twice (escalation diagnosis; then after crisis context: completes, 2 regenerations) | $0.02 + $0.10 | 3 + 7 calls |
 | G4 | final code: detention 01, hospital h01 | $0.17 | 5 + 5 calls, 859 ms and 764 ms total |
-| | **Slot G total (Gloo)** | **about $0.59** (cap $1.00) | Jev bills on its own key; usage about 700 in and 80 out tokens per pastoral call; price not known |
+| | **Slot G total (Gloo)** | **about $0.59** (cap $1.00) | Jev bills on its own key; usage about 700 in and 80 out tokens per pastoral call; public price $0.042 per million input tokens, output free (docs.typesafe.ai/models, read 2026-10-07; see documents/product/ECONOMICS.md 3.6) |
 
 ### Slot G, run G5: the 0.60 line for assumes_facts (hack-jedi, 2026-10-07)
 
@@ -160,7 +160,7 @@ detention 14, 01 and hospital h01, gate on, YouVersion on: Gloo **$0.2535** (cap
 
 ## Slot G and H: the final scored sets on c317050 (hack-artisans, 2026-10-07)
 
-Gate on, YouVersion on (all 31 verses came from YouVersion, no fallback), privacy on, leak check on, Jev judges on. Gloo cost is the metered sum of stage costs at $3 and $15 per 1M tokens; Jev bills on its own key and is not in these numbers.
+Gate on, YouVersion on (all 31 verses came from YouVersion, no fallback), privacy on, leak check on, Jev judges on. Gloo cost is the metered sum of stage costs at $3 and $15 per 1M tokens; Jev bills on its own key and is not in these numbers (public price $0.042 per million input tokens, output free).
 
 | Run | What | Gloo cost | Jev gate calls |
 |---|---|---|---|

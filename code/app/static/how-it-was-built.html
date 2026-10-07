@@ -67,6 +67,13 @@ td:first-child code{white-space:nowrap}
   :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--surface-2:#f3f3f3;--text:#000;--muted:#333;--line:#bbb;--line-2:#999;--amber-text:#000;--green:#000;--red:#000}
   body{background:#fff;color:#000}.doc{display:block}article{font-size:11pt}pre,.tw{overflow:visible;break-inside:avoid}h2,h3{break-after:avoid}details>*{display:block!important}
 }
+.fig{margin:22px 0}.fig figcaption{margin:0 0 8px}
+.adg{width:100%;max-width:600px;height:auto;display:block}
+.adg .bx rect{fill:var(--surface);stroke:var(--line-2);stroke-width:1.5}.adg .bx.hi rect{stroke:var(--amber-text);fill:var(--amber-soft)}
+.adg .bt{font:600 16px var(--serif);fill:var(--text)}.adg .bs{font:400 12.5px var(--sans);fill:var(--muted)}
+.adg .ba,.adg .bl{fill:none;stroke:var(--amber-text);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.adg .bl{stroke-dasharray:5 4}
+.adg .bh{font:400 17px "Gochi Hand","Bradley Hand",cursive;fill:var(--text)}
+@media(max-width:639px){.adg .bh{font-size:15px}}
 </style>
 </head>
 <body data-nav="how">
@@ -150,7 +157,7 @@ td:first-child code{white-space:nowrap}
         |
         v
  Save as a case (optional): linked pages, a next-steps map, versions
-</code></pre></details>
+</code></pre></details><figure class="fig"><figcaption class="mono">The architecture in one picture</figcaption><svg class="adg" viewBox="0 0 560 580" role="img" aria-label="Architecture: the pastor, the privacy layer, Claude through Gloo, named rules, the Jev gate, then the pastor's gate and the audit log. A draft that fails a rule or Jev goes back to Claude with the reasons, up to three tries, then the work goes to the pastor."><g class="bx "><rect x="20" y="4" width="400" height="56" rx="6"/><text x="34" y="28" class="bt">The pastor</text><text x="34" y="47" class="bs">Types what the family said. Picks the names to hide.</text></g><path d="M220 60 V84" class="ba"/><path d="M215 78 L220 85 L225 78" class="ba"/><g class="bx "><rect x="20" y="90" width="400" height="56" rx="6"/><text x="34" y="114" class="bt">Privacy layer</text><text x="34" y="133" class="bs">Names, phones, emails, addresses and dates become tokens.</text></g><path d="M220 146 V170" class="ba"/><path d="M215 164 L220 171 L225 164" class="ba"/><g class="bx hi"><rect x="20" y="176" width="400" height="56" rx="6"/><text x="34" y="200" class="bt">Claude Sonnet 4.6, through Gloo</text><text x="34" y="219" class="bs">Writes the draft from the vetted sources only.</text></g><path d="M220 232 V256" class="ba"/><path d="M215 250 L220 257 L225 250" class="ba"/><g class="bx "><rect x="20" y="262" width="400" height="56" rx="6"/><text x="34" y="286" class="bt">Named rules</text><text x="34" y="305" class="bs">Plain code: the stage&#x27;s rules and the safety floor.</text></g><path d="M220 318 V342" class="ba"/><path d="M215 336 L220 343 L225 336" class="ba"/><g class="bx "><rect x="20" y="348" width="400" height="56" rx="6"/><text x="34" y="372" class="bt">Jev gate</text><text x="34" y="391" class="bs">Classifies the draft with yes or no questions.</text></g><path d="M220 404 V428" class="ba"/><path d="M215 422 L220 429 L225 422" class="ba"/><g class="bx hi"><rect x="20" y="434" width="400" height="56" rx="6"/><text x="34" y="458" class="bt">The pastor&#x27;s gate</text><text x="34" y="477" class="bs">Approve, Edit or Stop. Only a draft that passed is shown.</text></g><path d="M220 490 V514" class="ba"/><path d="M215 508 L220 515 L225 508" class="ba"/><g class="bx "><rect x="20" y="520" width="400" height="56" rx="6"/><text x="34" y="544" class="bt">Audit log</text><text x="34" y="563" class="bs">Every check and every gate, with reasons only.</text></g><path d="M420 376.0 C 520 376.0, 520 204.0, 426 204.0" class="bl"/><path d="M434 198.0 L424 204.0 L434 210.0" class="bl"/><text x="446" y="284.0" class="bh">fails? back with</text><text x="446" y="304.0" class="bh">the reasons,</text><text x="446" y="324.0" class="bh">3 tries</text></svg></figure>
 <h3 id="each-step-in-plain-words">Each step in plain words<a class="anc" href="#each-step-in-plain-words" aria-label="Link to this section">#</a></h3>
 <ol>
 <li><strong>Intake.</strong> The pastor types what the family said and picks the family's language, Spanish or English. <span class="st st-built-live">BUILT, live</span>. <code>code/app/static/index.html</code>.</li>
@@ -197,7 +204,7 @@ td:first-child code{white-space:nowrap}
 <p>No call can reach the family. A test (<code>NoSendPath</code> in <code>code/tests/test_core.py</code>) scans the product code for mail, FTP, socket, browser and SMS libraries and finds none. <span class="st st-built-off">BUILT, offline</span>.</p>
 <p><strong>Not reviewed:</strong> TypeSafe's data retention and terms for run-time use. The text sent is tokenized, but nobody has read the terms. Someone has to before real churches use the gate.</p>
 <h3 id="cost-and-time">Cost and time<a class="anc" href="#cost-and-time" aria-label="Link to this section">#</a></h3>
-<p>A full package took 50 to 56 seconds and cost 8 to 9 cents in four live pipelines, at $3 and $15 per million tokens (<code>evaluations/results/live_checks_slot_b.md</code>). That was measured before the Jev gate. The gate adds one Jev call per draft attempt: a median of about 150 ms a call, about 0.8 to 1.1 seconds for a full package. Jev bills on its own key and we have not seen its price, so no Jev dollar cost is quoted.</p>
+<p>On the final build, a full package took about 33 seconds and cost about 6 cents for detention (mean of 20 scored runs), and about 49 seconds and 9 cents for hospital (mean of 8), at $3 and $15 per million tokens (<code>evaluations/results/scorecard.md</code>). The Jev gate adds one Jev call per draft attempt: about 150 to 230 ms a call, about 3 percent of the time. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). From our own audit files, a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens, so Jev costs about $0.0003 to $0.0005 per package: an estimate from our token counts, not a bill.</p>
 <h2 id="2-how-the-engine-works">2. How the engine works<a class="anc" href="#2-how-the-engine-works" aria-label="Link to this section">#</a></h2>
 <p>This section explains how Nury's core works: the cycle for one stage, the five-stage run, a real trace, the files, what we chose not to build, and where the design came from. Written by hack-jedi from the code. The function names, the file line counts and the prework quotes were checked against the repo on 2026-10-07. Line numbers are for <code>code/nury/engine.py</code> at the final build and may move; the function names will not. The raw trace file is <code>documents/product/trace_detention_01.jsonl</code>.</p>
 <h3 id="the-cycle-for-one-stage">The cycle for one stage<a class="anc" href="#the-cycle-for-one-stage" aria-label="Link to this section">#</a></h3>
@@ -637,7 +644,7 @@ td:first-child code{white-space:nowrap}
 <li>Nothing has been learned from pastors, because none has used Nury. The learning loop is built and tested on invented sessions only, and we do not claim it improves Nury. The before-and-after script exists and has not been run.</li>
 </ul>
 <h3 id="how-a-person-can-improve-nury-the-learning-loop-built-not-used">How a person can improve Nury: the learning loop (built, not used)<a class="anc" href="#how-a-person-can-improve-nury-the-learning-loop-built-not-used" aria-label="Link to this section">#</a></h3>
-<p>No real pastor has used Nury. We built a loop for learning from use, and we tested it on 30 invented sessions. <strong>Nothing has been learned yet, and we do not claim it improves Nury.</strong> Nury does not learn, improve itself or evolve. The loop proposes. It scores. A person approves. The source is <code>documents/product/LEARNING_LOOP.md</code>.</p>
+<p>No real pastor has used Nury. We built a loop for learning from use, and we tested it on 30 invented sessions. <strong>Nothing has been learned yet, and we do not claim it improves Nury.</strong> Nury does not learn, improve itself or evolve. The loop proposes. It scores. A person approves. The source is <code>documents/product/LEARNING_LOOP.md</code>.</p><figure class="fig"><figcaption class="mono">The loop, with a person in control</figcaption><svg class="adg" viewBox="0 0 560 450" role="img" aria-label="The self-improvement loop: feedback, report, candidate, test, a person approves, release. Nothing changes without a person approving it."><g class="bx "><rect x="20" y="4" width="400" height="52" rx="6"/><text x="34" y="28" class="bt">Feedback</text><text x="34" y="47" class="bs">What the pastor changed, without names.</text></g><path d="M220 56 V76" class="ba"/><path d="M215 70 L220 77 L225 70" class="ba"/><g class="bx "><rect x="20" y="82" width="400" height="52" rx="6"/><text x="34" y="106" class="bt">Report</text><text x="34" y="125" class="bs">Counts by crisis and stage.</text></g><path d="M220 134 V154" class="ba"/><path d="M215 148 L220 155 L225 148" class="ba"/><g class="bx "><rect x="20" y="160" width="400" height="52" rx="6"/><text x="34" y="184" class="bt">Candidate</text><text x="34" y="203" class="bs">A proposed prompt line, rule, question or scenario.</text></g><path d="M220 212 V232" class="ba"/><path d="M215 226 L220 233 L225 226" class="ba"/><g class="bx "><rect x="20" y="238" width="400" height="52" rx="6"/><text x="34" y="262" class="bt">Test</text><text x="34" y="281" class="bs">Run against the evaluation set; no regression allowed.</text></g><path d="M220 290 V310" class="ba"/><path d="M215 304 L220 311 L225 304" class="ba"/><g class="bx hi"><rect x="20" y="316" width="400" height="52" rx="6"/><text x="34" y="340" class="bt">A person approves</text><text x="34" y="359" class="bs">Written in the candidate&#x27;s review file.</text></g><path d="M220 368 V388" class="ba"/><path d="M215 382 L220 389 L225 382" class="ba"/><g class="bx "><rect x="20" y="394" width="400" height="52" rx="6"/><text x="34" y="418" class="bt">Release</text><text x="34" y="437" class="bs">A normal commit. Nothing applies itself.</text></g></svg></figure>
 <div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>
 <thead>
 <tr>
@@ -1069,7 +1076,7 @@ td:first-child code{white-space:nowrap}
 <tr>
 <td><strong>Observability and cost</strong></td>
 <td>Dashboards for errors, slow stages, Gloo and Jev spend, and cost per package</td>
-<td>Per-run tokens, seconds and dollars are recorded in each run. A full package measured 8 to 9 cents in four live runs. No dashboard, no alerts.</td>
+<td>Per-run tokens, seconds and dollars are recorded in each run. A full package cost about 6 cents (detention, mean of 20 scored runs) to 9 cents (hospital, mean of 8) on the final build, in 33 to 49 seconds. No dashboard, no alerts.</td>
 <td>PLANNED (the numbers exist; the dashboard does not)</td>
 </tr>
 <tr>
@@ -1104,7 +1111,7 @@ td:first-child code{white-space:nowrap}
 </tr>
 <tr>
 <td><strong>Run-time Jev gate</strong></td>
-<td>A calibration study, the false-reject rate measured over many cases, stability measured, Jev's price known, and TypeSafe's terms and retention read</td>
+<td>A calibration study, the false-reject rate measured over many cases, stability measured, TypeSafe's terms and data retention for run-time use read (Jev's price is public: $0.042 per million input tokens, output free)</td>
 <td>Live on three scenarios. Smoke-tested on 20 pairs.</td>
 <td>BUILT, live (three scenarios); the rest <span class="st st-notbuilt">NOT BUILT</span></td>
 </tr>
@@ -1177,7 +1184,7 @@ td:first-child code{white-space:nowrap}
 <li><strong>Then make the content trustworthy:</strong> professional review of the legal and medical sources, native-speaker review of the Spanish, an owner and a schedule for each official list.</li>
 <li><strong>Then make change safe:</strong> evaluation in CI with regression gates, a human review queue, and a rule and workflow editor with review and staged rollout.</li>
 <li><strong>Then widen:</strong> more crises, more languages, more states, mobile and offline, teams and handoff, reminders.</li>
-<li><strong>Throughout:</strong> finish the Jev gate work (calibration, false-reject rate over many cases, stability, price, terms), watch cost and time per package, and put Nury in front of real pastors early and carefully, with the consent process and legal review in place first.</li>
+<li><strong>Throughout:</strong> finish the Jev gate work (calibration, false-reject rate over many cases, stability, terms and data retention), watch cost and time per package, and put Nury in front of real pastors early and carefully, with the consent process and legal review in place first.</li>
 </ol>
 <h2 id="honest-limits-in-one-place">Honest limits, in one place<a class="anc" href="#honest-limits-in-one-place" aria-label="Link to this section">#</a></h2>
 <ul>
