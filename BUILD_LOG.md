@@ -957,3 +957,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 15:40: hack-video has not acted since 11:30; the raw app recording (urgent for tonight) is reassigned to hack-artisans; the submission form is now a copy-and-paste HTML page (presentation/submission_form.html, 16 boxes, repository link filled); Google sign-in to the real form did not work for Juan.
 - 15:42: hack-video is back ('queue ok' at 15:4x): owns the raw app recording again; the reassignment to hack-artisans is withdrawn.
 - 16:02: Juan approved new copy for short-deck slides 1 and 2 (crisis, pastor needs help, so we built Nury, never alone); words to hack-ninja, build to hack-artisans.
+- 16:12: Juan: short deck slides 1 and 2 look different from the original design; hack-sensei had judged from the diff, not from images. Restore ordered; side-by-side PNGs required. Lesson: compare real images, not diffs.
