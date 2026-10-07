@@ -148,6 +148,9 @@
           "DO NOT DO",
           "GATHER THESE DOCUMENTS"
         ]
+      },
+      {
+        "name": "no_agency_names"
       }
     ]
   },
@@ -170,6 +173,9 @@
       {
         "name": "max_words",
         "limit": 119
+      },
+      {
+        "name": "no_agency_names"
       }
     ]
   }

@@ -110,6 +110,21 @@ class Core(unittest.TestCase):
         ok = run_stage("triage", CaseState("intake"), client=FakeClient())
         self.assertEqual(ok.status, "approved")
 
+    def test_agency_names_flagged_on_checklist_and_pastoral_not_on_rights_or_attorney(self):
+        for stage, key, bad_text in (("checklist", "checklist", CHECK + "\n1. No hable con ICE."),
+                                      ("pastoral", "pastoral", PAST + " ICE no puede separarlos.")):
+            st = CaseState("intake")
+            st.approved.update(triage=TRIAGE, rights=RIGHTS, attorney=ATTY, checklist=CHECK)
+            r = run_stage(stage, st, client=FakeClient(dict(CANNED, **{key: bad_text})))
+            self.assertEqual(r.status, "escalated", stage)
+            self.assertIn("agency_name", r.reason_categories)
+        # rights and attorney may name agencies that appear in vetted sources: no false escalation
+        for stage, key, text in (("rights", "rights", RIGHTS + " (ICE)"), ("attorney", "attorney", ATTY + " ICE")):
+            st = CaseState("intake")
+            st.approved.update(triage=TRIAGE, rights=RIGHTS)
+            r = run_stage(stage, st, client=FakeClient(dict(CANNED, **{key: text})))
+            self.assertNotIn("agency_name", r.reason_categories, stage)
+
     def test_forced_rejection_env_targets_stage_2(self):
         import os
         os.environ["NURY_FORCE_REJECTION"] = "1"
