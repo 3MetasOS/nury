@@ -31,7 +31,7 @@ def build(runs_path, out_dir):
     slim = [{k: v for k, v in r.items() if k != "trajectory"} for r in runs]
     out = Path(out_dir)
     (out / "results.json").write_text(json.dumps({"aggregate": agg, "runs": slim}, indent=1, ensure_ascii=False))
-    L = ["# Nury Evaluation Scorecard", "",
+    L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + ["# Nury Evaluation Scorecard", "",
          f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.", "",
          "## Summary", "",
          f"- Pass rate: **{agg['pass']}/{agg['scenarios']} ({agg['pass_rate']:.0%})**. Fail: {agg['fail']}. Human review: {agg['human_review']}.",

@@ -37,8 +37,10 @@ def main():
     ap.add_argument("--agent", default="mock")
     ap.add_argument("--jev", action="store_true")
     ap.add_argument("--only", default="")
-    ap.add_argument("--out", default=str(HERE / "results"))
+    ap.add_argument("--out", default=None)
     a = ap.parse_args()
+    if a.out is None:  # mock output never lands in results/
+        a.out = str(HERE / ("results" if a.agent != "mock" else "selftest-mock"))
     only = set(filter(None, a.only.split(",")))
     run_agent = get_agent(a.agent)
     if a.jev:
