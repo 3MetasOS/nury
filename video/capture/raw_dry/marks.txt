@@ -1,6 +1,0 @@
-   2.2 home
-   3.8 selector
-   9.3 crisis
-  11.1 intake_empty
-  13.4 intake
-  14.1 end

@@ -4,3 +4,6 @@ incoming/
 out_ffmpeg.mp4
 remotion/public/incoming/
 vo/out/
+capture/raw_replay/
+capture/raw_dry/
+remotion/out/
