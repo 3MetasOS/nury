@@ -146,6 +146,34 @@ class Cases(unittest.TestCase):
         self.assertIn("988", (d / "nextsteps.svg").read_text())      # vetted resource whose link is in the approved text
         self.assertIn("Una lista de preguntas", (d / "documents.md").read_text())
 
+    def test_follow_up_flag_defaults_off_sets_clears_and_touches_only_case_json(self):
+        st, rs, au = self._run(client=FakeClient())
+        cf.save_case(st, au, "detention", self.root, case_id="fu")
+        self.assertIs(cf.list_cases(self.root)[0]["needs_follow_up"], False)
+        before = {f.name: f.read_bytes() for f in (self.root / "fu").iterdir() if f.name != "case.json"}
+        self.assertIs(cf.set_follow_up("fu", True, self.root)["needs_follow_up"], True)
+        self.assertIs(cf.list_cases(self.root)[0]["needs_follow_up"], True)
+        self.assertIs(cf.load_case("fu", self.root)["meta"]["needs_follow_up"], True)
+        self.assertEqual({f.name: f.read_bytes() for f in (self.root / "fu").iterdir() if f.name != "case.json"}, before)
+        self.assertIs(cf.set_follow_up("fu", False, self.root)["needs_follow_up"], False)
+        self.assertFalse(list((self.root / "fu").glob("*.tmp")))
+        self.assertEqual(cf.load_case("fu", self.root)["meta"]["status"], "complete")
+
+    def test_follow_up_rejects_non_booleans_bad_ids_and_old_cases_read_as_false(self):
+        st, rs, au = self._run(client=FakeClient())
+        cf.save_case(st, au, "detention", self.root, case_id="old")
+        for bad in ("true", 1, None):
+            with self.assertRaises(cf.CaseError):
+                cf.set_follow_up("old", bad, self.root)
+        for bad_id in ("../etc", "nope", ""):
+            with self.assertRaises(cf.CaseError):
+                cf.set_follow_up(bad_id, True, self.root)
+        f = self.root / "old" / "case.json"
+        m = json.loads(f.read_text())
+        del m["needs_follow_up"]                       # a case saved before this field existed
+        f.write_text(json.dumps(m))
+        self.assertIs(cf.list_cases(self.root)[0]["needs_follow_up"], False)
+
     def test_list_load_export(self):
         st, rs, au = self._run(client=FakeClient())
         a = cf.save_case(st, au, "detention", self.root, case_id="one")

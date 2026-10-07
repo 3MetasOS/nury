@@ -338,7 +338,7 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
              "timeline.md": _timeline_md(audit), "log.md": _log_md(audit), "nextsteps.svg": svg}
     pmap = privacy.map() if privacy is not None and hasattr(privacy, "map") else None
     manifest = {"id": cid, "playbook": pb.id, "title": pb.title, "created": created, "language": state.language,
-                "status": "complete", "edited": [s.id for s in stages if state.results.get(s.id) and state.results[s.id].status == "edited"],
+                "status": "complete", "needs_follow_up": False, "edited": [s.id for s in stages if state.results.get(s.id) and state.results[s.id].status == "edited"],
                 "files": sorted(list(files) + ["case.json"] + (["privacy-map.json"] if pmap else []))}
     files_all = dict(files)
     _guard(files_all, state, audit)
@@ -366,7 +366,7 @@ def list_cases(root=DEFAULT_ROOT):
         if f.is_file():
             m = json.loads(f.read_text(encoding="utf-8"))
             out.append({"id": m["id"], "playbook": m["playbook"], "title": m["title"], "created": m["created"],
-                        "status": m["status"], "path": str(d)})
+                        "status": m["status"], "needs_follow_up": bool(m.get("needs_follow_up", False)), "path": str(d)})
     return sorted(out, key=lambda c: c["created"], reverse=True)
 
 
@@ -377,6 +377,20 @@ def _case_dir(case_id, root):
     if not (d / "case.json").is_file():
         raise CaseError(f"no case {case_id!r}")
     return d
+
+
+def set_follow_up(case_id, value, root=DEFAULT_ROOT) -> dict:
+    """The pastor marks a case as needing follow-up, or clears the mark. A flag only: no reminder, no date.
+    Changes one key in case.json and touches no other file. Returns the new case.json."""
+    if not isinstance(value, bool):
+        raise CaseError("value must be true or false")
+    f = _case_dir(case_id, root) / "case.json"
+    m = json.loads(f.read_text(encoding="utf-8"))
+    m["needs_follow_up"] = value
+    tmp = f.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(m, indent=2), encoding="utf-8")
+    tmp.replace(f)
+    return m
 
 
 def load_case(case_id, root=DEFAULT_ROOT) -> dict:

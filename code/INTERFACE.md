@@ -96,7 +96,8 @@ Small versioned instruction modules in `code/skills/<name>/SKILL.md` (header: na
 ```python
 from nury import casefile as cf
 cf.save_case(state, audit, playbook=None, root="cases", case_id=None, privacy=None) -> {"id", "path", "files"}
-cf.list_cases(root="cases")  -> [{"id", "playbook", "title", "created", "status", "path"}]   # newest first
+cf.list_cases(root="cases")  -> [{"id", "playbook", "title", "created", "status", "needs_follow_up", "path"}]   # newest first
+cf.set_follow_up(case_id, True, root="cases")   # needs_follow_up flag in case.json only; value must be a bool; no reminder, no date
 cf.load_case(case_id, root="cases") -> {"meta": {...}, "pages": {"index.md": text, ...}, "svg": "<svg ...>"}
 cf.export_zip(case_id, root="cases", dest=None) -> "<path to .zip>"       # default <root>/<id>.zip
 cf.nextsteps_svg(pb, state, title) -> svg string                          # the map alone

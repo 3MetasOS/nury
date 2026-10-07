@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 45 live verified, 21 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
+Count: 45 live verified, 21 offline tested, 3 built but not yet checked live, 6 planned, 18 not built.
 
 ## 1. Pastor experience
 
@@ -38,6 +38,7 @@ Count: 45 live verified, 21 offline tested, 3 built but not yet checked live, 5 
 | Scripture in the pastoral message | The model picks a verse id from the approved list for this case and writes at most two short why-lines. The app inserts the exact verse text, reference and translation name. If no verse fits, no verse is added. | BUILT, live verified | `nury/scripture.py`; `checks.verse_block_verbatim`; `tests/test_scripture.py`; live verified (8 runs, 2026-10-07) | pastor, judge |
 | Three Scripture checks | `no_providence_claims` (no claim about what God will do or why this happened, EN and ES), `no_model_scripture` (the model writes no reference and no verse), `verse_block_verbatim` (the block equals the source word for word). The registry now holds 20 named checks; the 14 above are the ones the scored runs used. | BUILT, offline tested | `nury/checks.py`; `tests/test_scripture.py` | judge, developer |
 | Three panel-driven checks | No 'call <Name>' in the pastor's voice, no unsupported signing or care-decision directive in a DO NOT list, no advice or 'critical' claim in triage. The registry now holds 20 named checks; the scored runs used 14. | BUILT, offline tested | `nury/checks.py`; `tests/test_panel_fixes.py` | judge, developer |
+| Needs follow-up flag | The pastor marks a saved case as needing follow-up, or clears the mark. A flag only: no reminder, no date. Saved in `case.json`; no other file changes. The route and the button are the app's, not built yet. | PLANNED | `casefile.set_follow_up`; `tests/test_casefile.py` | pastor |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
