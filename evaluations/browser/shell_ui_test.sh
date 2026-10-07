@@ -31,11 +31,11 @@ JS
 JS
   check "$T logo: the lockup is in the header and in the footer, and in no page body" "$(ev "$J")" "true"
   read -r -d '' J <<'JS'
-(()=>{window.scrollTo(0,document.body.scrollHeight);const f=document.querySelector('footer.sitefoot'),lk=f.querySelector('.lockup').getBoundingClientRect(),nav=f.querySelector('.fnav').getBoundingClientRect(),pv=f.querySelector('.prov').getBoundingClientRect(),fi=f.querySelector('.fine').getBoundingClientRect(),w=innerWidth>=960;
+(()=>{window.scrollTo(0,document.body.scrollHeight);const f=document.querySelector('footer.sitefoot'),lk=f.querySelector('.lockup').getBoundingClientRect(),nav=f.querySelector('.fnav').getBoundingClientRect(),fm=f.querySelector('.fm').getBoundingClientRect(),pv=f.querySelector('.prov').getBoundingClientRect(),fi=f.querySelector('.fine').getBoundingClientRect(),w=innerWidth>=960;
 const lh=parseFloat(getComputedStyle(f.querySelector('.prov')).lineHeight)||26;const lines=Math.round(pv.height/lh);
-return JSON.stringify([w?(lk.right<=nav.left+1&&nav.height<=50):true,pv.top>=Math.max(nav.bottom,lk.bottom)-1,fi.top>=pv.bottom-1,w?lines<=1:lines<=3,f.scrollWidth<=f.clientWidth+1])})()
+return JSON.stringify([w?(lk.right<=nav.left+1&&nav.right<=fm.left+1):(nav.bottom<=fm.top+1&&lk.bottom<=nav.top+1),pv.top>=Math.max(nav.bottom,lk.bottom,fm.bottom)-1,fi.top>=pv.bottom-1,w?lines<=1:lines<=3,f.scrollWidth<=f.clientWidth+1])})()
 JS
-  check "$T footer: a clean grid: logo and judges links in row 1 (links on one row on laptop), the provenance sentence below on one line (at most three on a phone), then the disclaimer" "$(ev "$J")" '"[true,true,true,true,true]"'
+  check "$T footer: a clean grid: logo, judges links (one column) and How it was made side by side on laptop, stacked on a phone; the provenance sentence below on one line (at most three on a phone), then the disclaimer" "$(ev "$J")" '"[true,true,true,true,true]"'
   check "$T header: no link to a page for judges" "$(ev "![...document.querySelectorAll('header.top a')].some(a=>/how-it-was-built|observability|improvement/.test(a.getAttribute('href')))")" "true"
   read -r -d '' J <<'JS'
 (()=>{const f=document.querySelector('footer.sitefoot');return /For judges and reviewers/.test(f.textContent)&&JSON.stringify([...f.querySelectorAll('.fnav a')].map(a=>a.textContent.trim()))==='["How this was built","Observability","Self-improvement","What did not work","Economics","The pattern","Standards we use"]'&&!/Improvement\b/.test(f.textContent.replace(/Self-improvement/g,''))})()
