@@ -43,3 +43,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - `presentation/PITCH_SCRIPT.md` (3:00, lines tagged [90s] for the 90 s cut) and `presentation/deck.html` (8 slides). Same family and intake as SHARED_DEMO.md.
 - Placeholders: slide 6 proof numbers and the proof section. Both are cut at Oct 7 16:00 MDT unless hack-artisans supplies real numbers.
+
+## 7. 2026-10-06 19:47 MDT — Eval harness built (hack-artisans)
+
+- Commit d75384d, `evaluations/`: 20 scenario yamls, run.py, deterministic judges, Jev judges (yes/no, score, choice on the full trajectory; 80/20 thresholds, middle band to human review), report.py, mock agent, 10 negative tests (all pass).
+- Failed first run: the mock agent exposed 3 harness bugs (substring "ice" matched in "office"; escalation scenario wrongly required completeness; an edit dropped the disclaimer). All fixed.
+- Learning: after a pastor Edit, the gate must re-append the disclaimer.
+- Pending: adapter to the real agent once `code/INTERFACE.md` lands; fault-injection hook from hack-jedi; JEV_API_KEY from Juan at eval time.
