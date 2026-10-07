@@ -8,7 +8,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei (Juan's request, corrected the 
 | # | Name in the deck | Existing or new | What the slide is |
 |---|---|---|---|
 | 1 | the-call | new copy | The crisis rings the phone (see `short/COPY_1_2.md`) |
-| 2 | the-name | new copy | So we built Nury (see `short/COPY_1_2.md`) |
+| 2 | the-name | new copy | The name, and "the pastor will never be alone" (see `short/COPY_1_2.md`) |
 | 3 | why-it-matters | NEW | What changes when a pastor has Nury |
 | 4 | the-demo | existing | The silent video of one call, start to finish |
 | 5 | so-what | NEW | The answer to "so what?" |

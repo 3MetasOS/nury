@@ -19,20 +19,21 @@ Story: a crisis rings the phone, the pastor needs help, so we built Nury, and th
 
 ## Slide 2: the-name
 **On screen:**
-- Headline: So we built Nury.
+- The name, large, once: Nury
 - Tagline, below the logo: An AI Crisis Response Agent.
-- Three small words: Comfort · Faith · Action
-- Line: Tonight, and what comes next.
-- The name entry shrinks to one small line: Nury: from the Arabic nur, light.
+- The entry line: A given name from Arabic nur, light.
+- Two tags: noun · /NOO-ree/
+- One handwritten line: The pastor will never be alone.
 
-**Presenter notes (talking points):**
-- That is why we built Nury.
-- Nury prepares the right information for the pastor to review: comfort, spiritual support, and what to do tonight and next.
-- The pastor is never alone.
-- Comfort is the pastoral message. Faith is the Bible verse, quoted from a verified list; the model never writes one. Action is the family checklist and the next steps. "Review" is the gate: the pastor approves, edits or stops.
-- Say "tonight and next". Do not say "weeks", "follow-up program" or "we stay with the family": follow-up is backlog.
+Removed (do not show): "So we built Nury.", "Comfort · Faith · Action", "Tonight, and what comes next.", "see also: lantern".
+
+**Presenter notes (talking points; say them in your own words):**
+- A crisis rings the phone. The pastor needs help. So Nury exists.
+- The pastor will never be alone.
+- Nury prepares information for the pastor to review: the pastor approves, edits or stops.
+- The name: Arabic nur, light. Say only that. Do not say her name here; the two memory lines on the closing frame stand on their own.
+- Do not say "weeks", "follow-up program" or "we stay with the family": follow-up is backlog.
 - Criterion: Concept and Impact.
 
-## Choices to confirm (hack-sensei)
-1. The last line on slide 2 is "Tonight, and what comes next." and not "Tonight, and in the days ahead." ("days ahead" can read as a program that runs for weeks.)
-2. In the talking points, "prepares ... for the pastor to review" replaces "gathers the right information": it states the gate.
+## Choice to confirm (hack-sensei)
+In the talking points, "prepares information for the pastor to review" states the gate (approve, edit or stop). It is a suggestion; Juan uses his own words.
