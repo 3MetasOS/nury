@@ -1,6 +1,6 @@
 # Pi review: why we did not use it, and what is worth taking
 
-Written by hack-jedi, the architect of the engine, on 2026-10-07. Juan asked for a candid answer, not a defense. No code was changed for this review.
+Written by hack-jedi, the architect of the engine, on 2026-10-07. **As of that morning: test counts and timings inside are from that moment (today: 336 product and 109 evaluation tests).** Juan asked for a candid answer, not a defense. No code was changed for this review.
 
 ## The short answer
 

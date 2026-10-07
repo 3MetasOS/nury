@@ -40,7 +40,7 @@ One JSON line per stage and one per run. Everything in a line is a number, a tru
 
 1. **Fields are copied one by one.** A line is built from a fixed list. Nothing is passed through from the audit log or a result.
 2. **Every string must be a short slug**: lowercase letters, digits, `_`, `.`, `-`, up to 40 characters. A sentence, a name with a space or a capital letter, or a phone number cannot pass. If anything fails the check, no line is written (it fails closed).
-3. **A ledger failure never breaks a run.** The recorder returns False and the run goes on. The cost is a gap in the ledger, not a failed package.
+3. **A ledger failure never breaks a run.** The recorder returns False and the run goes on. The cost is a gap in the ledger, not a failed case.
 4. **A leak test** (`code/tests/test_ledger.py`) runs a whole pipeline on an intake full of canary names, a phone, an email and an ID, with an unsafe draft containing a canary name forced into the correction loop. The rejected text is in the audit log, as designed, and is not in the ledger. It also checks that no value in any line contains a space.
 5. **Append-only.** The file is only ever opened for append. A test checks that earlier bytes are unchanged after later writes.
 
@@ -53,9 +53,9 @@ python3 -c "from nury import ledger; import json; print(json.dumps(ledger.summar
 GET /api/ops?since=86400
 ```
 
-`summarize(since)` returns: runs and packages (complete runs); cost per package and total cost; latency p50 and p95 per stage (model time plus Jev time); how many attempts stages took; the escalation rate (per stage and per run); the share of stages where each rule category fired; Jev decisions per question; and the Scripture provider mix. `since` is seconds back, a timedelta, a datetime or an ISO UTC time. Without `since` it reads everything.
+`summarize(since)` returns: runs and cases (complete runs); cost per case and total cost; latency p50 and p95 per stage (model time plus Jev time); how many attempts stages took; the escalation rate (per stage and per run); the share of stages where each rule category fired; Jev decisions per question; and the Scripture provider mix. `since` is seconds back, a timedelta, a datetime or an ISO UTC time. Without `since` it reads everything.
 
-Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE_OUT` (Gloo, per 1M tokens). If they are unset, the cost fields are null and the summary says so. Jev's own cost is not included (public price: $0.042 per million input tokens, about $0.0003 to $0.0005 per package).
+Cost per case is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE_OUT` (Gloo, per 1M tokens). If they are unset, the cost fields are null and the summary says so. Jev's own cost is not included (public price: $0.042 per million input tokens, about $0.0003 to $0.0005 per case).
 
 ## How the app uses it
 
@@ -74,7 +74,7 @@ Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE
 
 Not built. Listed so nobody assumes it exists.
 
-- **Alerts.** A threshold on the escalation rate, on Gloo retries (a rising count means Gloo is flaky), on `unavailable` Jev decisions (Jev is down and the gate is failing open), on a 402 from Gloo (credit gone), and on cost per package.
+- **Alerts.** A threshold on the escalation rate, on Gloo retries (a rising count means Gloo is flaky), on `unavailable` Jev decisions (Jev is down and the gate is failing open), on a 402 from Gloo (credit gone), and on cost per case.
 - **Retention.** A rule for how long lines are kept and where old files go. Today the file grows without limit.
 - **Rotation and size.** Daily files, and a cap.
 - **Dashboards.** A page that draws the summary over time, not just the latest totals.

@@ -1,5 +1,7 @@
 # Code review: Nury, offline, findings only
 
+**As of the review time (2026-10-07, early morning): the numbers inside (270 product tests, 84 evaluation tests, Jev about 3 percent of call time) are the numbers of that moment. Today's: 336 and 109 tests, Jev about 2 percent on the final scored sets (TECH_CLAIMS 33 and 55).**
+
 Written 2026-10-07 by hack-jedi for hack-sensei and Juan. The findings were made at repo head `d045c60`; no product code was changed while reviewing. Afterwards, on hack-sensei's decision, the hardening patches were applied as `0ac365a` (23 tests) and the output cap as `0dbfebb`; findings fixed by them say so. The review used no Gloo key except two small tests disclosed in section 8.
 
 How to read it. Section 1 is the one-page summary. Section 2 lists every finding with an ID, severity, place, evidence, a concrete failure, a fix, effort in minutes, the risk that the fix touches behavior (none, prompt, check, gate) and a recommended decision. Section 3 holds the two ready patches you asked for first (COR-06 and the email regex). Sections 4 to 8 hold the limits to tell judges, what the tests miss, the clean-clone test, the claims cross-check and the limits of this review.

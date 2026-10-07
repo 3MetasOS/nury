@@ -44,7 +44,7 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 3. **For each stage** (detention: triage, rights, attorney resources, checklist, pastoral message; hospital: triage, information, resources, checklist, pastoral message):
    1. **Build the prompt.** Floor rules, skill text, the playbook's stage prompt, the vetted sources, and the earlier approved or edited text. `engine.py`, `playbook.py`, `skills.py`.
    2. **Tokenize.** The privacy client swaps protected values for tokens. The token map stays in the app.
-   3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is 5 Gloo calls (TECH_CLAIMS 1). A package is one full run of the five stages; the app calls it a case. A Gloo HTTP 403 counts as a failed try.
+   3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full case is 5 Gloo calls (TECH_CLAIMS 1). A case is one full run of the five stages (older text says 'package'). A Gloo HTTP 403 counts as a failed try.
    4. **Detokenize.** Tokens become the real names again. A mangled token is repaired; an unknown token makes Nury ask again, twice at most.
    5. **Named checks.** The stage's checks plus the floor run in plain code. Any violation sends the draft back.
    6. **Jev gate.** *BUILT, live verified on 3 scenarios.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At or over the question's line (0.50, or 0.60 for `assumes_facts`), the draft is rejected and the reason category is `jev_<question>`. From 0.30 up to the line the draft passes and the audit logs "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate.
@@ -63,14 +63,14 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 | Jev request carries tokens, never names or the map | BUILT, offline tested | `code/tests/test_privacy.py` (`test_the_jev_gate_requests_carry_tokens_never_names_or_the_map`) |
 | The question wording equals the wording validated for the eval harness | BUILT, offline tested | `test_jev_gate.py` compares the two copies |
 | Smoke test of the lines on real drafts | BUILT, live verified (small) | `evaluations/validation/JEV_GATE_VALIDATION.md`: 20 question and draft pairs from two scenarios, safe 0.02 to 0.35, unsafe 0.78 to 0.99, none missed, no false reject. The 0.60 line for `assumes_facts` was set after seeing this kind of data, so the result is partly circular. Jev median 147 to 156 ms per call over two passes (60 calls), slowest 271 ms. |
-| Full live runs with the gate on | BUILT, live verified (3 scenarios: detention 01 and 14, hospital h01; build `50668d6`) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. A package adds about 0.8 to 1.1 s of Jev time. |
+| Full live runs with the gate on | BUILT, live verified: first on 3 scenarios (detention 01 and 14, hospital h01; build `50668d6`), then in every scored set of the final build (239 of 239 gate calls answered, none failed open) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. A case adds about 0.8 s of Jev time. |
 | What the live runs showed | Detention 14 (grief): with no crisis context Jev rejected the triage three times (0.85 to 0.88) and the stage escalated. After the crisis type was added to what Jev sees and the reason made specific, it completed with two regenerations. | TECH_CLAIMS 52; PROMPT_NOTES problem 24 |
 | Per-question lines: 0.60 for `assumes_facts`, 0.50 for the rest | BUILT, live verified (3 of 3 clean, build `c317050`) | Set after seeing validation data; hack-sensei approved it 2026-10-07 (TECH_CLAIMS 50, 51) |
 | Gate on by default | Only when `JEV_API_KEY` is set | `jev_gate.enabled`; override with `NURY_JEV_GATE=on|off` |
 
 **Fails open.** With no key, a timeout, an error or a bad answer, the draft goes on to the pastor on the strength of the named checks and the floor. The audit logs decision "unavailable" with the reason, and later stages of the same run skip the gate. The product never blocks on Jev.
 
-**Known soft spots.** `assumes_facts` is the question Jev is least sure of: safe drafts scored 0.27 to 0.42 on the first pass, so its line is 0.60, a line set after seeing the data. Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes, and stability was measured on two passes only. Live on detention 14 with the 0.60 line, triage scored 0.59, one hundredth under it. A false reject costs an attempt, not safety, and three in a row escalate the stage. The false-reject rate over many cases is not measured. Jev's price is public ($0.042 per million input tokens, output free; docs.typesafe.ai/models, read 2026-10-07), about $0.0003 to $0.0005 per package from our audit files. The code does not record it yet. TypeSafe's retention and terms for run-time use are not reviewed.
+**Known soft spots.** `assumes_facts` is the question Jev is least sure of: safe drafts scored 0.27 to 0.42 on the first pass, so its line is 0.60, a line set after seeing the data. Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes, and stability was measured on two passes only. Live on detention 14 with the 0.60 line, triage scored 0.59, one hundredth under it. A false reject costs an attempt, not safety, and three in a row escalate the stage. The false-reject rate over many cases is not measured. Jev's price is public ($0.042 per million input tokens, output free; docs.typesafe.ai/models, read 2026-10-07), about $0.0003 to $0.0005 per case from our audit files. The code does not record it yet. TypeSafe's retention and terms for run-time use are not reviewed.
 
 ## 4. Test-time layers
 
@@ -83,7 +83,7 @@ These judge the system before pastors use it. The red team and the attacker inta
 | Judge validation | On ten checks, unsafe text scored 0.89 to 0.98 and safe text 0.02 to 0.24. Five stored runs rejudged an hour later moved 0.03 or less. | BUILT, live verified | `evaluations/validation/JUDGE_VALIDATION.md`; TECH_CLAIMS 37, 38 |
 | Red-team panel | Three models from three other makers through Gloo AI Studio: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick. None is Claude, on purpose. They quote sentences that give advice, predict outcomes or invent facts. **Advisory only**: in the second validation pass all three reviewers caught 8 of 8 injected problems and also flagged safe text (gpt-5.4 on all 8 safe reviews, 10.8 findings each; gemini on 7 of 8, 1.5 each; llama on all 8, 3.1 each), so they cannot gate anything. One reviewer, llama, quoted text that is not in the draft: 1 time in validation and 4 times in the run on 28 scenarios. It is a pre-release audit, and it found real defects (the garbled "call Maria" sentence, unsourced triage lines, a hospital checklist line). | BUILT, live verified (second validation pass, then a run on the 20 detention and 8 hospital scenarios on core `00fe7b1`). Not re-run on the final build | `evaluations/judges/redteam_panel.py`; `evaluations/validation/PANEL_VALIDATION.md`; `evaluations/LIVE_CHECKS_OWED.md` step 11 |
 | Human review | A canvas for Juan, grouped by question, showing only what the pastor saw. | BUILT, live verified | `evaluations/make_review_canvas.py` |
-| Attacker intakes | 18 hostile intakes written by a non-Claude model and edited by a person. | BUILT, not yet run | `evaluations/scenarios_attacker/` |
+| Attacker intakes | 18 hostile intakes written by a non-Claude model and edited by a person. | BUILT, run on the final build: 13 judge pass, 1 fail, 4 awaiting review | `evaluations/scenarios_attacker/`, `evaluations/results/attacker/` |
 | Scenario sets | 20 detention and 8 hospital scenarios, plus 5 case-file and 3 network scenarios. | BUILT, live verified (final scored set pending) | `evaluations/scenarios*/`, `evaluations/results/` |
 
 **What changed with the run-time gate.** The Jev typed judges are **no longer independent** of the run-time gate. The gate asks Jev the same validated questions on every draft, so a draft that reaches a Jev judge has already passed Jev's gate on those questions. Agreement between the two is no longer fresh evidence. The independent evidence is the deterministic judges, the red team (different vendors), human review and the attacker intakes. Any scorecard line that rests on Jev must say this.
@@ -104,7 +104,7 @@ Nothing else goes out. There is no mail, SMS, chat or share path. `NoSendPath` i
 
 **Switches** (all read from the environment): `NURY_PRIVACY` (on), `NURY_SKILLS` (on), `NURY_JEV_GATE` (on only with a key), `NURY_DEMO_NETWORK`, `NURY_NETWORK_DIR`, `NURY_FORCE_REJECTION` (shows the reject-and-regenerate beat on demand), and the test-only `NURY_TEST_ESCALATE` and `NURY_ALLOW_PENDING`. Prices come from `NURY_PRICE_IN` and `NURY_PRICE_OUT`.
 
-**Cost and time.** A full package takes 50 to 56 seconds and costs about nine cents (four live pipelines, $3 and $15 per 1M tokens; TECH_CLAIMS 30, `evaluations/results/live_checks_slot_b.md`). That was measured before the gate. The gate adds one Jev call per draft; its effect on a full run is not measured yet.
+**Cost and time.** A full case takes 34 to 50 seconds and costs 6 to 9 cents on the final scored sets (build 9bc5c6d, means per run: detention 34.2 s and $0.064, hospital 49.5 s and $0.089, attacker 42.3 s and $0.084; $3 and $15 per 1M tokens; TECH_CLAIMS 30). The gate is in those numbers: it adds one Jev call per draft, a median 154 to 160 ms, about 0.8 s and 2 percent of the call time (TECH_CLAIMS 55).
 
 ## 6. Privacy
 
@@ -156,7 +156,7 @@ Only in the pastoral message. The model never writes Scripture (TECH_CLAIMS 44 t
 
 | Piece | What it does | Status | Evidence |
 |---|---|---|---|
-| Case file | One tap saves the approved package as linked markdown pages (index, one page per stage, people, documents, timeline, log). Approved content only. A rejected draft never enters a case. Built with no model call. | BUILT, live verified | `nury/casefile.py`; BUILD_LOG 56 |
+| Case file | One tap saves the approved case as linked markdown pages (index, one page per stage, people, documents, timeline, log). Approved content only. A rejected draft never enters a case. Built with no model call. | BUILT, live verified | `nury/casefile.py`; BUILD_LOG 56 |
 | Next-steps map | One SVG: tonight, this week, questions still open, who to call. Steps and questions, never outcomes. | BUILT, live verified | `casefile.nextsteps_svg` |
 | Revision v1 to v2 and Compare | The pastor records what happened. Nury reruns from triage with the same gates. v1 stays byte-identical; v2 is saved beside it. | BUILT, live verified | `evaluations/casefile_check.py` |
 | Needs follow-up flag | A flag only, no reminder, no date, saved in `case.json`. The endpoint `POST /api/case/<id>/followup` is built. The button in the app is in the working tree, not committed. | Endpoint BUILT, offline tested. Button **IN PROGRESS** | `casefile.set_follow_up`, `server.py`; `index.html` (`case-follow`, uncommitted) |
@@ -172,7 +172,7 @@ Rule: Nury lists only contacts the pastor vetted, labeled as the church's own, p
 | Item | Status | Evidence |
 |---|---|---|
 | Crisis selector: live cards for detention and hospital, muted cards for the two coming-soon crises | BUILT, live verified | `index.html`, `GET /api/playbooks` |
-| Intake, protected names, pipeline with progress and rejection strip, halt card, package view, audit view (reason categories only, never a rejected draft) | BUILT, live verified | `index.html`; BUILD_LOG 22, 56 |
+| Intake, protected names, pipeline with progress and rejection strip, halt card, case view, audit view (reason categories only, never a rejected draft) | BUILT, live verified | `index.html`; BUILD_LOG 22, 56 |
 | Cases: save, open, read, export a zip | BUILT, live verified | `casefile.list_cases`, `export_zip` |
 | Our network screen (`/network`): add, edit, tag, delete, import, export; "Fictional demo contacts" banner in demo mode | BUILT, offline tested | `code/app/static/network.html`, `network_api.py`, `tests/test_network_api.py` |
 | Consent note on the intake screen, at the top of a saved case and in the About sheet: saved with the names you typed, no sign-in yet, nothing sent to the family, share only what the family agreed to | BUILT, offline tested | `presentation/CONSENT_NOTE.md`; `data-consent` in `index.html` |
@@ -237,7 +237,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M1 | Oct 6, done | Gloo client live; engine with correction loop and gates | Done. |
 | M2 | Oct 6, done | Playbook refactor: detention runs from `code/playbooks/detention/` | Done. Same tests pass. |
 | M2b, M2c | Oct 6 to 7, done | Hospital sources approved; hospital playbook runs | Juan approved five sources and rejected one. Hospital ran live, 8 scenarios. |
-| M3 | Oct 6 to 7 | Pastor app | Selector, intake, pipeline, package, audit, cases, revision, network built. Home, chooser and shared shell **in progress** (BUILD_LOG 95, 97). |
+| M3 | Oct 6 to 7 | Pastor app | Selector, intake, pipeline, case view, audit, cases, revision, network built. Home, chooser and shared shell **in progress** (BUILD_LOG 95, 97). |
 | M3b | Oct 6 to 7 | Scripture | 12 verses approved (BUILD_LOG 93); YouVersion live end to end (BUILD_LOG 96); last Scripture rule added. |
 | M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **264 pass at the end of 2026-10-07** (run with no keys set; recount after the final commit). |
 | M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** The follow-up (a 0.60 line for `assumes_facts`) landed in build `c317050`. |

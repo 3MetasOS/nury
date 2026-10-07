@@ -7,7 +7,7 @@ For engineers. Exact facts, with file and line anchors. Written 2026-10-07 by ha
 | Mark | Meaning |
 |---|---|
 | **run** | I ran it or ran a test and saw the result. |
-| **test** | A named test in `code/tests/` proves it, and the offline suite passes (264 tests on 2026-10-07 evening, see section 11). |
+| **test** | A named test in `code/tests/` proves it, and the offline suite passes (336 tests on 2026-10-07 evening, see section 11). |
 | **code** | I read the code and did not run it. |
 | **NOT VERIFIED** | I could not check it. Section 12 lists these in one place. |
 
@@ -376,7 +376,7 @@ code/test.sh                       # = cd code && python3 -m unittest discover -
 cd code && python3 -m unittest discover -s tests
 ```
 
-`tests/nonet.py` removes the live keys from the environment and turns the Jev gate off for every test. Count on 2026-10-07 evening: **264 tests, OK** (3.3 s), run with `GLOO_API_KEY`, `JEV_API_KEY` and `YVP_APP_KEY` unset. **run**
+`tests/nonet.py` removes the live keys from the environment and turns the Jev gate off for every test. Count on 2026-10-07 evening: **336 tests, OK** (about 15 s), run with `GLOO_API_KEY`, `JEV_API_KEY` and `YVP_APP_KEY` unset. **run**
 
 | File | Tests | File | Tests |
 |---|---|---|---|
