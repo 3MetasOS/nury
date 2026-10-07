@@ -5,3 +5,5 @@ __pycache__/
 health/
 cases/
 network/
+video/incoming/*
+!video/incoming/README.md
