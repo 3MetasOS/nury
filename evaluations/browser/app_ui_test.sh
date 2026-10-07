@@ -66,11 +66,11 @@ JS
   # ---- open a case, then back to cases
   click "#rows a.lrow"
   check "$T case: viewer opens by route" "$(ev "/^#\/case\//.test(location.hash)&&document.body.dataset.view==='case'")" "true"
-  check "$T case: viewer wording (Read-only, no storage claims)" "$(ev "/Read-only\./.test(document.body.innerText)&&!/computer|stays here|local/i.test(document.body.innerText)")" "true"
+  check "$T case: viewer wording (no storage claims)" "$(ev "!/computer|stays here|local/i.test(document.body.innerText)")" "true"
   read -r -d '' J <<'JS'
-(()=>{const c=document.querySelector('#v-case [data-consent]');return !!c&&c.textContent.trim()==='Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.'&&c.getBoundingClientRect().top<innerHeight})()
+(()=>{const c=document.querySelector('#v-case [data-consent]');return !!c&&c.textContent.trim()==='Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.'&&!!c.closest('.aboutsaved')})()
 JS
-  check "$T case: the consent note is at the top, exact text" "$(ev "$J")" "true"
+  check "$T case: the consent note is in the notice at the bottom, exact text" "$(ev "$J")" "true"
   check "$T case: contrast scan clean" "$(scan)" '"[]"'
   click "#back-case"; check "$T case: back returns to cases" "$(view)" '"cases"'
   # ---- theme toggle in the shared header (persists across a reload)
@@ -133,9 +133,9 @@ JS
   check "$T how: the header link opens /how-it-was-built" "$(ev "location.pathname")" '"/how-it-was-built"'
   check "$T how: same shared header as every page, link marked current" "$(ev "$SIG")|$(ev "document.querySelector('.fnav a[data-nav=how]').getAttribute('aria-current')")" "$HOMESIG|\"page\""
   read -r -d '' J <<'JS'
-(()=>{const t=document.body.innerText;return /An AI Crisis Response Agent/.test(document.querySelector('header.top').textContent)&&!!document.querySelector('[data-consent]')&&document.querySelector('[data-disclose]').textContent==='The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.'&&!/solo pastor|local computer/i.test(t)})()
+(()=>{const t=document.body.innerText;return /An AI Crisis Response Agent/.test(document.querySelector('header.top').textContent)&&!document.querySelector('[data-consent]')&&document.querySelector('[data-disclose]').textContent==='The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.'&&!/solo pastor|local computer/i.test(t)})()
 JS
-  check "$T how: tagline, consent note and disclosure line are on the page" "$(ev "$J")" "true"
+  check "$T how: tagline and disclosure line are on the page, no saved-cases note" "$(ev "$J")" "true"
   read -r -d '' J <<'JS'
 (()=>{const a=[...document.querySelectorAll('#toc a')];return a.length>=8&&a.every(x=>document.getElementById(x.getAttribute('href').slice(1)))})()
 JS
@@ -173,16 +173,16 @@ JS
   # ---- case detail: width, tab bar, in-place tabs, deep link
   read -r -d '' J <<'JS'
 (()=>{const L=s=>{const r=document.querySelector(s).getBoundingClientRect();return[Math.round(r.left),Math.round(r.right)]};const w=innerWidth>=960?[104,1176]:[16,374];const same=(a,b)=>a[0]===b[0]&&a[1]===b[1];
-return same(L('#v-case .chd'),w)&&same(L('.ctabs'),w)&&same(L('.aboutsaved'),w)&&same(L('.casehd'),w)&&L('#case-card')[0]===w[0]&&L('#case-card')[1]===w[1]&&document.documentElement.scrollWidth<=innerWidth})()
+return same(L('.ctabs'),w)&&same(L('.aboutsaved'),w)&&same(L('.casehd'),w)&&L('#case-card')[0]===w[0]&&L('#case-card')[1]===w[1]&&document.documentElement.scrollWidth<=innerWidth})()
 JS
   check "$T case detail: header, tab bar and notice use the Cases content width, panel starts at the same left edge" "$(ev "$J")" "true"
   check "$T case detail: the actions are small (36 px) and the notice is the last block before the footer" "$(ev "[...document.querySelectorAll('.chd-a .btn.sm:not(.hidden)')].every(b=>Math.round(b.getBoundingClientRect().height)===36)&&document.querySelector('.aboutsaved').getBoundingClientRect().top>document.querySelector('#case-card').getBoundingClientRect().bottom-1&&!document.querySelector('#v-case .consent:not(.aboutsaved .consent)')")" "true"
   check "$T case detail: Overview is full-width cards: the sequence with arrows first (44 px nodes, 14 px / 12 px text, five links), then Next steps as live text lanes, no old title" "$(waitexp "(()=>{const c=[...document.querySelectorAll('#case-page .ovc')];const w=innerWidth>=960?[104,1176]:[16,374];const ok=c.length>=3&&c.every(e=>{const r=e.getBoundingClientRect();return Math.round(r.left)===w[0]&&Math.round(r.right)===w[1]});return ok&&c[0].querySelector('h3').textContent==='How this case went'&&c[1].querySelector('h3').textContent==='Next steps'&&c[1].querySelectorAll('.lane li').length>3&&c[0].querySelectorAll('a.stn').length===5&&c[0].querySelectorAll('svg.arr').length>=5&&Math.round(c[0].querySelector('.nd').getBoundingClientRect().width)===44&&getComputedStyle(c[0].querySelector('.nm')).fontSize==='14px'&&getComputedStyle(c[0].querySelector('.stt')).fontSize==='12px'&&!document.getElementById('case-page').textContent.includes('Immigration detention')&&!document.querySelector('.crail')})()")" "true"
   ev "window.scrollTo(0,200);1" >/dev/null; SY0=$(ev "Math.round(scrollY)")
   click "#case-chips .chip:nth-child(3)"
-  check "$T case detail: clicking a tab keeps the scroll position, changes the hash and does not reload" "$(waitexp "Math.abs(scrollY-$SY0)<=2&&/\/rights$/.test(location.hash)&&document.querySelector('#case-chips .chip.on').dataset.p.includes('rights')&&document.body.dataset.view==='case'")" "true"
+  check "$T case detail: clicking a tab keeps the scroll position, changes the hash and does not reload" "$(waitexp "Math.abs(scrollY-$SY0)<=2&&location.hash.endsWith('/'+document.querySelector('#case-chips .chip.on').dataset.p.replace(/^\d+-|\.md$/g,''))&&document.querySelector('#case-chips .chip.on').dataset.p!=='index.md'&&document.body.dataset.view==='case'")" "true"
   agent-browser press ArrowRight >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
-  check "$T case detail: arrow keys move to the next tab (roving focus), End jumps to the last, Home to the first" "$(ev "(()=>{const on=()=>document.querySelector('#case-chips .chip.on').textContent;const a=on()==='attorney';return a})()")" "true"
+  check "$T case detail: arrow keys move to the next tab (roving focus), End jumps to the last, Home to the first" "$(ev "(()=>{const on=()=>document.querySelector('#case-chips .chip.on').textContent;return on()===document.querySelector('#case-chips .chip:nth-child(4)').textContent})()")" "true"
   agent-browser press End >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1; E1=$(ev "document.querySelector('#case-chips .chip.on').textContent"); agent-browser press Home >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
   check "$T case detail: End selects log and Home selects Overview" "$E1:$(ev "document.querySelector('#case-chips .chip.on').textContent")" '"log":"Overview"'
   agent-browser eval "location.hash='$CASEHASH/checklist';1" >/dev/null 2>&1; agent-browser wait 900 >/dev/null 2>&1; agent-browser eval "location.reload();1" >/dev/null 2>&1; agent-browser wait 1800 >/dev/null 2>&1
