@@ -139,12 +139,13 @@ def _correction_note(violations):
             + "\nWrite a new draft that fixes every reason. Do not mention the rejection. Output only the draft.")
 
 
-def _fault_for(stage_id, fault_injection):
-    """Resolve the fault: explicit arg, else NURY_FORCE_REJECTION=1 (demo: stage 2, once)."""
+def _fault_for(stage_id, fault_injection, pb=None):
+    """Resolve the fault: explicit arg, else NURY_FORCE_REJECTION=1 (demo: the first stage after triage, once).
+    That is 'rights' in detention and 'info' in hospital: whichever playbook runs."""
     if fault_injection and fault_injection.get("stage") == stage_id:
         return fault_injection
-    if os.environ.get("NURY_FORCE_REJECTION") == "1" and stage_id == "rights":
-        return {"stage": "rights", "times": 1, "draft_suffix": UNSAFE_SUFFIX}
+    if os.environ.get("NURY_FORCE_REJECTION") == "1" and pb is not None and len(pb.stages) > 1 and stage_id == pb.stages[1].id:
+        return {"stage": stage_id, "times": 1, "draft_suffix": UNSAFE_SUFFIX}
     return None
 
 
@@ -181,7 +182,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         state.sources_used[stage_id] = dynamic
         audit.log("dynamic_source", stage=stage_id,
                   entries={k: [x["id"] for x in v.get("entries", [])] for k, v in dynamic.items()})
-    fault = _fault_for(stage_id, fault_injection)
+    fault = _fault_for(stage_id, fault_injection, pb)
     m = _new_metrics()
     ctx = {d: state.approved[d] for d in stage.deps if d in state.approved}
     active = stage.skills if skills_enabled(skills) else []     # skills off: no text, no checks, no events

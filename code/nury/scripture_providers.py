@@ -192,4 +192,6 @@ def fetch(entry, lang, chain: Optional[list] = None):
             return prov.get_passage(entry, lang), notes
         except ProviderUnavailable as e:
             notes.append(f"{prov.name}: {e}")
+        except Exception as e:                      # an unexpected answer (a list instead of an object, a missing field): unavailable too
+            notes.append(f"{prov.name}: {type(e).__name__}")
     raise ProviderUnavailable("; ".join(notes) or "no provider")

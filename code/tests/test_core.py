@@ -1,5 +1,6 @@
 """Core tests. No network: a fake client stands in for Gloo.   Run: cd code && python3 -m unittest -v"""
 import json
+import os
 import re
 import shutil
 import sys
@@ -166,6 +167,34 @@ class Core(unittest.TestCase):
         st = CaseState("intake")
         r = run_stage("pastoral", st, client=FakeClient(bad))
         self.assertIn("language", r.reason_categories)
+
+
+class ForcedRejection(unittest.TestCase):
+    """NURY_FORCE_REJECTION=1 targets the first stage after triage, whichever playbook runs."""
+
+    def run_with_env(self, fake, canned, playbook):
+        os.environ["NURY_FORCE_REJECTION"] = "1"
+        try:
+            return run_scripted("intake", client=fake(canned), playbook=playbook)
+        finally:
+            del os.environ["NURY_FORCE_REJECTION"]
+
+    def test_detention_rejects_once_at_rights_and_only_there(self):
+        st, rs, au = self.run_with_env(FakeClient, CANNED, "detention")
+        self.assertEqual([(r.stage_id, r.metrics["attempts"]) for r in rs], [("triage", 1), ("rights", 2), ("attorney", 1), ("checklist", 1), ("pastoral", 1)])
+        self.assertEqual(len([e for e in au.events if e["kind"] == "fault_injected"]), 1)
+        self.assertEqual(st.outcome["outcome"], "package_complete")
+
+    def test_hospital_rejects_once_at_info_and_only_there(self):
+        st, rs, au = self.run_with_env(HFake, HCANNED, "hospital")
+        self.assertEqual([(r.stage_id, r.metrics["attempts"]) for r in rs], [("triage", 1), ("info", 2), ("resources", 1), ("checklist", 1), ("pastoral", 1)])
+        self.assertEqual([e["stage"] for e in au.events if e["kind"] == "fault_injected"], ["info"])
+        self.assertEqual(st.outcome["outcome"], "package_complete")
+
+    def test_without_the_switch_nothing_is_injected(self):
+        st, rs, au = run_scripted("intake", client=HFake(HCANNED), playbook="hospital")
+        self.assertEqual([e for e in au.events if e["kind"] == "fault_injected"], [])
+        self.assertTrue(all(r.metrics["attempts"] == 1 for r in rs))
 
 
 class Playbooks(unittest.TestCase):

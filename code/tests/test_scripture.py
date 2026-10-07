@@ -313,6 +313,13 @@ class StubHTTP:
             raise TimeoutError("slow")
         code = {"429": 429, "403": 403}.get(mode, 200)
         body = {}
+        if mode == "list":
+            class RL:
+                status_code = 200
+
+                def json(self_):
+                    return ["not", "an", "object"]
+            return RL()
         if "/passages/" in url:
             vl = '<span class="yv-v" v="1"></span><span class="yv-vlbl">1</span>'
             html = {"ok": f'<div><div class="q1">{vl}Dios es nuestro refugio y fortaleza,</div><div class="q2">nuestro pronto auxilio en las tribulaciones.</div></div>',
@@ -365,6 +372,33 @@ class Providers(Base):
             fb = [e for e in au.events if e["kind"] == "scripture_fallback"]
             self.assertEqual(len(fb), 1, mode)
             self.assertIn("youversion", fb[0]["reasons"][0])
+
+    def test_a_provider_that_raises_an_unexpected_error_or_returns_a_list_falls_back_to_the_bank_with_the_error_name(self):
+        class Boom:
+            name = "boom"
+
+            def get_passage(self, entry, lang):
+                raise AttributeError("'list' object has no attribute 'get'")
+        entry = scr.for_language(scr.load_bank(self.pb.dir, church=False), "es")[0]
+        passage, notes = scrp.fetch(entry, "es", [Boom(), scrp.BankProvider()])
+        self.assertEqual((passage["source"], notes), ("bank", ["boom: AttributeError"]))
+        # the real provider, answering with a JSON list instead of an object
+        rec, au = self.go(StubHTTP("list"))
+        self.assertEqual(rec.status, "approved", rec.attempts)
+        self.assertIn(self.verse("psa46_1")["text"], rec.draft)
+        fb = [e for e in au.events if e["kind"] == "scripture_fallback"]
+        self.assertEqual(len(fb), 1)
+        self.assertIn("youversion: AttributeError", fb[0]["reasons"][0])
+        self.assertEqual([e["provider"] for e in au.events if e["kind"] == "scripture"], ["bank"])
+
+    def test_if_every_provider_fails_the_error_is_still_provider_unavailable(self):
+        class Boom:
+            name = "boom"
+
+            def get_passage(self, entry, lang):
+                raise ValueError("x")
+        with self.assertRaises(scrp.ProviderUnavailable):
+            scrp.fetch({"id": "x"}, "es", [Boom()])
 
     def test_a_language_with_no_chosen_version_uses_the_bank(self):
         http = StubHTTP()
