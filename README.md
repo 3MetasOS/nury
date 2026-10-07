@@ -15,3 +15,7 @@ Nury removes direct identifiers before anything reaches a language model. Names,
 The video narration is an AI-generated voice (ElevenLabs).
 
 Photo, illustration and font credits: `branding/IMAGES.md`.
+
+## Status of hosting
+
+Nury is a web app. Today one shared pool of cases and one shared church network are visible to everyone who can reach the app. There is no sign-in, no accounts and no encryption at rest yet. A hosted version for many churches needs all three, plus separation between churches. See `documents/FEATURES.md`.
