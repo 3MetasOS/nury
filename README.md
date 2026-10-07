@@ -88,10 +88,10 @@ Git-ignored on purpose: `.env`, `data/`, `cases/`, `network/`, `health/`, `node_
 ## Tests
 
 ```
-cd code && ./test.sh                          # product tests: offline, no keys; 270 tests
+cd code && ./test.sh                          # product tests: offline, no keys; 296 tests
 cd ..
 python3 -m pip install pytest PyYAML markdown
-python3 -m pytest -q evaluations/tests        # evaluation tests; 84 tests
+python3 -m pytest -q evaluations/tests        # evaluation tests; 86 tests
 python3 evaluations/run.py --agent mock       # the harness against a mock agent: no network
 ```
 

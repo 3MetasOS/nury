@@ -115,7 +115,7 @@ File: `code/nury/gloo_client.py`. Added in commit `1e019ea`.
 - **Data, not code.** Prices are USD per 1,000,000 tokens (`per_tokens: 1000000`). **code**
 - **`gloo-anthropic-claude-sonnet-4.6`:** input 3.0, output 15.0. Source: "Gloo models API, the pricing field, read by the team on 2026-10-06 (BUILD_LOG entry 16)". As of 2026-10-06. Note: "Cache pricing is not used. Recheck before relying on it: prices change." **code**
 - **`gloo-anthropic-claude-sonnet-5.5`:** input 2.0, output 10.0, same source and date, "Listed for comparison. Nury does not run on it." **code**
-- **Jev:** `price: null`, status "unknown, not quoted". No Jev cost is ever computed. The entry is out of date: the public price is $0.042 per million input tokens, output free (docs.typesafe.ai/models, read 2026-10-07). hack-jedi owns the code and the test. **code**, **test** (`test_pricing.py`)
+- **Jev:** the file holds the public price, $0.042 per million input tokens, output free (docs.typesafe.ai/models, read 2026-10-07), with its source and date. The helper `jev_cost_usd` computes the gate's cost from its input tokens. The engine does not add it to a stage's cost (commit `ed66d99`). **code**, **test** (`test_pricing.py`)
 - **A model not in the file has no cost.** `cost_usd` stays `None`; nothing is guessed. The loader refuses a model entry missing `input`, `output`, `source` or `as_of`. **test**
 - **Override.** If both `NURY_PRICE_IN` and `NURY_PRICE_OUT` are set and numeric, they win over the table for every model (`pricing.cost_usd`, line 31). **test**
 - **Cost formula.** `round((tokens_in * price_in + tokens_out * price_out) / 1_000_000, 6)`. **code**
