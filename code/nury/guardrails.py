@@ -71,10 +71,20 @@ def _norm_url(u):
     return u.lower().rstrip(".,;:/").replace("https://", "").replace("http://", "").replace("www.", "")
 
 
+# A site written without http or www, such as "immigrationadvocates.org". Not an email domain
+# (nothing may touch it on the left: no @, letter, dot, or hyphen), and file names like index.md
+# do not match because md is not in the list.
+_TLDS = r"(?:org|com|gov|net|edu|info|us|mx)"
+_BARE_IN_TEXT = re.compile(r"(?<![@\w.\-])[a-z0-9](?:[a-z0-9\-]*[a-z0-9])?(?:\.[a-z0-9\-]+)*\." + _TLDS + r"\b(?:/[^\s)>\]\"']*)?", re.I)
+
+
 def url_reasons(text, allowed_urls):
+    """Every link or site in the text must be in the vetted allowlist: full links, www links,
+    and bare domains. Email-like strings and file names are not checked."""
     allowed = [_norm_url(u) for u in allowed_urls]
+    found = list(_URL.findall(text)) + _BARE_IN_TEXT.findall(_URL.sub(" ", text))
     bad = []
-    for u in _URL.findall(text):
+    for u in found:
         n = _norm_url(u)
         if not any(n == a or n.startswith(a) or a.startswith(n) for a in allowed):
             bad.append(u)

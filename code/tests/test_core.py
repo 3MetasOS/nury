@@ -499,5 +499,51 @@ class Skills(unittest.TestCase):
         self.assertIn("hospital care team", text)
 
 
+class BareDomains(unittest.TestCase):
+    ALLOWED = ["https://www.immigrationadvocates.org/nonprofit/legaldirectory/", "https://www.ailalawyer.com/",
+               "https://988lifeline.org/"]
+
+    def test_invented_bare_domain_rejected_vetted_ones_pass(self):
+        from nury import guardrails as g
+        u = lambda t: g.url_reasons(t, self.ALLOWED)
+        self.assertEqual(u("Visite detentionlocator.org para buscarlo")[0]["category"], "ungrounded_claim")
+        self.assertTrue(u("Vea www.ejemplo.com hoy"))
+        self.assertTrue(u("Entre a https://localizador.net/detenidos"))
+        self.assertTrue(u("Entre a sub.sitio.gov/ayuda"))
+        for ok in ("Busque en immigrationadvocates.org o en ailalawyer.com.", "Llame al 988 o vea 988lifeline.org/",
+                   "https://www.ailalawyer.com/ es vetado", "immigrationadvocates.org/nonprofit/legaldirectory"):
+            self.assertEqual(u(ok), [], ok)
+
+    def test_emails_filenames_and_numbers_do_not_false_alarm(self):
+        from nury import guardrails as g
+        for t in ("Escriba a ayuda@parroquia.org si necesita algo", "Guarde el archivo index.md y caso.pdf",
+                  "Tiene 8.11 años y llamó a las 2.07 de la mañana", "Dr. Smith vio al paciente. Después salió.",
+                  "No firme nada.Hable con un abogado"):
+            self.assertEqual(g.url_reasons(t, self.ALLOWED), [], t)
+
+    def test_stage_level_invented_site_escalates_detention_and_hospital(self):
+        bad = dict(CANNED, checklist=CHECK + "\nBusque a José en detentionlocator.org")
+        st = CaseState("x")
+        st.approved.update(triage=TRIAGE, rights=RIGHTS, attorney=ATTY)
+        r = run_stage("checklist", st, client=FakeClient(bad))
+        self.assertEqual(r.status, "escalated")
+        self.assertIn("ungrounded_claim", r.reason_categories)
+        ok = dict(CANNED, checklist=CHECK + "\nBusque en immigrationadvocates.org")
+        st2 = CaseState("x")
+        st2.approved.update(triage=TRIAGE, rights=RIGHTS, attorney=ATTY)
+        self.assertEqual(run_stage("checklist", st2, client=FakeClient(ok)).status, "approved")
+        # hospital
+        hbad = dict(HCANNED, resources=HRES + " Vea hospitalfinder.org")
+        hs = CaseState("x")
+        hs.approved.update(triage=HTRIAGE, info=HINFO)
+        r = run_stage("resources", hs, client=HFake(hbad), playbook="hospital")
+        self.assertEqual(r.status, "escalated")
+        self.assertIn("ungrounded_claim", r.reason_categories)
+        hok = dict(HCANNED, resources=HRES + " Vea 988lifeline.org")
+        hs2 = CaseState("x")
+        hs2.approved.update(triage=HTRIAGE, info=HINFO)
+        self.assertEqual(run_stage("resources", hs2, client=HFake(hok), playbook="hospital").status, "approved")
+
+
 if __name__ == "__main__":
     unittest.main()
