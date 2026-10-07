@@ -51,7 +51,8 @@ def until(js, secs=60):
 
 
 def settle():
-    ev("document.activeElement&&document.activeElement.blur();window.scrollTo(0,0);1")
+    # the slides carry their own handwritten asides: hide the app's hint notes in the picture (a style in the open page only, the app is not changed)
+    ev("(()=>{if(!document.getElementById('nohn')){const s=document.createElement('style');s.id='nohn';s.textContent='.hnote{display:none!important}';document.head.append(s)}document.activeElement&&document.activeElement.blur();window.scrollTo(0,0);return 1})()")
     ab("wait", "400")
 
 
