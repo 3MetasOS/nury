@@ -26,7 +26,7 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
  check "$T replay ON: contrast scan clean on Home" "$(scan)" '"[]"'
  ev "location.hash='#/crisis/detention';1" >/dev/null; agent-browser wait 800 >/dev/null 2>&1; ev "(()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0);b.click();return 1})()" >/dev/null; agent-browser wait 700 >/dev/null 2>&1
  read -r -d '' J <<'JS'
-(()=>{const b=document.getElementById('replay-banner'),d=document.getElementById('btn-demo');return !b.hidden&&document.getElementById('intake').readOnly&&d.textContent==='Use the sample intake'&&d.classList.contains('primary')&&d.getBoundingClientRect().height>=44&&d.getBoundingClientRect().bottom<innerHeight&&d.compareDocumentPosition(document.getElementById('intake'))&Node.DOCUMENT_POSITION_FOLLOWING>0})()
+(()=>{const b=document.getElementById('replay-banner'),d=document.getElementById('btn-demo');return !b.hidden&&document.getElementById('intake').readOnly&&d.textContent==='Use the sample intake'&&d.classList.contains('primary')&&d.getBoundingClientRect().height>=44&&d.getBoundingClientRect().bottom<innerHeight&&(d.compareDocumentPosition(document.getElementById('intake'))&Node.DOCUMENT_POSITION_FOLLOWING)>0})()
 JS
  check "$T replay ON: the banner stays on the intake; the box is read-only; the visible path is 'Use the sample intake'" "$(ev "$J")" "true"
  ev "document.getElementById('btn-demo').scrollIntoView({block:'center'});1" >/dev/null; click "#btn-demo"
