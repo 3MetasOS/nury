@@ -93,8 +93,8 @@ def canvas_file(name):
 
 START_HERE = wrap("Start here", """
 <h1>Nury</h1>
-<p><b>The crisis-response agent for solo pastors.</b> Nury helps a pastor who takes a panicked call from a family in crisis. The pastor types what the family said. Nury works through stages, one at a time. After every stage the pastor decides: <b>Approve, Edit or Stop</b>. Nothing reaches the family except through the pastor.</p>
-<div class='card'><b>Who it is for.</b> A solo pastor with no staff and no lawyer on the line, on a phone, often at 2 AM. Flagship demo: a family member detained in an immigration raid. A second playbook runs hospital emergencies.</div>
+<p><b>An AI Crisis Response Agent.</b> Nury helps a pastor who takes a panicked call from a family in crisis. The pastor types what the family said. Nury works through stages, one at a time. After every stage the pastor decides: <b>Approve, Edit or Stop</b>. Nothing reaches the family except through the pastor.</p>
+<div class='card'><b>Who it is for.</b> Churches and the pastors who answer the call, often on a phone, often at 2 AM. Flagship demo: a family member detained in an immigration raid. A second playbook runs hospital emergencies.</div>
 <h2>What Nury will never do</h2>
 <ul><li>Give legal or medical advice, or predict how a case or an illness will turn out.</li><li>Claim to be a pastor, a lawyer, a counselor or a clinician.</li><li>Send anything to the family. There is no send path.</li><li>Search the open web while it runs, or use a source nobody vetted.</li><li>Send names, phones, addresses or ID numbers to a language model.</li></ul>
 <h2>The pastor's journey</h2>
@@ -249,7 +249,7 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <nav id="nav" aria-label="Nury hub menu">
  <div class="brand"><div class="mark">
   __LOGO__
-  <div><b>Nury</b><small>the crisis-response agent for solo pastors</small></div></div></div>
+  <div><b>Nury</b><small>An AI Crisis Response Agent</small></div></div></div>
  <div class="search"><input id="q" type="search" placeholder="Search the menu" aria-label="Search the menu"></div>
  <div class="menu" id="menu"></div>
 </nav>
