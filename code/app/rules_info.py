@@ -15,6 +15,19 @@ FLOOR = [
 ]
 
 
+def _usage():
+    """check name -> ["Detention: 2. Rights brief", ...] read from every playbook's stages.json."""
+    use = {}
+    for p in list_playbooks():
+        f = PLAYBOOKS_DIR / p["id"] / "stages.json"
+        if not f.is_file():
+            continue
+        for st in json.loads(f.read_text(encoding="utf-8")):
+            for c in st.get("checks", []):
+                use.setdefault(c["name"], []).append(f'{p["title"]}: {st["title"]}')
+    return use
+
+
 def rules():
     """Every rule, from nury.rules.describe_all(): the safety floor, the named checks and the Jev questions. Read-only."""
     from nury import rules as R
