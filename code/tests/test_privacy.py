@@ -53,9 +53,11 @@ class FakeHTTP:
             "checklist": (CHECK if not self.hospital else HCHK),
             "pastoral": f"Querida {t1}, la iglesia está con ustedes. No están solos. Estamos orando por ustedes."}
         text = texts[key]
+        if key == "pastoral" and "VERSE:" in ins:
+            text = "VERSE: NONE\nWHY:\nMESSAGE: " + text
         if self.unknown_first and not self.unknown_done and key == "pastoral":
             self.unknown_done = True
-            text = "Querida [PERSON_99], estamos con ustedes. No están solos."
+            text = "VERSE: NONE\nWHY:\nMESSAGE: Querida [PERSON_99], estamos con ustedes. No están solos."
         class R:
             status_code = 200
             def raise_for_status(self): pass

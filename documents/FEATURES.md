@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 planned, 16 not built.
+Count: 43 live verified, 21 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
 
 ## 1. Pastor experience
 
@@ -35,6 +35,11 @@ Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 
 | Revision, v1 to v2, and Compare | "Something changed": the pastor records what happened, Nury drafts again from triage with the same gates, v2 is saved beside v1, and a red and green view compares them. | BUILT, live verified | `code/app/server.py` (revision); `evaluations/casefile_check.py`; BUILD_LOG 56 (v1 files byte-identical after v2) | pastor, judge |
 | Next-steps map | One picture with four lanes: tonight, this week, questions still open, who to call. Steps and questions only, no outcomes. | BUILT, live verified | `nury/casefile.nextsteps_svg`; `tests/test_casefile.py`; BUILD_LOG 34, 56 | pastor, judge |
 | Our network screen | The pastor adds, edits, tags and deletes contacts, sets the church's place, imports and exports. A banner says "Fictional demo contacts" in demo mode. | BUILT, offline tested | `code/app/static/network.html`, `code/app/network_api.py`; `tests/test_network_api.py`; browser checks at 390 and 1280 px; mounted in the app (BUILD_LOG 47) | pastor |
+| Scripture in the pastoral message | The model picks a verse id from the approved list for this case and writes at most two short why-lines. The app inserts the exact verse text, reference and translation name. If no verse fits, no verse is added. | BUILT, offline tested | `nury/scripture.py`; `checks.verse_block_verbatim`; `tests/test_scripture.py`; not yet run live | pastor, judge |
+| Three Scripture checks | `no_providence_claims` (no claim about what God will do or why this happened, EN and ES), `no_model_scripture` (the model writes no reference and no verse), `verse_block_verbatim` (the block equals the source word for word). The registry now holds 17 named checks; the 14 above are the ones the scored runs used. | BUILT, offline tested | `nury/checks.py`; `tests/test_scripture.py` | judge, developer |
+| Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
+| Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
+| Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
 
 ## 2. Safety
 
@@ -123,6 +128,8 @@ Nothing in this section may be claimed in the film, the deck or the description.
 | Feature | What it does | Status | Evidence | For |
 |---|---|---|---|---|
 | **Hosting on a server** | Running Nury for real churches on a server needs sign-in, per-church separation of cases and the church network, and encryption at rest. None of the three exists. | NOT BUILT, next | `code/app/server.py` (no authentication), `nury/casefile.py` (plain files), `nury/network.py` (one shared network) | pastor, judge |
+| Licensed Bible versions | Offering licensed translations through the YouVersion Platform. Its terms need an app key, attribution and cache rules, so Nury does not claim it. | NOT BUILT, next | not designed | pastor |
+| Other traditions' canons | A verse list per tradition. The bank has a `tradition` field, set to none; the loader refuses any other value. | NOT BUILT | `scripture.load_bank` | pastor |
 | Teams and roles | Several pastors or staff sharing a church account with different permissions. | NOT BUILT | not designed; there are no accounts, so everyone who can reach the app sees the same cases and the same church network | pastor |
 | Shared cases | A case owned by a person or a church and opened by the right people. Today there is one shared pool of cases on the server. | NOT BUILT | cases live in one folder on the server; no owner field | pastor |
 | Encryption at rest | Case files, the church network and the token map are saved as plain files on the server's disk. Nury adds no encryption. | NOT BUILT | `nury/casefile.py` writes plain files | pastor, judge |

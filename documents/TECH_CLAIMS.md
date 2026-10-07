@@ -90,6 +90,15 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 42 | **Reasoning, with what we did and did not measure.** Why not a single LLM judge. Measured: on small tests, free-form LLM reviewers caught every injected problem but flagged every safe review, so they cannot gate a run (row 40); the typed judge scored safe text 0.02 to 0.24 (row 38). The two tests differ in task and size (8 vs 10 checks), so this is not a head-to-head. Reasoning, not measured: the writer is Claude, so a judge from the same family may share its blind spots; one judge gives one opinion and no signal of disagreement, while our panel sends any disagreement to a person; a typed result with a probability lets us decide the accept, fail and review lines before we see the data. | Rows 38 and 40; `redteam_panel.py` (disagreement rule). | REASONING (not a result) | not quoted |
 | 43 | **Not measured, so not claimed.** We did not run a single-LLM judge as a baseline. We did not measure how much an LLM judge's verdict varies from run to run. We did not run a calibration study: the 0.80 and 0.20 lines come from the Jev design guidance, and EVAL_DESIGN says to validate them on our own labeled data; ours is ten synthetic checks. We do not repeat Jev's own published benchmarks. | `documents/prework/EVAL_DESIGN.md`; `JUDGE_VALIDATION.md` ("Limits"). | VERIFIED (stated limit) | say it |
 
+## 6d. Scripture in the pastoral message
+
+| # | Claim | Evidence | Status | The number |
+|---|---|---|---|---|
+| 44 | The model never writes Scripture. It returns a verse id from an approved list; the app inserts the exact text, reference and translation name. A draft with a Bible reference, a quotation, or an id outside the list is rejected and regenerated. | `code/nury/scripture.py`; `checks.no_model_scripture`, `checks.verse_block_verbatim`; `tests/test_scripture.py` | VERIFIED offline test; live PENDING | 12 verses; 22 tests |
+| 45 | Nury's own why-lines carry no promise of outcome and no claim about what God will do or why this happened, in English and Spanish. The quoted verse is not checked as Nury's words. | `checks.no_providence_claims`, `no_unauthorized_promises`; tests in `test_scripture.py` | VERIFIED offline test; live PENDING | 10 phrases blocked in a test, 4 allowed |
+| 46 | The verse text is public domain (Reina-Valera 1909, World English Bible), with source and licence recorded. A verse ships only after Juan approves it. Licensed versions are NOT used and NOT claimed. | `playbooks/*/sources/scripture.json` (licence pages, checked 2026-10-06), `approvals.json` | VERIFIED on the source pages; approvals PENDING | 12 verses |
+| 47 | The choice is per case. Two different cases can get different verses, and if none fits no verse is added. | `tests/test_scripture.py` (a scripted model, not a live one) | VERIFIED offline test; live PENDING. Whether a live model matches verse to case well is NOT measured | n/a |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

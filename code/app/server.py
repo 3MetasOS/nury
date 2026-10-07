@@ -29,8 +29,8 @@ try:
     from app import network_api  # type: ignore
 except Exception:
     network_api = None
-STATIC_OK = re.compile(r"^/[A-Za-z0-9_-]+\.(html|css|js|svg)$")
-MIME = {"html": "text/html; charset=utf-8", "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8", "svg": "image/svg+xml"}
+STATIC_OK = re.compile(r"^/(fonts/)?[A-Za-z0-9_-]+\.(html|css|js|svg|woff2)$")
+MIME = {"woff2": "font/woff2", "html": "text/html; charset=utf-8", "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8", "svg": "image/svg+xml"}
 CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # saved by the app on the server's disk, gitignored
 CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
@@ -115,6 +115,12 @@ STAGE_LINE = {   # used only when a playbook's stage has no `summary` of its own
 }
 
 
+def crisis_detail():
+    """UI content for the crisis detail page (app-owned display data, keyed by playbook id). Not core, not a prompt."""
+    f = Path(__file__).parent / "crisis_detail.json"
+    return json.loads(f.read_text(encoding="utf-8")) if f.is_file() else {"common_never": [], "playbooks": {}}
+
+
 def stage_lines(pid):
     """[{id, title, line}] for the crisis detail page, from the playbook itself. Nothing here names a crisis."""
     try:
@@ -126,6 +132,34 @@ def stage_lines(pid):
         extra = getattr(st, "summary", "") or ""
         out.append({"id": st.id, "title": re.sub(r"^\d+\.\s*", "", st.title),
                     "line": extra or STAGE_LINE.get(st.audience, STAGE_LINE["family"])})
+    return out
+
+
+def _iso(created):
+    """case.json 'created' is '2026-10-07 03:20 UTC'; the page wants ISO."""
+    return (created or "").replace(" UTC", "Z").replace(" ", "T") if created else ""
+
+
+def cases_overview():
+    """Every saved case with what the home and cases pages need: family id, version, follow-up flag, a one-line summary."""
+    out = []
+    for c in cf.list_cases(CASES_ROOT):
+        try:
+            loaded = cf.load_case(c["id"], CASES_ROOT)
+        except Exception:
+            continue
+        meta = loaded["meta"]
+        m = re.search(r"^Situation:\s*(.+)$", loaded["pages"].get("index.md", ""), re.M)
+        fam = base_id(c["id"])
+        ver = 1 if c["id"] == fam else int(c["id"].rsplit("-v", 1)[1])
+        out.append({"id": c["id"], "family_id": fam, "playbook": c["playbook"], "title": c.get("title") or meta.get("title") or c["id"],
+                    "created": c.get("created"), "iso": _iso(c.get("created")), "version": ver, "status": "saved",
+                    "followup": bool(meta.get("needs_follow_up")), "summary": (m.group(1).strip()[:110] if m else "")})
+    counts = {}
+    for c in out:
+        counts[c["family_id"]] = max(counts.get(c["family_id"], 1), c["version"])
+    for c in out:
+        c["version_count"] = counts[c["family_id"]]
     return out
 
 
@@ -141,6 +175,8 @@ def playbooks():
             intake = json.loads(f.read_text(encoding="utf-8")).get("intake", {})
         p["placeholder"] = intake.get("placeholder", GENERIC_PLACEHOLDER)
         p["stages"] = stage_lines(p["id"]) if p["status"] == "live" else []
+        det = crisis_detail()
+        p["detail"] = dict(det["playbooks"].get(p["id"], {}), common_never=det.get("common_never", [])) if p["status"] == "live" else None
         demo = intake.get("demo")
         if demo:
             p["demo_intake"] = demo
@@ -361,11 +397,13 @@ class H(BaseHTTPRequestHandler):
             b = (STATIC / p[1:]).read_bytes()
             self.send_response(200)
             self.send_header("Content-Type", MIME[p.rsplit(".", 1)[1]])
+            if p.endswith(".woff2"):
+                self.send_header("Cache-Control", "public, max-age=604800")
             self.send_header("Content-Length", str(len(b)))
             self.end_headers()
             self.wfile.write(b)
         elif p == "/api/features":
-            self._json({"network": (STATIC / "network.html").is_file()})
+            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up")})
         elif p == "/":
             b = (STATIC / "index.html").read_bytes()
             self.send_response(200)
@@ -385,7 +423,7 @@ class H(BaseHTTPRequestHandler):
             names = sorted(n for n in set(ca) | set(cb) if re.match(r"0\d-", n))
             self._json({"a": a, "b": b, "pages": {n: diff_pages(ca.get(n, ""), cb.get(n, "")) for n in names}})
         elif p == "/api/cases":
-            self._json({"cases": cf.list_cases(CASES_ROOT)})
+            self._json({"cases": cases_overview()})
         elif p.startswith("/api/case/") and p.endswith("/export"):
             cid = urllib.parse.unquote(p.split("/")[3])
             if not CASE_ID.match(cid):
@@ -462,6 +500,17 @@ class H(BaseHTTPRequestHandler):
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s
             self._json({"id": s.id})
+        elif p.startswith("/api/case/") and p.endswith("/followup"):
+            cid = urllib.parse.unquote(p.split("/")[3])
+            if not CASE_ID.match(cid):
+                return self._json({"error": "bad id"}, 400)
+            if not hasattr(cf, "set_follow_up"):
+                return self._json({"error": "Follow-up flags are not available in this build."}, 501)
+            try:
+                cf.set_follow_up(cid, bool(b.get("value")), CASES_ROOT)
+            except Exception:
+                return self._json({"error": "case not found"}, 404)
+            self._json({"ok": True, "followup": bool(b.get("value"))})
         elif p.startswith("/api/session/") and p.endswith("/save"):
             s = SESSIONS.get(p.split("/")[3])
             if not s:

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crisis detail, Nury (design prototype)</title>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){}</script>
+<style>
+/* Switch crisis with the hash: crisis-detail.html#detention or crisis-detail.html#hospital. No requests. */
+@font-face{font-family:"Fraunces";src:local("Fraunces"),local("Fraunces 9pt"),local("Fraunces 72pt");font-weight:400 700;font-display:swap}
+@font-face{font-family:"Inter";src:local("Inter"),local("Inter Regular");font-weight:400 700;font-display:swap}
+:root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.10);--line-2:rgba(236,231,220,.20);
+--amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--amber-text:#e8a33d;--amber-line:rgba(232,163,61,.55);
+--text:#ece7dc;--muted:#a79f8d;--ember:#e8a33d;--glow:rgba(232,163,61,.16);--scene:rgba(236,231,220,.42);
+--serif:"Fraunces",Georgia,"Times New Roman",serif;--sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color-scheme:dark}
+:root[data-theme="light"]{--bg:#f7f3ea;--surface:#fffdf7;--surface-2:#efe8d9;--line:rgba(13,16,21,.14);--line-2:rgba(13,16,21,.28);
+--amber:#b8680f;--amber-soft:rgba(184,104,15,.12);--amber-ink:#0d1015;--amber-text:#8a4a07;--amber-line:rgba(184,104,15,.6);
+--text:#0d1015;--muted:#5b564b;--ember:#b8680f;--glow:rgba(184,104,15,.14);--scene:rgba(13,16,21,.45);color-scheme:light}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:76px}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);overflow-x:hidden}
+h1,h2,h3,h4,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--amber-text);outline-offset:2px}
+.i{width:24px;height:24px;flex:none;display:block}
+.i.sm{width:18px;height:18px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:var(--amber-ink);padding:12px 16px;border-radius:10px;z-index:100;font-weight:600}
+.skip:focus{top:8px}
+.muted{color:var(--muted)}
+
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--amber-text);min-height:48px}
+.brand .i{width:28px;height:28px}
+.brand b{font:600 24px/1 var(--serif)}
+.brand small{display:none;font-size:13px;color:var(--muted);margin-left:4px}
+.iconbtn{margin-left:auto;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);cursor:pointer}
+.tabs{display:none}
+main{max-width:1120px;margin:0 auto;padding:8px 16px calc(112px + env(safe-area-inset-bottom))}
+.back{display:inline-flex;align-items:center;gap:6px;min-height:48px;color:var(--muted);text-decoration:none;font:600 15px var(--sans)}
+.back:hover{color:var(--text)}
+
+h1{font:500 30px/1.15 var(--serif);letter-spacing:-.01em}
+h1:focus{outline:none}
+h2{font:500 22px/1.25 var(--serif);margin-bottom:12px}
+h3{font:500 20px/1.3 var(--serif)}
+h4{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--amber-text);margin-bottom:4px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 20px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.btn.block{width:100%}
+.scene{display:block;width:100%;height:auto;aspect-ratio:8/3;color:var(--scene)}
+.tile{width:48px;height:48px;border-radius:12px;background:var(--amber-soft);color:var(--amber-text);display:grid;place-items:center;flex:none}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:4px;min-height:26px;padding:0 10px;border-radius:99px;font:600 13px/1 var(--sans);border:1px solid var(--line-2);color:var(--muted)}
+.chip.on{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
+
+/* header band: doorway for detention, window for hospital */
+.cband{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin:4px 0 20px;display:grid;gap:12px;background:radial-gradient(120% 140% at 0% 0%,var(--glow),transparent 55%),var(--surface)}
+.kick{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.lead{color:var(--muted);max-width:56ch;margin-top:8px}
+.cband .scene{max-width:280px}
+
+.cols{display:grid;gap:28px}
+section.blk{display:block}
+.dots li{position:relative;padding:6px 0 6px 24px}
+.dots li::before{content:"";position:absolute;left:4px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--ember)}
+.callout{margin-top:12px;padding:12px 14px;border:1px dashed var(--amber-line);border-radius:12px;font-size:15px}
+.give{display:grid;gap:10px}
+.give li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start}
+.give .tile{width:44px;height:44px;border-radius:12px}
+.give b{display:block;font-weight:600}
+.give span.d{font-size:14px;color:var(--muted)}
+
+/* overview rail */
+.rail{display:flex;align-items:flex-start;margin:4px 0 20px;padding:14px 8px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.rail .n{width:44px;flex:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.rail .n a{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--amber-line);background:var(--bg);color:var(--amber-text);display:grid;place-items:center;text-decoration:none}
+.rail .n span{width:72px;text-align:center;font-size:12px;line-height:1.25;color:var(--muted)}
+.rail .g{flex:1;min-width:14px;height:44px;display:flex;align-items:center;justify-content:center;position:relative}
+.rail .g::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1.5px dashed var(--amber-line)}
+.rail .g .i{position:relative;width:18px;height:18px;background:var(--surface);color:var(--amber-text)}
+.legend{font-size:13px;color:var(--muted);margin:-8px 0 20px;display:flex;gap:8px;align-items:center}
+.legend .i{width:16px;height:16px;color:var(--amber-text)}
+
+/* detailed flow */
+.flow{display:grid;gap:16px;position:relative}
+.flow>li{position:relative;padding-left:60px}
+.flow>li:not(:last-child)::before{content:"";position:absolute;left:21px;top:44px;bottom:-16px;border-left:1.5px dashed var(--amber-line);opacity:.8}
+.node{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--amber-line);background:var(--bg);display:grid;place-items:center;color:var(--amber-text);z-index:1}
+.node.cap{border-style:dashed}
+.st .step{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.two{display:grid;gap:14px;margin-top:12px}
+.two p{font-size:15px}
+.two>div+div{border-top:1px solid var(--line);padding-top:12px}
+.gate{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line);font:600 14px var(--sans);color:var(--amber-text)}
+.gate .i{width:20px;height:20px}
+.capcard{padding:4px 0 8px}
+.capcard p{font-size:15px;color:var(--muted);margin-top:4px}
+.never li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.never li:last-child{border-bottom:0}
+.never .i{color:var(--amber-text);margin-top:2px}
+.time{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px}
+.time p{font-size:15px;color:var(--muted)}
+.time p+p{margin-top:8px}
+.more{font-size:14px;margin-top:8px}
+.more a{color:var(--amber-text);text-underline-offset:3px;display:inline-flex;min-height:44px;align-items:center}
+
+/* start card (desktop) and bar (phone) */
+.aside{display:none}
+.startbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line)}
+.startbar .btn{flex:1}
+.startbar small{flex:none;max-width:112px;font-size:12px;line-height:1.3;color:var(--muted)}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:40;background:var(--text);color:var(--bg);padding:12px 16px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+
+@media (min-width:640px){
+  h1{font-size:36px}
+  .two{grid-template-columns:1fr 1fr;gap:20px}
+  .two>div+div{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:20px}
+}
+@media (min-width:960px){
+  .brand small{display:inline}
+  .tabs{display:flex;gap:4px;margin-left:24px}
+  .tabs a{display:flex;align-items:center;gap:8px;padding:0 16px;min-height:44px;border-radius:99px;font:600 15px var(--sans);color:var(--muted);text-decoration:none}
+  .top .wrap{padding:0 24px}
+  main{padding:8px 24px 56px}
+  .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}
+  .cband .scene{max-width:none}
+  .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
+  .aside{display:grid;gap:14px;position:sticky;top:84px}
+  .aside .card{display:grid;gap:12px}
+  .startbar{display:none}
+  .toast{left:auto;right:24px;bottom:24px;max-width:360px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<symbol id="i-mark" viewBox="0 0 64 64"><g fill="currentColor" stroke="currentColor"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></symbol>
+<symbol id="i-lantern" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.6" r="1.5"/><path d="M12 5.1V7M7.5 7.5h9M8.6 7.5h6.8l-.8 11H9.4zM7.6 20.5h8.8"/><path style="fill:var(--ember,currentColor);stroke:none" d="M12 11.2c1.5 1.6 2 2.6 2 3.5a2 2 0 0 1-4 0c0-.9.5-1.9 2-3.5z"/></symbol>
+<symbol id="i-cases" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 11h17"/><circle cx="12" cy="15" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M8.2 7h7.6M7.2 8.9l3.8 7M16.8 8.9l-3.8 7"/><circle cx="12" cy="10.2" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-detention" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M7 21V11a5 5 0 0 1 10 0v10"/><circle cx="12" cy="15.5" r="1.6" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-hospital" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="15" rx="3.5"/><path d="M7.5 12.5h2.2l1.4-3 2 6 1.4-3h2"/></symbol>
+<symbol id="i-audit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4M9.5 12h6M9.5 15.5h4"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M8 10.5l4 4 4-4M5 18.5h14"/></symbol>
+<symbol id="i-v2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8.5h9.5v12H9zM6 16.5v-12h9.5"/><circle cx="13.7" cy="14.5" r="1.4" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-protect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5H6v15h3M15 4.5h3v15h-3"/><circle cx="12" cy="12" r="1.8" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-triage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+<symbol id="i-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5zM12 6.5v13"/></symbol>
+<symbol id="i-resources" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.3 1.3L7 5M3.5 12l1.3 1.3L7 11M3.5 18l1.3 1.3L7 17"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></symbol>
+<symbol id="i-gate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8 8.5-8 8.5-8-8.5z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></symbol>
+<symbol id="i-never" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+<symbol id="s-detention" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><path d="M122 104V54a38 38 0 0 1 76 0v50"/><path d="M134 104V56a26 26 0 0 1 52 0v48" opacity=".5"/><circle cx="160" cy="76" r="4.5" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="160" cy="76" r="12" stroke-dasharray="2 4" opacity=".7"/><path d="M146 104l-14 12M174 104l14 12" opacity=".5"/></symbol>
+<symbol id="s-hospital" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><rect x="112" y="24" width="96" height="74" rx="12"/><path d="M126 62h22l8-18 12 36 8-18h22"/><circle cx="232" cy="30" r="4" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="232" cy="30" r="10" stroke-dasharray="2 4" opacity=".7"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="home.html#/" aria-label="Nury, home"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg><b>Nury</b><small>the crisis-response agent for solo pastors</small></a>
+    <nav class="tabs" aria-label="Main">
+      <a href="home.html#/"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lantern"/></svg>Home</a>
+      <a href="home.html#/cases"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cases"/></svg>Cases</a>
+      <a href="home.html#/network"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-network"/></svg>Our network</a>
+    </nav>
+    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Switch to day mode"><svg class="i" aria-hidden="true" focusable="false"><use id="theme-i" href="#i-sun"/></svg></button>
+  </div>
+</header>
+
+<main id="main">
+  <a class="back" href="home.html#start"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-back"/></svg>All crises</a>
+  <noscript><p class="card">This prototype draws the page with a little JavaScript. In the app the same content comes from the crisis folder.</p></noscript>
+  <div id="page"></div>
+</main>
+
+<div class="startbar" id="startbar">
+  <button class="btn primary" type="button" data-start>Start this crisis</button>
+  <small>About a minute of drafting. You approve each stage.</small>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+/* In the app this block comes from the crisis folder (a "detail" block next to playbook.json and stages.json),
+   so no crisis is hardcoded in the page. Copy here is draft copy for the product owner to approve. */
+var COMMON_NEVER=[
+ "Send anything to the family or to anyone. You copy or download, and you share by hand.",
+ "Give {domain} advice, or predict how things will turn out.",
+ "Claim to be a pastor, lawyer, doctor, counselor or therapist.",
+ "Rank or endorse anyone. Your church's own contacts are listed first, labeled as yours.",
+ "Invent a link, phone number or email. Each one comes from a reviewed source or from you.",
+ "Say anyone is searching, sending or visiting, unless you wrote it.",
+ "Show you a draft that failed a check."
+];
+var D={
+ detention:{
+  title:"Immigration detention or raid",icon:"i-detention",scene:"s-detention",
+  lead:"A family member was detained or taken in a raid. You take the call. Nury drafts what you need to help: a case summary, a rights brief, attorney resources, a checklist and a message.",
+  covers:["A family member was detained outside work, at a traffic stop, at home or at a check-in.","A raid in your community, and families calling you for help.","A frightened family asks what to do tonight."],
+  domain:"legal",
+  extraNever:"Name an immigration agency in the text. Nury says “immigration officers”.",
+  stages:[
+   {short:"Triage",icon:"i-triage",title:"Triage",makes:"A one-page case summary: situation, people, place, the family's language, how urgent it is and why, and three facts still missing.",decide:"Does this match what the family told you? Fix anything that is wrong."},
+   {short:"Brief",icon:"i-brief",title:"Rights brief",makes:"Plain information in the family's language. Every point cites a reviewed source. It ends by urging the family to speak with a qualified immigration attorney.",decide:"Is each point right to share with this family? Keep it, edit it, or stop."},
+   {short:"Contacts",icon:"i-resources",title:"Attorney resources",makes:"National hotlines and directories from a reviewed list. The Department of Justice list of recognized providers, where we have one (Colorado so far). Your church's own contacts first, labeled as yours.",decide:"Keep only the contacts you are comfortable sharing."},
+   {short:"Checklist",icon:"i-checklist",title:"Family checklist",makes:"Three short lists: do tonight, do not do, and gather these documents.",decide:"Remove anything that does not fit this family."},
+   {short:"Message",icon:"i-message",title:"Pastoral message",makes:"A short message, under 120 words, in the family's language and a warm, steady voice. It may invite. It does not promise action unless you wrote it.",decide:"Is this what you would say? Edit until it sounds like you."}
+  ],
+  gives:["A case summary for you","A rights brief for the family","Attorney resources","A family checklist","A short pastoral message"]
+ },
+ hospital:{
+  title:"Hospital emergency",icon:"i-hospital",scene:"s-hospital",
+  lead:"A family member is in the emergency room or intensive care. You take the call. Nury drafts what you need to help: a case summary, an information brief, hospital resources, a checklist and a message.",
+  covers:["A family member was taken to the emergency room.","A loved one is in intensive care and the family cannot get answers.","The family asks what to ask the hospital tonight."],
+  domain:"medical or legal",
+  extraNever:"Give a diagnosis or a prognosis, advise on ending care, or promise a recovery or a healing.",
+  stages:[
+   {short:"Triage",icon:"i-triage",title:"Triage",makes:"A one-page case summary: situation, people, place, the family's language, how urgent it is and why, and three facts still missing.",decide:"Does this match what the family told you? Fix anything that is wrong."},
+   {short:"Brief",icon:"i-brief",title:"Family information brief",makes:"Plain information in the family's language, from five reviewed public sources: family sharing of health information, patient rights, language help, 988 and hospital social workers. Every point cites its source. It ends by urging the family to ask the hospital care team.",decide:"Is each point right to share with this family? Keep it, edit it, or stop."},
+   {short:"Contacts",icon:"i-resources",title:"Hospital resources",makes:"Reviewed national resources, plus your church's own contacts, such as interpreters, social services and Medicare and Medicaid help. Yours are listed first, labeled as yours.",decide:"Keep only the contacts you are comfortable sharing."},
+   {short:"Checklist",icon:"i-checklist",title:"Family checklist",makes:"Three short lists: do tonight, do not do, and what to bring and ask.",decide:"Remove anything that does not fit this family."},
+   {short:"Message",icon:"i-message",title:"Pastoral message",makes:"A short message, under 120 words, in the family's language and a warm, steady voice. It may invite. It does not promise action unless you wrote it.",decide:"Is this what you would say? Edit until it sounds like you."}
+  ],
+  gives:["A case summary for you","An information brief for the family","Hospital resources","A family checklist","A short pastoral message"]
+ }
+};
+var $=function(s){return document.querySelector(s)};
+var ic=function(n,c){return '<svg class="i'+(c?" "+c:"")+'" aria-hidden="true" focusable="false"><use href="#'+n+'"/></svg>'};
+var esc=function(s){return String(s).replace(/[&<>"]/g,function(m){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]})};
+function render(){
+  var key=(location.hash||"#detention").replace("#","");if(!D[key])key="detention";var c=D[key];
+  document.title=c.title+", Nury";
+  var rail='',flow='',n=c.stages.length;
+  c.stages.forEach(function(s,i){
+    rail+='<li class="n"><a href="#s'+(i+1)+'" aria-label="Stage '+(i+1)+', '+esc(s.title)+'">'+ic(s.icon)+'</a><span>'+esc(s.short)+'</span></li>';
+    if(i<n-1)rail+='<li class="g" aria-hidden="true">'+ic("i-gate")+'</li>';
+    flow+='<li class="st" id="s'+(i+1)+'"><span class="node">'+ic(s.icon)+'</span><div class="card"><p class="step">Stage '+(i+1)+' of '+n+'</p><h3>'+esc(s.title)+'</h3><div class="two"><div><h4>Nury produces</h4><p>'+esc(s.makes)+'</p></div><div><h4>You decide</h4><p>'+esc(s.decide)+'</p></div></div><p class="gate">'+ic("i-gate")+'Your gate: Approve, Edit or Stop</p></div></li>';
+  });
+  var never=COMMON_NEVER.map(function(t){return t.replace("{domain}",c.domain)});never.push(c.extraNever);
+  var gives=c.stages.map(function(s,i){return '<li><span class="tile">'+ic(s.icon)+'</span><span><b>'+esc(c.gives[i])+'</b></span></li>'}).join("");
+  $("#page").innerHTML=
+   '<section class="cband" aria-labelledby="h1"><div><span class="kick">'+ic(c.icon,"sm")+'Crisis</span><h1 id="h1" tabindex="-1" style="margin-top:8px">'+esc(c.title)+'</h1><p class="lead">'+esc(c.lead)+'</p><div class="chips"><span class="chip on">Available now</span><span class="chip">5 stages</span><span class="chip">Family language: Spanish or English</span></div></div><svg class="scene" aria-hidden="true" focusable="false"><use href="#'+c.scene+'"/></svg></section>'+
+   '<div class="cols"><div>'+
+   '<section class="blk" aria-labelledby="h-cov" style="margin-bottom:28px"><h2 id="h-cov">What this covers</h2><ul class="dots">'+c.covers.map(function(t){return '<li>'+esc(t)+'</li>'}).join("")+'</ul><p class="callout">If anyone is in immediate danger, call 911 first.</p></section>'+
+   '<section class="blk" aria-labelledby="h-get" style="margin-bottom:28px"><h2 id="h-get">What you will get</h2><ul class="give">'+gives+
+     '<li><span class="tile">'+ic("i-save")+'</span><span><b>A package you copy or download</b><span class="d">Save it to a case file and open it later.</span></span></li>'+
+     '<li><span class="tile">'+ic("i-audit")+'</span><span><b>An audit log</b><span class="d">Every check and every gate, with reasons only. Open it when you want.</span></span></li></ul></section>'+
+   '<section class="blk" aria-labelledby="h-how" style="margin-bottom:28px"><h2 id="h-how">How it works</h2>'+
+     '<ol class="rail" aria-label="The five stages">'+rail+'</ol>'+
+     '<p class="legend">'+ic("i-gate")+'Each diamond is a gate. Nothing moves on until you decide.</p>'+
+     '<ol class="flow">'+
+       '<li><span class="node cap">'+ic("i-protect")+'</span><div class="capcard"><h3>First, you and Nury get ready</h3><p>You type what the family said, in your own words, and pick the family’s language. Nury proposes names to protect. You tick the ones to hide. Tokens, not names, go to the model.</p></div></li>'+
+       flow+
+       '<li><span class="node cap">'+ic("i-save")+'</span><div class="capcard"><h3>Then the package is yours</h3><p>Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again as version 2 and keeps version 1 as it was.</p></div></li>'+
+     '</ol></section>'+
+   '<section class="blk" aria-labelledby="h-never" style="margin-bottom:28px"><h2 id="h-never">What Nury will never do</h2><ul class="never card">'+never.map(function(t){return '<li>'+ic("i-never")+'<span>'+esc(t)+'</span></li>'}).join("")+'</ul></section>'+
+   '<section class="blk" aria-labelledby="h-time" style="margin-bottom:12px"><h2 id="h-time">A note on time</h2><div class="time">'+ic("i-clock")+'<div><p>Nury drafts all five stages in about a minute.</p><p>That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.</p></div></div></section>'+
+   '<p class="more"><a href="home.html#about">About this build</a></p>'+
+   '</div>'+
+   '<aside class="aside" aria-label="Start"><div class="card"><h2 style="margin:0">Ready when you are</h2><p class="muted" style="font-size:15px">You will type what the family said, then confirm the names to protect.</p><button class="btn primary block" type="button" data-start>Start this crisis</button><p class="muted" style="font-size:14px">About a minute of drafting. You approve each stage.</p></div></aside></div>';
+  window.scrollTo(0,0);
+}
+var tt;function toast(m){var t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(tt);tt=setTimeout(function(){t.classList.remove("on")},3200)}
+document.addEventListener("click",function(e){if(e.target.closest("[data-start]"))toast("Prototype: this opens the intake screen.")});
+function theme(t){document.documentElement.dataset.theme=t;var l=t==="light";$("#theme").setAttribute("aria-pressed",String(l));
+  $("#theme").setAttribute("aria-label",l?"Switch to night mode":"Switch to day mode");$("#theme-i").setAttribute("href",l?"#i-moon":"#i-sun")}
+theme(document.documentElement.dataset.theme);
+$("#theme").onclick=function(){var n=document.documentElement.dataset.theme==="light"?"dark":"light";theme(n);try{localStorage.setItem("nury-theme",n)}catch(e){}};
+window.addEventListener("hashchange",function(){if(/^#s\d$/.test(location.hash))return;render();var h=$("#h1");if(h)h.focus({preventScroll:true})});
+render();
+})();
+</script>
+</body>
+</html>

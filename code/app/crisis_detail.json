@@ -1,0 +1,115 @@
+{
+ "common_never": [
+  "Send anything to the family or to anyone. You copy or download, and you share by hand.",
+  "Give {domain} advice, or predict how things will turn out.",
+  "Claim to be a pastor, lawyer, doctor, counselor or therapist.",
+  "Rank or endorse anyone. Your church's own contacts are listed first, labeled as yours.",
+  "Invent a link, phone number or email. Each one comes from a reviewed source or from you.",
+  "Say anyone is searching, sending or visiting, unless you wrote it.",
+  "Show you a draft that failed a check."
+ ],
+ "playbooks": {
+  "detention": {
+   "icon": "i-detention",
+   "scene": "s-detention",
+   "domain": "legal",
+   "lead": "A family member was detained or taken in a raid. You take the call. Nury drafts what you need to help: a case summary, a rights brief, attorney resources, a checklist and a message.",
+   "covers": [
+    "A family member was detained outside work, at a traffic stop, at home or at a check-in.",
+    "A raid in your community, and families calling you for help.",
+    "A frightened family asks what to do tonight."
+   ],
+   "never_extra": "Name an immigration agency in the text. Nury says “immigration officers”.",
+   "stages": [
+    {
+     "short": "Triage",
+     "icon": "i-triage",
+     "makes": "A one-page case summary: situation, people, place, the family's language, how urgent it is and why, and three facts still missing.",
+     "decide": "Does this match what the family told you? Fix anything that is wrong."
+    },
+    {
+     "short": "Brief",
+     "icon": "i-brief",
+     "makes": "Plain information in the family's language. Every point cites a reviewed source. It ends by urging the family to speak with a qualified immigration attorney.",
+     "decide": "Is each point right to share with this family? Keep it, edit it, or stop."
+    },
+    {
+     "short": "Contacts",
+     "icon": "i-resources",
+     "makes": "National hotlines and directories from a reviewed list. The Department of Justice list of recognized providers, where we have one (Colorado so far). Your church's own contacts first, labeled as yours.",
+     "decide": "Keep only the contacts you are comfortable sharing."
+    },
+    {
+     "short": "Checklist",
+     "icon": "i-checklist",
+     "makes": "Three short lists: do tonight, do not do, and gather these documents.",
+     "decide": "Remove anything that does not fit this family."
+    },
+    {
+     "short": "Message",
+     "icon": "i-message",
+     "makes": "A short message, under 120 words, in the family's language and a warm, steady voice. It may invite. It does not promise action unless you wrote it.",
+     "decide": "Is this what you would say? Edit until it sounds like you."
+    }
+   ],
+   "gives": [
+    "A case summary for you",
+    "A rights brief for the family",
+    "Attorney resources",
+    "A family checklist",
+    "A short pastoral message"
+   ]
+  },
+  "hospital": {
+   "icon": "i-hospital",
+   "scene": "s-hospital",
+   "domain": "medical or legal",
+   "lead": "A family member is in the emergency room or intensive care. You take the call. Nury drafts what you need to help: a case summary, an information brief, hospital resources, a checklist and a message.",
+   "covers": [
+    "A family member was taken to the emergency room.",
+    "A loved one is in intensive care and the family cannot get answers.",
+    "The family asks what to ask the hospital tonight."
+   ],
+   "never_extra": "Give a diagnosis or a prognosis, advise on ending care, or promise a recovery or a healing.",
+   "stages": [
+    {
+     "short": "Triage",
+     "icon": "i-triage",
+     "makes": "A one-page case summary: situation, people, place, the family's language, how urgent it is and why, and three facts still missing.",
+     "decide": "Does this match what the family told you? Fix anything that is wrong."
+    },
+    {
+     "short": "Brief",
+     "icon": "i-brief",
+     "makes": "Plain information in the family's language, from reviewed public sources on family sharing of health information, patient rights, visitation, language help and complaints. Every point cites its source. It ends by urging the family to ask the hospital care team.",
+     "decide": "Is each point right to share with this family? Keep it, edit it, or stop."
+    },
+    {
+     "short": "Contacts",
+     "icon": "i-resources",
+     "makes": "Reviewed national resources, plus your church's own contacts, such as interpreters, social services and Medicare and Medicaid help. Yours are listed first, labeled as yours.",
+     "decide": "Keep only the contacts you are comfortable sharing."
+    },
+    {
+     "short": "Checklist",
+     "icon": "i-checklist",
+     "makes": "Three short lists: do tonight, do not do, and what to bring and ask.",
+     "decide": "Remove anything that does not fit this family."
+    },
+    {
+     "short": "Message",
+     "icon": "i-message",
+     "makes": "A short message, under 120 words, in the family's language and a warm, steady voice. It may invite. It does not promise action unless you wrote it.",
+     "decide": "Is this what you would say? Edit until it sounds like you."
+    }
+   ],
+   "gives": [
+    "A case summary for you",
+    "An information brief for the family",
+    "Hospital resources",
+    "A family checklist",
+    "A short pastoral message"
+   ]
+  }
+ }
+}

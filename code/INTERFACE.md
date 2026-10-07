@@ -160,6 +160,18 @@ Entry fields: `id, name, kind, services, languages (es, en), city, state, phone,
 
 The U.S. Department of Justice list of recognized legal service providers (Colorado), as Juan approved it (21 of 28: 18 providers and 3 official pages; 7 held for Pending Renewal). `python3 -m nury.officiallist` builds `playbooks/detention/sources/official_list.json` from `OFFICIAL_LIST_DRAFT.json` and `approvals.json`: approved providers only, with their verbatim phones. Held entries are kept only as names (`held_names`), with no detail, so a check can reject a draft that names one. The detention attorney stage has a dynamic source `{"dynamic": "official_list"}`: entries for the case's state (the church's home state if the case has none), detention-related first, at most 5; an entry the draft says is "probably not useful for a detention call" (the asylum-only center) is skipped. Rules in the check `official_list_rules`: a held entry is never named; a listed entry keeps its exact name and its own phone, email or link and is never called free (the roster does not say whether services are free); the caveat "Listed by the U.S. Department of Justice. Listed does not mean recommended." is present; as-of dates are kept (pro bono list Updated October 2026, roster 10/04/26). The ABA detention entry lists the email route for a family member; the toll-free number on that page is for people held at military facilities and is not listed. Other states have no official section until their list is read and approved.
 
+## Scripture (`nury/scripture.py`, pastoral stage only)
+
+```python
+from nury import scripture as scr
+scr.list_verses(pb, "es")            # [{"id","reference","first_words","translation","origin"}]  for the gate selector
+scr.swap_verse(draft_text, verse)    # verse = one entry of scr.for_language(scr.load_bank(pb.dir), "es"), or None to remove
+scr.SCRIPTURE_NOTE                   # "The verse is Scripture, quoted exactly. The rest is a draft; edit it."  show it at the pastoral gate
+result.scripture                     # {"id","reference","translation"} or None;  result.note is SCRIPTURE_NOTE when a verse is in the draft
+```
+
+The draft is: the message, then `«exact text»` and `— reference, translation`, then the why-lines. `scr.strip_block(text)` returns Nury's own sentences without the verse block: judges and wording checks should look at that, not the quoted verse. Only verses whose `approvals.json` status is `approved` are offered. Church verses go in `network/scripture.json` (need `source_url`, `license`, `translation_es` or `_en`, an id that starts with `church-`, `approved: true`). The audit log gets one `scripture` event with the verse id only.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

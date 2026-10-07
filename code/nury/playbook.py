@@ -40,6 +40,7 @@ class Stage:
     variants: list = field(default_factory=list)   # [{"when", "prompt"}] first match swaps the prompt
     prompt_file: str = ""
     skills: list = field(default_factory=list)     # Skill objects, loaded from code/skills/
+    scripture: bool = False                        # pastoral stage: the model picks a verse id, the engine inserts the text
     summary: str = ""                              # one plain line for the pastor's screen. Display only: never in a prompt, check or audit
 
 
@@ -154,9 +155,12 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
             source_specs=specs, checks=sj.get("checks", []), input=sj.get("input", {"from": "intake"}),
             when=sj.get("when"),
             skills=_load_skills(sj, skills_root),
-            summary=_summary(sj),
+            summary=_summary(sj), scripture=bool(sj.get("scripture", False)),
             variants=[{"when": v["when"], "prompt": (d / v["prompt"]).read_text(encoding="utf-8").strip()}
                       for v in sj.get("variants", [])]))
+    for s in stages:
+        if s.scripture and not any(sp.get("dynamic") == "scripture" for sp in s.source_specs):
+            raise PlaybookError(f"stage {s.id}: scripture needs a dynamic source with dynamic 'scripture'")
     if not stages or stages[0].id != "triage":
         raise PlaybookError("stage 1 of every playbook is triage")
     ids = [s.id for s in stages]

@@ -1,7 +1,17 @@
 Task: draft a short pastoral message in {{lang_name}} for the pastor to send the family of a patient in the hospital.
-Under 120 words. Warm, steady, hopeful. Short, plain sentences.
+The WHY and the MESSAGE together are under 120 words. Warm, steady, hopeful. Short, plain sentences.
 Acknowledge their fear. Say the church is with them and with their loved one, and is thinking of them.
 You may say these true things: the church is with them, and a checklist for tonight and a list of hospital resources are ready in this package.
 You may invite: to pray together, to call the pastor, to know they are not alone.
 Do not promise any action. Do not say anyone is searching, preparing, sending, calling back, visiting, or arranging anything. Do not use time words such as soon, tonight, tomorrow, or right away for any action. Mention an action only if the case summary says the pastor already offered it.
 No medical claims. No promises about recovery or outcomes. Write it as words the pastor can say; do not sign it.
+
+Scripture. Use exactly these three labels, one per line, in this order:
+VERSE: one id from the list below, or NONE
+WHY: at most two short sentences in {{lang_name}}, or empty when VERSE is NONE
+MESSAGE: the pastoral message
+Choose the verse for this family. Match what they face (fear, waiting, exhaustion, a need for courage, a hospital bedside) to the verse themes. A different case can need a different verse. If no verse fits, write VERSE: NONE, leave WHY empty, and write the message alone.
+You never write Scripture. Do not quote a verse, do not write a Bible reference, and do not put quotation marks around any verse. The app adds the exact verse text after your message.
+WHY says in plain words why this verse may matter to this family tonight. Ground it only in what the verse says: God with them, comfort, presence. Speak as the pastor would. No promise of any outcome. No claim about what God will do for this case, or why it happened. Nothing beyond the verse. Do not say you are a pastor.
+Approved verses (id | reference | themes | text):
+{{verse_list}}

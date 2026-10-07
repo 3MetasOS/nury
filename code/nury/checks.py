@@ -221,7 +221,63 @@ def no_unauthorized_promises(p, text, ctx):
     return [g.R("unauthorized_promise", f"promises an action nobody has taken: {sorted(set(h.lower() for h in hits))[:3]}")] if hits else []
 
 
+_PROVIDENCE = re.compile(
+    r"\bgod(?:'ll| will| is going to| shall)\b[^.!?\n]{0,30}\b(?:free|heal|cure|save|deliver|rescue|restore|release|fix|protect|bring|return|send)\b"
+    r"|\beverything happens for a reason\b|\ball things happen for\b|\bhappens for a reason\b|\bthere(?:'s| is) a reason (?:for|why)\b"
+    r"|\bgod(?:'s| has a| has) (?:plan|reason|purpose)\b|\b(?:it(?:'s| is)|that(?:'s| is)) god(?:'s)? (?:plan|will)\b|\bgod(?:'s)? will\b"
+    r"|\bgod (?:is|was) (?:punishing|testing|teaching|angry)\b|\bgod (?:allowed|permitted|sent|wanted|chose)\b|\bpunishment from god\b"
+    r"|\bdios (?:lo|la|los|las|te|nos|les|le) (?:liberar[aá]|sanar[aá]|curar[aá]|salvar[aá]|sacar[aá]|devolver[aá]|traer[aá]|proteger[aá])\b"
+    r"|\bdios\b[^.!?\n]{0,30}\b(?:liberar[aá]|sanar[aá]|curar[aá]|salvar[aá]|sacar[aá]|devolver[aá]|traer[aá])\b"
+    r"|\btodo (?:pasa|sucede|ocurre) por (?:algo|una raz[oó]n|alguna raz[oó]n)\b|\bpor algo (?:pasa|sucede|ocurre)\b"
+    r"|\bes (?:la )?voluntad de dios\b|\b(?:era|es) el plan de dios\b|\bdios (?:tiene|ten[ií]a) (?:un |su )?(?:plan|prop[oó]sito|raz[oó]n)\b"
+    r"|\bdios (?:est[aá]|estaba) (?:castigando|probando|ense[nñ]ando)\b|\bcastigo de dios\b|\bdios (?:permiti[oó]|quiso|envi[oó]|escogi[oó])\b", re.I)
+
+
+def no_providence_claims(p, text, ctx):
+    """Nury's own sentences may say God is with the family. They may not say what God will do for the case,
+    why it happened, or that it is God's plan or punishment. Applies to the why-lines and the message,
+    never to the quoted verse."""
+    hits = sorted({m.group(0).lower() for m in _PROVIDENCE.finditer(text)})
+    return [g.R("providence_claim", f"claims to know what God will do or why this happened: {hits[:3]}")] if hits else []
+
+
+def _fold_words(t):
+    return re.sub(r"[^\w ]", "", _fold(t)).split()
+
+
+def no_model_scripture(p, text, ctx):
+    """The model never writes Scripture. Its own sentences carry no reference, no quotation marks of the verse
+    block, and no run of six words from any approved verse."""
+    out = []
+    if re.search(r"\b\d{1,3}\s*:\s*\d{1,3}\b", text) or "«" in text or "»" in text:
+        out.append(g.R("invented_scripture", "do not write a Bible reference or a verse block; the app inserts the verse"))
+    words = _fold_words(text)
+    grams = {" ".join(words[i:i + 6]) for i in range(max(0, len(words) - 5))}
+    for v in getattr(ctx, "scripture", {}).values():
+        vw = _fold_words(v["text"])
+        if any(" ".join(vw[i:i + 6]) in grams for i in range(max(0, len(vw) - 5))):
+            out.append(g.R("invented_scripture", "do not quote Scripture in your own sentences; the app inserts the verse"))
+            break
+    return out
+
+
+def verse_block_verbatim(p, text, ctx):
+    """The verse block in a draft equals the vetted source text, with its reference and translation, and fits the cap."""
+    from . import scripture as scr
+    blocks = list(scr.BLOCK_RE.finditer(text))
+    if not blocks:
+        return []
+    if len(blocks) > 1:
+        return [g.R("scripture_altered", "more than one verse block")]
+    b = blocks[0]
+    for v in getattr(ctx, "scripture", {}).values():
+        if b.group("text") == v["text"] and b.group("ref").strip() == scr.block_line(v)[2:]:
+            return [] if len(v["text"].split()) <= getattr(ctx, "scripture_cap", scr.DEFAULT_CAP) else \
+                [g.R("scripture_altered", "verse block is over the word cap")]
+    return [g.R("scripture_altered", "the verse block does not match any approved verse word for word")]
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
                                     vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases, no_endorsement_words,
                                     listed_contacts_known, network_entries_present, official_list_rules,
-                                    no_unauthorized_promises)}
+                                    no_unauthorized_promises, no_providence_claims, no_model_scripture, verse_block_verbatim)}

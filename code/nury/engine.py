@@ -13,6 +13,7 @@ from . import guardrails as g
 from .audit import AuditLog
 from .gloo_client import GlooClient, GuardrailBlock
 from . import playbook as pbm
+from . import scripture as scr
 from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
@@ -62,6 +63,8 @@ class StageResult:
     shown_text: Optional[str] = None      # what the pastor saw: draft + disclaimer (None if escalated)
     gate: Optional[dict] = None           # {action, edited_text}
     input_context: dict = field(default_factory=dict)  # approved text this stage consumed
+    scripture: Optional[dict] = None      # {id, reference, translation} of the verse in the draft, if any
+    note: str = ""                        # one line for the gate: the verse is quoted exactly, the rest is a draft
 
 
 def approve_all(result):
@@ -97,6 +100,8 @@ def dynamic_source(spec, pb, state, fields, lang):
         if not st:
             st = network.load_network().home[1]            # same fallback as the church network
         return officiallist.select(json.loads(f.read_text(encoding="utf-8")), st, spec.get("limit", 5))
+    if kind == "scripture":
+        return scr.source_for(pb, lang)
     raise ValueError(f"unknown dynamic source {kind!r}")
 
 
@@ -186,14 +191,21 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
                      for x in d.get(k, []) if isinstance(x, dict) and x.get("name")]
     sources_blob = json.dumps(data, ensure_ascii=False)
     vetted_blob = sources_blob + "\n" + "\n".join(ctx.values())
-    ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
+    verses = {}
+    if stage.scripture:
+        verses = {e["id"]: e for spec in stage.source_specs if spec.get("dynamic") == "scripture"
+                  for e in data[spec["name"]]["entries"]}
+    ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang, scripture=verses,
+                             scripture_cap=scr.load_bank(pb.dir, church=False)["cap"] if stage.scripture else scr.DEFAULT_CAP)
+    forced = [{"name": n} for n in ("no_providence_claims", "no_model_scripture")
+              if stage.scripture and n not in [c["name"] for c in stage.checks]]
 
     def all_violations(txt):
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
         v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang, contact_names)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
         v += g.email_reasons(txt, sources_blob, vetted_blob, state.intake)
-        for c in stage.checks + [c for sk in active for c in sk.checks]:
+        for c in stage.checks + forced + [c for sk in active for c in sk.checks]:
             v += CHECKS[c["name"]](c, txt, ctx_ns)
         return v
     audit.log("stage_start", stage=stage_id, deps_used=list(ctx))
@@ -236,14 +248,27 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         if fault and attempt <= fault.get("times", 1):
             text += fault.get("draft_suffix", UNSAFE_SUFFIX)
             audit.log("fault_injected", stage=stage_id, attempt=attempt)
-        violations = all_violations(text)
+        parts = None
+        if stage.scripture:
+            parts, violations = scr.parse_output(text, verses)
+            if parts:
+                violations = all_violations(parts["own"])
+                if not violations:
+                    violations = CHECKS["verse_block_verbatim"]({}, scr.assemble(parts), ctx_ns)
+        else:
+            violations = all_violations(text)
         cats = sorted({v["category"] for v in violations})
         audit.log("check", stage=stage_id, attempt=attempt, passed=not violations, violations=violations,
                   reason_categories=cats, tokens_in=meta["input_tokens"], tokens_out=meta["output_tokens"],
                   latency_s=meta["latency_s"])
         rec.attempts.append({"n": attempt, "text": text, "violations": violations})
         if not violations:
-            draft = text
+            draft = scr.assemble(parts) if parts else text
+            if parts:
+                v = parts["verse"]
+                rec.scripture = {"id": v["id"], "reference": v["reference"], "translation": v["translation"]} if v else None
+                rec.note = scr.SCRIPTURE_NOTE if v else ""
+                audit.log("scripture", stage=stage_id, verse=v["id"] if v else "NONE")
             break
         audit.log("draft_rejected", stage=stage_id, attempt=attempt, visible_to_pastor=False,
                   reason_categories=cats, draft=text)
@@ -273,7 +298,9 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         rec.gate["edited_text"] = decision.text.strip()
         rec.final = with_disclaimer(decision.text, disclaimer)   # disclaimer re-appended after edit
         # The pastor owns edits. We flag, we do not block.
-        warn = all_violations(decision.text)
+        warn = (all_violations(scr.strip_block(decision.text))
+                + CHECKS["verse_block_verbatim"]({}, decision.text, ctx_ns)) if stage.scripture \
+            else all_violations(decision.text)
         audit.log("edit_check", stage=stage_id, warnings=warn)
     elif decision.action == "approve":
         rec.final = with_disclaimer(draft, disclaimer)

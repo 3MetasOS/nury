@@ -1,5 +1,7 @@
 {
  "_about": "Verse bank for the pastoral message. The model chooses an id from this list. It never writes Scripture. The engine inserts the exact text below. Comfort and presence only. No verse that promises an outcome, none about foreigners or politics.",
+ "tradition": "none",
+ "max_block_words": 52,
  "translations": {
   "es": {
    "name": "Reina-Valera 1909",

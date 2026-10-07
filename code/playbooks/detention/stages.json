@@ -224,7 +224,20 @@
       "rights",
       "checklist"
     ],
-    "sources": [],
+    "sources": [
+      {
+        "name": "scripture",
+        "dynamic": "scripture",
+        "var": "verse_list",
+        "groups": [
+          {
+            "list": "entries",
+            "line": "- {id} | {reference} | themes: {themes_text} | {text}",
+            "empty": "(none)"
+          }
+        ]
+      }
+    ],
     "checks": [
       {
         "name": "max_words",
@@ -235,10 +248,14 @@
       },
       {
         "name": "no_unauthorized_promises"
+      },
+      {
+        "name": "no_providence_claims"
       }
     ],
     "skills": [
       "voice"
-    ]
+    ],
+    "scripture": true
   }
 ]

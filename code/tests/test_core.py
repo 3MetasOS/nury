@@ -26,6 +26,13 @@ CANNED = {"triage": TRIAGE, "rights": RIGHTS, "attorney": ATTY, "checklist": CHE
 ORDER = ["triage", "rights", "attorney", "checklist", "pastoral"]
 
 
+def labelled(key, text, instructions):
+    """The pastoral prompt asks for VERSE / WHY / MESSAGE. Plain canned text becomes 'no verse'."""
+    if key == "pastoral" and "VERSE:" in (instructions or "") and not text.lstrip().upper().startswith("VERSE"):
+        return "VERSE: NONE\nWHY:\nMESSAGE: " + text
+    return text
+
+
 class FakeClient:
     """Answers by stage. Spots the stage from the prompt text."""
     def __init__(self, canned=None):
@@ -37,7 +44,7 @@ class FakeClient:
         key = ("triage" if "structured case" in instructions else "rights" if "rights brief" in instructions
                else "attorney" if "scannable list" in instructions
                else "pastoral" if "pastoral message" in instructions else "checklist")
-        text = self.canned[key]
+        text = labelled(key, self.canned[key], instructions)
         if key == "attorney":
             text += official_lines(instructions)
         return text, {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
@@ -268,7 +275,7 @@ class HFake(FakeClient):
                else "resources" if "scannable list" in instructions
                else "pastoral" if "pastoral message" in instructions else "checklist")
         self.last = instructions
-        return self.canned[key], {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
+        return labelled(key, self.canned[key], instructions), {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
 
 
 class Hospital(unittest.TestCase):
