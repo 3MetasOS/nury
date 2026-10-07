@@ -1,0 +1,19 @@
+Nury — the crisis-response agent for solo pastors.
+
+Nury is a crisis-management engine that runs playbooks. It runs two playbooks: a family detention and a hospital emergency.
+
+It is 2 AM. A solo pastor has no staff and no lawyer on the line. A panicked immigrant family calls: a relative was detained. The pastor has only a phone.
+
+Nury turns that call into a complete response package. The pastor types what the family said. Nury runs five stages: triage the case, write a plain-language rights brief, list attorney resources, build a family checklist, and draft a short pastoral message. Family materials come out in Spanish.
+
+The pastor stays in charge. After every stage, the pastor can Approve, Edit, or Stop. Later stages use the pastor's edits. Nury has no send path. Nothing reaches the family except through the pastor.
+
+Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source file. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never recommends a specific attorney. Nury is not a pastor, counselor, or lawyer.
+
+Each draft passes a guardrail check. An unsafe draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it.
+
+Nury runs on Gloo's guarded Responses endpoint. We tested 20 hand-built scenarios. Results: [PLACEHOLDER: scorecard numbers].
+
+Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.
+
+Entry by Juan Pelaez, 3Metas.
