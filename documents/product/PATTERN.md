@@ -32,7 +32,7 @@ Do not use it when speed matters more than review, when no human will read each 
 ## What it does not give you
 - **Safety by itself.** Rules and a classifier lower the chance that an unsafe draft reaches the human. They do not make the human's review unnecessary. In our runs a model sometimes wrote sentences no vetted source supported, and the checks passed them.
 - **A calibrated classifier.** Our Jev gate was smoke-tested on 20 pairs. We do not know its false-reject rate.
-- **Quality of tone or truth.** A judge for warmth scored plainer text colder, and we did not make it warmer.
+- **Quality of tone or truth.** A judge for warmth sits near 3 of 5 against a target of 4, it is noisy, and no human has rated warmth.
 - **Security and hosting.** No sign-in, no encryption at rest, one shared pool of cases, one shared key with no budget cap.
 - **Evidence from real users.** Tested on synthetic families only. No real pastor has used it.
 - **Low cost under failure.** A stage that never passes still costs three attempts. The worst case computed from the code is 135 model calls for one package (`ECONOMICS.md`).

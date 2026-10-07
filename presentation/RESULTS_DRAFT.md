@@ -1,6 +1,6 @@
 # Results draft: held until the full re-run
 
-> **INTERIM.** The numbers below are from build `8a28a18`. A new final commit and re-run are coming (hack-sensei). Refill with `REFILL_CHECKLIST.md`.
+> **FINAL 2026-10-07.** Refilled from the scorecards on build `9bc5c6d` (commit 983cb89): detention 11 / 1 / 8, hospital 5 / 0 / 3, hostile 13 / 1 / 4, 46 scenarios 29 / 2 / 15 (judge results, not human verdicts). Cost and time per package: 6 to 9 cents, 34 to 50 s. See CLAIMS_AUDIT 1f. The numbers further down are history.
 >
 > **FILLED 2026-10-07 04:07.** The final scorecards (build `8a28a18`, evaluations/results/scorecard.md) landed and slide 9, the descriptions, the pitch and the time and cost captions use them. This file is history. Numbers to quote now: detention 12 pass / 6 fail / 2 undecided; hospital 5 / 1 / 2; hostile intakes 11 / 2 / 5; cost per run $0.064 (detention) and $0.088 (hospital); time 33.5 s and 48.7 s. Judge results, not human verdicts.
 

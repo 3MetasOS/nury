@@ -107,7 +107,7 @@ If one evaluation test (`test_built_page_is_current_with_its_source`) fails, a d
 - A native Spanish speaker has not read the Spanish.
 - The triage can restate the family's own words and be refused three times by the checks, and then the pastor gets no case summary. We saw it on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran. That is not a rate.
 - Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
-- Plainer text improved the reading level but scored colder on the tone judge. Pass, fail and undecided counts are judge results, not human verdicts.
+- The tone judge is noisy (up to 0.75 between identical runs), is not independent of Jev, and no human has rated warmth. The tone score sits near 3 of 5 against a target of 4. Pass, fail and undecided counts are judge results, not human verdicts.
 
 ## Privacy
 

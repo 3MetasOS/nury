@@ -1,24 +1,24 @@
 # Economics: what a package costs, and what could break it
 
-Written 2026-10-07 by hack-ninja for hack-sensei. Sources: the final scored runs on build `8a28a18` (`evaluations/results/scorecard.md`, `evaluations/results/hospital/scorecard.md`), `evaluations/LIVE_COST_LOG.md`, `documents/product/TECHNICAL_REFERENCE.md` (constants) and hack-jedi's review note 3 (performance), quoted in BUILD_LOG entry 135. I did not see the note itself; its figures are marked "per review note 3". Prices are Gloo list prices for Claude Sonnet 4.6: $3 in and $15 out per million tokens, read 2026-10-06. This is arithmetic from small samples on synthetic families. It is not a forecast.
+Written 2026-10-07 by hack-ninja for hack-sensei. Sources: the final scored runs on build `9bc5c6d` (`evaluations/results/scorecard.md`, `evaluations/results/hospital/scorecard.md`), `evaluations/LIVE_COST_LOG.md`, `documents/product/TECHNICAL_REFERENCE.md` (constants) and hack-jedi's review note 3 (performance), quoted in BUILD_LOG entry 135. I did not see the note itself; its figures are marked "per review note 3". Prices are Gloo list prices for Claude Sonnet 4.6: $3 in and $15 out per million tokens, read 2026-10-06. This is arithmetic from small samples on synthetic families. It is not a forecast.
 
 ## 1. What a package costs today
 
 A package is one run through five stages (triage, then four family-facing stages) with the privacy layer, the rules and the Jev gate on.
 
-| Set (final build `8a28a18`) | Runs | Mean time per run | Tokens in / out | Cost, all runs | Cost per run |
+| Set (final build `9bc5c6d`) | Runs | Mean time per run | Tokens in / out | Cost, all runs | Cost per run |
 |---|---|---|---|---|---|
-| Detention | 20 | 33.5 s | 280,561 / 29,511 | $1.2844 | **$0.064** |
-| Hospital | 8 | 48.7 s | 155,093 / 15,821 | $0.7026 | **$0.088** |
-| Hostile intakes | 18 | 38 s | not split here | $1.38 | $0.077 |
-| Network | 3 | 67 s | not split here | $0.33 | $0.11 |
+| Detention | 20 | 34.2 s | 279,860 / 29,050 | $1.2753 | **$0.064** |
+| Hospital | 8 | 49.5 s | 155,128 / 16,287 | $0.7097 | **$0.089** |
+| Hostile intakes | 18 | 42 s | not split here | $1.51 | $0.084 |
+| Network | 3 | 52 s | not split here | $0.27 | $0.09 |
 | Case file | 5 | not recorded | not split here | $0.59 | $0.12 |
 
 - **Range.** Review note 3 reports $0.063 to $0.126 per package across its sample. The scorecard means sit inside that range.
-- **Per run in tokens.** Detention averages about 14,000 tokens in and 1,500 out. Hospital averages about 19,400 in and 2,000 out.
+- **Per run in tokens.** Detention averages about 14,000 tokens in and 1,450 out. Hospital averages about 19,400 in and 2,000 out.
 - **Input dominates tokens, not cost.** Input is about 90 percent of tokens. By cost it is about **66 percent** (computed from the detention and hospital totals above). Review note 3 says 72 percent on its sample. I could not reproduce 72 from the scorecards, so I use the numbers I can recompute.
-- **Hospital costs more than detention** by about 37 percent per run ($0.088 against $0.064) and takes about 15 seconds longer. The reason I can show: hospital runs carry more input tokens (about 19,400 against 14,000). Why they carry more I did not investigate.
-- **Order of magnitude.** At the scorecard means, 100 packages cost about $6.40 (detention) to $8.80 (hospital) in Gloo spend. 1,000 packages cost about $64 to $88. That excludes Jev, hosting, people and everything in section 3.
+- **Hospital costs more than detention** by about 39 percent per run ($0.089 against $0.064) and takes about 15 seconds longer. The reason I can show: hospital runs carry more input tokens (about 19,400 against 14,000). Why they carry more I did not investigate.
+- **Order of magnitude.** At the scorecard means, 100 packages cost about $6.40 (detention) to $8.90 (hospital) in Gloo spend. 1,000 packages cost about $64 to $89. That excludes Jev, hosting, people and everything in section 3.
 
 ## 2. Where the time goes
 
@@ -82,4 +82,4 @@ The price file says: "Cache pricing is not used. Recheck before relying on it: p
 - The cost with real intakes. Every number comes from synthetic scenarios written by us.
 - The cost of a pastor's second pass: an edit and a revision runs the pipeline again (a revision run cost about $0.15 to $0.16 in slot C of the cost log).
 - TypeSafe's data retention and terms, and the cost of the red-team panel. The panel is a pre-release audit, not part of a package. I have not added its cost to the figures above.
-- Whether 33 to 49 seconds is acceptable to a pastor at 2 AM. We have not asked one.
+- Whether 34 to 50 seconds is acceptable to a pastor at 2 AM. We have not asked one.

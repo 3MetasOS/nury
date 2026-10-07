@@ -198,3 +198,24 @@ These are hidden until hack-sensei confirms in writing. Each now has a BUILT sta
 | Names | Jev from TypeSafe; Claude Sonnet 4.6 via Gloo AI Studio; red team GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick | unchanged and consistent | n/a |
 
 Still outside my files and stale on the old number: `video/remotion/public/tech.json` (the package caption) and the fallback in `video/remotion/src/NuryA.tsx` (hack-video), `documents/TECH_CLAIMS.md` row 30 and `documents/design/HOME_SPEC.md` (hack-sensei and hack-artisans), `code/tools/trace_run.py` comment, and the built `code/app/static/how-it-was-built.html` until hack-artisans rebuilds it.
+
+## 1f. Refill from the final scored build 9bc5c6d (2026-10-07; scorecards 983cb89)
+
+Change list against the 8a28a18 fill. Judge results, not human verdicts. The four builds are in `evaluations/results/build_comparison.md`.
+
+| Item | 8a28a18 fill | Final 9bc5c6d | Where changed |
+|---|---|---|---|
+| Detention (20), pass / fail / awaiting | 12 / 6 / 2 | **11 / 1 / 8** | deck slide 8, descriptions, pitch |
+| Hospital (8) | 5 / 1 / 2 | **5 / 0 / 3** | same |
+| Hostile intakes (18) | 11 / 2 / 5 | **13 / 1 / 4** (triage escalations 1 to 0) | same |
+| All 46 | 28 / 9 / 9 | **29 / 2 / 15** | descriptions: "46 scenarios, judged: 29 pass, 2 fail, 15 undecided." (both 250 words) |
+| Cost and time per package | 6 to 9 cents, 33 to 49 s | detention $0.0638 and 34.2 s, hospital $0.0887 and 49.5 s: **6 to 9 cents, 34 to 50 s** | caption in deck, scripts, TECH_STORY, treatments, HOW_IT_WAS_BUILT, ECONOMICS |
+| Tone, detention | 2.60 to 2.85 (five below 3) | **3.04 to 3.32** (hospital 3.14) | WHAT_DID_NOT_WORK item 1 rewritten |
+| Claim "plainer text scores colder" | stated | **withdrawn**: never proven (the judge moves up to 0.75 between identical runs); the five fails became "awaiting review" because scores crossed 3.0, a judge threshold | deck slide 8, README, PATTERN, WHAT_DID_NOT_WORK |
+| Claim "nothing unsafe reached the pastor" (hostile) | stated | **dropped** (L1: the checks are tripwires, not proofs) | deck slide 8 |
+| Limits added | | triage can restate the family's words and be refused three times; two of six a02 drafts added an unstated detail (Jev caught one) | README, HOW_IT_WAS_BUILT, WHAT_DID_NOT_WORK, TECH_STORY |
+| Titles | | card titles changed after 9bc5c6d (title text only, aabbd63) | deck, screenshot, HOW_IT_WAS_BUILT |
+| Red-team panel | not re-run | still not re-run on the final build | deck backup row says so |
+
+**PENDING (hack-jedi's check):** "the final scored build differs from the shipped build only in the crisis card titles and one context string given to Jev". Not written into any public text yet.
+

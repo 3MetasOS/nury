@@ -28,7 +28,7 @@ Before release we test it in four layers: plain code, typed judges (also Jev, so
 | 38 (was 26) | The Jev judge separates unsafe from safe text on real Nury output. | Unsafe 0.89 to 0.98, safe 0.02 to 0.24, ten checks | VERIFIED live |
 | 27 | The first fix for a judge confusion failed, and we said so. Telling the judge to ignore rejected drafts dropped unsafe scores to 0.29 to 0.78. The adopted fix removes rejected text from what the judge reads. | 6 cases below 0.80, then 10 of 10 met it | VERIFIED live |
 | 40 (also 28) | Red-team panel, three non-Claude reviewers through Gloo. Second validation pass: all three caught all 8 injected problems and also flagged safe text, so they advise. One reviewer (llama) quoted text that is not there. | 8 of 8 each, advisory | VERIFIED live (PANEL_VALIDATION.md; TC 28 and 40 still describe the superseded first pass) |
-| 30 | A full five-stage package takes under a minute: about 33 s and $0.064 for detention (mean of 20 scored runs), about 49 s and $0.088 for hospital (mean of 8), on build 8a28a18. | 33.5 s and $0.0642; 48.7 s and $0.0878 | VERIFIED, final scored runs |
+| 30 | A full five-stage package takes under a minute: about 34 s and $0.064 for detention (mean of 20 scored runs), about 50 s and $0.089 for hospital (mean of 8), on build 9bc5c6d. | 34.2 s and $0.0638; 49.5 s and $0.0887 | VERIFIED, final scored runs |
 | 39 and 34 | The pastor's voice may invite but not promise. The pastoral draft is rejected if it says anyone is searching, preparing, sending, calling back or visiting, or uses "soon", unless the pastor wrote that action in the intake. Found by the Jev tone score in the final run, then fixed. | the 14th named check; re-checked live on 3 scenarios, pastoral messages read by hand | VERIFIED offline test; VERIFIED live |
 | 35 and 50 to 55 (also 32) | Jev checks every draft at run time as a classifier and judges the system at test time. One batched call per draft attempt; reject at 0.50 (0.60 for the facts question); from 0.30 up to the line it passes and is logged; fails open; sees tokens only. The product never imports the eval harness, the red team or the attacker intakes (a test scans the code). | lines 0.50 and 0.60; 8 questions; about 150 ms a call; about +1 s a package; leak test 15 canaries, 0 found | VERIFIED live on 3 scenarios; false-reject rate over many cases NOT measured; Jev price $0.042 per million input tokens (public) |
 | 52 | Live, the gate rejected a safe draft: detention 14 (grief) escalated at triage (0.85 to 0.88) until Jev was told the crisis type; then it completed with two regenerations. | 1 escalation, then 2 regenerations | VERIFIED live |
@@ -57,7 +57,7 @@ Built by hack-video as an animated architecture shot. Text only, no third-party 
 **Three on-screen proof captions** (VERIFIED rows only, about 3 s each, one per step of the animation):
 1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
 2. "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24" (TC 26)
-3. "A full package: 33 to 49 s, 6 to 9 cents" (TC 30)
+3. "A full package: 34 to 50 s, 6 to 9 cents" (TC 30)
 Spare caption if there is room: "296 offline tests pass; no send path" (re-run the count at export).
 
 **Disclosure caption, verbatim, small, on screen for the whole beat:** "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
