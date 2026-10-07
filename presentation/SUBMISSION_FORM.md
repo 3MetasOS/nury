@@ -16,24 +16,20 @@ The actual form is not in the repo. `documents/prework` (PREWORK.md, JUDGING.md)
 - **License:** MIT
 
 ## The 250-word description (two-playbooks version; use this one)
-Strictest word count 246 (240 by `wc` is for the one-playbook variant; this one is 242 by `wc`).
+Strictest word count 246 (`wc` 242). Rewritten 2026-10-07 around the short-deck story.
 
 ```
 Nury. An AI Crisis Response Agent.
 
-Nury is a crisis-management engine. A crisis is a defined workflow, a folder of plain files people can add. So can rules and evaluations. Two run: detention, hospital.
+It is 2:07 AM. A pastor's phone rings. A husband was detained, and a family is afraid. The pastor wants to help and does not have the answers.
 
-It is 2 AM. A pastor's phone rings. A panicked family says a relative was detained. No lawyer, only a phone.
+So we built Nury: a guide for the hardest calls, with the same careful steps every time. The pastor picks the crisis and types what the family said. Nury writes the documents that crisis needs: a case summary, a rights brief citing vetted sources, attorney resources, a family checklist and a pastoral message. A first draft takes under a minute, in the family's language.
 
-Nury turns that call into a response. The pastor types what the family said. Each crisis defines its own stages. Detention has five, from triage and a plain-language rights brief to a pastoral message. Family materials come out in Spanish.
+The pastor leads, and Nury helps. After every stage the pastor can Approve, Edit, or Stop. Nothing is sent unless the pastor sends it. Nury gives legal information, never advice, and an attorney is the next step. The pastor is never alone.
 
-After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
+Nury keeps a saved case file, an audit log and a follow-up flag. It is built to learn: a crisis is a folder of plain files, two run today, and a learning loop is built, off by default, applying nothing without approval.
 
-Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
-
-Each draft is checked by our rules and by Jev, a classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval.
-
-Nury runs on Gloo's guarded endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
+Rules and Jev, a second check, review every draft; a failing one is rewritten up to three times. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
 
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
 
@@ -41,24 +37,20 @@ Entry by Juan Peláez, 3Metas.
 ```
 
 ## The 250-word description (one-playbook fallback)
-Strictest word count 244. Use only if the form or the judges expect a single crisis.
+Strictest word count 246 (`wc` 242). Use only if the form or the judges expect a single crisis.
 
 ```
 Nury. An AI Crisis Response Agent.
 
-Nury is a crisis-management engine. A crisis is a defined workflow, a folder of plain files people can add. So can rules and evaluations.
+It is 2:07 AM. A pastor's phone rings. A husband was detained, and a family is afraid. The pastor wants to help and does not have the answers.
 
-It is 2 AM. A pastor's phone rings. A panicked family says a relative was detained. No lawyer, only a phone.
+So we built Nury: a guide for the hardest calls, with the same careful steps every time. The pastor picks the crisis and types what the family said. Nury writes the documents that crisis needs: a case summary, a rights brief citing vetted sources, attorney resources, a family checklist and a pastoral message. A first draft takes under a minute, in the family's language.
 
-Nury turns that call into a response. The pastor types what the family said. Each crisis defines its own stages. Detention has five, from triage and a plain-language rights brief to a pastoral message. Family materials come out in the family's language.
+The pastor leads, and Nury helps. After every stage the pastor can Approve, Edit, or Stop. Nothing is sent unless the pastor sends it. Nury gives legal information, never advice, and an attorney is the next step. The pastor is never alone.
 
-After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
+Nury keeps a saved case file, an audit log and a follow-up flag. It is built to learn: a crisis is a folder of plain files, detention is first, and a learning loop is built, off by default, applying nothing without approval.
 
-Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
-
-Each draft is checked by our rules and by Jev, a classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval.
-
-Nury runs on Gloo's guarded endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
+Rules and Jev, a second check, review every draft; a failing one is rewritten up to three times. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
 
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
 
@@ -66,22 +58,22 @@ Entry by Juan Peláez, 3Metas.
 ```
 
 ## Short descriptions
-### 25 words (25)
-Nury is an AI crisis response agent for churches. A pastor types what a family said; Nury drafts careful, sourced stages. The pastor approves each.
+### 25 words (22)
+Nury is a guide for the hardest calls. The pastor types what a family said; Nury drafts cited steps. The pastor leads.
 
 ### 60 words (60)
-Nury is an AI crisis response agent for churches. A pastor picks the crisis and types what the family said. Nury drafts the stages that crisis defines, such as a cited plain-language brief and a pastoral message, in the family's language. Rules and a second check review every draft. The pastor approves every stage. Nothing is sent without the pastor.
+A crisis rings a pastor's phone at 2 AM, and the pastor lacks the answers. Nury is a guide for the hardest calls, with the same careful steps every time. It writes cited documents and a first draft in under a minute, in the family's language. The pastor leads, and Nury helps. Nothing is sent unless the pastor sends it.
 
 ## Long fields (60 to 100 words each)
 ### What it does
-(about 87 words)
+(about 94 words)
 
-When a family calls a pastor in crisis, the pastor picks the kind of crisis and types what the family said. Nury drafts the stages that crisis defines. For an immigration matter that means a case summary, a plain-language brief where every point cites a vetted source, a list of vetted contacts, a family checklist and a short pastoral message, in the family's language. After each stage the pastor can approve, edit or stop. Nury has no way to send anything. It gives legal information, never advice.
+A crisis rings the phone at 2:07 AM. A husband was detained, and the pastor wants to help but does not have the answers. Nury is a guide for the hardest calls, with the same careful steps every time. The pastor picks the crisis and types what the family said. Nury writes the documents that crisis needs: a case summary, a rights brief with cited answers from vetted sources, attorney resources, a checklist and a pastoral message. A first draft takes under a minute, in the family's language. The pastor leads, and Nury helps.
 
 ### How we built it
-(about 83 words)
+(about 98 words)
 
-Claude Sonnet 4.6 writes each stage through Gloo AI Studio's guarded endpoint. Twenty named rules and a safety floor read every draft. Jev, a decision API from TypeSafe, checks it again with yes or no questions. A failing draft is rewritten up to three times, then the pastor takes over. Names become tokens before any model sees them. A crisis is a folder of plain files, so adding one does not change the engine. The engine is plain Python with no agent framework.
+Claude Sonnet 4.6 writes each stage through Gloo AI Studio's guarded endpoint. Twenty named rules and a safety floor read every draft. Jev, a decision API from TypeSafe, is a second check with yes or no questions. A failing draft is rewritten up to three times, then the pastor takes over. Names become tokens before any model sees them. A crisis is a folder of plain files, so a new crisis does not change the engine. The engine is plain Python with no agent framework. Nury keeps a saved case file, an audit log and a follow-up flag.
 
 ### Challenges we ran into
 (about 78 words)
@@ -89,15 +81,14 @@ Claude Sonnet 4.6 writes each stage through Gloo AI Studio's guarded endpoint. T
 Our own checks found the hard problems. The tone judge never reached its target, and warm drafts sometimes made promises the church had not made. A judge scored drafts the pastor never saw. Eleven of eighteen hostile intakes stopped at triage until we rewrote the triage prompt. A made-up website passed our link check. Our first outside-review result was wrong, so we re-ran it and fixed every claim. We typed some commit dates by hand and disclosed it.
 
 ### What we learned
-(about 83 words)
+(about 90 words)
 
-A judge has to read only what the pastor saw. A low score can reveal a real bug: the tone score exposed the promises. A number copied between documents drifts, so we write claims last, from one table of verified facts. The model should never write Scripture: it picks a verse from a list a person approved, and the engine inserts the exact text. Rules and a second check lower the chance of an unsafe draft. They do not replace the pastor's reading.
+A guide only works if the pastor stays in charge: Nury drafts, the pastor leads. A judge has to read only what the pastor saw. A low score can reveal a real bug: the tone score exposed the promises. A number copied between documents drifts, so we write claims last, from one table of verified facts. The model never writes Scripture: it picks a verse from a list a person approved. Rules and a second check lower the chance of an unsafe draft. They do not replace the pastor's reading.
 
 ### What is next
-(about 76 words)
+(about 86 words)
 
-The next step is to put Nury in front of real pastors, carefully, with a consent process in place. An immigration attorney and a hospital chaplain should review our vetted sources, and a native Spanish speaker should read the family copies. We want to finish calibrating the Jev check and measure how often it rejects a safe draft. Then come the two crises marked coming soon, sudden loss and house fire, each added as a folder.
-
+The next step is an immigration attorney reviewing our vetted sources, and a native Spanish speaker reading the family copies. Then comes real use with pastors, carefully, with a consent process in place. We want to finish calibrating the Jev check and measure how often it rejects a safe draft. Nury is built to learn: the learning loop is built and off by default, and a person approves anything it proposes. Sudden loss and house fire are the next two crises, each added as a folder.
 
 ## Built with
 Gloo AI Studio (guarded endpoint) and Claude Sonnet 4.6 · Jev decision API from TypeSafe · YouVersion API (Scripture text) · ElevenLabs (AI-generated narration voice for the film) · Python (plain, no agent framework) · plain HTML and JavaScript (the app and the deck) · Remotion (the film).
