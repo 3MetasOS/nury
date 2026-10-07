@@ -9,8 +9,10 @@
 <meta name="description" content="Nury is an AI crisis response agent. This page lists the contacts your church has vetted.">
 <link rel="stylesheet" href="/shell.css">
 <style>
-main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
-@media(min-width:960px){main{padding:24px 24px 56px}}
+main{max-width:none;margin:0;padding:0}
+.pw{max-width:1120px;margin:0 auto;padding:16px 16px 8px}
+.pw.after{padding-bottom:24px}
+@media(min-width:960px){.pw{padding:24px 24px 8px}.pw.after{padding-bottom:56px}}
 .hidden{display:none!important}
 a{color:var(--amber-text);overflow-wrap:anywhere}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .lede{color:var(--muted);margin:6px 0 16px;max-width:60ch}
@@ -83,11 +85,19 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 .band .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
 @media(min-width:640px){.go .gl{display:inline}}
 @media(min-width:960px){.band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}}
-.nnotes{display:grid;gap:12px;grid-template-columns:1fr;margin:24px 0 8px}
-@media(min-width:760px){.nnotes{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.nn{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
-.nn p{margin:0}.nn p.mono{margin:0 0 6px}.nn p:not(.mono){font-size:15px;line-height:1.45;color:var(--muted)}
-.aside{margin:0}
+.nband{--nb:#17140f;background:var(--nb);border-top:1px solid var(--amber-line);margin-top:16px}
+:root[data-theme="light"] .nband{--nb:#efe7d5}
+.nband .nbi{padding-top:28px;padding-bottom:32px}
+.nbh{display:flex;flex-wrap:wrap;align-items:center;gap:6px 24px;margin:0 0 18px}.nbh .aside{margin:0}.nbh .hnote{margin:0 0 0 auto}
+.nbc{display:grid;grid-template-columns:1fr;gap:0}
+.nn{padding:16px 0}.nn+.nn{border-top:1px solid var(--line)}
+.nn p{margin:0}.nn p.mono{margin:0 0 6px}.nn p:not(.mono){font-size:15px;line-height:1.5;color:var(--muted);max-width:42ch}
+@media(min-width:760px){.nbc{grid-template-columns:repeat(3,minmax(0,1fr))}.nn{padding:4px 28px 4px 28px}.nn:first-child{padding-left:0}.nn+.nn{border-top:0;border-left:1px solid var(--line)}}
+.panel#home-panel{background:transparent;border:0;padding:8px 0 0;margin:0 0 8px}
+#home-panel h2{font:600 1rem var(--sans);margin:0}
+#home-panel .grid2{grid-template-columns:minmax(0,200px) minmax(0,120px);gap:0 12px}
+#home-panel input{min-height:40px;height:40px;padding:0 10px;border-radius:8px}
+#home-panel .btn.sm{min-height:40px}
 .rows{display:grid;gap:10px;list-style:none;margin:0;padding:0}
 .empty{padding:28px 0;color:var(--muted)}
 .lrow .sv{margin:6px 0 0;font-size:15px;color:var(--text)}.lrow .ct2{margin:4px 0 0;font-size:14px;overflow-wrap:anywhere}
@@ -106,6 +116,7 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 <body data-nav="network">
 <script src="/shell.js"></script>
 <main id="main">
+<div class="pw">
 <div class="band network">
   <div><h1 id="h-net" tabindex="-1" data-note="contacts your church has vetted; Nury lists them first, as yours" data-arrow="up" data-rot="-0.5">Our network</h1></div>
   <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-network"/></svg>
@@ -123,12 +134,18 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 </div>
 <ul class="rows" id="list"></ul>
 <p class="empty" id="empty" hidden>No contacts yet. Add the people your church has worked with. Nury lists them first when they fit a family's place and language.</p>
-<section class="nnotes" aria-label="How the network works">
-  <div class="nn"><p class="mono">You add</p><p>Only your church adds contacts. Nury never adds or ranks anyone for you.</p></div>
-  <div class="nn"><p class="mono">Yours first</p><p>Nury lists your contacts first and labels them as your church's own.</p></div>
-  <div class="nn"><p class="mono">Official after</p><p>Then the official list, labeled official. Listed never means recommended.</p></div>
+</div>
+<section class="nband" aria-labelledby="nb-l">
+  <div class="pw nbi">
+    <div class="nbh"><span class="mono" id="nb-l">How the network works</span><span class="aside" data-note="nothing here is an endorsement" data-arrow="left" data-rot="-1.2"></span></div>
+    <div class="nbc">
+      <div class="nn"><p class="mono">You add</p><p>Only your church adds contacts. Nury never adds or ranks anyone for you.</p></div>
+      <div class="nn"><p class="mono">Yours first</p><p>Nury lists your contacts first and labels them as your church's own.</p></div>
+      <div class="nn"><p class="mono">Official after</p><p>Then the official list, labeled official. Listed never means recommended.</p></div>
+    </div>
+  </div>
 </section>
-<p class="aside" data-note="nothing here is an endorsement" data-arrow="up" data-rot="-1.2" style="margin:0;height:0"></p>
+<div class="pw after">
 <section class="panel" id="home-panel">
   <h2>Our church's place</h2>
   <p class="meta">Used when a case does not say which state the family is in.</p>
@@ -147,6 +164,7 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   <label class="btn sm" style="margin:0;display:inline-flex;align-items:center" for="imp">Import file</label><input type="file" id="imp" accept="application/json" hidden></div>
   <p class="err" id="io-msg" role="status"></p>
 </details>
+</div>
 </main>
 <dialog class="sheet" id="form-dialog" aria-labelledby="form-title">
   <div class="sheet-h"><h2 id="form-title">Add a contact</h2><button class="cta" type="button" id="f-cancel" style="min-height:48px">Cancel</button></div>
