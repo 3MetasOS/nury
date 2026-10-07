@@ -424,3 +424,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Plan check (read-only call): the account is on the **free** plan, 10,000 characters per month, 21 premade voices. The free plan requires attribution and does not include commercial use; Starter (about $5 per month) does. Decision pending with Juan: attribute in the credits and the description, or upgrade.
 - Auditions: five premade voices (Brian, George, Bella, Eric, Sarah) on voiceover lines 1 to 3, about 1,200 characters in all. The memorial is text on screen, not a synthetic voice.
 - Learning: the key appeared once in the session transcript. Rotate it after the hackathon.
+
+## 64. 2026-10-06 22:10 MDT — ElevenLabs attribution (Juan: attribute)
+
+- Decision (Juan): keep the free plan and attribute. "Narration voice by ElevenLabs." goes in the video end credits, the deck credits slide, the repo README and the submission notes; in the description only if it stays at or under 250 words. No logo and no endorsement claim.
