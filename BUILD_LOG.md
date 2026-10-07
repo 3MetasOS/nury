@@ -210,3 +210,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Test-only escalation mode `NURY_TEST_ESCALATE=1` (off by default, never for the demo or recording) was viewed in a browser at 390 px: red segment, "Nury stopped. Nothing was sent.", halt card, Start over, no spinner.
 - Known gap: hospital escalation hands over a sources list that the app does not show yet.
 - Next: human-review canvas for Juan grouped by question; final re-run after the 06:00 freeze.
+
+## 30. 2026-10-06 20:48 MDT — Skills switch and final full runs (hack-jedi)
+
+- Skills can be turned off per call (`skills=False`) or with `NURY_SKILLS=off`; default ON. Off removes skill text and skill checks; the safety floor and playbook checks are identical in both modes. 32 tests pass (verified by hack-sensei).
+- Full five-stage live runs on the final prompts, skills ON: detention 01 (39 s), 18 (37 s), 20 (37 s), hospital h01 (49 s). Every stage passed on attempt 1; package_complete; 4 skill_applied events each; checklists 351–410 words. Detention 01 with skills OFF: all five stages pass, 3 skills_off events. This closes the testing gap noted in entry 26.
+- Known limitations in PROMPT_NOTES: the two accepted checklist lines, grounding not airtight, no built-in before/after yet, the voice check does not measure naturalness.
+- The detention core is frozen: bug fixes only, announced first.
