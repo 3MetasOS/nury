@@ -1,5 +1,21 @@
 # How Nury was built
 
+<!--in-short-->
+**In short**
+
+Nury helps a pastor who gets a crisis call. The pastor types what the family said. Nury drafts five short stages for the pastor to read, edit or stop. Nothing reaches the family except through the pastor.
+
+A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again when it is reachable. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.
+
+The model never writes a Bible verse. It picks one from a list a person approved, and the app inserts the exact words.
+
+We tested Nury with scenarios we wrote, hostile intakes, judges and people. Other models reviewed it from outside, and they only advise. Crises, rules and tests are plain files, so people can add more.
+
+The limits: no real pastor has used Nury, nothing has been learned yet, and there is no sign-in. The checks are tripwires, not proofs.
+
+The full account follows.
+<!--/in-short-->
+
 Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. The planning notes and a small scripted scaffold existed before the event. They are kept in `documents/prework` as reference. The first commit of the Nury repository is 2026-10-06 19:36 MDT. Everything in `code/` was written during the event.
 
 Nury is An AI Crisis Response Agent. This page is the technical documentation. It covers how Nury works, how it is checked, how people add rules and crises, and what has to happen before it is a real product.
