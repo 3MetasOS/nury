@@ -154,12 +154,13 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 /* home */
 .home{display:flex;flex-direction:column;gap:24px}
 .colA,.colB{display:contents}
-.hero{order:0;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:24px 20px 24px;background:radial-gradient(120% 120% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
-.hero p{margin-top:8px;color:var(--muted);max-width:44ch}
-.hero .cta{margin-top:20px;width:100%}
-.hero .scene{margin:8px auto 0;max-width:300px}
-.home.has-cases #continue{order:1}.home.has-cases .start{order:2}.home:not(.has-cases) .start{order:1}.home:not(.has-cases) #continue{order:2}
-#stats{order:3}#netcard{order:4}
+.respond{order:0;display:flex;flex-direction:column;gap:10px;padding:16px;background:radial-gradient(120% 140% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
+.respond .cta{width:100%}.respond p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
+.respond .cta.primary{animation:ring 2.5s ease-out infinite}
+.respond .cta.primary:hover,.respond .cta.primary:focus-visible{animation:none}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(232,163,61,.5)}70%,100%{box-shadow:0 0 0 14px rgba(232,163,61,0)}}
+@media (prefers-reduced-motion:reduce){.respond .cta.primary{animation:none}}
+.start{order:1}#continue{order:2}#stats{order:3}#netcard{order:4}
 .cardlist{display:grid;gap:12px}
 .case{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:start;min-height:88px;padding:14px 12px 14px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
 .case:hover,.pk:hover,.lrow:hover,.stat:hover{border-color:var(--amber-line)}
@@ -264,10 +265,8 @@ body:not([data-view="crisis"]) .startbar{display:none}
 }
 @media (min-width:960px){
   main{padding:24px 24px 56px}
-  .home{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:24px;align-items:start}
+  .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
   .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
-  .hero{grid-column:1/-1;padding:32px 32px 28px}
-  .hero .cta{width:auto;min-width:260px}
   .band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}
   .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}.cband .scene{max-width:none}
   .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
@@ -285,13 +284,6 @@ body:not([data-view="crisis"]) .startbar{display:none}
 
 <section class="nv" id="v-home" hidden>
   <div class="home" id="home">
-    <section class="hero" aria-labelledby="h-home">
-      <div>
-        <h1 id="h-home" tabindex="-1"></h1>
-        <p id="hero-sub"></p>
-        <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog" data-note="start here" data-arrow="up" data-rot="-1.5"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
-      </div>
-    </section>
     <div class="colA">
       <section id="continue" aria-labelledby="h-cont">
         <div class="sec-h"><h2 id="h-cont" data-note="your saved cases live here" data-arrow="up" data-rot="-1.2"></h2><a href="#/cases" id="see-all">All cases</a></div>
@@ -306,19 +298,24 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <div class="sec-h"><h2 id="h-stats">Your cases</h2></div>
         <div class="stats" id="stats-grid"></div>
       </section>
-    </div>
-    <div class="colB">
-      <section class="start" id="start" aria-labelledby="h-start">
-        <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
-        <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
-        <div class="pickgrid" id="picks"></div>
-        <p class="safety">If anyone is in immediate danger, call 911 first.</p>
-      </section>
       <section class="netcard" id="netcard" aria-labelledby="h-net">
         <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-network"/></svg>
         <h2 id="h-net">Our network</h2>
         <p class="muted sm">Contacts your church has vetted. Nury lists them first and labels them as yours.</p>
         <a class="cta" href="/network"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-network"/></svg>Open our network</a>
+      </section>
+    </div>
+    <div class="colB">
+      <section class="respond nvcard" id="respond" aria-labelledby="h-home">
+        <h1 id="h-home" class="vh" tabindex="-1">Nury home</h1>
+        <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
+        <p id="hero-sub" class="muted">Start a response. Nury drafts, you decide.</p>
+      </section>
+      <section class="start" id="start" aria-labelledby="h-start">
+        <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
+        <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
+        <div class="pickgrid" id="picks"></div>
+        <p class="safety">If anyone is in immediate danger, call 911 first.</p>
       </section>
     </div>
   </div>
@@ -599,8 +596,6 @@ function renderPicks(){const cards=()=>pbs.map(p=>{const live=p.status==="live",
   $("picks").replaceChildren(...cards());$("chooser-list").replaceChildren(...cards())}
 function renderHome(){const fam=families(),n=fam.length;
   $("home").classList.toggle("has-cases",n>0);
-  $("h-home").textContent=n?"Welcome back.":"Nury is ready.";
-  $("hero-sub").textContent=n?"Pick up a case, or respond to a new one. Nury drafts. You decide.":"When a family calls, respond here. Nury drafts. You decide. Nury never sends anything.";
   $("cont-list").replaceChildren(...fam.slice(0,3).map(mkCase));
   $("first-run").hidden=n>0;$("see-all").hidden=n===0;$("cont-list").hidden=n===0;
   $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
