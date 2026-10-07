@@ -8,7 +8,6 @@
 <title>Our network, Nury</title>
 <meta name="description" content="Nury is an AI crisis response agent. This page lists the contacts your church has vetted.">
 <link rel="stylesheet" href="/shell.css">
-<link rel="stylesheet" href="/diagrams.css">
 <style>
 main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
 @media(min-width:960px){main{padding:24px 24px 56px}}
@@ -84,6 +83,11 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 .band .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
 @media(min-width:640px){.go .gl{display:inline}}
 @media(min-width:960px){.band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}}
+.nnotes{display:grid;gap:12px;grid-template-columns:1fr;margin:24px 0 8px}
+@media(min-width:760px){.nnotes{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.nn{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.nn p{margin:0}.nn p.mono{margin:0 0 6px}.nn p:not(.mono){font-size:15px;line-height:1.45;color:var(--muted)}
+.aside{margin:0}
 .rows{display:grid;gap:10px;list-style:none;margin:0;padding:0}
 .empty{padding:28px 0;color:var(--muted)}
 .lrow .sv{margin:6px 0 0;font-size:15px;color:var(--text)}.lrow .ct2{margin:4px 0 0;font-size:14px;overflow-wrap:anywhere}
@@ -119,6 +123,12 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 </div>
 <ul class="rows" id="list"></ul>
 <p class="empty" id="empty" hidden>No contacts yet. Add the people your church has worked with. Nury lists them first when they fit a family's place and language.</p>
+<section class="nnotes" aria-label="How the network works">
+  <div class="nn"><p class="mono">You add</p><p>Only your church adds contacts. Nury never adds or ranks anyone for you.</p></div>
+  <div class="nn"><p class="mono">Yours first</p><p>Nury lists your contacts first and labels them as your church's own.</p></div>
+  <div class="nn"><p class="mono">Official after</p><p>Then the official list, labeled official. Listed never means recommended.</p></div>
+</section>
+<p class="aside" data-note="nothing here is an endorsement" data-arrow="up" data-rot="-1.2" style="margin:0;height:0"></p>
 <section class="panel" id="home-panel">
   <h2>Our church's place</h2>
   <p class="meta">Used when a case does not say which state the family is in.</p>
@@ -130,7 +140,6 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   <p class="err" id="h-msg" role="status"></p>
   <p class="notice" id="h-warn" hidden>No place is set. When a case does not say which state the family is in, Nury lists only contacts marked "serves any state". Set your church's state so contacts in that state are listed.</p>
 </section>
-<figure class="fig" style="margin:14px 0 18px"><figcaption class="mono" style="color:var(--muted);font:500 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin:0 0 8px">How a contact becomes yours</figcaption><svg class="adg" viewBox="0 0 560 316" role="img" aria-label="How a contact becomes part of your network: your church adds it, it is saved as your church's own, it is listed first labelled as the church's own, and Nury never ranks or recommends it."><g class="bx hi"><rect x="12" y="4" width="380" height="56" rx="6"/><text x="26" y="28" class="bt">Your church adds the contact</text><text x="26" y="47" class="bs">You enter the name and how to reach them.</text></g><path d="M200 60 V82" class="ba"/><path d="M195 76 L200 83 L205 76" class="ba"/><g class="bx "><rect x="12" y="88" width="380" height="56" rx="6"/><text x="26" y="112" class="bt">Saved as your church&#x27;s own</text><text x="26" y="131" class="bs">It goes in the network list. Nothing is checked outside the church.</text></g><path d="M200 144 V166" class="ba"/><path d="M195 160 L200 167 L205 160" class="ba"/><g class="bx "><rect x="12" y="172" width="380" height="56" rx="6"/><text x="26" y="196" class="bt">Listed first, labelled as yours</text><text x="26" y="215" class="bs">In the attorney or resources stage, before any official list.</text></g><path d="M200 228 V250" class="ba"/><path d="M195 244 L200 251 L205 244" class="ba"/><g class="bx "><rect x="12" y="256" width="380" height="56" rx="6"/><text x="26" y="280" class="bt">Never ranked or recommended</text><text x="26" y="299" class="bs">Listed does not mean recommended.</text></g><text x="404" y="30.0" class="bh">(you are the one</text><text x="404" y="50.0" class="bh">who vouches)</text></svg></figure>
 <details style="margin-top:22px">
   <summary>Import or export</summary>
   <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>

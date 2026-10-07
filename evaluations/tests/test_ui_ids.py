@@ -296,7 +296,7 @@ def test_diagrams_are_drawn_from_data_and_have_text_alternatives():
     assert "NuryDiagram.flow(st," in idx and "NuryDiagram.strip(stg)" in idx and 'id="case-strip"' in idx
     how = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
     assert how.count('class="adg"') == 2, "architecture and loop"
-    assert 'class="adg"' in (STATIC / "network.html").read_text(encoding="utf-8")
+    assert 'class="adg"' not in (STATIC / "network.html").read_text(encoding="utf-8"), "the network page has notes, not a diagram"
 
 
 def test_privacy_off_banner_text_and_hook():

@@ -30,11 +30,6 @@ JS
 return JSON.stringify([n===5,states.every(s=>['approved','edited','stopped','pending'].includes(s)),/Stages of this case/.test(svg.getAttribute('aria-label')),document.documentElement.scrollWidth<=innerWidth])})()
 JS
  check "$T case: the saved case shows its stages as a progress strip with a text alternative" "$(ev "$J")" '"[true,true,true,true]"'
- open "http://127.0.0.1:$PORT/network"
- read -r -d '' J <<'JS'
-(()=>{const svg=document.querySelector('main svg.adg');if(!svg)return 'missing';const r=svg.getBoundingClientRect();const t=[...svg.querySelectorAll('.bh')].every(x=>x.getBoundingClientRect().right<=r.right+1);return JSON.stringify([/How a contact becomes part of your network/.test(svg.getAttribute('aria-label')),svg.querySelectorAll('.bx').length===4,t,document.documentElement.scrollWidth<=innerWidth])})()
-JS
- check "$T network: how a contact becomes yours is drawn, the hand aside is not clipped" "$(ev "$J")" '"[true,true,true,true]"'
  open "http://127.0.0.1:$PORT/how-it-was-built"
  check "$T how: the architecture and the learning loop are drawn, each with a text alternative" "$(ev "(()=>{const f=[...document.querySelectorAll('svg.adg')];return f.length===2&&f.every(s=>s.getAttribute('role')==='img'&&s.getAttribute('aria-label').length>80)&&/Claude through Gloo/.test(f[0].getAttribute('aria-label'))&&/Nothing changes without a person approving it/.test(f[1].getAttribute('aria-label'))})()")" "true"
  open "http://127.0.0.1:$PORT/standards"
