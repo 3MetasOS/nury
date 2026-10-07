@@ -1,0 +1,17 @@
+{
+ "intake": 2.1,
+ "selector": 3.3,
+ "start": 10.7,
+ "gate1": 17.0,
+ "approve1": 20.6,
+ "gate2": 30.0,
+ "approve2": 33.6,
+ "gate3": 43.0,
+ "approve3": 46.6,
+ "gate4": 57.0,
+ "approve4": 60.5,
+ "gate5": 66.9,
+ "approve5": 70.5,
+ "package": 71.1,
+ "end": 75.1
+}
