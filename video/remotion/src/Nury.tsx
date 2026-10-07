@@ -7,8 +7,9 @@ import {
 export const FPS = 30;
 export type Marks = Record<string, number>;
 export type Proof = {pass?: number | string; n?: number | string; caught?: number | string; src?: string};
-export type Memorial = {intro?: boolean; approved?: boolean}; // approved = Juan approved presentation/MEMORIAL.md
-export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial};
+export type Memorial = {intro?: boolean; approved?: boolean; option?: number; portrait?: string | null};
+export type Tech = {approved?: boolean; tests?: number | string}; // approved = Juan approved presentation/MEMORIAL.md
+export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
 const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
@@ -28,42 +29,58 @@ const VO: Record<string, string> = {
   '08': "And a short, warm message, in the pastor's hands to edit.",
   '09': 'Nury is not a pastor, and it never sends. The pastor does.',
   '10': 'Nury. The crisis-response agent for solo pastors.',
+  'T': "Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.",
 };
 // Seconds of speech per line (macOS say, 150 wpm; see ../vo/out/durations.txt). Real voice: update these.
-const VOLEN: Record<string, number> = {'01': 3.56, '02': 5.79, '03': 4.79, '04': 2.96, '05': 5.67, '06': 7.5, '07': 3.05, '08': 3.9, '09': 4.18, '10': 3.78};
+const VOLEN: Record<string, number> = {'01': 3.56, '02': 5.79, '03': 4.79, '04': 2.96, '05': 5.67, '06': 7.5, '07': 3.05, '08': 3.9, '09': 4.18, '10': 3.78, 'T': 11.3};
 type Scene = {
-  id: string; dur: number; trim?: number; kind: 'intro' | 'lock' | 'clip' | 'proof' | 'end' | 'memorial';
+  id: string; dur: number; min?: number; kind: 'intro' | 'lock' | 'clip' | 'proof' | 'end' | 'memorial' | 'tech';
   from?: [string, number]; to?: [string, number]; // src range as [mark, offset]
   label?: string; vo?: {k: string; at: number}[];
-  needs?: string; trimN?: number; trimM?: number; trimI?: number; // needs: scene shows only if marks[needs] exists AND confirmed[needs] is true
+  needs?: string; // scene shows only when its gate is open (see ok() below)
+  fixed?: boolean; // fixed scenes keep their length; the others (min set) shrink to fit 90 s
 };
 const SCENES: Scene[] = [
-  {id: 'intro', kind: 'intro', dur: 4, needs: 'intro'},
-  {id: 'lock', kind: 'lock', dur: 9, trimI: 3.5, vo: [{k: '01', at: 1.5}]},
-  {id: 'selector', kind: 'clip', dur: 4, from: ['selector', 0], to: ['selector', 3.7], label: 'The pastor picks the crisis.'},
-  {id: 'intake', kind: 'clip', dur: 6, trim: 0, from: ['selector', 3.7], to: ['start', 0.3], label: 'Solo pastor. No staff. No lawyer.', vo: [{k: '02', at: 0.3}]},
-  {id: 'protected', kind: 'clip', dur: 4, needs: 'protected', from: ['protected', 0], to: ['protected', 3.7], label: 'Nury keeps names on this computer'},
-  {id: 'triage', kind: 'clip', dur: 11, trim: 2, trimN: 1, from: ['start', 0.3], to: ['approve1', 0.4], label: '1  Triage', vo: [{k: '03', at: 4.5}, {k: '04', at: 8.2}]},
-  {id: 'rights', kind: 'clip', dur: 18, trim: 3, from: ['approve1', 0.4], to: ['approve2', 0.4], label: '2  Rights brief. Vetted sources only.', vo: [{k: '05', at: 6}, {k: '06', at: 10.5}]},
-  {id: 'montage', kind: 'clip', dur: 12, trimN: 1, trimM: 1.5, from: ['approve2', 0.4], to: ['approve4', 0.4], label: '3  Attorneys   4  Checklist', vo: [{k: '07', at: 4}]},
-  {id: 'pastoral', kind: 'clip', dur: 11, trimN: 1, trimM: 2, from: ['approve4', 0.4], to: ['approve5', 0.4], label: '5  Pastoral message', vo: [{k: '08', at: 3}]},
-  {id: 'proof', kind: 'proof', dur: 8},
-  {id: 'package', kind: 'clip', dur: 11, trim: 3, trimN: 1, trimM: 2, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send. The pastor does.', vo: [{k: '09', at: 1}]},
-  {id: 'end', kind: 'end', dur: 8, trimM: 3, vo: [{k: '10', at: 0.5}]},
-  {id: 'memorial', kind: 'memorial', dur: 8, needs: 'memorial'},
+  {id: 'intro', kind: 'intro', dur: 4, fixed: true, needs: 'intro'},
+  {id: 'lock', kind: 'lock', dur: 9, min: 5.1, vo: [{k: '01', at: 1.5}]},
+  {id: 'selector', kind: 'clip', dur: 4, min: 3, from: ['selector', 0], to: ['selector', 3.7], label: 'The pastor picks the crisis.'},
+  {id: 'intake', kind: 'clip', dur: 6, min: 6.2, from: ['selector', 3.7], to: ['start', 0.3], label: 'Solo pastor. No staff. No lawyer.', vo: [{k: '02', at: 0.2}]},
+  {id: 'protected', kind: 'clip', dur: 4, fixed: true, needs: 'protected', from: ['protected', 0], to: ['protected', 3.7], label: 'Nury keeps names on this computer'},
+  {id: 'triage', kind: 'clip', dur: 11, min: 9.2, from: ['start', 0.3], to: ['approve1', 0.4], label: '1  Triage', vo: [{k: '03', at: 4.5}, {k: '04', at: 8.2}]},
+  {id: 'rights', kind: 'clip', dur: 18, min: 15, from: ['approve1', 0.4], to: ['approve2', 0.4], label: '2  Rights brief. Vetted sources only.', vo: [{k: '05', at: 6}, {k: '06', at: 10.5}]},
+  {id: 'tech', kind: 'tech', dur: 12, fixed: true, needs: 'tech', vo: [{k: 'T', at: 0.3}]},
+  {id: 'montage', kind: 'clip', dur: 12, min: 5.5, from: ['approve2', 0.4], to: ['approve4', 0.4], label: '3  Attorneys   4  Checklist', vo: [{k: '07', at: 4}]},
+  {id: 'pastoral', kind: 'clip', dur: 11, min: 5.8, from: ['approve4', 0.4], to: ['approve5', 0.4], label: '5  Pastoral message', vo: [{k: '08', at: 3}]},
+  {id: 'proof', kind: 'proof', dur: 8, fixed: true},
+  {id: 'package', kind: 'clip', dur: 11, min: 5.6, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send. The pastor does.', vo: [{k: '09', at: 1}]},
+  {id: 'end', kind: 'end', dur: 8, min: 4.6, vo: [{k: '10', at: 0.5}]},
+  {id: 'memorial', kind: 'memorial', dur: 8, fixed: true, needs: 'memorial'},
 ];
 const hasProof = (p: Proof) => p.pass != null && p.n != null && p.caught != null;
+const MEM_SECONDS: Record<number, number> = {0: 12, 1: 12, 2: 16, 3: 8}; // by memorial option
 export const buildTimeline = (d: Data) => {
   const proof = hasProof(d.proof);
-  const intro = d.memorial?.intro === true, mem = d.memorial?.approved === true;
-  const ok = (n?: string) => !n || (n === 'intro' ? intro : n === 'memorial' ? mem : d.marks[n] != null && d.confirmed?.[n] === true);
-  const names = ok('protected') && d.marks['protected'] != null;
+  const mem = d.memorial?.approved === true, intro = d.memorial?.intro === true, tech = d.tech?.approved === true;
+  const ok = (n?: string) => !n || (n === 'intro' ? intro : n === 'memorial' ? mem : n === 'tech' ? tech : d.marks[n] != null && d.confirmed?.[n] === true);
+  const on = SCENES.filter((s) => (s.kind !== 'proof' || proof) && ok(s.needs)).map((s) => ({...s, dur: s.kind === 'memorial' ? MEM_SECONDS[d.memorial?.option ?? 3] ?? 8 : s.dur}));
+  // Fit to 90 s: fixed scenes keep their length, flexible scenes shrink toward their minimum, never below it.
+  const fixed = on.filter((s) => s.fixed).reduce((a, s) => a + s.dur, 0);
+  const flex = on.filter((s) => !s.fixed);
+  const pref = flex.reduce((a, s) => a + s.dur, 0), mins = flex.reduce((a, s) => a + (s.min ?? s.dur), 0);
+  const budget = 90 - fixed, k = pref <= budget ? 1 : mins >= budget ? 0 : (budget - mins) / (pref - mins);
   let t = 0;
-  const scenes = SCENES.filter((s) => (s.kind !== 'proof' || proof) && ok(s.needs)).map((s) => {
-    const dur = s.dur - (proof ? s.trim ?? 0 : 0) - (names ? s.trimN ?? 0 : 0) - (mem ? s.trimM ?? 0 : 0) - (intro ? s.trimI ?? 0 : 0);
-    const r = {...s, dur, start: t}; t += dur; return r;
+  const scenes = on.map((s) => {
+    const dur = s.fixed ? s.dur : k === 1 ? s.dur : (s.min ?? s.dur) + (s.dur - (s.min ?? s.dur)) * k;
+    // keep every VO line inside its scene and never overlapping the next one
+    const vo = (s.vo ?? []).map((v) => ({...v}));
+    for (let i = vo.length - 1; i >= 0; i--) {
+      const len = VOLEN[vo[i].k] ?? 4;
+      vo[i].at = Math.min(vo[i].at, i === vo.length - 1 ? dur - len - 0.3 : vo[i + 1].at - len - 0.2);
+      vo[i].at = Math.max(0, vo[i].at);
+    }
+    const r = {...s, dur, vo, start: t}; t += dur; return r;
   });
-  return {scenes, total: t};
+  return {scenes, total: t, over: mins > budget};
 };
 
 // ---- fonts ----
@@ -163,23 +180,90 @@ const Intro: React.FC = () => {
   );
 };
 
-// Juan's words, verbatim from presentation/MEMORIAL.md. Never edit, shorten or voice with TTS. Gated by memorial.json approved.
-const MEMORIAL = [
-  'Nury is named for my aunt, Nury.',
-  'For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.',
-  'She never married.',
-  'She passed away a month ago.',
-  'This is for her.',
-];
-const Memorial: React.FC = () => {
+// Juan's words, verbatim from presentation/MEMORIAL.md (sections 1 and 4). Never edit, shorten or voice with TTS.
+// memorial.json: {approved: false|true, option: 0..3, portrait: null | "file in public/"}. Nothing shows until Juan approves.
+const MEMORIALS: Record<number, string[]> = {
+  0: ['Nury is named for my aunt, Nury.', 'For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.', 'She never married.', 'She passed away a month ago.', 'This is for her.'],
+  1: ['Nury is named for my aunt, Nury Pelaez.', 'She served her church for 83 years, in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'She passed away a month ago. This is for her.'],
+  2: ['In memory of Nury Pelaez, 83.', 'She served her church in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'Nury is named for her.', 'May it be ready to help, the way she always was.'],
+  3: ['In memory of Nury Pelaez.', 'Always ready to help. Always with a smile.', 'Always with Jesus in her heart.'],
+};
+const Memorial: React.FC<{m?: Memorial}> = ({m}) => {
   const f = useCurrentFrame();
+  const lines = MEMORIALS[m?.option ?? 3] ?? MEMORIALS[3];
+  const step = Math.max(14, Math.round(130 / lines.length));
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 22, padding: '0 300px'}}>
+      {m?.portrait ? (
+        <Img src={staticFile(m.portrait)} style={{width: 220, height: 220, borderRadius: 110, objectFit: 'cover', boxShadow: '0 12px 40px rgba(70,45,10,.25)', opacity: interpolate(f, [0, 40], [0, 1], {extrapolateRight: 'clamp'})}} />
+      ) : null}
       <Img src={staticFile('logo-mark-paper.svg')} style={{width: 96, height: 96, opacity: interpolate(f, [0, 40], [0, 1], {extrapolateRight: 'clamp'}), marginBottom: 14}} />
-      {MEMORIAL.map((l, i) => (
-        <div key={i} style={{fontFamily: serif, fontSize: i === 4 ? 56 : 44, lineHeight: 1.3, color: C.text, textWrap: 'balance' as any,
-          opacity: interpolate(f, [24 + i * 22, 56 + i * 22], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>{l}</div>
+      {lines.map((l, i) => (
+        <div key={i} style={{fontFamily: serif, fontSize: i === lines.length - 1 ? 52 : 44, lineHeight: 1.3, color: C.text, textWrap: 'balance' as any,
+          opacity: interpolate(f, [24 + i * step, 56 + i * step], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>{l}</div>
       ))}
+    </AbsoluteFill>
+  );
+};
+
+// Tech beat: animated architecture. Names in text only, no third-party logos. Claims are VERIFIED ones from documents/TECH_CLAIMS.md.
+const DISCLOSURE = 'The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules.';
+const NODES = [
+  {t: "Pastor's phone", s: 'types the call', at: 0.2},
+  {t: 'Privacy layer', s: 'tokens, not names', at: 1.2},
+  {t: 'Gloo AI Studio', s: 'guarded endpoint', at: 3.6},
+  {t: 'Checks', s: 'reject and regenerate, up to 3 tries', at: 5.6},
+  {t: 'Approval gate', s: 'Approve, Edit or Stop', at: 9.4},
+];
+const Tech: React.FC<{tests: number | string}> = ({tests}) => {
+  const f = useCurrentFrame(); const sec = f / FPS;
+  const caps = ['Leak test: canary names and numbers, zero in any request', 'Typed judge, five-scenario check: safe 0.17 to 0.30, unsafe 0.83 to 0.90', `${tests} tests pass, offline`];
+  const ci = sec < 3.6 ? 0 : sec < 7.2 ? 1 : 2; // each caption about 3.6 s
+  const X0 = 145, W = 270, GAP = 70, Y = 250, H = 170;
+  const vis = (a: number) => interpolate(sec, [a, a + 0.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const evalAt = 7.6;
+  return (
+    <AbsoluteFill style={{fontFamily: sans}}>
+      <div style={{position: 'absolute', left: 150, top: 80, fontFamily: serif, fontSize: 52, color: C.text, opacity: vis(0)}}>How it is built</div>
+      {NODES.map((n, i) => {
+        const x = X0 + i * (W + GAP), o = vis(n.at);
+        return (
+          <React.Fragment key={n.t}>
+            {i > 0 && (() => {
+              const x1 = x - GAP + 4, x2 = x - 6, lo = vis(n.at);
+              const p = ((sec * 0.9 + i * 0.3) % 1);
+              return (
+                <div style={{position: 'absolute', left: x1, top: Y + H / 2 - 2, width: x2 - x1, height: 4, background: 'rgba(13,16,21,.28)', opacity: lo}}>
+                  <div style={{position: 'absolute', left: `${p * 100}%`, top: -4, width: 12, height: 12, borderRadius: 6, background: C.amber}} />
+                </div>
+              );
+            })()}
+            <div style={{position: 'absolute', left: x, top: Y + (1 - o) * 14, width: W, height: H, borderRadius: 18, background: '#fffdf8', border: '2px solid rgba(13,16,21,.82)',
+              boxShadow: '0 14px 34px rgba(70,45,10,.14)', opacity: o, display: 'grid', alignContent: 'center', justifyItems: 'center', gap: 8, padding: 14, textAlign: 'center'}}>
+              <div style={{fontFamily: serif, fontSize: 30, fontWeight: 600, color: C.text, whiteSpace: 'nowrap'}}>{n.t}</div>
+              <div style={{fontSize: 22, color: C.muted, lineHeight: 1.25}}>{n.s}</div>
+            </div>
+          </React.Fragment>
+        );
+      })}
+      {/* correction loop arrow under the Checks box */}
+      <div style={{position: 'absolute', left: X0 + 3 * (W + GAP) + 40, top: Y + H + 14, width: W - 80, height: 36, border: `3px solid ${C.amber}`, borderTop: 'none', borderRadius: '0 0 24px 24px', opacity: vis(6.4)}} />
+      <div style={{position: 'absolute', left: X0 + 3 * (W + GAP), top: Y + H + 58, width: W, textAlign: 'center', fontSize: 22, color: C.muted, opacity: vis(6.4)}}>correction loop</div>
+      <div style={{position: 'absolute', left: X0 + 2 * (W + GAP), top: Y - 62, width: W + 100, left: X0 + 2 * (W + GAP) - 50, textAlign: 'center', whiteSpace: 'nowrap', fontSize: 26, color: C.amber, fontWeight: 500, opacity: vis(3.9)}}>Built on Gloo AI Studio</div>
+      {/* evaluation strip */}
+      <div style={{position: 'absolute', left: 150, top: 560, width: 1620, height: 190, borderRadius: 24, border: `3px dashed ${C.amber}`, opacity: vis(evalAt), display: 'grid', alignContent: 'center', justifyItems: 'center', gap: 14}}>
+        <div style={{fontSize: 24, color: C.muted, letterSpacing: '.06em'}}>EVALUATION TIME ONLY</div>
+        <div style={{display: 'flex', gap: 56, fontFamily: serif, fontSize: 40, color: C.text}}>
+          <span>Jev typed judges</span><span style={{color: C.amber}}>·</span><span>Red team</span><span style={{color: C.amber}}>·</span><span>Human review</span>
+        </div>
+      </div>
+      <div style={{position: 'absolute', left: 150, top: 770, fontSize: 26, color: C.amber, fontWeight: 500, opacity: vis(8.4)}}>Tested with Jev</div>
+      {/* proof captions, one at a time */}
+      <div style={{position: 'absolute', left: 0, right: 0, top: 850, textAlign: 'center'}}>
+        <span key={ci} style={{fontSize: 34, color: C.text, background: 'rgba(247,243,234,.94)', boxShadow: '0 2px 14px rgba(70,45,10,.14)', padding: '10px 22px', borderRadius: 12,
+          opacity: interpolate((sec - [0, 3.6, 7.2][ci]) , [0, 0.4, 3.0, 3.6], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'}) * (sec > 1 ? 1 : 0)}}>{caps[ci]}</span>
+      </div>
+      <div style={{position: 'absolute', left: 150, right: 150, bottom: 28, textAlign: 'center', fontSize: 20, color: C.muted}}>{DISCLOSURE}</div>
     </AbsoluteFill>
   );
 };
@@ -227,19 +311,21 @@ export const Nury: React.FC<{data: Data}> = ({data}) => {
           <Fade dur={s.dur} slow={s.kind === 'memorial'}>
             {s.kind === 'intro' && <Intro />}
             {s.kind === 'lock' && <Lock />}
-            {s.kind === 'memorial' && <Memorial />}
+            {s.kind === 'memorial' && <Memorial m={data.memorial} />}
+            {s.kind === 'tech' && <Tech tests={data.tech?.tests ?? 'N'} />}
             {s.kind === 'clip' && <Clip s={s} marks={data.marks} />}
             {s.kind === 'proof' && <Proof p={data.proof} />}
             {s.kind === 'end' && <End />}
           </Fade>
           {(s.vo ?? []).map((v: any) => {
+            const showCap = s.kind !== 'tech'; // the tech beat carries its own captions
             const len = VOLEN[v.k] + 0.5;
             const text = VO[v.k];
             return (
               <React.Fragment key={v.k}>
-                <Sequence from={Math.round(v.at * FPS)} durationInFrames={Math.round(Math.min(len, s.dur - v.at) * FPS)}>
+                {showCap && <Sequence from={Math.round(v.at * FPS)} durationInFrames={Math.round(Math.min(len, s.dur - v.at) * FPS)}>
                   <Caption text={text} dur={Math.round(Math.min(len, s.dur - v.at) * FPS)} />
-                </Sequence>
+                </Sequence>}
                 <Sequence from={Math.round(v.at * FPS)}><Audio src={staticFile(`vo/${v.k}.wav`)} /></Sequence>
               </React.Fragment>
             );
