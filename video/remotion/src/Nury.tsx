@@ -61,7 +61,7 @@ const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
     const l = document.createElement('link'); l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500&display=swap';
+    l.href = staticFile('fonts/fonts.css'); // self-hosted: renders offline
     document.head.appendChild(l);
     Promise.all([document.fonts.load('600 80px Fraunces'), document.fonts.load('400 30px Fraunces'), document.fonts.load('400 30px Inter')])
       .then(() => document.fonts.ready).finally(() => continueRender(h));
