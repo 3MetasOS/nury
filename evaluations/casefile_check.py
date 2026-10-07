@@ -77,7 +77,6 @@ def revise_and_check(sc, saved, root, ids, secrets, cf, run_scripted):
     new_id = srv.next_version_id(saved["id"])
     r2 = cf.save_case(state2, audit2, playbook=sc["playbook"], root=root, case_id=new_id)
     d2 = Path(r2["path"])
-    (d2 / "intake.md").write_text("# Intake\n\n" + intake.strip() + "\n", encoding="utf-8")
     srv.write_changes(d2, new_id, rv, ids)
     bad = []
     if not new_id.endswith("-v2"):
@@ -121,7 +120,6 @@ def run_live():
         with tempfile.TemporaryDirectory() as root:
             try:
                 saved = cf.save_case(state, audit, playbook=sc["playbook"], root=root)
-                (Path(saved["path"]) / "intake.md").write_text("# Intake\n\n" + sc["intake"].strip() + "\n", encoding="utf-8")
                 problems = check_case_dir(saved["path"], sc["playbook"], snippets, secrets, sc.get("edit_marker"))
                 if len(list(Path(saved["path"]).glob("0*-*.md"))) != len(ids):
                     problems.append("stage page count does not match the playbook")

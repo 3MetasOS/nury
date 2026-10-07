@@ -60,7 +60,10 @@ def next_version_id(cid):
 def original_intake(pages):
     t = pages.get("intake.md")
     if t:
-        return re.sub(r"^# .*\n+", "", t).strip()
+        t = re.sub(r"^# .*\n+", "", t)                                       # heading
+        t = re.sub(r"^What the pastor typed, exactly\.[^\n]*\n+", "", t)       # save_case's note line
+        t = re.sub(r"\n*\[Index\]\(index\.md\)\s*$", "", t)                  # page footer
+        return t.strip()
     # Cases saved before intake.md existed: the approved triage is the structured intake.
     t = next((v for k, v in sorted(pages.items()) if k.startswith("01-")), "")
     return re.sub(r"^# .*\n+", "", t.split("\n---\n")[0]).strip()   # drop the page footer (links, disclaimer)
@@ -205,7 +208,8 @@ class Session:
                          privacy=self.client if isinstance(self.client, PrivacyClient) else None)
         self.case_id = r["id"]
         d = Path(r["path"])
-        (d / "intake.md").write_text("# Intake\n\n" + self.intake.strip() + "\n", encoding="utf-8")   # the pastor's own words, local only
+        if not (d / "intake.md").exists():   # save_case writes it now; this only covers an older core
+            (d / "intake.md").write_text("# Intake\n\n" + self.intake.strip() + "\n", encoding="utf-8")
         if self.revision:
             self._write_changes(d, r["id"])
         return {"id": r["id"], "version": r["id"] if not self.revision else r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}

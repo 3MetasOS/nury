@@ -43,3 +43,8 @@ def test_unknown_result_label_is_unknown(monkeypatch):
     monkeypatch.setattr(srv.cf, "load_case", lambda cid, root: {"pages": {"intake.md": "# Intake\n\nx"}, "meta": {}})
     text, _ = srv.revision_intake("c1", "", "bogus", "n")
     assert "Result: unknown" in text and "Step: not named" in text
+
+
+def test_original_intake_reads_save_case_format():
+    page = "# Intake\n\nWhat the pastor typed, exactly. A later update is added below it, never over it.\n\nMaria called at 2:07 AM.\n\n[Index](index.md)\n"
+    assert srv.original_intake({"intake.md": page}) == "Maria called at 2:07 AM."
