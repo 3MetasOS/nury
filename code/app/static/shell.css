@@ -99,3 +99,8 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 @media (max-width:639px){.brand .tg{font-size:11px}}
 .sitefoot .prov{margin:0;font:400 19px/1.35 "Gochi Hand","Bradley Hand","Segoe Print",cursive;color:var(--text)}
 .sitefoot .prov a{color:var(--amber-text);text-underline-offset:3px;margin-left:6px;white-space:nowrap}
+
+/* footer reveal: opacity 0 to 1 and 16 px up, 500 ms, columns 80 ms apart, then the provenance line and the disclaimer. The hidden state exists only while .rv is on. */
+.sitefoot.rv .lockup,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:0;transform:translateY(16px)}
+.sitefoot.rv.rv-in .lockup,.sitefoot.rv.rv-in .fj,.sitefoot.rv.rv-in .fm,.sitefoot.rv.rv-in .prov,.sitefoot.rv.rv-in .fine{opacity:1;transform:none;transition:opacity .5s ease-out var(--fd,0ms),transform .5s ease-out var(--fd,0ms)}
+@media (prefers-reduced-motion:reduce){.sitefoot.rv .lockup,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:1;transform:none}}

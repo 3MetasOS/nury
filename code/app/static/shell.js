@@ -92,11 +92,26 @@
   }
   setActive(document.body.dataset.nav || "");
 
+  // The footer rises in once, when it first comes into view. JS applies the hidden state, so a page without JS shows the footer as it is.
+  function revealFooter() {
+    const f = document.querySelector(".sitefoot");
+    if (!f || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const parts = [...f.querySelectorAll(".lockup, .fj, .fm, .prov, .fine")];
+    parts.forEach((p, i) => p.style.setProperty("--fd", (i < 3 ? i * 80 : 240 + (i - 2) * 80) + "ms"));
+    f.classList.add("rv");
+    let done = false;
+    const show = () => { if (done) return; done = true; f.classList.add("rv-in"); io.disconnect(); setTimeout(() => f.classList.remove("rv"), 1200); };
+    const io = new IntersectionObserver(es => { if (es.some(e => e.isIntersecting)) show(); }, { threshold: 0.15 });
+    io.observe(f);
+    setTimeout(show, 4000);   // a page that never scrolls the footer in still shows it
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     document.body.insertAdjacentHTML("beforeend", footer);
     const fn = document.querySelector(".sitefoot .fl");
     fn.dataset.note = "psst, for judges"; fn.dataset.arrow = "down"; fn.dataset.rot = "-2";
     notes(); setActive(document.body.dataset.nav || (window.__navNow || ""));
+    revealFooter();
     // The build line and the test counts come from the server (read once at its start). A line with no data stays hidden.
     fetch("/api/build").then(r => r.json()).then(b => {
       if (b && b.commit) { const li = document.getElementById("fm-build"); li.querySelector("span").textContent = b.commit + (b.date ? ", " + b.date : ""); li.hidden = false; }
