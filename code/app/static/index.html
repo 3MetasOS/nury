@@ -327,10 +327,10 @@ body:not([data-view="crisis"]) .startbar{display:none}
 </section>
 
 <section class="nv" id="v-cases" hidden>
-  <header class="chead">
+  <div class="chead">
     <h1 id="h-cases" tabindex="-1">Cases <span class="cn" id="h-count"></span></h1>
     <p>Saved cases, newest first. Needs follow-up first.</p>
-  </header>
+  </div>
   <div id="cases-body">
     <div class="fbar">
       <div class="fgroup seg" role="group" aria-label="Status" id="f-status">
@@ -704,9 +704,9 @@ async function openCase(id){
   paintF(!!c.meta.needs_follow_up);
   fb.onclick=()=>{const on=fb.getAttribute("aria-pressed")!=="true";const msg=$("case-follow-msg");
     msg.replaceChildren(h("span",null,on?"Mark this case as needing follow-up? It will show first on Home and in Cases. ":"Clear the follow-up mark on this case? "),
-      h("button",{class:"linkbtn",type:"button",id:"case-follow-yes"},on?"Yes, mark it":"Yes, clear it")," ",h("button",{class:"linkbtn",type:"button",id:"case-follow-no"},"Cancel"));
-    $("case-follow-no").onclick=()=>{msg.textContent=""};
-    $("case-follow-yes").onclick=()=>apply(on)};
+      h("button",{class:"linkbtn yes",type:"button"},on?"Yes, mark it":"Yes, clear it")," ",h("button",{class:"linkbtn no",type:"button"},"Cancel"));
+    msg.querySelector(".no").onclick=()=>{msg.textContent=""};
+    msg.querySelector(".yes").onclick=()=>apply(on)};
   const apply=async on=>{fb.disabled=true;
     const r=await api("/api/case/"+encodeURIComponent(c.meta.id)+"/followup",{value:on});
     fb.disabled=false;
