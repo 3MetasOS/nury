@@ -38,3 +38,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Voiceover: TTS first; Juan's recording replaces it only if it arrives before Oct 7 17:00 MDT.
 - 90 s video plays inside the 3-minute pitch. No separate 3-minute video.
 - Skip the MCP endpoint. Keep the honest "what didn't work" section and the failure-mode log; judges weigh them.
+
+## 6. 2026-10-06 19:47 MDT — Pitch script and deck v1 (hack-ninja)
+
+- `presentation/PITCH_SCRIPT.md` (3:00, lines tagged [90s] for the 90 s cut) and `presentation/deck.html` (8 slides). Same family and intake as SHARED_DEMO.md.
+- Placeholders: slide 6 proof numbers and the proof section. Both are cut at Oct 7 16:00 MDT unless hack-artisans supplies real numbers.
