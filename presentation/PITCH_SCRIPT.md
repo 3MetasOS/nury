@@ -7,7 +7,7 @@ Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
 Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from `documents/TECH_CLAIMS.md`, VERIFIED rows only.
 
 ## Timing table (13 talk slides at 2.5 words a second; the arc is night, lantern, light, dawn)
-Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, Where we stand, Close, Memorial). Total 2:52 with the memorial, 2:36 without. Limit 2:55.
+Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, What we built, Close, Memorial). Total 2:49 with the memorial, 2:33 without. Limit 2:55.
 | # | Slide (title in the deck) | Act | Time | Length |
 |---|---|---|---|---|
 | 1 | The call | Night | 0:00 to 0:11 | 11 s |
@@ -20,9 +20,9 @@ Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The de
 | 8 | Use of AI | Light | 1:39 to 1:53 | 14 s |
 | 9 | The evaluation system | Light | 1:53 to 2:09 | 16 s |
 | 10 | Impact | Light | 2:09 to 2:22 | 13 s |
-| 11 | Where we stand | Light | 2:22 to 2:31 | 9 s |
-| 12 | Close | Dawn | 2:31 to 2:36 | 5 s |
-| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:36 to 2:52 | 16 s |
+| 11 | What we built | Light | 2:22 to 2:28 | 6 s |
+| 12 | Close | Dawn | 2:28 to 2:33 | 5 s |
+| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:33 to 2:49 | 16 s |
 
 ## 1. The call (night)  [90s]
 The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." (29 words, 11 s)
@@ -63,8 +63,8 @@ Do not read the disclosure aloud: it is on the slide. "We judged 46 made-up case
 Source: `evaluations/results/build_comparison.md`, build 9bc5c6d. Judge results, not human verdicts. Do not add the counts into a pass rate.
 One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the triage prompt.
 
-## 11. Where we stand
-"One founder and five AI agents built it. Not done yet: no pastor has used it, and no attorney has reviewed our sources." (23 words, 9 s)
+## 11. What we built
+"One founder and five AI agents built it. Every step is in the commit log." (15 words, 6 s) Six ticks on the slide. The honest status is on the Impact slide, the About page, How this was built and What did not work, not here.
 
 ## 12. Close (dawn)  [90s]
 "The next call will come. Nury is there when the pastor picks up." (5 s) The slide ends with "Read more: the About page."

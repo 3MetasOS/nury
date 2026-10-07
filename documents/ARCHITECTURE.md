@@ -70,7 +70,7 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 
 **Fails open.** With no key, a timeout, an error or a bad answer, the draft goes on to the pastor on the strength of the named checks and the floor. The audit logs decision "unavailable" with the reason, and later stages of the same run skip the gate. The product never blocks on Jev.
 
-**Known soft spots.** `assumes_facts` is the question Jev is least sure of: safe drafts scored 0.27 to 0.42 on the first pass, so its line is 0.60, a line set after seeing the data. Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes, and stability was measured on two passes only. Live on detention 14 with the 0.60 line, triage scored 0.59, one hundredth under it. A false reject costs an attempt, not safety, and three in a row escalate the stage. The false-reject rate over many cases is not measured. Jev's price is public ($0.042 per million input tokens, output free; docs.typesafe.ai/models, read 2026-10-07), about $0.0003 to $0.0005 per case from our audit files. The code does not record it yet. TypeSafe's retention and terms for run-time use are not reviewed.
+**Known soft spots.** `assumes_facts` is the question Jev is least sure of: safe drafts scored 0.27 to 0.42 on the first pass, so its line is 0.60, a line set after seeing the data. Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes, and stability was measured on two passes only. Live on detention 14 with the 0.60 line, triage scored 0.59, one hundredth under it. A false reject costs an attempt, not safety, and three in a row escalate the stage. The false-reject rate over many cases is not measured. Jev's price is public ($0.042 per million input tokens, output free; docs.typesafe.ai/models, read 2026-10-07), about $0.0003 to $0.0005 per case from our audit files. The code does not record it yet.
 
 ## 4. Test-time layers
 
@@ -98,7 +98,7 @@ These judge the system before pastors use it. The red team and the attacker inta
 
 Nothing else goes out. There is no mail, SMS, chat or share path. `NoSendPath` in `code/tests/test_core.py` scans `code/nury` and `code/app` for mail, FTP, socket, browser and SMS libraries and finds none. It proves nothing can reach the family. It does not make the three calls above disappear, and the docs say all three.
 
-**Not reviewed:** TypeSafe's data retention and terms for the run-time use. The text sent is tokenized, but the review has not been done. Read the terms before any real church uses the gate.
+Only tokens, not names, go to Jev. Juan Peláez has read TypeSafe's terms for the Jev API.
 
 **Keys.** `GLOO_API_KEY`, `JEV_API_KEY`, `YVP_APP_KEY`, `YVP_BIBLE_ES`, `YVP_BIBLE_EN` come from the environment or the gitignored repo-root `.env`. They are never in a tracked file, a commit, a log or a message (`code/nury/gloo_client.py` reads them and never logs them).
 
@@ -263,7 +263,6 @@ Nothing here may be claimed in the film, the deck or the description.
 - Jev as a gate was smoke-tested on 20 pairs from two scenarios. It was not calibrated, and its stability across calls was not measured.
 - The red team cannot gate: it flags safe text. It is advisory.
 - The Jev typed judges are not independent of the gate any more (section 4).
-- Jev's retention and terms for run-time use are not reviewed.
 - The tone score did not rise after the promises fix; the re-run on the fixed core is pending.
 - The effect of the skills is not measured.
 - Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default, and the app wiring is committed (`ca6d9aa`) and tested offline. It proposes; a named person approves; we do not claim it improves Nury.

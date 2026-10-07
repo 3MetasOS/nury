@@ -74,7 +74,7 @@ Each item says what we tried, what happened, what we changed and what we still d
 - **Tried.** Jev as a test-time judge only, with no Jev calls in the product.
 - **Happened.** Juan asked for Jev as a classifier on the drafts Nury generates. We added a run-time gate (one batched call per attempt, reject at 0.50 or above). That made the earlier claim false in about 39 files. The test-time Jev judges are also no longer independent of the run-time gate.
 - **Changed.** A claims audit rewrote the wording everywhere. Jev is third-party technology from TypeSafe, and we say so.
-- **Not known.** The Jev gate was smoke-tested on 20 pairs from two scenarios. It was not calibrated. Nobody on the team has read TypeSafe's data retention and terms for run-time use.
+- **Not known.** The Jev gate was smoke-tested on 20 pairs from two scenarios. It was not calibrated.
 
 **A design change makes old claims false.**
 

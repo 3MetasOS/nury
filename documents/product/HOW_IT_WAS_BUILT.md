@@ -118,7 +118,7 @@ Nury makes three kinds of outbound call, and nothing else.
 
 No call can reach the family. A test (`NoSendPath` in `code/tests/test_core.py`) scans the product code for mail, FTP, socket, browser and SMS libraries and finds none. BUILT, offline.
 
-**Not reviewed:** TypeSafe's data retention and terms for run-time use. The text sent is tokenized, but nobody has read the terms. Someone has to read them before real churches use the gate.
+Only tokens, not names, go to Jev. Juan Peláez has read TypeSafe's terms for the Jev API.
 
 ### Cost and time
 
@@ -703,7 +703,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Content governance** | Legal and medical sources reviewed by professionals, a native Spanish speaker reading the output, a schedule for updating official lists, and a named owner for each | Sources approved by Juan from official pages. No professional review. No native-speaker review. No update schedule. | NOT BUILT |
 | **Rule and workflow editor** | An editor for rules and crises, with review, a named approver and staged rollout | Edit JSON and Python in the repo (sections 5 and 7) | NOT BUILT |
 | **Compliance and legal review** | A privacy policy, a retention rule, a consent process, and a lawyer's review of where information ends and unauthorized practice of law begins | The consent note exists. Nothing else. | NOT BUILT |
-| **Run-time Jev gate** | A calibration study, the false-reject rate measured over many cases, stability measured, TypeSafe's terms and data retention for run-time use read (Jev's price is public: $0.042 per million input tokens, output free) | Live on three scenarios. Smoke-tested on 20 pairs. | BUILT, live (three scenarios); the rest NOT BUILT |
+| **Run-time Jev gate** | A calibration study, the false-reject rate measured over many cases, stability measured (Jev's price is public: $0.042 per million input tokens, output free) | Live on three scenarios. Smoke-tested on 20 pairs. | BUILT, live (three scenarios); the rest NOT BUILT |
 | **More crises** | More playbooks, each with approved sources and scenarios | Two live, two cards | PLANNED |
 | **More languages** | Family output beyond Spanish and English, and a UI beyond English | Spanish and English only; English UI | NOT BUILT |
 | **More official lists** | The Department of Justice list for every state | Colorado only | NOT BUILT |
@@ -723,7 +723,7 @@ This is a suggested order, not a plan we have committed to.
 2. **Then make the content trustworthy:** professional review of the legal and medical sources, native-speaker review of the Spanish, an owner and a schedule for each official list.
 3. **Then make change safe:** evaluation in CI with regression gates, a human review queue, and a rule and workflow editor with review and staged rollout.
 4. **Then widen:** more crises, more languages, more states, mobile and offline, teams and handoff, reminders.
-5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability, terms and data retention). Watch cost and time per case. Put Nury in front of real pastors early and carefully, once the consent process and legal review are in place.
+5. **Throughout:** finish the Jev gate work (calibration, false-reject rate over many cases, stability). Watch cost and time per case. Put Nury in front of real pastors early and carefully, once the consent process and legal review are in place.
 
 ## Honest limits, in one place
 

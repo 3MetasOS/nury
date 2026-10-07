@@ -92,14 +92,18 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Notes: Build 9bc5c6d. No Before column, no pass rate. If asked for another failure: the tone judge sits near 3 of 5 against 4 and moves up to 0.75 between identical runs. Criterion: Impact and Execution.
 - Screens: none.
 
-### 11. where-we-stand
+### 11. what-we-built (was where-we-stand; the "Not done yet" column is removed, per Juan)
 - Headline: One founder. Five AI agents.
 - Line: Every step is in the commit log.
-- Labels: Built · Not done yet
-- Built (7): Two live crises, plain files · The app, with PDF export · Named rules, a safety floor, Jev · Bible verses from a verified list · 46 test scenarios, outside review that advises · Learning loop, built, off by default · Replay, command line, MCP server.
-- Not done yet (8): No real pastor has used it · No attorney or chaplain has reviewed our sources · No native Spanish review · Judge results not read by people yet (15 undecided) · No sign-in, no encryption at rest, no hosting · TypeSafe's terms not read · Nothing learned yet · Two more crises are only "coming soon".
-- Spoken (9 s): "One founder and five AI agents built it. Not done yet: no pastor has used it, and no attorney has reviewed our sources."
-- Notes: Claim nothing about pastors or attorneys having used it. "Chaplain" is not in the audit and "five AI agents" has no audit row: sensei to confirm both.
+- Labels: none. Six big ticks, one line each, 1 to 6 words:
+  1. Two live crises, plain files
+  2. The app, with PDF export
+  3. Rules, a safety floor, Jev
+  4. Verses from a verified list
+  5. 46 test cases, outside review
+  6. Learning loop, replay, command line
+- Spoken (6 s): "One founder and five AI agents built it. Every step is in the commit log."
+- Notes: 2:22 to 2:28. Criterion: Presentation and Teamwork. Every tick is checked against documents/product/ALIGNMENT_AUDIT.md (46 scenarios, replay, CLI and MCP shipped, learning loop built and off). Honest status is NOT on this slide on purpose: it lives on the Impact slide ("Made-up families only."), the About page, How this was built (Limits) and What did not work. If asked: no real pastor has used it, no attorney has reviewed our sources, nothing has been learned yet. Do not volunteer "not read" or "nothing learned" on a slide. "Five AI agents" has no audit row: sensei to confirm.
 - Screens: none.
 
 ### 12. close (dawn)
@@ -142,6 +146,6 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Keys never appear.
 
 ## Claims I could not verify
-- "Chaplain" (slide 11) and "five AI agents" are not in ALIGNMENT_AUDIT.md.
+- "Five AI agents" (slide 11) is not in ALIGNMENT_AUDIT.md.
 - Word counts for the spoken lines are mine at 2.5 words a second, not timed aloud.
 - The chooser thumbnail on slide 3 is optional: there was no room in the current layout.
