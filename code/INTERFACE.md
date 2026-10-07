@@ -90,6 +90,25 @@ Small versioned instruction modules in `code/skills/<name>/SKILL.md` (header: na
 - **Switch.** Skills are ON by default. Turn them off per call with `skills=False` on `run_stage`, `run_pipeline`, or `run_scripted` (`skills=True` forces on), or for the whole process with `NURY_SKILLS=off`. Off means no skill text, no skill checks, no `skill_applied` events (an audit event `skills_off` {stage, skipped} appears instead), and `metrics["skills"] == []`. The floor, the disclaimer, and playbook checks are unchanged. Use it for before and after runs.
 - **Evidence.** Audit event `skill_applied` with `name`, `version`, `stage` (once per stage run). `StageResult.metrics["skills"]` = `[{"name", "version"}]`. A skill's own check failure shows as a category, for example `stock_phrase`.
 
+## Case files (`nury/casefile.py`, no model call)
+
+```python
+from nury import casefile as cf
+cf.save_case(state, audit, playbook=None, root="cases", case_id=None) -> {"id", "path", "files"}
+cf.list_cases(root="cases")  -> [{"id", "playbook", "title", "created", "status", "path"}]   # newest first
+cf.load_case(case_id, root="cases") -> {"meta": {...}, "pages": {"index.md": text, ...}, "svg": "<svg ...>"}
+cf.export_zip(case_id, root="cases", dest=None) -> "<path to .zip>"       # default <root>/<id>.zip
+cf.nextsteps_svg(pb, state, title) -> svg string                          # the map alone
+cf.CaseError                                                             # raised on any refusal
+```
+
+Layout: `cases/<id>/` holds `index.md`, one page per stage (`01-<stage id>.md` ... in playbook order; skipped stages have no page), `people.md`, `documents.md`, `timeline.md`, `log.md`, `nextsteps.svg`, `case.json`. Pages link with relative markdown links, and `index.md` embeds the map. `cases/` is gitignored. The case id is `<playbook>-<yyyymmdd>-<hhmmss>-<4 hex>` unless you pass one. It never overwrites a case.
+
+- **Call it after the run.** Pass the same `state` and `audit` the pipeline used (`run_scripted` returns both; the app already holds them). Refuses (`CaseError`) unless every stage is `approved` or `edited` (`skipped` is fine). Nothing is written on a refusal.
+- **Approved content only.** Stage pages hold `state.approved[stage]` exactly (the pastor's edit if edited, disclaimer included). The log records each gate, edits (flagged), skills applied, and rejected drafts as categories only. A guard refuses the save if a rejected draft or a key value would be written.
+- **Map.** Four lanes: Tonight (checklist DO TONIGHT), This week (the documents or bring list), Questions still open (triage MISSING FACTS), Who to call (vetted entries whose link or phone appears in the approved resources text). Steps and questions only. SVG viewBox is 400 wide, dark theme with amber, text escaped.
+- Works for any playbook; the hospital case has no immigration text.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.
