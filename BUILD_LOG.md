@@ -428,3 +428,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 64. 2026-10-06 22:10 MDT — ElevenLabs attribution (Juan: attribute)
 
 - Decision (Juan): keep the free plan and attribute. "Narration voice by ElevenLabs." goes in the video end credits, the deck credits slide, the repo README and the submission notes; in the description only if it stays at or under 250 words. No logo and no endorsement claim.
+
+## 65. 2026-10-06 22:12 MDT — ElevenLabs upgraded to Starter (Juan)
+
+- Juan upgraded the plan. Verified with a read-only call: tier starter, 40,000 characters per month, status active, commercial use included.
+- Decision: the on-screen "Narration voice by ElevenLabs." credit is removed from the video and the deck; one disclosure line stays in the submission notes and the README ("The video narration is an AI-generated voice (ElevenLabs)."). The audition budget is 40,000 characters with 15,000 reserved for the final and the overnight cut; shared Voice Library voices are allowed if their license permits commercial use; no voice cloning.
