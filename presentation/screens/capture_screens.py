@@ -3,7 +3,7 @@
 Run from the repo root with two servers up (no key needed, no model call):
   LIVE  http://127.0.0.1:8080  the normal app with its saved (synthetic) cases
   REPLAY http://127.0.0.1:8096 the same app started with NURY_REPLAY=1 NURY_FEEDBACK=on (a recorded run: sample intake, gates, final page)
-Usage: python3 presentation/screens/capture_screens.py [live|replay|final|pdf|all]
+Usage: python3 presentation/screens/capture_screens.py [live|replay|final|overview|pdf|all]
 Needs agent-browser, Pillow, and pdftoppm for the PDF pages. The app is not changed: only a screenshot is taken."""
 import json, os, subprocess, sys, tempfile, time, zipfile, urllib.request
 from pathlib import Path
@@ -96,6 +96,12 @@ def live(w):
     snap("12-about", w, bottom_sel="section.sec", pad=24)
 
 
+def overview_seq():
+    """The case Overview's sequence card at 960 px (the narrowest width that keeps the five stages in a row), so its labels stay readable when the deck shrinks it."""
+    open_light(LIVE + f"/#/case/{ES_CASE}", 960); ab("wait", "1500")
+    snap("07-case-sequence", 960, box_sel="#case-page .ovc", pad=10)
+
+
 def replay(w):
     open_light(REPLAY + "/#/", w); ab("wait", "800")
     ev("[...document.querySelectorAll('button,a')].find(b=>/Respond to a crisis/.test(b.textContent)&&b.getBoundingClientRect().height>0).click();1"); ab("wait", "900")
@@ -143,5 +149,7 @@ if __name__ == "__main__":
             replay(w)
         if what in ("final", "all"):
             final(w)
+    if what in ("overview", "all"):
+        overview_seq()
     if what in ("pdf", "all"):
         pdf()

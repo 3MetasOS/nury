@@ -176,7 +176,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2.nm .head{display:flex;align-items:center;gap:clamp(16px,2.4vw,40px)}
 .v2.nm .lantern.small{width:clamp(70px,9vw,150px)}
 .v2.nm .word{font:600 clamp(72px,11vw,190px)/.95 var(--serif);letter-spacing:-.03em;margin:0}
-.v2.nm .tagl{font:400 clamp(22px,2.6vw,48px)/1.2 var(--serif);margin:0;color:var(--amber-text)}
+.v2.nm .tagl{font:400 clamp(22px,2.6vw,48px)/1.2 var(--serif);margin:20px 0 0;color:var(--amber-text)}.v2.nm .wrap{margin-top:12vh}
 .v2.nm .tagline-line{font:400 clamp(18px,2.2vw,44px)/1.3 var(--sans);color:var(--muted);margin:0}
 .v2.nm .word,.v2.nm .tagl,.v2.nm .tagline-line,.v2.nm .tags,.v2.nm .hand{opacity:0;animation:rise .45s ease-out forwards}
 .v2.nm .word{animation-delay:.1s}.v2.nm .tagl{animation-delay:.5s}.v2.nm .tagline-line{animation-delay:.9s}.v2.nm .tags{animation-delay:1.3s}.v2.nm .hand{animation-delay:1.7s}
@@ -185,11 +185,11 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 @media (prefers-reduced-motion:reduce){.v2.nm .word,.v2.nm .tagl,.v2.nm .tagline-line,.v2.nm .tags,.v2.nm .hand{opacity:1;animation:none}}
 
 /* engine + demo */
-.v2 [data-gated]{font-size:clamp(14px,1.3vw,22px)}.v2.engs{padding-top:4vh;padding-bottom:9vh;gap:2vh}.v2.engs .hand{font-size:clamp(22px,2.2vw,40px)}.v2.engs .stack{gap:2.4vh}
+.v2 [data-gated]{font-size:clamp(14px,1.3vw,22px)}.v2.engs{padding-top:4vh;padding-bottom:9vh;gap:2vh}.v2.engs .hand{font-size:clamp(22px,2.2vw,40px)}.v2.engs .stack{gap:2.4vh}.v2.engs h2.h{font-size:clamp(30px,3.9vw,80px)}.v2.engs .sub{font-size:clamp(17px,1.9vw,38px)}
 .v2 .tg.soon{color:var(--muted);border-style:dashed}
 .v2 .eng{grid-template-columns:.8fr 1.2fr}
-.v2 .eng .frame{justify-self:center;max-width:100%}.v2 .eng .frame img{max-height:62vh;width:auto;max-width:100%;margin:0 auto}
-.v2.demo{padding-inline:6vw}.v2.demo h2.h{max-width:none}
+.v2 .eng .frame{justify-self:center;max-width:100%}.v2 .eng .frame img{max-height:54vh;width:auto;max-width:100%;margin:0 auto}
+.v2.demo h2.h{max-width:none}
 .v2 .strip3{display:flex;gap:2vw;align-items:flex-end;justify-content:center}
 .v2 .strip3 figure{margin:0;display:grid;gap:1.4vh;justify-items:center;flex:none}
 .v2 .strip3 .frame{padding:8px}.v2 .strip3 img{height:35vh;width:auto;max-width:100%}
@@ -197,6 +197,13 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .strip3 figcaption b{color:var(--amber-text);font-family:var(--serif);margin-right:.3em}
 @media (max-width:760px){.v2 .eng{grid-template-columns:1fr}.v2 .strip3{flex-direction:column;align-items:stretch}.v2 .strip3 img{height:auto;width:100%}}
 
+.v2 .strip2s{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:start}
+.v2 .strip2s figure{margin:0;display:grid;gap:1.4vh;min-width:0}
+.v2 .strip2s .frame{padding:8px}.v2 .strip2s img{width:100%;height:auto}
+.v2 .strip2s figcaption{font:600 clamp(14px,1.4vw,24px)/1.2 var(--sans);color:var(--ink)}
+.v2 .strip2s figcaption b{color:var(--amber-text);font-family:var(--serif);margin-right:.3em}
+@media (max-width:760px){.v2 .strip2s{grid-template-columns:1fr}}
+.v2 .stages{font:500 clamp(14px,1.4vw,24px)/1.45 var(--mono);color:var(--muted);margin:0}
 /* family */
 .v2 .fam{grid-template-columns:.7fr 1.3fr}
 .v2 .pages{display:flex;gap:1.8vw;justify-content:center;align-items:flex-start}
@@ -206,20 +213,20 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 @media (max-width:760px){.v2 .fam{grid-template-columns:1fr}.v2 .pages{flex-direction:column;align-items:center}.v2 .pages img{height:auto;width:100%}}
 
 /* lanes, nodes, cards */
-.v2.evsys{padding-top:4vh;padding-bottom:9vh;gap:1.6vh}.v2.evsys .nd2{min-height:7.5vh}.v2.evsys .note2{font-size:clamp(11px,1.1vw,18px)}.v2.evsys .ln2{padding:1.4vh 1.4vw;gap:1vh}.v2.evsys .stack{gap:1.4vh}
-.v2.stand{padding-top:4vh;padding-bottom:9vh;gap:2vh}.v2.stand .stack{gap:1.4vh}
+.v2.evsys{padding-top:4vh;padding-bottom:9vh;gap:1.6vh}.v2.evsys .nd2{min-height:7.5vh;font-size:clamp(16px,2.05vw,40px)}.v2 .lanes2 .nd2{font-size:clamp(16px,2.05vw,40px)}.v2.evsys .note2{font-size:clamp(11px,1.1vw,18px)}.v2.evsys .ln2{padding:1.4vh 1.4vw;gap:1vh}.v2.evsys .stack{gap:1.4vh}
+.v2.tight{padding-top:4vh;padding-bottom:9vh;gap:2vh}.v2.stand{padding-top:4vh;padding-bottom:9vh;gap:2vh}.v2.stand .stack{gap:1.4vh}
 .v2 .strip2{margin:0;font:500 clamp(15px,1.7vw,28px)/1.3 var(--sans);border-left:4px solid var(--amber);padding-left:1em;max-width:62ch}
 .v2 .lanes2{display:grid;gap:1.8vh}
 .v2 .ln2{border-radius:20px;padding:1.8vh 1.6vw;display:grid;gap:1.3vh;background:var(--card2);border:1px solid var(--line2)}
-.v2 .ln2.dark{background:#0d1015;border-color:#0d1015;color:#f7f3ea}
+.v2 .ln2{border:2px solid var(--amber)}.v2 .ln2.dark{background:var(--card2);border:2px solid var(--ink);color:var(--ink)}
 .v2 .cap{font:600 clamp(11px,1vw,15px)/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--amber-text);margin:0}
-.v2 .ln2.dark .cap{color:#e8a33d}
+
 .v2 .nodes{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:1.1vw;align-items:stretch}
 .v2 .nd2{position:relative;background:var(--paper);color:var(--ink);border-radius:14px;padding:1.3vh .9vw;font:500 clamp(15px,1.9vw,36px)/1.15 var(--sans);display:flex;align-items:center;min-height:9vh}
-.v2 .ln2.dark .nd2{background:#161c27;color:#f7f3ea}
+
 .v2 .nd2:not(:last-child)::after{content:"";position:absolute;right:calc(-.55vw - 5px);top:50%;width:9px;height:9px;border-top:3px solid var(--amber);border-right:3px solid var(--amber);transform:translateY(-50%) rotate(45deg)}
 .v2 .nd2.gl{outline:3px solid var(--amber);outline-offset:-3px}
-.v2 .note2{font:500 clamp(12px,1.25vw,20px)/1.3 var(--sans);color:var(--muted);margin:0}.v2 .ln2.dark .note2{color:#c9c3b6}
+.v2 .note2{font:500 clamp(16px,1.4vw,26px)/1.3 var(--sans);color:var(--muted);margin:0}
 .v2 .bridge{justify-self:center;margin:0;font:600 clamp(15px,1.6vw,26px)/1 var(--sans);padding:.55em 1.2em;border-radius:99px;border:2px solid var(--amber);background:var(--card2)}
 .v2 .nev{margin:-.4vh 0}
 @media (max-width:760px){.v2 .nodes{grid-auto-flow:row}.v2 .nd2{min-height:0;padding:1.4vh 3vw;font-size:18px}.v2 .nd2:not(:last-child)::after{right:50%;top:auto;bottom:-9px;transform:translateX(50%) rotate(135deg)}.v2 .nodes{gap:14px}}
@@ -230,7 +237,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .mc .row{display:flex;gap:1.4vw;align-items:baseline;flex-wrap:wrap}
 .v2 .mc b{font:600 clamp(32px,4vw,72px)/1 var(--serif);font-variant-numeric:tabular-nums}.v2 .mc b small{display:block;font:500 clamp(12px,1.1vw,18px)/1.3 var(--sans);color:var(--muted)}
 .v2 .mc .ok{color:var(--ok)}.v2 .mc .bad{color:var(--bad)}.v2 .mc .wt{color:var(--amber-text)}
-.v2 .fine{font:400 clamp(11px,1vw,16px)/1.35 var(--sans);color:var(--muted);margin:0;max-width:80ch}
+.v2 .fine{font:400 clamp(14px,1.4vw,24px)/1.35 var(--sans);color:var(--muted);margin:0;max-width:80ch}
 .v2 .two3{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:start}
 .v2 .two3 h3{font:600 clamp(18px,1.8vw,30px)/1.1 var(--serif);margin:0 0 1vh}
 .v2 .two3 ul{list-style:none;padding:0;margin:0;display:grid;gap:.9vh}.v2 .two3 li{display:flex;gap:.6em;align-items:flex-start;font:400 clamp(14px,1.5vw,26px)/1.25 var(--sans)}
@@ -250,7 +257,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .pr{background:var(--card2);border:1px solid var(--line2);border-radius:16px;padding:1.2vh .9vw;display:grid;gap:.5vh;font:400 clamp(11px,1.12vw,18px)/1.25 var(--sans)}
 .v2 .pr b{font-weight:600;color:var(--ink)}.v2 .pr span{color:var(--muted)}
 .v2 .nd2 small{display:block;margin-top:.4em;font:500 .62em/1.25 var(--sans);color:var(--muted)}
-.v2 .ln2.dark .nd2 small{color:#c9c3b6}
+
 .v2 .cred{display:grid;grid-template-columns:1fr 1fr;gap:.8vh 2vw;margin:0;padding:0;list-style:none;font:400 clamp(11px,1.15vw,19px)/1.3 var(--sans)}
 .v2 .cred li{padding-left:.9em;position:relative}.v2 .cred li::before{content:"";position:absolute;left:0;top:.55em;width:.4em;height:.4em;border-radius:50%;background:var(--amber)}
 .v2 .shot2{display:block;width:100%;max-height:50vh;object-fit:contain;border-radius:12px}
@@ -285,21 +292,22 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <h2 class="h">One engine. Every crisis is its own workflow.</h2>
 <p class="sub">Each crisis has its own stages. Two run today.</p>
 <div class="tags"><span class="tg">Immigration matter</span><span class="tg">Hospital emergency</span><span class="tg soon">Two coming soon</span></div>
-<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">two live, two on the way</span></p>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">two live, two coming</span></p>
 <p class="small" data-gated="scripture">The pastoral message carries a Bible verse, quoted from a verified list.</p></div>
 <div class="frame"><img src="images/screens/chooser.png" alt="The crisis chooser in the app: Immigration matter and Hospital emergency are live, Sudden loss and House fire say coming soon" width="1280" height="1215"></div></div>
+<p class="stages">Immigration: Triage, Rights brief, Attorney resources, Family checklist, Pastoral message<br>Hospital: Triage, Family brief, Hospital resources, Family checklist, Pastoral message</p>
 <aside class="notes">LIGHT. 0:17 to 0:29. Say: "Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." The stages come from each playbook's stages.json (detention: Triage, Rights brief, Attorney resources, Family checklist, Pastoral message; hospital: Triage, Family information brief, Hospital resources, Family checklist, Pastoral message). Both live ones happen to have five; the engine allows any number. Eric's L4 "Five stages. A gate after each." narrates the detention demo that follows and stays true there. Do NOT say "the one you saw": the demo comes next. [GATED, scripture: after Sensei confirms in writing, say: the pastoral message carries a Bible verse, quoted from a verified list; the AI never writes Scripture.] Criterion: Concept and Product. Say nothing more about the coming-soon cards.</aside></section>
 
 <section class="slide v2 demo" data-cut="90" data-part="talk" data-name="the-demo">
 <p class="lbl">04 · The demo</p>
 <div class="stack"><h2 class="h">One call. Start to finish.</h2>
 <p class="sub">Nothing moves on without the pastor. Nothing is sent.</p></div>
-<div class="strip3">
-<figure><div class="frame"><img src="images/screens/chooser.png" alt="The crisis chooser: Immigration matter and Hospital emergency are live" width="1280" height="1215"></div><figcaption><b>1</b>Pick the crisis</figcaption></figure>
-<figure><div class="frame"><img src="images/screens/gate.png" alt="Stage 1, Triage, ready for review: situation, people, location, language, urgency, three missing facts, with Approve, Edit and Stop" width="1300" height="1838"></div><figcaption><b>2</b>Read each stage</figcaption></figure>
-<figure><div class="frame"><img src="images/screens/case-overview.png" alt="The saved case: every stage approved, ending in Case complete" width="2144" height="880"></div><figcaption><b>3</b>Approve, edit or stop</figcaption></figure></div>
+<div class="strip2s">
+<figure class="f1"><div class="frame"><img src="images/screens/gate.png" alt="Stage 1, Triage, ready for review: the title bar, the first lines of the draft, the feedback chips, and Approve, Edit and Stop" width="1300" height="716"></div><figcaption><b>1</b>Read each stage</figcaption></figure>
+<figure class="f2"><div class="frame"><img src="images/screens/case-sequence.png" alt="The saved case: every stage approved, ending in Case complete" width="1864" height="408"></div><figcaption><b>2</b>Approve, edit or stop</figcaption></figure></div>
 <p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">real screens, a made-up family</span></p>
-<aside class="notes">LIGHT. 0:29 to 1:07. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside></section>
+<aside class="notes">LIGHT. 0:29 to 1:07. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside>
+</section>
 
 <section class="slide v2" data-part="talk" data-name="what-the-family-gets">
 <p class="lbl">05 · What the family gets</p>
@@ -328,7 +336,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 └─ sources/        vetted only</pre></div></div>
 <aside class="notes">1:15 to 1:25, about 14 s, about 34 words. Say: "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. A rule is one small function and a test. A scenario is a file. Two crises run on it." EVIDENCE: the playbook loader (code/nury/playbook.py), code/tools/new_playbook.py scaffolds a crisis folder that cannot run until a person approves its sources, documents/product/ADD_A_RULE.md (function, registry, stage, one sentence for the rules page, test), and test_second_playbook_zero_engine_changes in code/tests/test_core.py (builds a second playbook from scratch and runs it through the same engine). Evaluations: scenarios and hostile intakes are YAML files; judge questions sit in one code file; candidate_test.py runs a proposed improvement against the same sets with a gate before a person decides. The correction loop is said once, on the next slide. Skills and the church network: do not mention unless switched on. Merged with the old Innovation slide.</aside></section>
 
-<section class="slide v2" data-part="talk" data-name="how-it-is-built">
+<section class="slide v2 tight" data-part="talk" data-name="how-it-is-built">
 <p class="lbl">07 · How it is built</p>
 <div class="stack"><h2 class="h">The model sees tokens, not names.</h2>
 <p class="sub">Only tokens reach Gloo AI Studio. The pastor decides every stage.</p></div>
@@ -342,17 +350,17 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p class="lbl">08 · Use of AI</p>
 <div class="stack"><h2 class="h">Claude writes. Rules and Jev check.</h2>
 <p class="sub">Other models reviewed it once, before release.</p></div>
-<div class="lanes2"><div class="ln2"><p class="cap">While a pastor uses it</p><div class="nodes"><div class="nd2">Claude writes through Gloo AI Studio</div><div class="nd2">Named rules and a safety floor</div><div class="nd2">Jev, a second check</div><div class="nd2">The pastor approves, edits or stops</div></div></div>
+<div class="lanes2"><div class="ln2"><p class="cap">While a pastor uses it</p><div class="nodes"><div class="nd2">Claude, via Gloo AI Studio</div><div class="nd2">Rules and a safety floor</div><div class="nd2">Jev, a second check</div><div class="nd2">Pastor approves, edits, stops</div></div></div>
 <div class="ln2 dark"><p class="cap">Before release &middot; never at run time</p><div class="nodes"><div class="nd2">Plain-code tests</div><div class="nd2">Jev as a judge</div><div class="nd2">Outside review by three models</div><div class="nd2">Human review</div></div></div></div>
-<aside class="notes">1:39 to 1:53, about 14 s. TWO TIMES, keep them apart. Say: "While a pastor uses it, Claude writes through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again. Before release, other models reviewed it." Criterion: Use of AI. Top band is RUN TIME (while a pastor uses Nury): Claude writes through Gloo AI Studio, our named rules and the safety floor check, Jev checks again, the pastor decides at every gate. Bottom band is BEFORE RELEASE (once, by hand): our test layers (the plain-code judges, Jev as a typed judge, hostile intakes, human review) and the outside review by three models. None of the bottom band runs while a pastor uses the app. Numbers: a full case 34 to 50 s and 6 to 9 cents (run time; TECH_CLAIMS 30); leak test and judge test (test time; rows 16, 26, 28). They are real but small: say so. IF ASKED: Jev classifies each draft with yes or no questions. The pastor approves every stage. Our named checks and safety floor are tripwires, not proofs. The red team was not re-run on the final build. Backups: "The evaluation system in detail" and "Four test layers" (press b). Hard questions: presentation/TECH_STORY.md section 5.</aside></section>
+<aside class="notes">1:39 to 1:53, about 14 s. TWO TIMES, keep them apart. Say: "While a pastor uses it, Claude, via Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again. Before release, other models reviewed it." Criterion: Use of AI. Top band is RUN TIME (while a pastor uses Nury): Claude, via Gloo AI Studio, our named rules and the safety floor check, Jev checks again, the pastor decides at every gate. Bottom band is BEFORE RELEASE (once, by hand): our test layers (the plain-code judges, Jev as a typed judge, hostile intakes, human review) and the outside review by three models. None of the bottom band runs while a pastor uses the app. Numbers: a full case 34 to 50 s and 6 to 9 cents (run time; TECH_CLAIMS 30); leak test and judge test (test time; rows 16, 26, 28). They are real but small: say so. IF ASKED: Jev classifies each draft with yes or no questions. The pastor approves every stage. Our named checks and safety floor are tripwires, not proofs. The red team was not re-run on the final build. Backups: "The evaluation system in detail" and "Four test layers" (press b). Hard questions: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide v2 evsys" data-part="talk" data-name="the-evaluation-system" data-title="The evaluation system">
 <p class="lbl">09 · The evaluation system</p>
 <div class="stack"><h2 class="h">Two evaluation systems.</h2>
 <p class="sub">One builds the prompts. One checks every draft.</p></div>
-<div class="lanes2"><div class="ln2"><p class="cap">Before release &middot; by hand</p><div class="nodes"><div class="nd2">Change a prompt or rule</div><div class="nd2">Run 46 test cases</div><div class="nd2">Judge every run</div><div class="nd2">Compare with the last build</div><div class="nd2">A person decides what ships</div></div><p class="note2">46 test cases: 20 immigration, 8 hospital, 18 hostile.</p></div>
+<div class="lanes2"><div class="ln2"><p class="cap">Before release &middot; by hand &middot; 46 test cases</p><div class="nodes"><div class="nd2">Change a prompt or rule</div><div class="nd2">Run 46 test cases</div><div class="nd2">Judge every run</div><div class="nd2">Compare with the last build</div><div class="nd2">A person decides what ships</div></div></div>
 <p class="bridge nev">Jev works in both.</p>
-<div class="ln2 dark"><p class="cap">While a pastor uses it &middot; every draft</p><div class="nodes"><div class="nd2">Claude writes a draft</div><div class="nd2">20 rules and a safety floor</div><div class="nd2">Jev answers yes or no</div><div class="nd2">Fails: rewrite, up to 3 tries</div><div class="nd2">The pastor approves, edits or stops</div></div><p class="note2">Jev answered 239 of 239 calls in the scored runs.</p></div></div>
+<div class="ln2 dark"><p class="cap">While a pastor uses it &middot; Jev answered 239 of 239 calls</p><div class="nodes"><div class="nd2">Claude writes a draft</div><div class="nd2">Rules and a safety floor</div><div class="nd2">Jev answers yes or no</div><div class="nd2">Rewrite, up to 3 tries</div><div class="nd2">Pastor approves, edits, stops</div></div></div></div>
 <aside class="notes">About 16 s, 2.5 words per second. Criterion: Technical Execution and Use of AI. Say: "We built two evaluation systems. One runs before release: we test, judge, compare, and a person decides what ships. One runs on every draft: rules, then Jev, then up to three rewrites. Jev works in both." Numbers (ALIGNMENT_AUDIT.md): 46 scenarios (20 + 8 + 18); 20 named rules plus the safety floor; Jev answered 239 of 239 gate calls on the final scored sets, none failed open. The outside review is one reviewer inside system 1 and only advises. Wording check: a sensei draft said "in about a second"; the verified figure is a longest Jev call of 435 ms, so the slide says "before the pastor sees it".</aside></section>
 
 <section class="slide v2 impact" data-part="talk" data-name="impact">
