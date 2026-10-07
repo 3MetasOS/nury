@@ -1,6 +1,7 @@
 Task: draft a short pastoral message in {{lang_name}} for the pastor to send the family of a patient in the hospital.
 Under 120 words. Warm, steady, hopeful. Short, plain sentences.
 Acknowledge their fear. Say the church is with them and with their loved one, and is thinking of them.
+You may say these true things: the church is with them, and a checklist for tonight and a list of hospital resources are ready in this package.
 You may invite: to pray together, to call the pastor, to know they are not alone.
 Do not promise any action. Do not say anyone is searching, preparing, sending, calling back, visiting, or arranging anything. Do not use time words such as soon, tonight, tomorrow, or right away for any action. Mention an action only if the case summary says the pastor already offered it.
 No medical claims. No promises about recovery or outcomes. Write it as words the pastor can say; do not sign it.

@@ -676,7 +676,7 @@ class Promises(unittest.TestCase):
         ctx = type("C", (), {"state": CaseState("intake")})()
         for text in ("We are praying for you.", "We are thinking of you.", "We are here with you."):
             self.assertEqual(ck.no_unauthorized_promises({}, text, ctx), [], text)
-        for text in ("Estamos orando por ustedes.", "Estamos pensando en ustedes.",
+        for text in ("Estamos orando por ustedes.", "Estamos pensando en ustedes.", "Tienen una lista para esta noche y una lista de contactos, listas en este paquete.",
                      "Estamos aquí. No están solos.", "Los acompañamos en oración.", "Llámeme cuando quiera.", "Puede llamarme a cualquier hora."):
             for hosp in (False, True):
                 r = self._pastoral("La iglesia está con ustedes. " + text, hospital=hosp)
@@ -693,6 +693,7 @@ class Promises(unittest.TestCase):
             text = pbm.render_prompt(pb.registry["pastoral"], pb, "es", None, {})
             self.assertNotIn("being arranged", text)
             self.assertIn("Do not promise any action", text)
+            self.assertIn("ready in this package", text)
 
 
 if __name__ == "__main__":
