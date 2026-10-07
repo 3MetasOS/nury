@@ -1,9 +1,9 @@
-# Nury (90 seconds): the short deck
+# Nury: the short deck
 
 A separate presentation from the full deck. Nothing here is shared with `presentation/deck.html`: this folder has its own page, fonts, images and tests, and it opens by itself.
 
 ## Open it
-Open `short/deck.html` in a browser (a double click works: it runs from `file://`). No server, no build step, no URL parameter. The page title is "Nury (90 seconds)".
+Open `short/deck.html` in a browser (a double click works: it runs from `file://`). No server, no build step, no URL parameter. The page title is "Nury".
 
 ## The six slides
 1. `the-call` (dark): 2:07 AM, a pastor's phone rings.
