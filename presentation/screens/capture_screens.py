@@ -3,7 +3,7 @@
 Run from the repo root with two servers up (no key needed, no model call):
   LIVE  http://127.0.0.1:8080  the normal app with its saved (synthetic) cases
   REPLAY http://127.0.0.1:8096 the same app started with NURY_REPLAY=1 NURY_FEEDBACK=on (a recorded run: sample intake, gates, final page)
-Usage: python3 presentation/screens/capture_screens.py [live|replay|final|overview|pdf|all]
+Usage: python3 presentation/screens/capture_screens.py [live|replay|final|gate|overview|pdf|all]
 Needs agent-browser, Pillow, and pdftoppm for the PDF pages. The app is not changed: only a screenshot is taken."""
 import json, os, subprocess, sys, tempfile, time, zipfile, urllib.request
 from pathlib import Path
@@ -102,6 +102,16 @@ def overview_seq():
     snap("07-case-sequence", 960, box_sel="#case-page .ovc", pad=10)
 
 
+def gate_narrow():
+    """The stage-1 gate at 420 px wide, so the text is large when the deck shows it in a 500 px frame."""
+    open_light(REPLAY + "/#/crisis/detention", 420); ab("wait", "2200")
+    ev("[...document.querySelectorAll('[data-begin]')].find(b=>b.getBoundingClientRect().height>0).click();1"); ab("wait", "900")
+    ev("document.getElementById('btn-demo').click();1"); ab("wait", "500")
+    ev("document.getElementById('btn-start').click();1"); ab("wait", "1500")
+    ev("document.getElementById('b-protect-go').click();1"); ab("wait", "9000")
+    snap("05-gate-narrow", 420, box_sel="#gate", pad=0)
+
+
 def replay(w):
     open_light(REPLAY + "/#/", w); ab("wait", "800")
     ev("[...document.querySelectorAll('button,a')].find(b=>/Respond to a crisis/.test(b.textContent)&&b.getBoundingClientRect().height>0).click();1"); ab("wait", "900")
@@ -149,6 +159,8 @@ if __name__ == "__main__":
             replay(w)
         if what in ("final", "all"):
             final(w)
+    if what in ("gate", "all"):
+        gate_narrow()
     if what in ("overview", "all"):
         overview_seq()
     if what in ("pdf", "all"):
