@@ -895,7 +895,29 @@ def rebuild_static_pages():
         return False
 
 
+def refresh_build_log_if_stale():
+    """At start: if BUILD_LOG.md is newer than the built Build log page, regenerate the page (same sanitizer and secret scan), so it is never
+    more than one restart behind. A failed scan keeps the old page and prints a warning. Never stops the server."""
+    try:
+        from app import build_docs
+        src, out = build_docs.LOG_SRC, build_docs.LOG_OUT
+        if not Path(src).is_file():
+            return "no-source"
+        if Path(out).is_file() and Path(out).stat().st_mtime >= Path(src).stat().st_mtime:
+            return "current"
+        try:
+            build_docs.build_log()
+            return "rebuilt"
+        except SystemExit as e:
+            print("WARNING: the Build log page was not refreshed:", e)
+            return "scan-failed"
+    except Exception as e:
+        print("WARNING: the Build log page was not refreshed:", e)
+        return "error"
+
+
 def main():
+    refresh_build_log_if_stale()
     if os.environ.get("NURY_REBUILD_PAGES") == "1":      # off by default: a hosted copy serves the committed pages
         print("pages rebuilt" if rebuild_static_pages() else "pages not rebuilt (python-markdown missing or a source file changed shape)")
     port = int(os.environ.get("PORT", "8080"))
