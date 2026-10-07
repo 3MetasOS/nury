@@ -195,7 +195,15 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .band.cases{background:var(--surface)}
 .band.network{background:var(--surface)}.band.network .scene,.netcard .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
 /* cases */
-.ctools{display:grid;gap:10px;margin-bottom:12px}
+.fbar{position:sticky;top:77px;z-index:5;display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:10px 0;margin-bottom:6px;background:var(--bg)}
+.fbar .search{flex:1 1 220px;min-width:180px}.fbar .search input{min-height:44px}.fbar .search .i{top:10px}
+.fgroup.seg{flex:none;display:inline-flex;gap:0;padding:3px;border:1px solid var(--line-2);border-radius:99px;background:var(--surface-2);overflow:visible}
+.fgroup.seg button{border:0;background:transparent;min-height:40px}.fgroup.seg button b{font-weight:600;margin-left:4px;opacity:.8}
+.fgroup.seg button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text)}
+.fbar #f-crisis{flex:1 1 100%}
+.dayh{list-style:none;margin:16px 0 0;color:var(--muted)}.dayh:first-child{margin-top:0}
+.lrow.fu{box-shadow:inset 3px 0 0 var(--amber)}
+.lrow .mline{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:4px}.lrow .mline .meta{margin:0;font-size:14px;color:var(--muted)}
 .search{position:relative}.search .i{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none}
 .search input{width:100%;min-height:52px;padding:0 14px 0 46px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:16px var(--sans)}
 .fgroup{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scrollbar-width:thin}
@@ -203,10 +211,8 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .fgroup button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
 .flabel{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 -4px}
 .rows{display:grid;gap:10px}
-.lrow{display:grid;grid-template-columns:40px minmax(0,1fr) 24px;gap:6px 12px;align-items:start;padding:12px;min-height:72px;background:var(--surface);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--text)}
-.lrow .tile{width:40px;height:40px;border-radius:10px;grid-column:1;grid-row:1/4;align-self:start}
-.lrow .cbody{grid-column:2;grid-row:1}.lrow .scs{grid-column:2;grid-row:2}.lrow .when{grid-column:2;grid-row:3;font-size:13px;color:var(--muted)}
-.lrow .chev{grid-column:3;grid-row:1/4;align-self:center;color:var(--amber-text)}
+.lrow{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:center;padding:14px 12px 14px 14px;min-height:88px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
+.lrow .tile{width:48px;height:48px;border-radius:12px}
 .count{font-size:14px;color:var(--muted);margin:4px 0 10px}
 .empty{text-align:center;display:grid;gap:10px;justify-items:center;padding:28px 16px}
 .empty .scene{max-width:220px}.empty p{color:var(--muted);max-width:40ch}.empty h2{margin:0}
@@ -261,9 +267,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 @media (min-width:640px){
   .nv h1{font-size:36px}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .lrow{grid-template-columns:40px minmax(0,1fr) auto 120px 24px;align-items:center}
-  .lrow .tile,.lrow .cbody,.lrow .scs,.lrow .when,.lrow .chev{grid-column:auto;grid-row:auto;align-self:center}
-  .lrow .when{text-align:right}.go .gl{display:inline}
+  .go .gl{display:inline}
   .two{grid-template-columns:1fr 1fr;gap:20px}.two>div+div{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:20px}
 }
 @media (min-width:960px){
@@ -334,18 +338,16 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
   </div>
   <div id="cases-body">
-    <div class="ctools">
-      <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
-      <div class="flabel" id="fl-c">Crisis</div>
-      <div class="fgroup" role="group" aria-labelledby="fl-c" id="f-crisis"></div>
-      <div class="flabel" id="fl-s">Status</div>
-      <div class="fgroup" role="group" aria-labelledby="fl-s" id="f-status">
-        <button type="button" data-v="all" aria-pressed="true">All</button>
-        <button type="button" data-v="follow" aria-pressed="false">Needs follow-up</button>
-        <button type="button" data-v="v2" aria-pressed="false">Version 2</button>
+    <div class="fbar">
+      <div class="fgroup seg" role="group" aria-label="Status" id="f-status">
+        <button type="button" data-v="all" aria-pressed="true">All <b></b></button>
+        <button type="button" data-v="follow" aria-pressed="false">Needs follow-up <b></b></button>
+        <button type="button" data-v="v2" aria-pressed="false">Version 2 <b></b></button>
       </div>
+      <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
+      <div class="fgroup" role="group" aria-label="Crisis" id="f-crisis"></div>
     </div>
-    <p class="count" id="count" role="status" aria-live="polite"></p>
+    <p class="count vh" id="count" role="status" aria-live="polite"></p>
     <ul class="rows" id="rows"></ul>
     <button class="cta morebtn" type="button" id="more" hidden>Show 20 more</button>
     <div class="empty" id="no-match" hidden>
@@ -355,7 +357,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   </div>
   <div class="nvcard empty" id="cases-empty" hidden>
     <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
-    <h2>No cases yet.</h2>
+    <h2 data-note="your first saved case lands here" data-arrow="up" data-rot="-1.5">No cases yet.</h2>
     <p>Finish a crisis and choose Save to case file. It will be here, ready to open.</p>
     <button class="cta primary" type="button" id="empty-start" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
   </div>
@@ -596,10 +598,13 @@ function mkCase(c){const k=crisisInfo(c);
   return h("li",null,h("a",{class:"case",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
     h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta"},`${k.short} · saved ${relTime(c.iso)}`),chipsFor(c)),
     h("span",{class:"go"},h("span",{class:"gl"},"Open"),ic("i-chev"))))}
+const shortWhen=iso=>{try{return new Date(iso).toLocaleString([],{month:"short",day:"numeric",hour:"numeric",minute:"2-digit"})}catch(e){return iso}};
+const dayOf=iso=>{const d=new Date(iso),t=new Date(),y=new Date();y.setDate(t.getDate()-1);const k=x=>x.getFullYear()*400+x.getMonth()*32+x.getDate();return k(d)===k(t)?"Today":k(d)===k(y)?"Yesterday":"Earlier"};
 function mkRow(c){const k=crisisInfo(c);
-  return h("li",null,h("a",{class:"lrow",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
-    h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta",style:"margin-bottom:0"},k.title)),chipsFor(c),
-    h("time",{class:"when",datetime:c.iso},"saved "+relTime(c.iso)),ic("i-chev","chev")))}
+  return h("li",null,h("a",{class:"lrow"+(c.followup?" fu":""),href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
+    h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),
+      h("span",{class:"mline"},h("span",{class:"meta"},`${k.title} \u00b7 `,h("time",{datetime:c.iso},shortWhen(c.iso))),chipsFor(c))),
+    h("span",{class:"go"},h("span",{class:"gl"},"Open"),ic("i-chev"))))}
 function renderPicks(){const cards=()=>pbs.map(p=>{const live=p.status==="live",d=p.detail||{},icon=d.icon||"i-lantern";
   if(live)return h("a",{class:"pk",href:"#/crisis/"+p.id},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title),h("span",{class:"d"},d.card||p.description)),ic("i-chev","c"));
   return h("div",{class:"pk soon"},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title)),h("span",{class:"sc tag"},"Coming soon"))});
@@ -622,7 +627,8 @@ function renderCases(){const fam=families(),n=fam.length;
   document.querySelectorAll("#f-status button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===filt.status)));
   const q=filt.q.trim().toLowerCase();
   const list=fam.filter(c=>(filt.crisis==="all"||c.playbook===filt.crisis)&&matchStatus(c,filt.status)&&(!q||((c.summary||"")+" "+crisisInfo(c).title).toLowerCase().includes(q)));
-  $("rows").replaceChildren(...list.slice(0,shown).map(mkRow));$("rows").hidden=!list.length;$("no-match").hidden=list.length>0;
+  {const out=[];let last="";list.slice(0,shown).forEach(c=>{const d=dayOf(c.iso);if(d!==last){out.push(h("li",{class:"dayh mono","aria-hidden":"true"},d));last=d}out.push(mkRow(c))});$("rows").replaceChildren(...out)}
+  {const cnt=k=>fam.filter(c=>matchStatus(c,k)).length;document.querySelectorAll("#f-status button").forEach(b=>{b.querySelector("b").textContent=String(cnt(b.dataset.v))})}$("rows").hidden=!list.length;$("no-match").hidden=list.length>0;
   $("more").hidden=list.length<=shown;$("more").textContent=`Show ${Math.min(20,list.length-shown)} more`;
   $("count").textContent=list.length===n?(n===1?"1 case":n+" cases"):`${list.length} of ${n} cases shown`}
 function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p){go("#/");return}
