@@ -922,3 +922,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 11:16: deck slide 3 (Juan): the product is an engine; each crisis defines its own stages; slide redesigned as two stage chains (immigration and hospital) plus the shared rules; every definition of the product as 'five stages' reworded.
 - 11:18: deck slide 7 (Juan): separate run time (writer, rules, Jev, pastor) from before-release work (test layers and the outside review) in two bands; notes and pitch aligned.
 - 11:19: deck slide 9 (Juan): rebuilt as Built vs Not done yet, with the honest status list.
+- 11:23: deck rebuild approved by Juan ('go for it') per presentation/DECK_REVIEW.md: twelve-slide talk, real light-mode screens, a 'What the family gets' slide, final numbers only on impact, built-versus-not-done status, the memorial in Juan's words kept gated until written approval, slide 21 replaced with a neutral 'Where Nury fits'.
