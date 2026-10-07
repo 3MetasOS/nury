@@ -15,3 +15,7 @@ json.dump(m,open("public/marks.json","w"),indent=1); print(m)
 PY
 # Eric lines live in public/arc/ (committed); sound in public/arc/snd/ (sound/build_arc_sound.py)
 [ -f public/proof.json ] || echo '{}' > public/proof.json   # real scorecard numbers only: {"pass":..,"n":..,"caught":..,"src":".."}
+
+# non-live screens from the current app (capture/record_ui.py)
+UI="${2:-../capture/raw_ui}"
+if [ -f "$UI/ui.mp4" ]; then cp "$UI/ui.mp4" public/ui.mp4; cp "$UI/ui_marks.json" public/ui_marks.json; fi

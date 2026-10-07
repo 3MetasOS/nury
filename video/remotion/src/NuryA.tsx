@@ -2,25 +2,56 @@
 // Eric lines: public/arc/L1..L11.wav. Sound: public/arc/snd/*.wav (all synthesized, sound/build_arc_sound.py). Footage: public/run.mp4 + marks.json.
 import React from 'react';
 import {AbsoluteFill, Audio, Img, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {C, serif, sans, ease, FPS, Fade, End, Memorial, Tech, useFonts, type Data, type Marks} from './Nury';
+import {C, serif, sans, ease, FPS, Fade, End, Memorial, Tech, Aside, useFonts, type Data, type Marks} from './Nury';
 import {OffthreadVideo, Freeze} from 'remotion';
 
 const INK = '#0d1015', GREY = '#d9d4c8', PAPER = '#f7f3ea';
-type S = {id: string; dur: number; hold?: string; kind: string; trim?: number; from?: [string, number]; to?: [string, number]; label?: string; start?: number};
+type S = {id: string; dur: number; hold?: string; sub?: string; aside?: {text: string; at: number; x: number; y: number; arrow?: any}; kind: string; trim?: number; from?: [string, number]; to?: [string, number]; label?: string; start?: number};
 const BASE: S[] = [
   {id: 'hook', kind: 'night', dur: 3},
   {id: 'persona', kind: 'persona', dur: 7, trim: 1},
   {id: 'stakes', kind: 'stakes', dur: 7, trim: 1, from: ['selector', 3.7], to: ['start', 0.3]},
   {id: 'nury', kind: 'name', dur: 8},
-  {id: 'tool', kind: 'clip', dur: 10, trim: 2, hold: 'gate1', from: ['selector', 0], to: ['approve1', 0.4], label: '1  Triage\nApprove / Edit / Stop'},
-  {id: 'rights', kind: 'clip', dur: 7, trim: 2, from: ['gate2', 0], to: ['approve2', 0.4], label: '2  Rights brief.\nVetted sources only.'},
-  {id: 'turn', kind: 'clip', dur: 10, hold: 'reject', from: ['approve1', 1], to: ['gate2', 1], label: 'Rejected.\nRegenerating (2 of 3).\nPassed.'},
+  {id: 'tool', kind: 'tool', dur: 10, trim: 2},
+  {id: 'rights', kind: 'clip', dur: 7, trim: 2, from: ['gate2', 0], to: ['approve2', 0.4], label: 'Rights brief', sub: 'Vetted sources only.', aside: {text: 'every point cited', at: 1.5, x: 1130, y: 640, arrow: 'left'}},
+  {id: 'turn', kind: 'clip', dur: 10, hold: 'reject', from: ['approve1', 1], to: ['gate2', 1], label: 'Rejected.\nRegenerated.\nPassed.', sub: 'The pastor never sees the rejected draft.'},
   {id: 'tech', kind: 'tech', dur: 12},
-  {id: 'stages', kind: 'clip', dur: 8, trim: 2, from: ['approve2', 0.4], to: ['approve5', 0.4], label: '3  Attorneys\n4  Checklist\n5  Message'},
-  {id: 'copy', kind: 'clip', dur: 6, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send.\nThe pastor does.\n\nLegal information only.'},
+  {id: 'stages', kind: 'clip', dur: 8, trim: 2, from: ['approve2', 0.4], to: ['approve5', 0.4], label: 'Contacts.\nChecklist.\nMessage.'},
+  {id: 'copy', kind: 'clip', dur: 6, from: ['approve5', 0.4], to: ['end', 0], label: 'Legal information only.'},
   {id: 'dawn', kind: 'dawn', dur: 4},
   {id: 'memorial', kind: 'memorial', dur: 8},
 ];
+
+// ---- voice plan: Eric's lines placed against the scenes (presentation/SCRIPT_REVIEW.md, section 3). Lengths are the measured ones (vo/arc/durations.json). ----
+const LEN: Record<string, number> = {L1: 2.23, L2: 2.0, E1: 1.25, L3: 0.88, L4: 1.76, E4: 2.14, E5: 1.39, L5: 2.04, E6: 1.39, L6: 2.28, E7: 1.63, L7: 2.88, L8: 2.04, E8: 2.18, L9: 1.44, E9: 1.39, L10: 2.51, L11: 1.81};
+const PLAN: [string, string, number][] = [ // line, scene, seconds after the scene starts
+  ['L1', 'persona', 0.5], ['L2', 'persona', 5.6], ['E1', 'stakes', 2.9], ['L3', 'nury', 0.6], ['L4', 'nury', 4.0], ['E4', 'tool', 1.0], ['E5', 'tool', 6.5],
+  ['L5', 'rights', 1.0], ['E6', 'rights', 3.8], ['L6', 'turn', 1.3], ['E7', 'turn', -1], ['L7', 'tech', 0.5], ['L8', 'tech', 7.0],
+  ['E8', 'stages', 0.2], ['L9', 'stages', 3.2], ['E9', 'stages', 5.6], ['L10', 'copy', 0.5], ['L11', 'dawn', 0.5]];
+export const planVoice = (d: Data, scenes: any[]) => {
+  const by: Record<string, any> = Object.fromEntries(scenes.map((s) => [s.id, s]));
+  const trimOn = (d.memorial?.option ?? 3) === 2 && d.memorial?.approved === true; // table 2 drops E9
+  const techOn = d.tech?.approved === true, m = d.marks, rt = (k: string) => (d.voice as any)?.retakes === true ? ({L3: 1.67, L9: 2.23} as any)[k] : undefined;
+  const out: {k: string; start: number; end: number; scene: string}[] = []; let prev = -9;
+  for (const [k, sc, off] of PLAN) {
+    const s = by[sc]; if (!s || (k === 'E9' && trimOn) || ((k === 'L7' || k === 'L8') && !techOn)) continue;
+    const len = rt(k) ?? LEN[k]; let at = off;
+    if (k === 'E7') { // land just before "Passed" shows (the gate-2 mark) when we have the footage mark, else near the end of the beat
+      let passed = s.dur - 1.0;
+      if (m.reject != null && m.gate2 != null && m.approve1 != null) { const a = m.approve1 + 1, b = m.gate2 + 1, mm = Math.min(Math.max(m.reject - 0.4, a), b), d2 = Math.min(b - mm, s.dur - 1); passed = (s.dur - d2) + (m.gate2 - mm); }
+      at = passed - len - 0.35;
+    }
+    let abs = s.start + Math.max(0, at); abs = Math.max(abs, prev + 0.5); // never closer than 0.5 s to the line before; a line may run past the end of its scene
+    out.push({k, start: abs, end: abs + len, scene: sc}); prev = abs + len;
+  }
+  return out;
+};
+export const voiceReport = (d: Data, scenes: any[]) => {
+  const v = planVoice(d, scenes), speech = v.reduce((a, x) => a + x.end - x.start, 0); const gaps: string[] = []; let longest = 0, prev = 0, prevScene = 'start';
+  for (const x of v) { const g = x.start - prev; if (g > 1.2) gaps.push(`${prev.toFixed(1)}-${x.start.toFixed(1)} s (${g.toFixed(1)}) before ${x.k} [${prevScene}]`); if (prev > 0 && g > longest) longest = g; prev = x.end; prevScene = x.scene; }
+  return {lines: v.map((x) => `${x.k} ${x.start.toFixed(1)}-${x.end.toFixed(1)}`).join(' | '), speech: +speech.toFixed(1), gaps, longest: +longest.toFixed(1)};
+};
+
 export const buildA = (d: Data) => {
   const opt = d.memorial?.option ?? 3, approved = d.memorial?.approved === true;
   const trimOn = opt === 2 ? 1 : opt === 1 ? 0.5 : 0; // table 2 takes rows 2,3,5,6,9 down by 1,1,2,2,2 (option 1 takes half)
@@ -37,7 +68,7 @@ export const buildA = (d: Data) => {
 
 // The real app, LARGE: the phone window is 645x900 (83% of the frame height) and the video is zoomed 1.55x so the strip, the card and the gate text can be read.
 // Caption is a quiet line on the right. `y` = how far down the app (0 to 1) the window starts.
-const AppClip: React.FC<{s: any; marks: Marks; y?: number}> = ({s, marks, y = 0.0}) => {
+const AppClip: React.FC<{s: any; marks: Marks; y?: number; file?: string}> = ({s, marks, y = 0.0, file = 'run.mp4'}) => {
   const a = marks[s.from[0]] + s.from[1], b = marks[s.to[0]] + s.to[1];
   const m = s.hold && marks[s.hold] != null ? Math.min(Math.max(marks[s.hold] - (s.holdLead ?? 0.4), a), b) : null; // hold = a mark: from there, play in real time
   const f = useCurrentFrame();
@@ -45,7 +76,7 @@ const AppClip: React.FC<{s: any; marks: Marks; y?: number}> = ({s, marks, y = 0.
   const slide = interpolate(f, [0, 20], [18, 0], {easing: ease, extrapolateRight: 'clamp'});
   const seg = (from: number, to: number, durS: number, rate: number) => {
     const play = Math.floor(((to - from) / rate) * FPS), full = Math.round(durS * FPS);
-    const v = <OffthreadVideo src={staticFile('run.mp4')} startFrom={Math.round(from * FPS)} playbackRate={rate} muted style={{width: W, height: VH, marginTop: -y * VH}} />;
+    const v = <OffthreadVideo src={staticFile(file)} startFrom={Math.round(from * FPS)} playbackRate={rate} muted style={{width: W, height: VH, marginTop: -y * VH}} />;
     return play >= full ? v : (<><Sequence durationInFrames={Math.max(1, play)}>{v}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{v}</Freeze></Sequence></>);
   };
   let body: React.ReactNode;
@@ -62,10 +93,12 @@ const AppClip: React.FC<{s: any; marks: Marks; y?: number}> = ({s, marks, y = 0.
         {body}
       </div>
       {s.label && (
-        <div style={{position: 'absolute', left: 1060, top: 0, bottom: 0, width: 640, display: 'grid', alignContent: 'center'}}>
-          <div style={{fontFamily: serif, fontSize: 50, lineHeight: 1.2, color: C.text, whiteSpace: 'pre-line', textWrap: 'balance' as any, opacity: interpolate(f, [8, 28], [0, 1], {extrapolateRight: 'clamp'})}}>{s.label}</div>
+        <div style={{position: 'absolute', left: 1060, top: 0, bottom: 0, width: 700, display: 'grid', alignContent: 'center', gap: 22}}>
+          <div style={{fontFamily: serif, fontWeight: 600, fontSize: 76, lineHeight: 1.12, color: C.text, whiteSpace: 'pre-line', textWrap: 'balance' as any, opacity: interpolate(f, [8, 28], [0, 1], {extrapolateRight: 'clamp'})}}>{s.label}</div>
+          {s.sub && <div style={{fontFamily: sans, fontSize: 34, color: C.muted, opacity: interpolate(f, [20, 40], [0, 1], {extrapolateRight: 'clamp'})}}>{s.sub}</div>}
         </div>
       )}
+      {s.aside && <Aside text={s.aside.text} x={s.aside.x} y={s.aside.y} arrow={s.aside.arrow ?? 'left'} opacity={interpolate(f, [s.aside.at * FPS, s.aside.at * FPS + 14], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})} />}
     </AbsoluteFill>
   );
 };
@@ -224,11 +257,8 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
     ...(memorialOn ? [<Snd key="rt" f="room" at={st('memorial')} v={0.03} dur={dur('memorial')} />] : []),
   ];
   const retake = (k: string) => (data.voice as any)?.retakes === true && (k === 'L3' || k === 'L9') ? k + '_retake' : k; // voice.json {retakes:true} = slower L3 and L9
-  const stale = (k: string) => (k === 'L8' || k === 'L11') && !((data.voice as any)?.fresh ?? []).includes(k); // L8 and L11 are re-rendered after the final build; voice.json fresh:["L8","L11"] then turns them on
-  const eric = (k: string, at: number) => stale(k) ? null : <Snd key={k} f={retake(k)} at={at} v={1} dir="arc/" />;
-  const voice = [eric('L1', st('persona')), eric('L2', st('stakes') + 0.3), eric('L3', st('nury') + 0.3), eric('L4', st('tool') + 0.5), eric('L5', st('rights') + 0.4),
-    eric('L6', st('turn') + 1.0), ...(techOn ? [eric('L7', st('tech') + 0.2), eric('L8', st('tech') + 6.0)] : []), eric('L9', st('stages') + 0.5), eric('L10', st('copy') + 0.6), eric('L11', st('dawn') + 0.4)];
-  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 50 to 56 s, about 9 cents'];
+  const voice = planVoice(data, scenes).map((x) => <Snd key={x.k} f={retake(x.k)} at={x.start} v={1} dir="arc/" />);
+  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 50 to 56 s, about 9 cents'];
   return (
     <AbsoluteFill>
       <Grade k={[[0, INK], [st('nury'), INK], [st('nury') + 1.2, '#4a2f14'], [st('nury') + 2.3, '#dfa04c'], [st('nury') + 3.6, '#f3e6cc'], [st('tool') + 4, '#f5ecd9'], [st('dawn'), PAPER]]} />
@@ -237,10 +267,14 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
           {s.kind === 'night' && <NightHook />}
           {s.kind === 'persona' && <Fade dur={s.dur}><Persona dur={s.dur} /></Fade>}
           {s.kind === 'stakes' && (<>
-            <Sequence durationInFrames={Math.round(s.dur * FPS * 0.5)}><AbsoluteFill style={{background: '#07090c'}}><AppClip s={{...s, dur: s.dur * 0.5, label: undefined}} marks={data.marks} /></AbsoluteFill></Sequence>
+            <Sequence durationInFrames={Math.round(s.dur * FPS * 0.5)}><AbsoluteFill style={{background: '#07090c'}}><AppClip s={{...s, dur: s.dur * 0.5, label: undefined, from: ['intake_empty', 0.3], to: ['end', 0]}} marks={data.uimarks ?? data.marks} file={data.uimarks ? 'ui.mp4' : 'run.mp4'} y={data.uimarks ? 0.05 : 0} /></AbsoluteFill></Sequence>
             <Sequence from={Math.round(s.dur * FPS * 0.5)}><WindowShot dur={s.dur * 0.5} /></Sequence>
           </>)}
           {s.kind === 'name' && <NameCard />}
+          {s.kind === 'tool' && (<Fade dur={s.dur}>
+            <Sequence durationInFrames={Math.round(3.6 * FPS)}><AppClip s={{dur: 3.6, from: ['selector', 0.3], to: ['crisis', 0.2], label: 'Pick the crisis.', aside: {text: 'both are live', at: 1.0, x: 1130, y: 600, arrow: 'left'}}} marks={data.uimarks ?? data.marks} file={data.uimarks ? 'ui.mp4' : 'run.mp4'} y={data.uimarks ? 0.27 : 0} /></Sequence>
+            <Sequence from={Math.round(3.6 * FPS)}><AppClip s={{dur: s.dur - 3.6, hold: 'gate1', from: ['start', 0.3], to: ['approve1', 0.4], label: 'Triage', aside: {text: 'you decide', at: 1.8, x: 1130, y: 760, arrow: 'down-left'}}} marks={data.marks} /></Sequence>
+          </Fade>)}
           {s.kind === 'clip' && <Fade dur={s.dur}><AppClip s={s} marks={data.marks} y={s.id === 'stages' || s.id === 'copy' ? 0.0 : 0.0} /></Fade>}
           {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} opts={{redteam: data.tech?.redteam === true, redteamNames: data.tech?.redteamNames === true}} /></Fade>}
           {s.kind === 'dawn' && <Fade dur={s.dur}><End /></Fade>}

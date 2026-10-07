@@ -11,7 +11,7 @@ export type Memorial = {intro?: boolean; approved?: boolean; option?: number; po
 export type Voice = {noory?: boolean}; // voice.json: noory true = use the 'Noory' respelled takes (03, 06, 09, 10) once Juan says they sound right
 export type Credits = {narration?: boolean}; // credits.json; narration false = no credit line (ElevenLabs Starter plan needs none)
 export type Tech = {approved?: boolean; tests?: number | string; redteam?: boolean; redteamNames?: boolean; package?: string}; // approved = Juan approved presentation/MEMORIAL.md
-export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits; voice?: Voice};
+export type Data = {uimarks?: Marks; marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits; voice?: Voice};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
 export const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
@@ -45,9 +45,9 @@ export const Fade: React.FC<{dur: number; slow?: boolean; children: React.ReactN
 // memorial.json: {approved: false|true, option: 0..3, portrait: null | "file in public/"}. Nothing shows until Juan approves.
 export const MEMORIALS: Record<number, string[]> = {
   0: ['Nury is named for my aunt, Nury.', 'For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.', 'She never married.', 'She passed away a month ago.', 'This is for her.'],
-  1: ['Nury is named for my aunt, Nury Pelaez.', 'She served her church for 83 years, in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'She passed away a month ago. This is for her.'],
-  2: ['In memory of Nury Pelaez, 83.', 'She served her church in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'Nury is named for her.', 'May it be ready to help, the way she always was.'],
-  3: ['In memory of Nury Pelaez.', 'Always ready to help. Always with a smile.', 'Always with Jesus in her heart.'],
+  1: ['Nury is named for my aunt, Nury Peláez.', 'She served her church for 83 years, in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'She passed away a month ago. This is for her.'],
+  2: ['In memory of Nury Peláez, 83.', 'She served her church in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'Nury is named for her.', 'May it be ready to help, the way she always was.'],
+  3: ['In memory of Nury Peláez.', 'Always ready to help. Always with a smile.', 'Always with Jesus in her heart.'],
 };
 export const Memorial: React.FC<{m?: Memorial}> = ({m}) => {
   const f = useCurrentFrame();
@@ -77,10 +77,22 @@ const NODES = [
   {t: 'Jev (from TypeSafe)', s: 'checks every draft', at: 5.6},
   {t: 'A person', s: 'Approve, Edit or Stop', at: 9.4},
 ];
+export type TechOptsPlaceholder = never;
+
+// Hand-lettered aside: Gochi Hand, a highlighter underline and a hand-drawn arrow (the same device as the app's own notes). One accent: deep amber.
+export const Aside: React.FC<{text: string; x: number; y: number; arrow?: 'left' | 'down' | 'down-left'; opacity?: number; size?: number}> = ({text, x, y, arrow = 'left', opacity = 1, size = 52}) => (
+  <div style={{position: 'absolute', left: x, top: y, opacity, fontFamily: '"Gochi Hand", cursive', fontSize: size, color: C.ink, lineHeight: 1.1, whiteSpace: 'nowrap'}}>
+    <span style={{backgroundImage: 'linear-gradient(transparent 62%, rgba(232,163,61,.55) 62%, rgba(232,163,61,.55) 88%, transparent 88%)', padding: '0 6px'}}>{text}</span>
+    <svg width="120" height="80" viewBox="0 0 120 80" fill="none" stroke={C.amber} strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" style={{position: 'absolute', ...(arrow === 'down' ? {left: 30, top: size * 1.15, transform: 'rotate(-80deg) scaleX(-1)'} : arrow === 'down-left' ? {left: -92, top: size * 0.6} : {left: -110, top: size * 0.15})}}>
+      <path d="M112 14 C 78 6, 40 14, 14 52" /><path d="M14 52 L 12 30 M14 52 L 34 46" />
+    </svg>
+  </div>
+);
+
 export type TechOpts = {redteam?: boolean; redteamNames?: boolean};
 export const Tech: React.FC<{tests: number | string; captions?: string[]; times?: number[]; evalAt?: number; opts?: TechOpts}> = ({tests, captions, times, evalAt: evalAtProp, opts}) => {
   const f = useCurrentFrame(); const sec = f / FPS;
-  const caps = captions ?? ['Leak test: canary names and numbers, zero in any request', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
+  const caps = captions ?? ['Leak test: canary names and numbers, zero in any request', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
   const ci = sec < 3.6 ? 0 : sec < 7.2 ? 1 : 2; // each caption about 3.6 s
   const X0 = 145, W = 270, GAP = 70, Y = 250, H = 170;
   const vis = (a: number) => interpolate(sec, [a, a + 0.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
@@ -114,7 +126,7 @@ export const Tech: React.FC<{tests: number | string; captions?: string[]; times?
       <div style={{position: 'absolute', left: X0 + 2 * (W + GAP) + W / 2, top: Y + H + 14, width: W + GAP, height: 36, border: `3px solid ${C.amber}`, borderTop: 'none', borderRadius: '0 0 24px 24px', opacity: vis(6.4)}} />
       <div style={{position: 'absolute', left: X0 + 2 * (W + GAP), top: Y + H + 58, width: 2 * W + GAP, textAlign: 'center', fontSize: 22, color: C.muted, opacity: vis(6.4)}}>rejected? regenerate, up to 3 tries</div>
       <div style={{position: 'absolute', top: Y - 62, width: W + 100, left: X0 + 2 * (W + GAP) - 50, textAlign: 'center', whiteSpace: 'nowrap', fontSize: 26, color: C.amber, fontWeight: 500, opacity: vis(3.9)}}>Built on Gloo AI Studio</div>
-      <div style={{position: 'absolute', top: Y - 62, width: W + 100, left: X0 + 3 * (W + GAP) - 50, textAlign: 'center', whiteSpace: 'nowrap', fontSize: 26, color: C.amber, fontWeight: 500, opacity: vis(5.9)}}>Checked by Jev</div>
+      <Aside text="Checked by Jev" x={X0 + 3 * (W + GAP) - 10} y={Y - 92} arrow="down" opacity={vis(5.9)} />
       {/* who does what */}
       <div style={{position: 'absolute', left: 150, top: 560, width: 1620, minHeight: 170, borderRadius: 24, border: `3px dashed ${C.amber}`, opacity: vis(evalAt), display: 'grid', alignContent: 'center', justifyItems: 'center', gap: 12, padding: '18px 24px'}}>
         <div style={{display: 'flex', gap: 28, fontFamily: serif, fontSize: 30, color: C.text, flexWrap: 'nowrap', whiteSpace: 'nowrap', justifyContent: 'center'}}>

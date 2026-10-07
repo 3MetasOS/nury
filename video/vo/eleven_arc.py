@@ -11,8 +11,10 @@ ERIC = "cjVigY5qzO86Huf0OWal"
 L = {"L1": "Two oh seven A M. Maria is calling.", "L2": "Her husband was detained last evening.", "L3": "This is Nury.", "L4": "Five stages. A gate after each.",
      "L5": "Her language. Every point cited.", "L6": "Unsafe draft. Rejected. He never sees it.", "L7": "Gloo AI Studio writes, seeing tokens, not names.",
      "L8": "Jev checks every draft. People decide.", "L9": "A warm message. His to edit.", "L10": "Nury is not a pastor. It never sends.",
-     "L11": "An AI crisis response agent."}
-want = [a for a in sys.argv[1:] if a.startswith("L")] or list(L)
+     "L11": "An AI crisis response agent.",
+     "E1": "He types what she says.", "E4": "Pick a crisis. Triage comes first.", "E5": "Approve, edit or stop.", "E6": "Only from vetted sources.",
+     "E7": "It rewrites. It checks again.", "E8": "Then contacts, a checklist, a message.", "E9": "He changes one word."}
+want = [a for a in sys.argv[1:] if a[:1] in "LE" and a != "--dry"] or list(L)
 print(len(want), "lines,", sum(len(L[k]) for k in want), "characters")
 if "--dry" in sys.argv: sys.exit()
 out = here / "arc"; out.mkdir(exist_ok=True); dpath = out / "durations.json"
