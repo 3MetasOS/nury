@@ -875,3 +875,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 06:22: Juan: do not capture the film again until the whole app is covered and the presentation reviewed. Live capture and cut 5 on hold; hack-video's edit-step script stays ready; the one final capture happens after the app UI review.
 - 06:25: working rule change (Juan): for small UI details the developer edits, restarts the app on port 8080 and says 'refresh'; Juan looks live within minutes; no screenshots unless asked; no full test chain before he sees it. My screenshot-before-reporting rule (set after the header slip) was too heavy for detail work.
 - 06:27: items 1 and 2 pushed (5702063); item 3 sent; items 4 to 6 held until Juan has seen each.
+- 06:27: Juan: do all Home changes in one go (items 3 to 6 sent together: remove the footer card on Home, judges links in a column, a second footer column with model and build details, two handwritten notes on Home).
