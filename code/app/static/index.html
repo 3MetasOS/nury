@@ -3,24 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Nury</title>
+<title>Nury, an AI Crisis Response Agent</title>
+<meta name="description" content="Nury is an AI crisis response agent. It drafts what a church needs in the first hours of a crisis. A person approves every stage. Nury sends nothing.">
 <script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
+<link rel="stylesheet" href="/shell.css">
 <style>
-@font-face{font-family:"Fraunces";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Fraunces-400-0.woff2) format("woff2")}
-@font-face{font-family:"Fraunces";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/Fraunces-600-1.woff2) format("woff2")}
-@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Inter-400-2.woff2) format("woff2")}
-@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/Inter-500-3.woff2) format("woff2")}
-:root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.10);
---amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--text:#ece7dc;--muted:#a79f8d;
---green:#8fce9e;--green-soft:rgba(143,206,158,.12);--red:#e0785f;--red-soft:rgba(224,120,95,.12);
---serif:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--r:14px}
-:root{--amber-text:var(--amber);--amber-line:rgba(232,163,61,.55);--glow:rgba(232,163,61,.5);--logo:var(--amber);--map-bg:#0b0e14;color-scheme:dark}
-:root[data-theme="light"]{--bg:#f7f3ea;--surface:#fffdf7;--surface-2:#efe8d9;--line:rgba(13,16,21,.14);
---amber:#b8680f;--amber-soft:rgba(184,104,15,.13);--amber-ink:#0d1015;--text:#0d1015;--muted:#5b564b;
---green:#1e6b3a;--green-soft:rgba(30,107,58,.12);--red:#b03a22;--red-soft:rgba(176,58,34,.10);
---amber-text:#8a4a07;--amber-line:rgba(184,104,15,.6);--glow:rgba(184,104,15,.45);--logo:#b8680f;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
 main{max-width:640px;margin:0 auto;padding:16px 16px calc(32px + env(safe-area-inset-bottom))}
@@ -124,9 +113,6 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .note{color:var(--muted);font-size:14px}
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);margin-left:8px;vertical-align:middle}
 /* ===== shell and new views (home, cases, crisis detail). Own class names so the flow screens keep their styles. ===== */
-:root{--line-2:rgba(236,231,220,.20);--ember:#e8a33d;--wash:rgba(232,163,61,.16);--scene:rgba(236,231,220,.42)}
-:root[data-theme="light"]{--line-2:rgba(13,16,21,.28);--ember:#b8680f;--wash:rgba(184,104,15,.14);--scene:rgba(13,16,21,.45)}
-[hidden]{display:none!important}
 html{scroll-padding-top:76px}
 h1{font-weight:500}
 .nv h1{font:500 30px/1.15 var(--serif);letter-spacing:-.01em;margin:0}
@@ -134,22 +120,7 @@ h1{font-weight:500}
 .nv h2{font:500 22px/1.25 var(--serif);margin:0 0 12px}
 .nv h3{font:500 18px/1.3 var(--serif);margin:0}
 .nv p,.nv ul,.nv ol{margin:0}.nv ul,.nv ol{padding:0;list-style:none}
-.i{width:24px;height:24px;flex:none;display:block}.i.sm{width:18px;height:18px}
-.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:var(--amber-ink);padding:12px 16px;border-radius:10px;z-index:100;font-weight:600;text-decoration:none}
-.skip:focus{top:8px}
-.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-:focus-visible{outline:2px solid var(--amber-text);outline-offset:2px}
 /* top bar and tabs */
-.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-.top .wrap{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:60px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--amber-text);min-height:48px}
-.brand .i{width:28px;height:28px;color:var(--logo)}.brand b{font:600 24px/1 var(--serif)}
-.brand small{display:none;font-size:13px;color:var(--muted);margin-left:4px;font-weight:400}
-.iconbtn{margin-left:auto;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);cursor:pointer;flex:none}
-.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:0 8px env(safe-area-inset-bottom)}
-.tabs a{flex:1;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 12px/1.2 var(--sans);color:var(--muted);text-decoration:none}
-.tabs a[aria-current="page"]{color:var(--amber-text);box-shadow:inset 0 3px 0 var(--amber)}
-body.task .tabs{display:none}
 main{max-width:1120px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
 body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .narrow{max-width:640px;margin:0 auto}
@@ -268,15 +239,6 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .startbar .cta{flex:1}.startbar small{flex:none;max-width:112px;font-size:12px;line-height:1.3;color:var(--muted)}
 body:not([data-view="crisis"]) .startbar{display:none}
 /* sheets and toasts */
-dialog.sheet{border:1px solid var(--line-2);background:var(--surface);color:var(--text);padding:0;width:100%;max-width:100%;max-height:90vh;margin:auto 0 0;border-radius:20px 20px 0 0}
-dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
-.sheet-h{position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:12px 12px 12px 20px;background:var(--surface);border-bottom:1px solid var(--line)}
-.sheet-h h2{flex:1;margin:0;font:500 22px/1.25 var(--serif)}
-.sheet-b{padding:16px 20px 28px;overflow:auto;max-height:calc(90vh - 76px)}
-.proof{display:grid;gap:18px;counter-reset:p;list-style:none;padding:0;margin:0}
-.proof li{display:grid;gap:4px;padding-left:40px;position:relative}
-.proof li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;border:1px solid var(--amber-line);color:var(--amber-text);display:grid;place-items:center;font:600 13px var(--sans)}
-.proof h3{font:600 16px/1.35 var(--sans);margin:0}.proof p{font-size:15px;color:var(--muted);margin:0}.proof .lim{color:var(--text)}
 .seg{display:grid;grid-template-columns:1fr 1fr;gap:10px;border:0;padding:0;margin:0 0 20px}
 .seg legend{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding:0}
 .seg label{position:relative;margin:0;font-size:inherit;color:inherit}
@@ -284,7 +246,6 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
 .seg span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);font:600 16px var(--sans)}
 .seg input:checked+span{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
 .seg input:focus-visible+span{outline:2px solid var(--amber-text);outline-offset:2px}
-.consent{font-size:14px;line-height:1.5;color:var(--muted);background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:12px 0}
 .leave-b{display:grid;gap:12px;padding:16px 20px 24px}
 @media (min-width:640px){
   .nv h1{font-size:36px}
@@ -292,16 +253,10 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
   .lrow{grid-template-columns:40px minmax(0,1fr) auto 120px 24px;align-items:center}
   .lrow .tile,.lrow .cbody,.lrow .scs,.lrow .when,.lrow .chev{grid-column:auto;grid-row:auto;align-self:center}
   .lrow .when{text-align:right}.go .gl{display:inline}
-  .sheet-b{padding:20px 28px 32px}
   .two{grid-template-columns:1fr 1fr;gap:20px}.two>div+div{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:20px}
 }
 @media (min-width:960px){
-  .brand small{display:inline}
-  .tabs{position:static;border:0;background:none;padding:0;margin-left:24px;gap:4px;z-index:auto}
-  .tabs a{flex:none;flex-direction:row;gap:8px;padding:0 16px;min-height:44px;border-radius:99px;font-size:15px}
-  .tabs a[aria-current="page"]{background:var(--amber-soft);box-shadow:none}
-  body.task .tabs{display:flex}
-  main{padding:24px 24px 56px}.top .wrap{padding:0 24px}
+  main{padding:24px 24px 56px}
   .home{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:24px;align-items:start}
   .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
   .hero{grid-column:1/-1;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:center;padding:32px 32px 24px}
@@ -311,61 +266,12 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
   .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
   .aside{display:grid;gap:14px;position:sticky;top:84px}.aside .nvcard{display:grid;gap:12px}.aside h2{margin:0}
   .startbar{display:none!important}
-  dialog.sheet{margin:auto;width:640px;border-radius:20px;max-height:86vh}.sheet-b{max-height:calc(86vh - 76px)}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<svg class="sprite" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-mark" viewBox="0 0 64 64"><g fill="currentColor" stroke="currentColor"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></symbol>
-<symbol id="i-lantern" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.6" r="1.5"/><path d="M12 5.1V7M7.5 7.5h9M8.6 7.5h6.8l-.8 11H9.4zM7.6 20.5h8.8"/><path style="fill:var(--ember,currentColor);stroke:none" d="M12 11.2c1.5 1.6 2 2.6 2 3.5a2 2 0 0 1-4 0c0-.9.5-1.9 2-3.5z"/></symbol>
-<symbol id="i-cases" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 11h17"/><circle cx="12" cy="15" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M8.2 7h7.6M7.2 8.9l3.8 7M16.8 8.9l-3.8 7"/><circle cx="12" cy="10.2" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></symbol>
-<symbol id="i-detention" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M7 21V11a5 5 0 0 1 10 0v10"/><circle cx="12" cy="15.5" r="1.6" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-hospital" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="15" rx="3.5"/><path d="M7.5 12.5h2.2l1.4-3 2 6 1.4-3h2"/></symbol>
-<symbol id="i-sudden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 14h15M6.5 14v5M17.5 14v5M6 14V8.5A1.5 1.5 0 0 1 7.5 7h9A1.5 1.5 0 0 1 18 8.5V14"/><circle cx="12" cy="10.5" r="1.3" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5"/><path d="M12 18.5a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.4-2.4 2.6-4 1.2 1.6 2.6 2.4 2.6 4a2.6 2.6 0 0 1-2.6 2.6z"/></symbol>
-<symbol id="i-audit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4M9.5 12h6M9.5 15.5h4"/></symbol>
-<symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M8 10.5l4 4 4-4M5 18.5h14"/></symbol>
-<symbol id="i-v2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8.5h9.5v12H9zM6 16.5v-12h9.5"/><circle cx="13.7" cy="14.5" r="1.4" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-protect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5H6v15h3M15 4.5h3v15h-3"/><circle cx="12" cy="12" r="1.8" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4M6 5h11l-2.5 3.5L17 12H6"/></symbol>
-<symbol id="i-progress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-triage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
-<symbol id="i-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5zM12 6.5v13"/></symbol>
-<symbol id="i-resources" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
-<symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.3 1.3L7 5M3.5 12l1.3 1.3L7 11M3.5 18l1.3 1.3L7 17"/></symbol>
-<symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></symbol>
-<symbol id="i-gate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8 8.5-8 8.5-8-8.5z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></symbol>
-<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
-<symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19zM14.5 6.5l3 3"/></symbol>
-<symbol id="i-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5h5v5h-5z"/></symbol>
-<symbol id="i-never" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
-<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
-<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></symbol>
-<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
-<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
-<symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
-<symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
-<symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
-<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
-<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
-<symbol id="s-home" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 104h320" opacity=".6"/><circle cx="238" cy="62" r="36" stroke-dasharray="2 5" opacity=".7"/><circle cx="238" cy="62" r="54" stroke-dasharray="2 7" opacity=".4"/><circle cx="238" cy="14" r="5"/><path d="M238 19v10M217 29h42M226 29h24l-4 52h-16zM222 85h32"/><path style="fill:var(--ember,currentColor);stroke:none" d="M238 46c5 5 6 9 6 12a6 6 0 0 1-12 0c0-3 1-7 6-12z"/><g fill="currentColor" stroke="none" opacity=".7"><circle cx="30" cy="20" r="1.2"/><circle cx="70" cy="44" r="1.2"/><circle cx="112" cy="14" r="1.2"/><circle cx="152" cy="36" r="1.2"/><circle cx="188" cy="18" r="1.2"/></g></symbol>
-<symbol id="s-cases" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 104h240" opacity=".6"/><rect x="70" y="58" width="22" height="46" rx="3"/><rect x="98" y="50" width="22" height="54" rx="3"/><rect x="126" y="62" width="22" height="42" rx="3"/><rect x="154" y="40" width="22" height="64" rx="3"/><rect x="182" y="56" width="22" height="48" rx="3"/><rect x="210" y="64" width="22" height="40" rx="3"/><path d="M70 72h22M98 66h22M126 76h22M154 56h22M182 70h22M210 78h22" opacity=".6"/><circle cx="165" cy="26" r="4" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="165" cy="26" r="9" stroke-dasharray="2 4" opacity=".7"/></symbol>
-<symbol id="s-network" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 78L110 44L170 80L230 40L290 70" stroke-dasharray="3 5" opacity=".7"/><circle cx="40" cy="78" r="7"/><circle cx="110" cy="44" r="7"/><circle cx="170" cy="80" r="7"/><circle cx="230" cy="40" r="7"/><circle cx="290" cy="70" r="7"/><circle cx="170" cy="80" r="14" stroke-dasharray="2 4" opacity=".7"/><circle cx="170" cy="80" r="3.2" style="fill:var(--ember,currentColor);stroke:none"/><path d="M0 108h320" opacity=".35"/></symbol>
-<symbol id="s-detention" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><path d="M122 104V54a38 38 0 0 1 76 0v50"/><path d="M134 104V56a26 26 0 0 1 52 0v48" opacity=".5"/><circle cx="160" cy="76" r="4.5" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="160" cy="76" r="12" stroke-dasharray="2 4" opacity=".7"/><path d="M146 104l-14 12M174 104l14 12" opacity=".5"/></symbol>
-<symbol id="s-hospital" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><rect x="112" y="24" width="96" height="74" rx="12"/><path d="M126 62h22l8-18 12 36 8-18h22"/><circle cx="232" cy="30" r="4" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="232" cy="30" r="10" stroke-dasharray="2 4" opacity=".7"/></symbol></svg>
-<a class="skip" href="#main">Skip to content</a>
-<header class="top"><div class="wrap">
-  <a class="brand" href="#/" aria-label="Nury, home"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg><b>Nury</b><small>the crisis-response agent for solo pastors</small></a>
-  <nav class="tabs" aria-label="Main">
-    <a href="#/" data-nav="home"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lantern"/></svg><span>Home</span></a>
-    <a href="#/cases" data-nav="cases"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cases"/></svg><span>Cases</span></a>
-    <a href="/network" data-nav="network"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-network"/></svg><span>Our network</span></a>
-  </nav>
-  <button class="iconbtn" id="open-settings" type="button" aria-label="Settings and display"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-settings"/></svg></button>
-</div></header>
+<script src="/shell.js"></script>
 <main id="main">
 <p class="note" id="load-err" role="alert" hidden></p>
 
@@ -375,9 +281,9 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
       <div>
         <h1 id="h-home" tabindex="-1"></h1>
         <p id="hero-sub"></p>
-        <a class="cta primary" href="#start" id="hero-btn"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
+        <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
       </div>
-      <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-home"/></svg>
+      <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-home"/></svg>
     </section>
     <div class="colA">
       <section id="continue" aria-labelledby="h-cont">
@@ -402,14 +308,14 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
         <p class="safety">If anyone is in immediate danger, call 911 first.</p>
       </section>
       <section class="netcard" id="netcard" aria-labelledby="h-net">
-        <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-network"/></svg>
+        <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-network"/></svg>
         <h2 id="h-net">Our network</h2>
         <p class="muted sm">Contacts your church has vetted. Nury lists them first and labels them as yours.</p>
-        <a class="cta" href="/network"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-network"/></svg>Open our network</a>
+        <a class="cta" href="/network"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-network"/></svg>Open our network</a>
       </section>
     </div>
     <section class="built" aria-labelledby="h-built">
-      <span class="lbl" id="h-built">How this was made</span>
+      <span class="lbl" id="h-built">How this was built</span>
       <ul>
         <li>Gloo AI Studio, guarded endpoint</li>
         <li>Claude Sonnet 4.6</li>
@@ -417,7 +323,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
         <li>14 named checks, 3 tries</li>
         <li>Jev typed judges, a red team, human review</li>
       </ul>
-      <button class="linkbtn" type="button" id="open-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-build"/></svg>About this build</button>
+      <a class="linkbtn" href="/how-it-was-built" id="home-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="/icons.svg#i-build"/></svg>How this was built</a>
     </section>
   </div>
   <p class="foot">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
@@ -426,15 +332,15 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
 <section class="nv" id="v-cases" hidden>
   <div class="band cases">
     <div>
-      <span class="kicker"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-cases"/></svg>Cases</span>
+      <span class="kicker"><svg class="i sm" aria-hidden="true" focusable="false"><use href="/icons.svg#i-cases"/></svg>Cases</span>
       <h1 id="h-cases" tabindex="-1">Your cases</h1>
       <p>Every case you saved. Open one to read it, or to record that something changed.</p>
     </div>
-    <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-cases"/></svg>
+    <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
   </div>
   <div id="cases-body">
     <div class="tools">
-      <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
+      <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
       <div class="flabel" id="fl-c">Crisis</div>
       <div class="fgroup" role="group" aria-labelledby="fl-c" id="f-crisis"></div>
       <div class="flabel" id="fl-s">Status</div>
@@ -453,15 +359,15 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
     </div>
   </div>
   <div class="nvcard empty" id="cases-empty" hidden>
-    <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-cases"/></svg>
+    <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
     <h2>No cases yet.</h2>
     <p>Finish a crisis and choose Save to case file. It will be here, ready to open.</p>
-    <a class="cta primary" href="#/" id="empty-start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
+    <button class="cta primary" type="button" id="empty-start" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
   </div>
 </section>
 
 <section class="nv" id="v-crisis" hidden>
-  <a class="back" href="#/" id="crisis-back"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-back"/></svg>All crises</a>
+  <a class="back" href="#/" id="crisis-back"><svg class="i sm" aria-hidden="true" focusable="false"><use href="/icons.svg#i-back"/></svg>All crises</a>
   <div id="crisis-page"></div>
 </section>
 <section id="v-intake" class="hidden narrow">
@@ -543,6 +449,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
   <button class="back" id="back-case">&larr; Cases</button>
   <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
+    <button class="cta hidden" type="button" id="case-follow" aria-pressed="false" style="margin-top:12px"></button><p class="note" id="case-follow-msg" role="status" style="margin:6px 0 0"></p>
     <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
   <div class="card"><button class="btn" id="b-changed" style="min-height:56px">Something changed</button>
@@ -576,32 +483,11 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
   <small>About a minute of drafting. You approve each stage.</small>
 </div>
 
-<dialog class="sheet" id="about" aria-labelledby="about-t">
-  <div class="sheet-h"><h2 id="about-t">How this was made</h2><button class="iconbtn" style="margin-left:0" type="button" data-close aria-label="Close"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button></div>
-  <div class="sheet-b nv">
-    <p class="muted" style="margin-bottom:18px">Nury has one job: help a solo pastor in the first hours of a crisis. Here is what is under it, in plain words.</p>
-    <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
-    <ol class="proof">
-      <li data-claims="1"><h3>Gloo AI Studio and Claude Sonnet 4.6</h3><p>Every draft goes through Gloo AI Studio's guarded endpoint, using Claude Sonnet 4.6.</p></li>
-      <li data-claims="16,17,18,19"><h3>Tokens, not names</h3><p>Before anything reaches the model, the names you protect, phone numbers, emails, addresses, dates and ID numbers become tokens. The real words come back when the draft returns.</p><p class="lim">This removes direct identifiers only. Context can still hint at who someone is, so check your list of protected names.</p></li>
-      <li data-claims="4,5,6"><h3>14 named checks, then 3 tries</h3><p>Every draft passes 14 named checks and a floor of safety rules. If a draft fails, Nury sends back the reasons, not the draft, and tries again. After three tries it stops and hands the work to you. You never see a rejected draft.</p></li>
-      <li data-claims="3"><h3>Nury sends nothing</h3><p>Nury has no way to email, text or post. The only call that leaves Nury goes to Gloo.</p></li>
-      <li data-claims="25,32,35,36,40"><h3>How we test it</h3><p>Typed judges from Jev answer fixed questions about each run. They are used for testing only, never inside Nury. A red team of three models from other makers (GPT-5.4, Gemini 3.1 Pro and Llama 4 Maverick, through Gloo) reads what a pastor would see. The red team advises. People review what is flagged.</p></li>
-      <li data-claims="10"><h3>A crisis is a folder</h3><p>Each crisis is data: its own prompts, reviewed sources and stages. New crises plug into the same engine and the same safety rules.</p></li>
-      <li data-claims="19,43"><h3>What we have not done yet</h3><p class="lim">No pastor outside our team has used Nury. Every family in testing is made up. No native Spanish speaker has scored the Spanish. Saved cases are not encrypted and there is no sign-in yet. Our scored runs are not fully reviewed by people yet, so we claim no pass rate.</p></li>
-    </ol>
-  </div>
-</dialog>
-
-<dialog class="sheet" id="settings" aria-labelledby="set-t">
-  <div class="sheet-h"><h2 id="set-t">Settings</h2><button class="iconbtn" style="margin-left:0" type="button" data-close aria-label="Close"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button></div>
-  <div class="sheet-b nv">
-    <fieldset class="seg"><legend>Display</legend>
-      <label><input type="radio" name="th" value="dark"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg>Night</span></label>
-      <label><input type="radio" name="th" value="light"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg>Day</span></label>
-    </fieldset>
-    <button class="cta block" type="button" id="settings-about"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-build"/></svg>About this build</button>
-  </div>
+<dialog class="sheet" id="chooser" aria-labelledby="chooser-t" aria-modal="true">
+  <div class="sheet-h"><h2 id="chooser-t">A family needs help</h2><button class="cta" type="button" data-close style="min-height:48px"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-close"/></svg>Close</button></div>
+  <div class="sheet-b nv"><p class="muted" style="margin-bottom:14px">Choose what the family is facing. You will see how it works before you begin the response.</p>
+    <div class="pickgrid" id="chooser-list"></div>
+    <p class="safety">If anyone is in immediate danger, call 911 first.</p></div>
 </dialog>
 
 <dialog class="sheet" id="leave" aria-labelledby="leave-t">
@@ -640,13 +526,12 @@ function fmt(el,text){
 }
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
-function applyTheme(t){document.documentElement.dataset.theme=t==="light"?"light":"dark"}
 let sid=null,timer=null,lastGate=null;
 const VIEWS=["v-home","v-cases","v-crisis","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"],NEWV=["v-home","v-cases","v-crisis"];
 const TASKV=["v-crisis","v-intake","v-protect","v-pipe","v-pkg"],NAVOF={"v-home":"home","v-cases":"cases","v-case":"cases","v-compare":"cases"};
 function show(v){VIEWS.forEach(x=>{const el=$(x);if(NEWV.includes(x))el.hidden=x!==v;else el.classList.toggle("hidden",x!==v)});
   document.body.classList.toggle("task",TASKV.includes(v));document.body.dataset.view=v.replace("v-","");
-  document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===NAVOF[v])a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  NuryShell.setActive(NAVOF[v]||"");
   window.scrollTo(0,0)}
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
@@ -660,7 +545,7 @@ function h(tag,props,...kids){const e=document.createElement(tag);
   if(props)for(const[k,v]of Object.entries(props)){if(v==null||v===false)continue;if(k==="class")e.className=v;else e.setAttribute(k,v===true?"":v)}
   kids.flat().forEach(k=>{if(k==null||k===false)return;e.append(k.nodeType?k:document.createTextNode(k))});return e}
 function svgEl(cls,id,label){const t=document.createElement("template");
-  t.innerHTML=`<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;return t.content.firstChild}
+  t.innerHTML=`<svg class="${cls}" aria-hidden="true" focusable="false"><use href="/icons.svg#${id}"/></svg>`;return t.content.firstChild}
 const ic=(n,c)=>svgEl("i"+(c?" "+c:""),n);
 const sceneEl=id=>svgEl("scene",id);
 let pbs=[],pb=null,CASES=[],FEATURES={},filt={q:"",crisis:"all",status:"all"},shown=20;
@@ -688,9 +573,10 @@ function mkRow(c){const k=crisisInfo(c);
   return h("li",null,h("a",{class:"lrow",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
     h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta",style:"margin-bottom:0"},k.title)),chipsFor(c),
     h("time",{class:"when",datetime:c.iso},"saved "+relTime(c.iso)),ic("i-chev","chev")))}
-function renderPicks(){$("picks").replaceChildren(...pbs.map(p=>{const live=p.status==="live",d=p.detail||{},icon=d.icon||"i-lantern";
+function renderPicks(){const cards=()=>pbs.map(p=>{const live=p.status==="live",d=p.detail||{},icon=d.icon||"i-lantern";
   if(live)return h("a",{class:"pk",href:"#/crisis/"+p.id},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title),h("span",{class:"d"},d.card||p.description)),ic("i-chev","c"));
-  return h("div",{class:"pk soon"},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title)),h("span",{class:"sc tag"},"Coming soon"))}))}
+  return h("div",{class:"pk soon"},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title)),h("span",{class:"sc tag"},"Coming soon"))});
+  $("picks").replaceChildren(...cards());$("chooser-list").replaceChildren(...cards())}
 function renderHome(){const fam=families(),n=fam.length;
   $("home").classList.toggle("has-cases",n>0);
   $("h-home").textContent=n?"Welcome back.":"Nury is ready.";
@@ -741,7 +627,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
     never.length&&blk("h-never","What Nury will never do",h("ul",{class:"never nvcard"},never.map(t=>h("li",null,ic("i-never"),h("span",null,t))))),
     blk("h-time","A note on time",h("div",{class:"time"},ic("i-clock"),h("div",null,h("p",null,"Nury drafts all five stages in about a minute."),
       h("p",null,"That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.")))),
-    h("p",{class:"sm",style:"margin:0"},h("button",{class:"linkbtn",type:"button","data-about":""},ic("i-build","sm"),"About this build")));
+    h("p",{class:"sm",style:"margin:0"},h("a",{class:"linkbtn",href:"/how-it-was-built"},ic("i-build","sm"),"How this was built")));
   const aside=h("aside",{class:"aside","aria-label":"Begin"},h("div",{class:"nvcard"},h("h2",null,"Ready when you are"),
     h("p",{class:"muted sm"},"You will type what the family said, then confirm the names to protect."),
     h("button",{class:"cta primary block",type:"button","data-begin":""},"Begin the response"),h("p",{class:"muted sm"},"About a minute of drafting. You approve each stage.")));
@@ -754,7 +640,7 @@ let allowLeave=false,lastHash=location.hash||"#/",ignoreHash=false,pendingHash=n
 function unsaved(){const v=document.body.dataset.view;return v==="pipe"||(v==="pkg"&&$("saved").classList.contains("hidden"))}
 function go(hash){
   if(unsaved()&&!allowLeave){pendingHash=hash;openD($("leave"));return}      // every way out of unsaved work asks first
-  if(location.hash===hash){route(false)}else location.hash=hash}
+  if(location.hash===hash){allowLeave=false;route(false)}else location.hash=hash}
 async function route(first){clearInterval(window.__navTimer);const hs=location.hash||"#/";let m;
   const ok=await loadData();
   document.querySelectorAll("#v-home,#v-cases").forEach(x=>x.hidden=true);
@@ -763,7 +649,7 @@ async function route(first){clearInterval(window.__navTimer);const hs=location.h
   else if((m=hs.match(/^#\/case\/([\w.-]+)$/))){await openCase(decodeURIComponent(m[1]));title="Case, Nury";hv=null}
   else if(hs.startsWith("#/cases")){const s=hs.split("/")[2];filt={q:"",crisis:"all",status:["all","follow","v2"].includes(s)?s:"all"};shown=20;$("q").value="";
     show("v-cases");renderCases();title="Your cases, Nury";hv="h-cases"}
-  else{show("v-home");renderHome();title="Nury"}
+  else{show("v-home");renderHome();title="Nury, an AI Crisis Response Agent"}
   document.title=title;
   if(!first&&hv){const el=$(hv);if(el){el.setAttribute("tabindex","-1");el.focus({preventScroll:true})}}}
 window.addEventListener("hashchange",()=>{
@@ -771,23 +657,18 @@ window.addEventListener("hashchange",()=>{
   if(unsaved()&&!allowLeave){pendingHash=location.hash;ignoreHash=true;location.hash=lastHash;openD($("leave"));return}
   allowLeave=false;lastHash=location.hash||"#/";route(false)});
 document.addEventListener("click",e=>{
-  const a=e.target.closest('a[href^="#"]');
-  if(a){const hr=a.getAttribute("href");
-    if(hr==="#start"){e.preventDefault();$("start").scrollIntoView({behavior:"smooth"});return}
-    if(hr.startsWith("#/")){e.preventDefault();go(hr);return}
+  const a=e.target.closest('a[href^="#"],a[href^="/#"]');
+  if(a){const hr=a.getAttribute("href").replace(/^\/(?=#)/,"");
+    if(hr.startsWith("#/")){e.preventDefault();const ch=$("chooser");if(ch.open)ch.close();go(hr);return}
     if(/^#s\d$/.test(hr)){e.preventDefault();const t=document.getElementById(hr.slice(1));if(t)t.scrollIntoView({behavior:"smooth"});return}}
-  if(e.target.closest("[data-begin]")&&pb){choose(pb);return}
-  if(e.target.closest("[data-about]")){openD($("about"))}});
+  if(e.target.closest("[data-choose]")){openD($("chooser"));return}
+  if(e.target.closest("[data-begin]")&&pb){choose(pb);return}});
 /* ---- sheets, settings ---- */
 function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 document.querySelectorAll("dialog.sheet").forEach(d=>{d.addEventListener("click",e=>{if(e.target===d)d.close()});
   d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())});
-$("open-about").onclick=()=>openD($("about"));
-$("open-settings").onclick=()=>{const t=document.documentElement.dataset.theme;document.querySelectorAll('input[name="th"]').forEach(r=>r.checked=r.value===t);openD($("settings"))};
-$("settings-about").onclick=()=>{$("settings").close();openD($("about"))};
-document.querySelectorAll('input[name="th"]').forEach(r=>r.onchange=()=>{applyTheme(r.value);try{localStorage.setItem("nury-theme",r.value)}catch(e){}});
 $("leave-stay").onclick=()=>$("leave").close();
-$("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);allowLeave=true;const t=pendingHash||"#/";pendingHash=null;go(t);allowLeave=false};
+$("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);sid=null;allowLeave=true;const t=pendingHash||"#/";pendingHash=null;go(t)};
 /* ---- cases filters ---- */
 $("q").oninput=function(){filt.q=this.value;shown=20;renderCases()};
 $("f-crisis").onclick=e=>{const b=e.target.closest("button");if(b){filt.crisis=b.dataset.v;shown=20;renderCases()}};
@@ -800,6 +681,14 @@ async function openCase(id){
   const c=await api("/api/case/"+encodeURIComponent(id));
   if(c.error){const e=$("load-err");e.hidden=false;e.textContent=c.error;go("#/cases");return}
   curCase=c;$("case-title").textContent=c.meta.title||c.meta.id;
+  const fb=$("case-follow");fb.classList.toggle("hidden",!FEATURES.followup);$("case-follow-msg").textContent="";
+  const paintF=on=>{fb.setAttribute("aria-pressed",String(on));fb.replaceChildren(ic("i-flag"),on?"Needs follow-up. Tap to clear":"Mark as needs follow-up")};
+  paintF(!!c.meta.needs_follow_up);
+  fb.onclick=async()=>{const on=fb.getAttribute("aria-pressed")!=="true";fb.disabled=true;
+    const r=await api("/api/case/"+encodeURIComponent(c.meta.id)+"/followup",{value:on});
+    fb.disabled=false;
+    if(r&&r.ok){c.meta.needs_follow_up=on;paintF(on);$("case-follow-msg").textContent=on?"Marked. It shows first on Home and in Cases.":"Cleared."}
+    else $("case-follow-msg").textContent=(r&&r.error)||"Could not save the mark. Try again."};
   $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);
@@ -902,7 +791,8 @@ function renderLog(el,log){
   el.textContent=log.map(e=>{const {ts,kind,...rest}=e;return ts.slice(11,23)+"  "+kind+"  "+JSON.stringify(rest)}).join("\n")}
 async function poll(){
   if(!sid)return;
-  const s=await api("/api/session/"+sid);
+  const mine=sid,s=await api("/api/session/"+mine);
+  if(sid!==mine)return;                      // the pastor left this response while the request was in flight
   if(s.error&&!s.stages){return}
   const P=s.progress||{phase:"idle"},N=s.stages.length;
   const cls=x=>{if(x.status==="approved"||x.status==="edited")return"done";

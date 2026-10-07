@@ -25,13 +25,19 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   agent-browser screenshot $SHOTS/home-$T.png >/dev/null 2>&1
   # ---- keyboard: skip link first, visible focus ring
   agent-browser press Tab >/dev/null 2>&1; agent-browser press Tab >/dev/null 2>&1
-  check "$T keyboard: focus ring visible on a focused control" "$(ev "(()=>{const e=document.activeElement;const s=getComputedStyle(e);return e!==document.body&&s.outlineStyle!=='none'&&parseFloat(s.outlineWidth)>=2})()")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const e=document.activeElement;const s=getComputedStyle(e);return e!==document.body&&s.outlineStyle!=='none'&&parseFloat(s.outlineWidth)>=2})()
+JS
+  check "$T keyboard: focus ring visible on a focused control" "$(ev "$J")" "true"
   # ---- crisis detail
   click "#picks a.pk"
   check "$T crisis: hash and view" "$(ev "location.hash+'|'+document.body.dataset.view")" '"#/crisis/detention|crisis"'
   check "$T crisis: five stages from the playbook, rail present" "$(ev "document.querySelectorAll('#crisis-page .st').length===5&&document.querySelectorAll('#crisis-page .rail .n').length===5")" "true"
   check "$T crisis: 911 line, never list, time note" "$(ev "/call 911 first/.test(document.body.innerText)&&/What Nury will never do/.test(document.body.innerText)&&/about a minute/i.test(document.body.innerText)")" "true"
-  check "$T crisis: Begin button reachable without scrolling" "$(ev "(()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0&&getComputedStyle(x).display!=='none');if(!b)return false;const r=b.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.height>=56})()")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0&&getComputedStyle(x).display!=='none');if(!b)return false;const r=b.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight&&r.height>=56})()
+JS
+  check "$T crisis: Begin button reachable without scrolling" "$(ev "$J")" "true"
   check "$T crisis: no sideways scroll" "$(ov)" "true"
   check "$T crisis: contrast scan clean" "$(scan)" '"[]"'
   check "$T crisis: tab bar hidden on phone for a task page" "$(ev "getComputedStyle(document.querySelector('.tabs')).display!=='none'===(innerWidth>=960)")" "true"
@@ -61,25 +67,119 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   click "#rows a.lrow"
   check "$T case: viewer opens by route" "$(ev "/^#\/case\//.test(location.hash)&&document.body.dataset.view==='case'")" "true"
   check "$T case: viewer wording (Read-only, no storage claims)" "$(ev "/Read-only\./.test(document.body.innerText)&&!/computer|stays here|local/i.test(document.body.innerText)")" "true"
-  check "$T case: the consent note is at the top, exact text" "$(ev "(()=>{const c=document.querySelector('#v-case [data-consent]');return !!c&&c.textContent.trim()==='Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.'&&c.getBoundingClientRect().top<innerHeight})()")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const c=document.querySelector('#v-case [data-consent]');return !!c&&c.textContent.trim()==='Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.'&&c.getBoundingClientRect().top<innerHeight})()
+JS
+  check "$T case: the consent note is at the top, exact text" "$(ev "$J")" "true"
   check "$T case: contrast scan clean" "$(scan)" '"[]"'
   click "#back-case"; check "$T case: back returns to cases" "$(view)" '"cases"'
-  # ---- settings sheet: theme radio, Escape, focus returns
+  # ---- theme toggle in the shared header (persists across a reload)
   agent-browser eval "location.hash='#/';1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 500 >/dev/null 2>&1
-  click "#open-settings"; check "$T settings: opens as a modal dialog" "$(ev "document.getElementById('settings').open")" "true"
   OTHER=light; [ $TH = light ] && OTHER=dark
-  agent-browser click "input[name=th][value=$OTHER] + span" >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
-  check "$T settings: choosing $OTHER switches the theme" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""
-  agent-browser click "input[name=th][value=$TH] + span" >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
+  click "#theme"; check "$T theme: the header toggle switches to $OTHER" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""
+  check "$T theme: toggle label names the mode and the switch" "$(ev "/Switch to/.test(document.getElementById('theme').getAttribute('aria-label'))")" "true"
+  agent-browser eval "location.reload();1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
+  check "$T theme: the choice survives a reload" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""
+  click "#theme"; check "$T theme: toggling back restores $TH" "$(ev "document.documentElement.dataset.theme")" "\"$TH\""
+  # ---- the crisis chooser (hero button opens it; it never scrolls the page)
+  agent-browser eval "window.scrollTo(0,0);1" >/dev/null 2>&1
+  click "#hero-btn"
+  read -r -d '' J <<'JS'
+(()=>{const d=document.getElementById('chooser');return d.open&&d.getAttribute('aria-modal')==='true'&&document.getElementById('chooser-t').textContent==='A family needs help'})()
+JS
+  check "$T chooser: hero button opens a modal titled 'A family needs help'" "$(ev "$J")" "true"
+  check "$T chooser: the page did not scroll" "$(ev "scrollY===0")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const d=document.getElementById('chooser');const l=[...d.querySelectorAll('a.pk')],s=[...d.querySelectorAll('.pk.soon')];return l.length===2&&l.every(a=>a.querySelector('svg use')&&a.getBoundingClientRect().height>=56)&&s.length===2&&s.every(e=>e.tagName==='DIV'&&e.tabIndex<0&&/Coming soon/.test(e.textContent))})()
+JS
+  check "$T chooser: two live crises as links with icons, two coming soon that are not links" "$(ev "$J")" "true"
+  check "$T chooser: a clear Close button" "$(ev "[...document.querySelectorAll('#chooser button')].some(b=>b.textContent.trim()==='Close'&&b.getBoundingClientRect().height>=44)")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const r=document.getElementById('chooser').getBoundingClientRect();return innerWidth<640?Math.abs(r.bottom-innerHeight)<2:(r.top>0&&r.bottom<innerHeight)})()
+JS
+  check "$T chooser: sits as a bottom sheet on phone, a centred modal on laptop" "$(ev "$J")" "true"
+  for i in 1 2 3 4 5 6 7 8 9 10 11 12; do agent-browser press Tab >/dev/null 2>&1; done
+  check "$T chooser: focus stays trapped inside after 12 Tab presses" "$(ev "document.getElementById('chooser').contains(document.activeElement)")" "true"
+  check "$T chooser: contrast scan clean" "$(scan)" '"[]"'
+  agent-browser screenshot $SHOTS/chooser-$T.png >/dev/null 2>&1
   agent-browser press Escape >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
-  check "$T settings: Escape closes and focus returns to the gear" "$(ev "!document.getElementById('settings').open&&document.activeElement.id==='open-settings'")" "true"
-  # ---- about sheet
-  click "#open-about"; check "$T about: opens" "$(ev "document.getElementById('about').open")" "true"
-  check "$T about: carries the consent note" "$(ev "!!document.querySelector('#about [data-consent]')")" "true"
-  check "$T about: names the three red-team models, states the limits" "$(ev "(()=>{const t=document.getElementById('about').innerText;return /GPT-5\.4/.test(t)&&/Gemini 3\.1 Pro/.test(t)&&/Llama 4 Maverick/.test(t)&&/not encrypted/.test(t)&&/no pass rate/.test(t)&&!/anonymi/i.test(t)})()")" "true"
-  check "$T about: no sideways scroll and contrast clean inside the sheet" "$(ev "(()=>{const d=document.getElementById('about');return d.scrollWidth<=d.clientWidth+1})()")" "true"
-  agent-browser press Escape >/dev/null 2>&1; agent-browser wait 300 >/dev/null 2>&1
-  check "$T about: Escape closes" "$(ev "!document.getElementById('about').open")" "true"
+  check "$T chooser: Escape closes and focus returns to the hero button" "$(ev "!document.getElementById('chooser').open&&document.activeElement.id==='hero-btn'")" "true"
+  click "#hero-btn"; click "#chooser button[data-close]"
+  check "$T chooser: Close closes and focus returns to the hero button" "$(ev "!document.getElementById('chooser').open&&document.activeElement.id==='hero-btn'")" "true"
+  click "#hero-btn"; click "#chooser a.pk"
+  check "$T chooser: choosing Detention closes it and opens the crisis page" "$(ev "!document.getElementById('chooser').open&&location.hash==='#/crisis/detention'&&document.body.dataset.view==='crisis'")" "true"
+  agent-browser eval "location.hash='#/';1" >/dev/null 2>&1; agent-browser wait 500 >/dev/null 2>&1
+  # ---- one shared header on every page
+  SIG='(()=>{const h=document.querySelectorAll("header.top");if(h.length!==1)return "headers:"+h.length;const t=[...h[0].querySelectorAll(".tabs a")].map(a=>a.textContent.trim()).join("|");return [t,!!h[0].querySelector(".brand .i"),h[0].querySelector(".brand b").textContent,!!h[0].querySelector("#theme"),!!h[0].querySelector("#open-about"),Math.round(h[0].getBoundingClientRect().height),Math.round(h[0].getBoundingClientRect().top)].join(";")})()'
+  HOMESIG=$(ev "$SIG")
+  agent-browser open "http://127.0.0.1:$PORT/network" >/dev/null 2>&1; agent-browser wait "#h-net" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
+  check "$T shell: Our network has the same header as Home" "$(ev "$SIG")" "$HOMESIG"
+  check "$T shell: Our network marks its own tab" "$(ev "document.querySelector('.tabs a[aria-current=page]').dataset.nav")" '"network"'
+  check "$T shell: Our network keeps its content and has no sideways scroll" "$(ev "!!document.getElementById('h-net')&&document.documentElement.scrollWidth<=innerWidth")" "true"
+  check "$T shell: Our network contrast clean" "$(scan)" '"[]"'
+  agent-browser screenshot $SHOTS/network-$T.png >/dev/null 2>&1
+  click "#theme"; check "$T shell: the toggle works on Our network too" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""; click "#theme"
+  click ".tabs a[data-nav=cases]"; agent-browser wait "#h-cases" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
+  check "$T shell: from Our network the Cases tab lands on Cases with the same header" "$(ev "document.body.dataset.view==='cases'")|$(ev "$SIG")" "true|$HOMESIG"
+  check "$T shell: Cases has the same header as Home" "$(ev "$SIG")" "$HOMESIG"
+  click "#rows a.lrow"; agent-browser wait 600 >/dev/null 2>&1
+  check "$T shell: the case viewer has the same header" "$(ev "$SIG")" "$HOMESIG"
+  agent-browser eval "location.hash='#/crisis/detention';1" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
+  check "$T shell: the crisis page has the same header" "$(ev "$SIG")" "$HOMESIG"
+  # ---- How this was built: a full page, not a popup
+  agent-browser eval "location.href='/#/';1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
+  check "$T how: there is no About popup anywhere" "$(ev "!document.getElementById('about')&&!document.querySelector('[data-about]')")" "true"
+  click "#how-link"; agent-browser wait "#doc" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
+  check "$T how: the header link opens /how-it-was-built" "$(ev "location.pathname")" '"/how-it-was-built"'
+  check "$T how: same shared header as every page, link marked current" "$(ev "$SIG")|$(ev "document.querySelector('#how-link').getAttribute('aria-current')")" "$HOMESIG|\"page\""
+  read -r -d '' J <<'JS'
+(()=>{const t=document.body.innerText;return /An AI Crisis Response Agent/.test(document.querySelector('header.top').textContent)&&!!document.querySelector('[data-consent]')&&document.querySelector('[data-disclose]').textContent==='The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.'&&!/solo pastor|local computer/i.test(t)})()
+JS
+  check "$T how: tagline, consent note and disclosure line are on the page" "$(ev "$J")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const a=[...document.querySelectorAll('#toc a')];return a.length>=8&&a.every(x=>document.getElementById(x.getAttribute('href').slice(1)))})()
+JS
+  check "$T how: contents lists all sections and each link has a target" "$(ev "$J")" "true"
+  read -r -d '' J <<'JS'
+(async()=>{const d=await (await fetch('/api/rules')).json();const rows=[...document.querySelectorAll('[data-live=rules] tbody tr')].map(r=>r.id.replace('rule-',''));return d.rules.length>=25&&d.rules.every(r=>rows.includes(r.name))&&rows.length===d.rules.length})()
+JS
+  check "$T how: the live rules table lists every check the app reports" "$(ev "$J")" "true"
+  read -r -d '' J <<'JS'
+(()=>{const p=[...document.querySelectorAll('[data-live=playbooks] details.pbk')];const live=p.filter(d=>d.querySelectorAll('.stg h4').length>=5);return live.length===2&&p.length===4})()
+JS
+  check "$T how: the live playbook list shows both live playbooks with their five stages" "$(ev "$J")" "true"
+  check "$T how: no sideways scroll on the page (tables scroll inside their own box)" "$(ov)" "true"
+  check "$T how: tables and code blocks are keyboard-reachable" "$(ev "[...document.querySelectorAll('.tw,pre')].every(e=>e.tabIndex===0)")" "true"
+  check "$T how: contrast scan clean" "$(scan)" '"[]"'
+  if [ $W -lt 960 ]; then
+    check "$T how: contents is collapsed on phone and opens on tap" "$(ev "!document.getElementById('toc').open")" "true"
+    click "#toc summary"; check "$T how: tapping Contents opens it" "$(ev "document.getElementById('toc').open")" "true"
+    click "#toc li:nth-child(3) a"; check "$T how: choosing a section closes Contents and lands on it" "$(ev "!document.getElementById('toc').open&&/^#/.test(location.hash)&&document.getElementById(location.hash.slice(1)).getBoundingClientRect().top<innerHeight")" "true"
+  else
+    read -r -d '' J <<'JS'
+(()=>{const t=document.getElementById('toc');window.scrollTo(0,1800);return t.open&&getComputedStyle(t).position==='sticky'&&t.getBoundingClientRect().top<200})()
+JS
+    check "$T how: contents is open and sticky on laptop" "$(ev "$J")" "true"
+  fi
+  agent-browser eval "location.href='/how-it-was-built#5-how-people-add-rules';1" >/dev/null 2>&1; agent-browser wait 1800 >/dev/null 2>&1
+  check "$T how: a deep link lands on its section" "$(ev "document.getElementById('5-how-people-add-rules').getBoundingClientRect().top<innerHeight*0.5")" "true"
+  agent-browser screenshot $SHOTS/how-$T.png >/dev/null 2>&1
+  agent-browser eval "location.href='/#/';1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
+  check "$T how: the home 'built with' strip links to the page" "$(ev "document.querySelector('.built a').getAttribute('href')")" '"/how-it-was-built"'
+  # ---- follow-up flag (a plain mark set by the pastor; no dates, no reminders)
+  agent-browser eval "location.hash='#/cases';1" >/dev/null 2>&1; agent-browser wait "#h-cases" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
+  click "#rows a.lrow"; agent-browser wait 700 >/dev/null 2>&1
+  CASEHASH=$(ev "location.hash" | tr -d '"')
+  check "$T follow-up: toggle is offered in the case viewer" "$(ev "!document.getElementById('case-follow').classList.contains('hidden')")" "true"
+  click "#case-follow"; agent-browser wait 700 >/dev/null 2>&1
+  check "$T follow-up: marking shows visible feedback and pressed state" "$(ev "document.getElementById('case-follow').getAttribute('aria-pressed')==='true'&&/Marked/.test(document.getElementById('case-follow-msg').textContent)")" "true"
+  agent-browser eval "location.hash='#/cases/follow';1" >/dev/null 2>&1; agent-browser wait 900 >/dev/null 2>&1
+  check "$T follow-up: Cases filter 'Needs follow-up' lists it with the chip" "$(ev "document.querySelectorAll('#rows li').length>=1&&!!document.querySelector('#rows .s-follow')")" "true"
+  agent-browser eval "location.hash='#/';1" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
+  check "$T follow-up: Home shows the marked case first with the chip" "$(ev "!!document.querySelector('#cont-list li:first-child .s-follow')")" "true"
+  agent-browser eval "location.hash='$CASEHASH';1" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
+  click "#case-follow"; agent-browser wait 700 >/dev/null 2>&1
+  check "$T follow-up: clearing returns it to normal" "$(ev "document.getElementById('case-follow').getAttribute('aria-pressed')==='false'&&/Cleared/.test(document.getElementById('case-follow-msg').textContent)")" "true"
   # ---- unsaved-work guard (stubbed package screen)
   ev "$(cat $HERE/pkgstub.js)" >/dev/null; ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 900 >/dev/null 2>&1
   click ".brand"

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>Observability, Nury</title>
+<meta name="description" content="Nury is an AI crisis response agent. Cost, speed, rejections and checks across the packages it has run. Numbers only: no drafts, no names.">
+<link rel="stylesheet" href="/shell.css">
+<style>
+main{max-width:1120px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+h1{font:600 clamp(1.7rem,6vw,2.3rem)/1.15 var(--serif);margin:0 0 6px;color:var(--amber-text)}
+h2{font:500 1.5rem/1.25 var(--serif);margin:36px 0 6px}
+.lede{color:var(--muted);margin:0 0 12px;max-width:68ch}
+.honest{border:1px dashed var(--amber-line);border-radius:12px;padding:12px 14px;background:var(--amber-soft);margin:12px 0;font-weight:500}
+.src{display:inline-flex;gap:8px;align-items:center;font:600 13px var(--sans);padding:4px 10px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted)}
+.src.stub{border-color:var(--amber-line);color:var(--amber-text)}
+.cards{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin:14px 0}
+.card{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:14px 16px}
+.card b{display:block;font:600 1.7rem/1.15 var(--serif);color:var(--text)}
+.card .k{font:600 .85rem var(--sans);margin-top:2px}.card p{margin:4px 0 0;font-size:.88rem;color:var(--muted);line-height:1.4}
+.charts{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}
+.chart{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:14px 16px;min-width:0}
+.chart h3{font:600 1rem var(--sans);margin:0}.chart p.d{margin:2px 0 10px;font-size:.88rem;color:var(--muted)}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.chart text{fill:var(--text);font:15px var(--sans)}.chart .mu{fill:var(--muted)}
+.b-amber{fill:var(--amber)}.b-green{fill:var(--green)}.b-red{fill:var(--red)}.b-muted{fill:var(--line-2)}.b-soft{fill:var(--amber-line)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 0;padding:0;list-style:none;font-size:.85rem;color:var(--muted)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.empty{color:var(--muted);font-size:.95rem;padding:8px 0}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;margin:10px 0}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.92rem}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{background:var(--surface-2);font-weight:600}tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:10px 0}
+.btn{min-height:48px;padding:0 18px;border-radius:12px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:600 15px var(--sans);cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+.btn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}.btn[disabled]{opacity:.55;cursor:not-allowed}
+.out{font-size:.95rem;min-height:1.4em}.out.bad{color:var(--red)}
+.pb{height:8px;border-radius:99px;background:var(--surface-2);overflow:hidden;max-width:360px}.pb i{display:block;height:100%;width:40%;background:var(--amber);animation:slide 1.6s ease-in-out infinite}
+@keyframes slide{0%{margin-left:-40%}100%{margin-left:100%}}
+@media(min-width:960px){main{padding:24px 24px 56px}.charts{grid-template-columns:repeat(2,minmax(0,1fr))}.chart.wide{grid-column:1/-1}}
+@media print{.top,.tabs,.btn{display:none!important}}
+</style>
+</head>
+<body data-nav="ops">
+<script src="/shell.js"></script>
+<main id="main" class="nv">
+  <h1 id="h-ops" tabindex="-1">Observability</h1>
+  <p class="lede">How the packages Nury has run are doing: cost, speed, rejections and checks. Numbers and labels only. A draft or a name never appears on this page or in its exports.</p>
+  <p class="honest" id="honest">No alerts, no retention policy, no per-church separation yet.</p>
+  <p><span class="src" id="src">Loading…</span></p>
+  <p class="out bad" id="load-err" role="alert" hidden></p>
+
+  <h2 id="s-head">Headline numbers</h2>
+  <div class="cards" id="cards"></div>
+
+  <h2 id="s-charts">Charts</h2>
+  <div class="charts" id="charts"></div>
+
+  <h2 id="s-runs">The last 50 runs</h2>
+  <p class="lede">One row per package. Time, crisis, how many stages and attempts, cost, time taken and how it ended. No text.</p>
+  <div class="tw" tabindex="0" role="region" aria-label="The last 50 runs, scrolls sideways if needed"><table id="runs"><thead><tr><th>Time</th><th>Crisis</th><th class="n">Stages</th><th class="n">Attempts</th><th class="n">Cost</th><th class="n">Seconds</th><th>Outcome</th></tr></thead><tbody></tbody></table></div>
+  <div class="row"><button class="btn" id="x-json" type="button">Export JSON</button><button class="btn" id="x-csv" type="button">Export CSV of the runs</button><span class="out" id="x-msg" role="status"></span></div>
+
+  <h2 id="s-evals">Evaluations</h2>
+  <p class="lede">The latest scored sets, read from the scorecards. A pass here is a judge pass. People have not reviewed every result, so no pass rate is claimed.</p>
+  <div class="cards" id="evcards"></div>
+  <div id="smoke">
+    <p class="lede" id="smoke-note"></p>
+    <div class="row"><button class="btn primary" id="smoke-btn" type="button">Run a smoke evaluation</button><span class="out" id="smoke-out" role="status"></span></div>
+    <div class="pb" id="smoke-bar" hidden role="progressbar" aria-label="Smoke evaluation running"><i></i></div>
+    <div class="cards" id="smoke-res"></div>
+  </div>
+</main>
+
+<dialog class="sheet" id="confirm" aria-labelledby="confirm-t" aria-modal="true">
+  <div class="sheet-h"><h2 id="confirm-t">Run a smoke evaluation?</h2></div>
+  <div class="sheet-b nv"><p id="confirm-p" class="muted"></p>
+    <div style="display:grid;gap:10px;margin-top:16px"><button class="btn primary" id="confirm-go" type="button">Run it</button><button class="btn" id="confirm-no" type="button">Cancel</button></div></div>
+</dialog>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id), NS="http://www.w3.org/2000/svg";
+const el=(t,c,x)=>{const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e};
+const se=(t,a,x)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(x!=null)e.textContent=x;return e};
+const usd=v=>v==null?"n/a":"$"+(v<0.1?v.toFixed(3):v.toFixed(2)), sec=v=>v==null?"n/a":(v<10?v.toFixed(1):Math.round(v))+" s", pct=v=>v==null?"n/a":(v*100).toFixed(1)+"%";
+let DATA=null;
+async function getJSON(u,o){try{const r=await fetch(u,o);return {ok:r.ok,status:r.status,body:await r.json()}}catch(e){return {ok:false,status:0,body:null}}}
+
+function card(parent,val,key,why){const c=el("div","card");c.title=why;c.append(el("b",null,val),el("div","k",key),el("p",null,why));parent.append(c)}
+function chart(id,title,why,wide){const c=el("div","chart"+(wide?" wide":""));c.id=id;c.append(el("h3",null,title),el("p","d",why));$("charts").append(c);return c}
+const SW={"b-amber":"var(--amber)","b-green":"var(--green)","b-red":"var(--red)","b-muted":"var(--line-2)","b-soft":"var(--amber-line)"};
+function legend(c,items){const u=el("ul","legend");items.forEach(([cls,t])=>{const li=el("li");const i=el("i");i.style.background=SW[cls];li.append(i,t);u.append(li)});c.append(u)}
+
+function hbars(c,rows,label,fmt){      // rows: [[name,value]]
+  if(!rows.length){c.append(el("p","empty","Nothing recorded yet."));return}
+  const W=560,rh=48,max=Math.max(...rows.map(r=>r[1]),1e-9),svg=se("svg",{viewBox:`0 0 ${W} ${rows.length*rh+4}`,role:"img","aria-label":label+": "+rows.map(r=>r[0]+" "+fmt(r[1])).join(", ")});
+  rows.forEach(([n,v],i)=>{const y=i*rh+2,w=Math.max(3,(W-70)*v/max);svg.append(se("text",{x:0,y:y+15},n),se("rect",{x:0,y:y+22,width:w,height:18,rx:4,class:"b-amber"}),se("text",{x:w+8,y:y+37,class:"mu"},fmt(v)))});
+  c.append(svg)}
+
+function render(d){
+  const s=$("src");s.textContent="Source: "+d.source;s.classList.toggle("stub",!/^ledger/.test(d.source));
+  const h=d.headline||{},C=$("cards");C.replaceChildren();
+  card(C,h.packages??"0","Packages run","How many packages are in the record below.");
+  card(C,usd(h.cost_avg),"Average cost per package","Gloo cost of all five stages, averaged. Jev is billed on its own key and is not included.");
+  card(C,usd(h.cost_p95),"Cost, 95th percentile","19 of 20 packages cost this much or less.");
+  card(C,sec(h.latency_p50_s),"Time per package, median","Half of the packages finished in this time or less.");
+  card(C,sec(h.latency_p95_s),"Time per package, 95th percentile","19 of 20 packages finished in this time or less.");
+  card(C,pct(h.escalation_rate),"Escalation rate","Packages where three tries failed and the work went to the pastor.");
+  card(C,pct(h.rejection_rate),"Rejection rate","Drafts rejected by a rule or by Jev, out of all drafts written. The pastor never sees them.");
+  const CH=$("charts");CH.replaceChildren();
+  // 1 cost over time
+  let c=chart("c-cost","Cost per package over time","One bar per package, oldest on the left. Taller means it cost more.",true);
+  const cs=d.cost_series||[];
+  if(!cs.length)c.append(el("p","empty","Nothing recorded yet."));else{
+    const W=600,H=170,bw=Math.max(3,Math.min(24,(W-40)/cs.length-2)),max=Math.max(...cs.map(x=>x.cost),1e-9);
+    const svg=se("svg",{viewBox:`0 0 ${W} ${H+34}`,role:"img","aria-label":`Cost per package, ${cs.length} packages, from ${usd(Math.min(...cs.map(x=>x.cost)))} to ${usd(max)}`});
+    svg.append(se("text",{x:0,y:12,class:"mu"},usd(max)),se("text",{x:0,y:H+2,class:"mu"},"$0"));
+    cs.forEach((x,i)=>{const bh=Math.max(1,(H-18)*x.cost/max),r=se("rect",{x:40+i*(bw+2),y:H-bh,width:bw,height:bh,rx:2,class:"b-amber"});r.append(se("title",{},usd(x.cost)));svg.append(r)});
+    svg.append(se("text",{x:40,y:H+22,class:"mu"},"oldest"),se("text",{x:W,y:H+22,"text-anchor":"end",class:"mu"},"newest"));c.append(svg)}
+  // 2 latency by stage
+  c=chart("c-lat","Time by stage","Median and 95th percentile seconds for each stage.");
+  const ls=d.latency_by_stage||[];
+  if(!ls.length)c.append(el("p","empty","Nothing recorded yet."));else{
+    const W=560,rh=70,L=0,max=Math.max(...ls.map(x=>x.p95||0),1),svg=se("svg",{viewBox:`0 0 ${W} ${ls.length*rh+4}`,role:"img","aria-label":"Time by stage: "+ls.map(x=>`${x.stage} median ${sec(x.p50)}, 95th ${sec(x.p95)}`).join("; ")});
+    ls.forEach((x,i)=>{const y=i*rh+2,w=v=>Math.max(3,(W-70)*v/max);svg.append(se("text",{x:0,y:y+15},x.stage),se("rect",{x:0,y:y+22,width:w(x.p50||0),height:14,rx:3,class:"b-amber"}),se("rect",{x:0,y:y+40,width:w(x.p95||0),height:14,rx:3,class:"b-soft"}),se("text",{x:w(x.p50||0)+8,y:y+34,class:"mu"},sec(x.p50)),se("text",{x:w(x.p95||0)+8,y:y+52,class:"mu"},sec(x.p95)))});
+    c.append(svg);legend(c,[["b-amber","Median"],["b-soft","95th percentile"]])}
+  // 3 rejections by category
+  c=chart("c-rej","Rejections by rule category","Why drafts were rejected. A category only, never the draft. jev_ means a Jev question.");
+  hbars(c,Object.entries(d.rejections_by_category||{}).sort((a,b)=>b[1]-a[1]),"Rejections by category",v=>String(v));
+  // 4 jev by question
+  c=chart("c-jev","Jev decisions by question","Each bar splits the decisions for one question. The small ticks below show the probabilities Jev gave, from 0 on the left to 1 on the right.",true);
+  const jq=Object.entries(d.jev_by_question||{});
+  if(!jq.length)c.append(el("p","empty","No Jev decisions recorded yet."));else{
+    const W=560,rh=96,L=0,svg=se("svg",{viewBox:`0 0 ${W} ${jq.length*rh+4}`,role:"img","aria-label":"Jev decisions by question: "+jq.map(([q,e])=>`${q}: ${e.pass} pass, ${e.uncertain} uncertain, ${e.reject} reject, ${e.unavailable} unavailable`).join("; ")});
+    jq.forEach(([q,e],i)=>{const y=i*rh+2,tot=Math.max(1,e.pass+e.uncertain+e.reject+e.unavailable);let x=L;svg.append(se("text",{x:0,y:y+15},q));
+      [["pass","b-green"],["uncertain","b-amber"],["reject","b-red"],["unavailable","b-muted"]].forEach(([k,cl])=>{const w=(W-L-10)*e[k]/tot;if(w>0){const r=se("rect",{x,y:y+22,width:w,height:18,class:cl});r.append(se("title",{},`${k}: ${e[k]}`));svg.append(r);x+=w}});
+      const bins=Array(10).fill(0);(e.probs||[]).forEach(p=>bins[Math.min(9,Math.floor(p*10))]++);const mb=Math.max(1,...bins);
+      bins.forEach((n,j)=>{const bh=Math.max(n?2:0,22*n/mb);svg.append(se("rect",{x:L+j*((W-L-10)/10),y:y+80-bh,width:(W-L-10)/10-3,height:bh,class:"b-soft"}))});
+      svg.append(se("text",{x:L,y:y+94,class:"mu"},"0"),se("text",{x:W-10,y:y+94,"text-anchor":"end",class:"mu"},"1"))});
+    c.append(svg);legend(c,[["b-green","Pass"],["b-amber","Uncertain"],["b-red","Reject"],["b-muted","Unavailable"],["b-soft","Probability spread"]])}
+  // 5 provider mix
+  c=chart("c-prov","Scripture provider mix","Where each verse came from: YouVersion, or the church's own approved bank.");
+  const pm=Object.entries(d.provider_mix||{}).filter(e=>e[1]>0);
+  if(!pm.length)c.append(el("p","empty","No verses recorded yet."));else{
+    const tot=pm.reduce((a,e)=>a+e[1],0),W=640,svg=se("svg",{viewBox:`0 0 ${W} 34`,role:"img","aria-label":"Provider mix: "+pm.map(e=>`${e[0]} ${e[1]}`).join(", ")});let x=0;
+    pm.forEach(([k,n],i)=>{const w=W*n/tot;svg.append(se("rect",{x,y:4,width:w,height:24,class:["b-amber","b-green","b-muted"][i%3]}));x+=w});c.append(svg);
+    const u=el("ul","legend");pm.forEach(([k,n],i)=>{const li=el("li");const sw=el("i");sw.style.background=["var(--amber)","var(--green)","var(--line-2)"][i%3];li.append(sw,`${k}: ${n}`);u.append(li)});c.append(u)}
+  // table
+  const tb=$("runs").tBodies[0];tb.replaceChildren();
+  (d.runs||[]).slice(0,50).forEach(r=>{const tr=el("tr");[["t",String(r.t||"").replace("T"," ").slice(0,19)],["c",r.crisis],["n",r.stages],["n",r.attempts],["n",usd(r.cost)],["n",r.latency_s],["o",r.outcome]].forEach(([k,v])=>tr.append(el("td",k==="n"?"n":null,v==null?"":String(v))));tb.append(tr)});
+  if(!(d.runs||[]).length){const tr=el("tr"),td=el("td",null,"No runs recorded yet.");td.colSpan=7;tr.append(td);tb.append(tr)}
+}
+
+function download(name,type,text){const u=URL.createObjectURL(new Blob([text],{type}));const a=el("a");a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000)}
+$("x-json").onclick=()=>{if(!DATA)return;download("nury-ops.json","application/json",JSON.stringify(DATA,null,2));$("x-msg").textContent="Saved nury-ops.json."};
+$("x-csv").onclick=()=>{if(!DATA)return;const rows=[["time","crisis","stages","attempts","cost_usd","latency_s","outcome"],...(DATA.runs||[]).map(r=>[r.t,r.crisis,r.stages,r.attempts,r.cost,r.latency_s,r.outcome])];
+  download("nury-runs.csv","text/csv",rows.map(r=>r.map(v=>/[",\n]/.test(String(v))?'"'+String(v).replace(/"/g,'""')+'"':v).join(",")).join("\n")+"\n");$("x-msg").textContent="Saved nury-runs.csv."};
+
+function evcards(box,sets){box.replaceChildren();
+  if(!sets.length){box.append(el("p","empty","No scorecard found."));return}
+  sets.forEach(s=>{const c=el("div","card");c.append(el("b",null,`${s.judge_pass+s.human_pass} of ${s.scenarios}`),el("div","k",s.set),
+    el("p",null,`Judge pass ${s.judge_pass}, human pass ${s.human_pass}, failed ${s.failed}, awaiting review ${s.awaiting_review}. Cost ${usd(s.cost_total)} (${usd(s.cost_per_run)} per run). Core ${s.core_commit||"n/a"}.`));c.title="Scenarios passed by the judges or by a person, out of all scenarios in the set.";box.append(c)})}
+let polling=null;
+function smokeState(e){
+  const st=e.state,run=st.running;$("smoke-bar").hidden=!run;$("smoke-btn").disabled=run||!e.smoke.enabled;
+  $("smoke-out").textContent=run?st.progress:(st.error||(st.result?"Done.":""));$("smoke-out").classList.toggle("bad",!!st.error);
+  $("smoke-res").replaceChildren();if(st.result)evcards($("smoke-res"),[st.result]);
+  if(run&&!polling)polling=setInterval(loadEvals,3000);if(!run&&polling){clearInterval(polling);polling=null}}
+async function loadEvals(){const r=await getJSON("/api/evals");if(!r.ok){$("smoke-note").textContent="The evaluation summary could not be loaded.";return}
+  const e=r.body;evcards($("evcards"),e.sets);
+  $("smoke-note").textContent=e.smoke.enabled?e.smoke.note:"Evaluation runs are switched off on this server (set NURY_ALLOW_EVAL_RUN=1 to allow them).";
+  $("smoke-btn").dataset.estimate=e.smoke.estimate_usd;smoke=e;smokeState(e)}
+let smoke=null;
+$("smoke-btn").onclick=()=>{if(!smoke||!smoke.smoke.enabled)return;$("confirm-p").textContent=`This runs ${smoke.smoke.scenarios} scenarios against the real service. It will spend about $${smoke.smoke.estimate_usd.toFixed(2)} of Gloo credit. Jev is billed on its own key. Nothing else will run beside it.`;$("confirm").showModal()};
+$("confirm-no").onclick=()=>$("confirm").close();
+$("confirm").addEventListener("click",e=>{if(e.target.id==="confirm")$("confirm").close()});
+$("confirm-go").onclick=async()=>{$("confirm").close();const r=await getJSON("/api/evals/smoke",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({confirm:true,estimate_usd:smoke.smoke.estimate_usd})});
+  if(!r.ok){$("smoke-out").textContent=(r.body&&r.body.error)||"Could not start the run.";$("smoke-out").classList.add("bad")}await loadEvals()};
+
+(async()=>{const r=await getJSON("/api/ops");
+  if(!r.ok||!r.body){$("src").textContent="No data";$("load-err").hidden=false;$("load-err").textContent="The numbers could not be loaded. Check that the server is running.";return}
+  DATA=r.body;render(DATA);loadEvals()})();
+})();
+</script>
+</body>
+</html>

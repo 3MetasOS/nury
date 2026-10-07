@@ -25,7 +25,7 @@ def test_no_duplicate_ids_in_any_page():
 def test_every_id_used_by_the_script_exists():
     for f in STATIC.glob("*.html"):
         html, js = parts(f.name)
-        ids = set(re.findall(r'\bid="([^"]+)"', html))
+        ids = set(re.findall(r'\bid="([^"]+)"', html)) | set(re.findall(r'\bid="([^"]+)"', (STATIC / "shell.js").read_text(encoding="utf-8")))
         used = set(re.findall(r'\$\("([^"]+)"\)', js)) | set(re.findall(r'getElementById\("([^"]+)"\)', js))
         missing = sorted(u for u in used if u not in ids)
         assert not missing, f"{f.name}: script uses ids that are not in the page: {missing}"
@@ -40,6 +40,135 @@ def test_no_storage_location_wording_in_user_facing_text():
     """The app will run on a server. It must not say where data is kept ('on this computer', 'stays here', 'local', 'on your device')."""
     terms = re.compile(r"this computer|stays? here|stays? on (this|your)|\blocal(ly)?\b|your device|this device|your computer|never leaves|on-?device", re.I)
     for f in STATIC.glob("*.html"):
+        if f.name == "how-it-was-built.html":      # technical documentation: held to the narrower rule below
+            continue
         s = re.sub(r"<style>.*?</style>", "", f.read_text(encoding="utf-8"), flags=re.S)
         hits = [l.strip()[:80] for l in s.splitlines() if terms.search(l)]
         assert not hits, f"{f.name}: {hits}"
+
+
+# ---- the shared shell (one header for every page) ----
+
+SHELL_IDS = set(re.findall(r'\bid="([^"]+)"', (STATIC / "shell.js").read_text(encoding="utf-8")))
+
+
+def test_every_page_uses_the_shared_shell_and_defines_no_header_of_its_own():
+    pages = list(STATIC.glob("*.html"))
+    assert {p.name for p in pages} >= {"index.html", "network.html"}
+    for f in pages:
+        s = f.read_text(encoding="utf-8")
+        assert '<link rel="stylesheet" href="/shell.css">' in s, f"{f.name} must load /shell.css"
+        assert '<script src="/shell.js"></script>' in s, f"{f.name} must load /shell.js"
+        assert "<header" not in s, f"{f.name} defines its own <header>; the shell supplies it"
+        assert 'class="top"' not in s and 'class="tabs"' not in s, f"{f.name} defines its own top bar or tabs"
+        assert "googleapis" not in s, f"{f.name} loads fonts from Google; fonts are self-hosted"
+        assert re.search(r'<body[^>]*data-nav="|NuryShell\.setActive', s), f"{f.name} must say which tab is active"
+
+
+def test_shell_has_logo_three_nav_items_toggle_and_how_link_and_no_popup():
+    js = (STATIC / "shell.js").read_text(encoding="utf-8")
+    assert js.count('<header class="top"') == 1
+    for token in ('i-mark', 'data-nav="home"', 'data-nav="cases"', 'data-nav="network"', 'id="theme"', 'id="how-link"', 'href="/how-it-was-built"'):
+        assert token in js, token
+    assert "<dialog" not in js and 'id="about"' not in js, "the About popup is gone; the page replaces it"
+    assert "An AI Crisis Response Agent" in js and "solo pastor" not in js
+    css = (STATIC / "shell.css").read_text(encoding="utf-8")
+    assert "@font-face" in css and ".top{" in css and ".tabs{" in css
+
+
+def test_pages_do_not_redefine_shell_rules():
+    for f in STATIC.glob("*.html"):
+        s = f.read_text(encoding="utf-8")
+        style = "".join(re.findall(r"<style>(.*?)</style>", s, re.S))
+        for rule in (".top{", ".top .wrap", ".brand{", ".tabs{", ".tabs a{", ".iconbtn{", "dialog.sheet{", "@font-face"):
+            assert rule not in style, f"{f.name} redefines shell rule {rule}"
+
+
+def test_icons_are_served_from_one_file():
+    assert (STATIC / "icons.svg").is_file()
+    for f in STATIC.glob("*.html"):
+        assert "<symbol" not in f.read_text(encoding="utf-8"), f"{f.name} inlines icons"
+
+
+def test_icon_sprite_is_valid_xml():
+    """An XML comment with a double hyphen made the sprite unparseable as a file: every icon vanished, and no test saw it."""
+    import xml.dom.minidom
+    d = xml.dom.minidom.parse(str(STATIC / "icons.svg"))
+    assert len(d.getElementsByTagName("symbol")) >= 39
+    ids = {e.getAttribute("id") for e in d.getElementsByTagName("symbol")}
+    for f in STATIC.glob("*.html"):
+        used = set(re.findall(r'/icons\.svg#([a-z0-9-]+)', f.read_text(encoding="utf-8")))
+        assert used <= ids, f"{f.name} uses icons that are not in the sprite: {sorted(used - ids)}"
+    shell_used = set(re.findall(r'IC\("([a-z0-9-]+)"', (STATIC / "shell.js").read_text(encoding="utf-8")))
+    assert shell_used <= ids, sorted(shell_used - ids)
+
+
+def test_how_it_was_built_page():
+    page = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
+    assert 'data-live="rules"' in page and 'data-live="playbooks"' in page, "the two live markers must stay"
+    assert "LIVE:" not in page, "no raw marker left in the page"
+    assert "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules." in page
+    assert "solo pastor" not in page.lower() and "local computer" not in page.lower()
+    assert "<dialog" not in page and "prior project" not in page
+
+
+def test_live_rules_table_lists_every_named_check_in_the_registry():
+    import sys
+    sys.path.insert(0, str(STATIC.parents[1]))
+    sys.path.insert(0, str(STATIC.parents[2]))
+    from app import rules_info
+    from nury import checks
+    d = rules_info.rules()
+    named = [r["name"] for r in d["rules"] if r["kind"] == "check"]
+    assert sorted(named) == sorted(checks.REGISTRY), "the live table must list every check in the registry"
+    assert len(d["rules"]) == d["count_floor"] + d["count_named"] + d["count_jev"]
+    assert d["count_floor"] >= 5 and d["count_jev"] >= 1
+    for r in d["rules"]:
+        assert len(r["explanation"]) >= 20, f"{r['name']} has no plain explanation"
+        assert r["stages"], f"{r['name']} lists no stages"
+
+
+def test_every_check_a_stage_names_is_in_the_registry():
+    import sys
+    sys.path.insert(0, str(STATIC.parents[2]))
+    from nury import checks
+    from app import rules_info
+    for use in rules_info._usage():
+        assert use in checks.REGISTRY, f"stages.json names an unknown check: {use}"
+
+
+def test_playbook_detail_api_is_safe_and_complete():
+    import sys
+    sys.path.insert(0, str(STATIC.parents[1]))
+    sys.path.insert(0, str(STATIC.parents[2]))
+    from app import rules_info
+    d = rules_info.playbook_detail("detention")
+    assert len(d["stages"]) == 5 and d["outcomes"]
+    assert rules_info.playbook_detail("../detention") is None and rules_info.playbook_detail("nope") is None
+
+
+def test_built_page_is_current_with_its_source():
+    """The page is generated. If the Markdown or the template changed, rebuild: python3 -m app.build_docs (from code/)."""
+    import importlib, sys
+    try:
+        import markdown  # noqa: F401
+    except ImportError:
+        import pytest
+        pytest.skip("python-markdown is a build-time tool and is not installed here")
+    sys.path.insert(0, str(STATIC.parents[1]))
+    sys.path.insert(0, str(STATIC.parents[2]))
+    from app import build_docs
+    importlib.reload(build_docs)
+    before = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
+    try:
+        build_docs.build()
+        after = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
+    finally:
+        (STATIC / "how-it-was-built.html").write_text(before, encoding="utf-8")
+    assert before == after, "how-it-was-built.html is stale: run python3 -m app.build_docs"
+
+
+def test_how_it_was_built_has_no_computer_or_device_wording():
+    """The documentation may say 'a local .env file' (a file name). It may not say where the pastor's data sits."""
+    s = re.sub(r"<style>.*?</style>", "", (STATIC / "how-it-was-built.html").read_text(encoding="utf-8"), flags=re.S)
+    assert not re.search(r"this computer|your computer|local computer|your device|this device|on-?device|stays? on (this|your)", s, re.I)

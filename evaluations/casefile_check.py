@@ -70,7 +70,14 @@ def note_usage(label, results):
 
 def tree_hash(d):
     import hashlib
-    return {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(Path(d).iterdir()) if p.is_file()}
+    def digest(p):
+        data = p.read_bytes()
+        if p.name == "case.json":   # the follow-up flag may change in an old version; every other key and file may not
+            import json as _j
+            m = _j.loads(data.decode("utf-8")); m.pop("needs_follow_up", None)
+            data = _j.dumps(m, sort_keys=True).encode()
+        return hashlib.sha256(data).hexdigest()
+    return {p.name: digest(p) for p in sorted(Path(d).iterdir()) if p.is_file()}
 
 
 def revise_and_check(sc, saved, root, ids, secrets, cf, run_scripted):

@@ -399,6 +399,10 @@ class H(BaseHTTPRequestHandler):
             return
         if p == "/network" and (STATIC / "network.html").is_file():
             p = "/network.html"
+        elif p in ("/how-it-was-built", "/how-it-was-built/"):
+            p = "/how-it-was-built.html"
+        elif p in ("/observability", "/observability/"):
+            p = "/observability.html"
         if STATIC_OK.match(p) and (STATIC / p[1:]).is_file() and p != "/index.html":
             b = (STATIC / p[1:]).read_bytes()
             self.send_response(200)
@@ -408,6 +412,19 @@ class H(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(b)))
             self.end_headers()
             self.wfile.write(b)
+        elif p == "/api/ops":
+            from app import evals_api
+            self._json(evals_api.ops())
+        elif p == "/api/evals":
+            from app import evals_api
+            self._json(evals_api.evals())
+        elif p == "/api/rules":
+            from app import rules_info
+            self._json(rules_info.rules())
+        elif p.startswith("/api/playbook/"):
+            from app import rules_info
+            d = rules_info.playbook_detail(p.split("/")[3])
+            self._json(d if d else {"error": "unknown playbook"}, 200 if d else 404)
         elif p == "/api/features":
             self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up")})
         elif p == "/":
@@ -506,17 +523,26 @@ class H(BaseHTTPRequestHandler):
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s
             self._json({"id": s.id})
+        elif p == "/api/evals/smoke":
+            from app import evals_api
+            code, payload = evals_api.start_smoke(b if isinstance(b, dict) else {})
+            self._json(payload, code)
         elif p.startswith("/api/case/") and p.endswith("/followup"):
             cid = urllib.parse.unquote(p.split("/")[3])
             if not CASE_ID.match(cid):
                 return self._json({"error": "bad id"}, 400)
             if not hasattr(cf, "set_follow_up"):
                 return self._json({"error": "Follow-up flags are not available in this build."}, 501)
+            if not isinstance(b.get("value"), bool):
+                return self._json({"error": "value must be true or false"}, 400)
             try:
-                cf.set_follow_up(cid, bool(b.get("value")), CASES_ROOT)
-            except Exception:
+                cf.set_follow_up(cid, b["value"], CASES_ROOT)
+            except FileNotFoundError:
                 return self._json({"error": "case not found"}, 404)
-            self._json({"ok": True, "followup": bool(b.get("value"))})
+            except cf.CaseError as e:
+                return self._json({"error": str(e)}, 404 if str(e).startswith("no case") else 400)
+            entry = next((c for c in cases_overview() if c["id"] == cid), None)
+            self._json({"ok": True, "followup": b["value"], "case": entry})
         elif p.startswith("/api/session/") and p.endswith("/save"):
             s = SESSIONS.get(p.split("/")[3])
             if not s:
