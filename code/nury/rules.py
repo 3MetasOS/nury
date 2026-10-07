@@ -19,7 +19,7 @@ FLOOR = [
     ("link_allowlist", "Every link must come from the vetted sources or from text the pastor already approved. An invented link is rejected.", "code/nury/guardrails.py"),
     ("phone_allowlist", "Every phone number must come from the vetted sources or approved text.", "code/nury/guardrails.py"),
     ("email_allowlist", "Every email address must come from the vetted sources, approved text or the intake.", "code/nury/guardrails.py"),
-    ("disclaimer_on_every_output", "Every output ends with the disclaimer that Nury is an AI assistant, not a lawyer, doctor, pastor, counselor or therapist. A playbook cannot drop the required wording; the loader refuses it.", "code/nury/playbook.py"),
+    ("disclaimer_on_every_output", "Every output carries the disclaimer that Nury is an AI assistant, not a lawyer, doctor, pastor, counselor or therapist. A playbook cannot drop the required wording; the loader refuses it.", "code/nury/playbook.py"),
     ("three_attempts_then_the_pastor", "A rejected draft is regenerated with the reasons, not the draft. After three attempts the stage ends with no draft and 'I'll handle this manually.'", "code/nury/engine.py"),
     ("rejected_drafts_stay_hidden", "The pastor never sees a rejected draft. The audit log keeps its categories only.", "code/nury/engine.py"),
     ("approval_gate", "Every stage ends at Approve, Edit or Stop. Later stages read the approved or edited text.", "code/nury/engine.py"),
@@ -35,7 +35,7 @@ CHECKS = {
     "ends_with_referral": "The brief must end by urging the family to speak with a professional: an attorney or the care team.",
     "vetted_links_present": "Every vetted national link the stage must carry is present in the draft.",
     "required_headings": "The checklist must have its three headings, for example DO TONIGHT, DO NOT DO and GATHER THESE DOCUMENTS.",
-    "max_words": "The draft may not run past the stage's word limit (the pastoral message: 120 words of Nury's own sentences).",
+    "max_words": "The draft may not run past the stage's word limit (the pastoral message: fewer than 120 words of Nury's own sentences, the verse not counted).",
     "no_agency_names": "No government agency name or acronym appears on screen; the draft says 'immigration officers'.",
     "no_stock_phrases": "No stock AI sentence patterns, such as 'it is not just X, it is Y'.",
     "no_endorsement_words": "No word that ranks or endorses a contact, such as best or recommended. The line 'listed does not mean recommended' is allowed.",
@@ -87,7 +87,8 @@ def describe_all(playbook_ids=("detention", "hospital")):
     for n in sorted(checks_lib.REGISTRY):
         out.append(entry(n, "check", CHECKS[n], _CHECK_WHERE))
     for q in sorted(jev_gate.QUESTIONS):
-        out.append(entry("jev_" + q, "classifier", "Jev (a third-party classifier) answers this yes or no question about the draft: " + jev_gate.QUESTIONS[q] + " A probability of 0.50 or more rejects the draft.", _JEV_WHERE))
+        note = " The hospital stages ask the same question; its wording mentions detention because it is the wording that was validated." if q == "assumes_facts" else ""
+        out.append(entry("jev_" + q, "classifier", "Jev (a third-party classifier) answers this yes or no question about the draft: " + jev_gate.QUESTIONS[q] + f" A probability of {jev_gate.line(q):.2f} or more rejects the draft." + note, _JEV_WHERE))
     return out
 
 

@@ -39,6 +39,20 @@ class Rules(unittest.TestCase):
         self.assertEqual(sorted(used["no_agency_names"]["playbooks"]), ["detention"])
         self.assertFalse([e["name"] for e in self.all if e["kind"] == "check" and not e["stages"]])
 
+    def test_each_jev_entry_states_its_own_reject_line_and_hospital_note_is_there(self):
+        by = {e["name"]: e for e in self.all}
+        self.assertIn("A probability of 0.60 or more rejects", by["jev_assumes_facts"]["explanation"])
+        self.assertIn("hospital stages ask the same question", by["jev_assumes_facts"]["explanation"])
+        for q in jev_gate.QUESTIONS:
+            self.assertIn(f"A probability of {jev_gate.line(q):.2f} or more rejects", by["jev_" + q]["explanation"], q)
+            if q != "assumes_facts":
+                self.assertIn("0.50 or more", by["jev_" + q]["explanation"], q)
+
+    def test_the_word_limit_and_disclaimer_wording_match_the_code(self):
+        by = {e["name"]: e for e in self.all}
+        self.assertIn("fewer than 120", by["max_words"]["explanation"])
+        self.assertIn("carries the disclaimer", by["disclaimer_on_every_output"]["explanation"])
+
     def test_floor_rules_are_listed_and_describing_changes_nothing(self):
         floor = [e["name"] for e in self.all if e["kind"] == "floor"]
         for n in ("banned_phrases", "three_attempts_then_the_pastor", "no_send_path", "tokens_not_names", "disclaimer_on_every_output"):
