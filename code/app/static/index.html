@@ -139,10 +139,10 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .scene{display:block;width:100%;height:auto;aspect-ratio:8/3;color:var(--scene)}
 .muted{color:var(--muted)}.sm{font-size:14px}
 .nvcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
-.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:0 12px;margin-bottom:12px}
 .sec-h h2{margin:0}
-.sec-h{flex-wrap:wrap}.sec-h .hnote{order:3;flex-basis:100%;margin:-6px 0 4px}
-.sec-h a{font-size:14px;font-weight:600;color:var(--amber-text);text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+.sec-h{flex-wrap:wrap}.sec-h:has(.hnote){margin-bottom:0}.sec-h h2{line-height:1.2}.sec-h .hnote{order:3;flex-basis:100%;margin:1px 0 14px}
+.sec-h a{font-size:14px;font-weight:600;color:var(--amber-text);text-underline-offset:3px;display:inline-flex;align-items:center;padding:13px 0;margin:-13px 0}
 /* status chips */
 .scs{display:flex;flex-wrap:wrap;gap:6px}
 .sc{display:inline-flex;align-items:center;gap:4px;min-height:26px;padding:0 9px;border-radius:99px;font:600 13px/1 var(--sans);border:1px solid var(--line-2);color:var(--text);background:transparent;white-space:nowrap}
