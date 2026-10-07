@@ -134,7 +134,39 @@ def phone_reasons(text, *allowed_blobs):
 
 
 # ---- email allowlist: an email must come from the vetted sources, the approved text, or the intake ----
-_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
+class LinearEmail:
+    """An email pattern that is scanned in linear time and finds exactly what the plain pattern
+    `[\\w.+\\-]+@<domain>` finds. The plain pattern is quadratic on a long unbroken token (it retries from every letter).
+    A start is tried only where a run of local-part characters begins, and at the end of the previous match, which are
+    the only places the plain pattern can succeed. tests/test_hardening.py proves the equality on 20,000 strings."""
+    LOCAL = r"[\w.+\-]+@"
+
+    def __init__(self, domain):
+        self._adj = re.compile(self.LOCAL + domain)                      # used with .match(text, pos) only
+        self._run = re.compile(r"(?<![\w.+\-])" + self.LOCAL + domain)    # a start at the beginning of a run
+        self.pattern = self._adj.pattern
+
+    def finditer(self, text):
+        pos, n = 0, len(text)
+        while pos <= n:
+            m = self._adj.match(text, pos) or self._run.search(text, pos)
+            if not m:
+                return
+            yield m
+            pos = m.end()
+
+    def findall(self, text):
+        return [m.group(1) if self._adj.groups else m.group(0) for m in self.finditer(text)]
+
+    def sub(self, repl, text):
+        out, last = [], 0
+        for m in self.finditer(text):
+            out += [text[last:m.start()], repl(m) if callable(repl) else repl]
+            last = m.end()
+        return "".join(out) + text[last:]
+
+
+_EMAIL_IN_TEXT = LinearEmail(r"([\w\-]+(?:\.[\w\-]+)+)")
 
 
 def email_reasons(text, vetted_blob, *known_blobs):

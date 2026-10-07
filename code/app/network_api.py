@@ -46,7 +46,12 @@ def handle(method, path, body=b""):
         data = json.loads(body.decode("utf-8")) if body else {}
     except ValueError:
         return _out(400, {"error": "that was not valid JSON"})
-    n = net.load_network(_root())
+    if not isinstance(data, dict):
+        return _out(400, {"error": "the request must be a JSON object"})
+    try:
+        n = net.load_network(_root())
+    except (ValueError, OSError):
+        return _out(500, {"error": "the church network file could not be read"})
     try:
         if method == "GET" and p == "/api/network":
             return _out(200, snapshot())
@@ -81,6 +86,10 @@ def handle(method, path, body=b""):
         return _out(404, {"error": "not found"})
     except net.NetworkError as e:
         return _out(400, {"error": str(e)})
+    except (ValueError, OSError):            # a damaged or unreadable network file: the pastor's request was fine
+        return _out(500, {"error": "the church network file could not be read or written"})
+    except (KeyError, TypeError, AttributeError):         # a field of the wrong kind: a plain answer, never a dropped connection
+        return _out(400, {"error": "that request could not be used"})
 
 
 class _H(BaseHTTPRequestHandler):

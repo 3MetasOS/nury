@@ -543,7 +543,7 @@ function fmt(el,text){
 }
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
-let sid=null,timer=null,lastGate=null;
+let sid=null,timer=null,lastGate=null,gateStage=null;
 function renderChips(stage){const row=$("fb-row");row.classList.toggle("hidden",!(FEATURES.feedback&&(FEATURES.chips||[]).length));$("fb-msg").textContent="";
   $("fb-chips").replaceChildren(...(FEATURES.chips||[]).map(c=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=c.label;b.setAttribute("aria-pressed","false");
     b.onclick=async()=>{const r=await api("/api/feedback",{session:sid,stage,chip:c.slug});          // optional, never blocks Approve
@@ -800,7 +800,7 @@ async function startRun(protectedList){
 }
 $("b-new1").onclick=()=>{clearInterval(timer);sid=null;show("v-intake")};      // Try again: the same words, ready to begin again
 $("b-new2").onclick=()=>{clearInterval(timer);sid=null;allowLeave=true;go("#/")};
-const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
+const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text,stage:gateStage});   // the stage the pastor is looking at: a late click cannot approve the next draft
 $("b-approve").onclick=()=>{lock();decide("approve")};
 $("b-stop").onclick=()=>{lock();decide("stop")};
 $("b-edit").onclick=()=>{$("g-edit").value=rawDraft;$("g-draft").classList.add("hidden");
@@ -871,6 +871,7 @@ async function poll(){
   $("gate").classList.toggle("hidden",!g);
   $("work").classList.toggle("hidden",!!g||!!halted);
   if(g){
+    gateStage=g.id;
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;

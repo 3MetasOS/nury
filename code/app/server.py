@@ -12,6 +12,7 @@ import uuid
 import urllib.parse
 import difflib
 import textwrap
+import time
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -35,6 +36,44 @@ MIME = {"woff2": "font/woff2", "html": "text/html; charset=utf-8", "css": "text/
 CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # saved by the app on the server's disk, gitignored
 CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
+
+# Hardening limits (documents/product/CODE_REVIEW.md). Each can be raised with an environment variable.
+MAX_BODY = 1_000_000          # bytes of any request body
+MAX_INTAKE = 20_000           # characters of an intake, a revision note or a pastor's edit
+MAX_PROTECTED, MAX_TERM = 50, 80
+MAX_BUSY = int(os.environ.get("NURY_MAX_BUSY", "3"))            # runs writing at the same time (a run waiting at a gate costs nothing)
+MAX_SESSIONS = int(os.environ.get("NURY_MAX_SESSIONS", "50"))
+SESSION_TTL_S = int(os.environ.get("NURY_SESSION_TTL_S", str(4 * 3600)))
+RUN_CALL_BUDGET = int(os.environ.get("NURY_RUN_CALL_BUDGET", "60"))   # Gloo HTTP calls one run may make (a normal run makes 5 to 12)
+SEC_HEADERS = (("X-Content-Type-Options", "nosniff"), ("X-Frame-Options", "DENY"), ("Referrer-Policy", "no-referrer"),
+               ("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
+                "img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; "
+                "form-action 'self'; frame-ancestors 'none'"))
+
+
+class BadRequest(Exception):
+    def __init__(self, message, code=400):
+        super().__init__(message)
+        self.message, self.code = message, code
+
+
+def busy_count():
+    """Sessions that are writing a draft now. A session waiting at a gate or finished is not busy."""
+    return sum(1 for x in list(SESSIONS.values()) if not x.done and x.waiting is None)
+
+
+def purge_sessions(now=None):
+    """Drop sessions older than the TTL (a run left at a gate is stopped first) and, over the cap, the oldest finished ones."""
+    now = time.time() if now is None else now
+    for sid, x in list(SESSIONS.items()):
+        if now - getattr(x, "created", now) > SESSION_TTL_S:
+            if not x.done and hasattr(x, "abandon"):
+                x.abandon()
+            SESSIONS.pop(sid, None)
+    over = len(SESSIONS) - MAX_SESSIONS
+    if over > 0:
+        for sid in sorted((k for k, x in SESSIONS.items() if x.done), key=lambda k: SESSIONS[k].created)[:over]:
+            SESSIONS.pop(sid, None)
 GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
 
 
@@ -201,6 +240,8 @@ def safe_event(e):
 class Session:
     def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None, revision=None):
         self.id = uuid.uuid4().hex[:12]
+        self.created = time.time()
+        self.abandoned = False
         self.pb = get_playbook(playbook_id)
         self.language = language
         self.intake = intake
@@ -219,6 +260,9 @@ class Session:
                 self.client.allow_network(net.load_network(root=str(Path(CASES_ROOT).parent / "network")).list())
         except Exception:
             pass
+        inner = getattr(self.client, "inner", self.client)
+        if hasattr(inner, "max_calls"):           # the most Gloo HTTP calls this one run may make
+            inner.max_calls = RUN_CALL_BUDGET
         self.state = CaseState(intake, language)
         self.audit = AuditLog()
         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
@@ -246,6 +290,8 @@ class Session:
 
     def gate(self, result):
         with self.cv:
+            if self.abandoned:                      # the session expired while this draft was being written
+                return GateDecision("stop", None)
             self.waiting, self.decision = result, None
             self.cv.wait_for(lambda: self.decision is not None)
             d, self.waiting = self.decision, None
@@ -314,13 +360,25 @@ class Session:
         except Exception:
             return None
 
-    def decide(self, action, text=None):
+    def decide(self, action, text=None, stage=None):
+        """Record the pastor's decision for the draft that is waiting. When stage is given it must be that draft's stage:
+        a double click, a second tab or a late click can never approve a draft the pastor has not seen."""
         with self.cv:
             if self.waiting is None:
+                return False
+            if stage is not None and stage != self.waiting.stage_id:
                 return False
             self.decision = GateDecision(action, text)
             self.cv.notify_all()
             return True
+
+    def abandon(self):
+        """Stop a run nobody is watching any more (called when its session expires)."""
+        with self.cv:
+            self.abandoned = True
+            if self.waiting is not None and self.decision is None:
+                self.decision = GateDecision("stop", None)
+                self.cv.notify_all()
 
     def progress(self, ev):
         """What the engine is doing right now, read from real audit events. No timers, no guesses.
@@ -387,6 +445,35 @@ class Session:
 
 
 class H(BaseHTTPRequestHandler):
+    timeout = 30      # seconds a connection may stall before the server drops it
+
+    def end_headers(self):
+        for k, v in SEC_HEADERS:
+            self.send_header(k, v)
+        super().end_headers()
+
+    def _hosts(self):
+        port = self.server.server_address[1]
+        hosts = {f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"}
+        hosts |= {h.strip().lower() for h in os.environ.get("NURY_ALLOWED_HOSTS", "").split(",") if h.strip()}
+        return hosts
+
+    def _guard(self, write):
+        """False (and a 403 or 415 is sent) unless the request is for this server: a Host we serve, an Origin that is us
+        (or absent), and, for a change, a JSON body. This stops a web page the pastor opens from driving the app."""
+        hosts = self._hosts()
+        if (self.headers.get("Host") or "").lower() not in hosts:
+            self._json({"error": "This address is not allowed."}, 403)
+            return False
+        origin = self.headers.get("Origin")
+        if origin is not None and origin.lower() not in {"http://" + h for h in hosts}:
+            self._json({"error": "This request came from another site."}, 403)
+            return False
+        if write and (self.headers.get("Content-Type") or "").split(";")[0].strip().lower() != "application/json":
+            self._json({"error": "Send JSON."}, 415)
+            return False
+        return True
+
     def _json(self, obj, code=200):
         b = json.dumps(obj, ensure_ascii=False).encode()
         self.send_response(code)
@@ -398,7 +485,18 @@ class H(BaseHTTPRequestHandler):
 
     def _raw(self):
         if not hasattr(self, "_rawcache"):
-            self._rawcache = self.rfile.read(int(self.headers.get("Content-Length") or 0))
+            try:
+                n = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                raise BadRequest("The request length was not a number.")
+            if n < 0:
+                raise BadRequest("The request length was not valid.")
+            if n > MAX_BODY:
+                raise BadRequest("The request is too large.", 413)
+            try:
+                self._rawcache = self.rfile.read(n)
+            except OSError:                                   # a stalled client: the socket timeout fired
+                raise BadRequest("The request took too long.", 408)
         return self._rawcache
 
     def _body(self):
@@ -418,12 +516,30 @@ class H(BaseHTTPRequestHandler):
         return True
 
     def do_PUT(self):
-        self._network("PUT", self.path) or self._json({"error": "not found"}, 404)
+        if not self._guard(True):
+            return
+        try:
+            self._network("PUT", self.path) or self._json({"error": "not found"}, 404)
+        except BadRequest as e:
+            self._json({"error": e.message}, e.code)
 
     def do_DELETE(self):
-        self._network("DELETE", self.path) or self._json({"error": "not found"}, 404)
+        if not self._guard(True):
+            return
+        try:
+            self._network("DELETE", self.path) or self._json({"error": "not found"}, 404)
+        except BadRequest as e:
+            self._json({"error": e.message}, e.code)
 
     def do_GET(self):
+        if not self._guard(False):
+            return
+        try:
+            self._get()
+        except BadRequest as e:
+            self._json({"error": e.message}, e.code)
+
+    def _get(self):
         p = self.path.split("?")[0]
         if self._network("GET", p):
             return
@@ -508,7 +624,11 @@ class H(BaseHTTPRequestHandler):
             if not CASE_ID.match(cid):
                 return self._json({"error": "bad id"}, 400)
             try:
-                z = Path(cf.export_zip(cid, CASES_ROOT)).read_bytes()
+                zp = Path(cf.export_zip(cid, CASES_ROOT, include_privacy_map="include_map=1" in self.path))
+                try:
+                    z = zp.read_bytes()
+                finally:
+                    zp.unlink(missing_ok=True)          # no copy of the case is left behind on the server
             except Exception:
                 return self._json({"error": "case not found"}, 404)
             self.send_response(200)
@@ -538,6 +658,14 @@ class H(BaseHTTPRequestHandler):
             self._json({"error": "not found"}, 404)
 
     def do_POST(self):
+        if not self._guard(True):
+            return
+        try:
+            self._post()
+        except BadRequest as e:
+            self._json({"error": e.message}, e.code)
+
+    def _post(self):
         p = self.path
         if self._network("POST", p):
             return
@@ -548,6 +676,8 @@ class H(BaseHTTPRequestHandler):
         if not isinstance(b, dict):
             return self._json({"error": "The request must be a JSON object."}, 400)
         if p == "/api/propose-terms":
+            if len(str(b.get("intake") or "")) > MAX_INTAKE:
+                return self._json({"error": f"That is too long. Keep it under {MAX_INTAKE:,} characters."}, 400)
             self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
         elif p == "/api/revision-preview":
             try:
@@ -571,10 +701,19 @@ class H(BaseHTTPRequestHandler):
                 b["playbook"], b["language"] = meta["playbook"], meta.get("language", "es")
             if not intake:
                 return self._json({"error": "Type what the family told you."}, 400)
+            if len(intake) > MAX_INTAKE or (rev and len(str(rev.get("note", ""))) > MAX_INTAKE):
+                return self._json({"error": f"That is too long. Keep it under {MAX_INTAKE:,} characters."}, 400)
             pid = b.get("playbook") or "detention"
             chosen = next((p for p in playbooks() if p["id"] == pid), None)
             if not chosen or chosen["status"] != "live":
                 return self._json({"error": "That crisis is not available yet."}, 400)
+            if b.get("language", "es") not in chosen.get("languages", ["es"]):
+                return self._json({"error": "That language is not available for this crisis."}, 400)
+            if isinstance(b.get("protected"), list) and (len(b["protected"]) > MAX_PROTECTED or any(len(str(t.get("term", "") if isinstance(t, dict) else t)) > MAX_TERM for t in b["protected"])):
+                return self._json({"error": "Too many protected names, or a name is too long."}, 400)
+            purge_sessions()
+            if busy_count() >= MAX_BUSY:
+                return self._json({"error": "Nury is busy with other drafts. Try again in a minute."}, 429)
             try:
                 prot = b.get("protected")
                 prot = [{"term": str(t.get("term", "")).strip(), "kind": t.get("kind", "person")} for t in prot if str(t.get("term", "")).strip()] if isinstance(prot, list) else None
@@ -582,6 +721,8 @@ class H(BaseHTTPRequestHandler):
                             {"case_id": rev["case_id"], "step": rev.get("step", ""), "result": rev.get("result", ""), "note": rev["note"]} if rev else None)
             except PlaybookError:
                 return self._json({"error": "That crisis is not available yet."}, 400)
+            except Exception:                           # for example a missing key: say so in plain words, never drop the connection
+                return self._json({"error": "Nury could not start. Check that the server has its keys, then try again."}, 500)
             SESSIONS[s.id] = s
             if rev and str(rev.get("result", "")).strip():
                 try:   # the 'Something changed' outcome, counted without the pastor's note
@@ -634,7 +775,10 @@ class H(BaseHTTPRequestHandler):
             act = b.get("action")
             if not s or act not in ("approve", "edit", "stop") or (act == "edit" and not (b.get("text") or "").strip()):
                 return self._json({"error": "bad request"}, 400)
-            self._json({"ok": s.decide(act, b.get("text"))})
+            if not isinstance(b.get("stage"), str) or len(str(b.get("text") or "")) > MAX_INTAKE:
+                return self._json({"error": "bad request"}, 400)
+            ok = s.decide(act, b.get("text"), stage=b["stage"])
+            self._json({"ok": ok}, 200 if ok else 409)
         else:
             self._json({"error": "not found"}, 404)
 

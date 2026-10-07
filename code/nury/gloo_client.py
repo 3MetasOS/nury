@@ -68,6 +68,10 @@ def load_env():
             return
 
 
+class CallBudgetExceeded(Exception):
+    """One run tried to make more Gloo HTTP calls than its budget allows."""
+
+
 class GuardrailBlock(Exception):
     """Gloo guardrails hard-blocked the request (HTTP 403)."""
 
@@ -84,6 +88,8 @@ class GlooClient:
             raise RuntimeError("Set GLOO_API_KEY in the environment.")
         self.base_url = (base_url or BASE_URL).rstrip("/")
         self.model = model or os.environ.get("GLOO_MODEL", DEFAULT_MODEL)
+        self.max_calls = None      # set by the app: the most HTTP calls this client may make (None = no limit)
+        self.calls = 0
 
     def respond(self, user_input, instructions=None, model=None, **kwargs):
         """Return (json, meta). meta has latency_s and token counts."""
@@ -91,9 +97,15 @@ class GlooClient:
         if instructions:
             payload["instructions"] = instructions
         payload.update(kwargs)
+        cap = os.environ.get("NURY_MAX_OUTPUT_TOKENS", "").strip()
+        if cap.isdigit() and "max_output_tokens" not in payload:   # off unless set: confirm the endpoint accepts it with one live call first
+            payload["max_output_tokens"] = int(cap)
         t0 = time.monotonic()
         retries = 0
         while True:
+            if self.max_calls is not None and self.calls >= self.max_calls:
+                raise CallBudgetExceeded(f"more than {self.max_calls} calls in one run")
+            self.calls += 1
             try:
                 resp = requests.post(
                     f"{self.base_url}/responses",

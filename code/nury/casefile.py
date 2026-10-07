@@ -346,12 +346,13 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     if d.exists():
         raise CaseError(f"case {cid} already exists")
     d.mkdir(parents=True)
+    os.chmod(d, 0o700)                       # a case holds real names: owner only
     for name, text in files.items():
-        (d / name).write_text(text, encoding="utf-8")
-    (d / "case.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        _write_private(d / name, text)
+    _write_private(d / "case.json", json.dumps(manifest, indent=2))
     if pmap:
-        (d / "privacy-map.json").write_text(json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
-                                                       indent=2, ensure_ascii=False), encoding="utf-8")
+        _write_private(d / "privacy-map.json", json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
+                                                          indent=2, ensure_ascii=False))
     return {"id": cid, "path": str(d), "files": manifest["files"]}
 
 
@@ -388,7 +389,7 @@ def set_follow_up(case_id, value, root=DEFAULT_ROOT) -> dict:
     m = json.loads(f.read_text(encoding="utf-8"))
     m["needs_follow_up"] = value
     tmp = f.with_suffix(".json.tmp")
-    tmp.write_text(json.dumps(m, indent=2), encoding="utf-8")
+    _write_private(tmp, json.dumps(m, indent=2))
     tmp.replace(f)
     return m
 
@@ -401,12 +402,21 @@ def load_case(case_id, root=DEFAULT_ROOT) -> dict:
     return {"meta": meta, "pages": pages, "svg": (d / "nextsteps.svg").read_text(encoding="utf-8")}
 
 
-def export_zip(case_id, root=DEFAULT_ROOT, dest=None) -> str:
-    """Zip the case folder. Returns the zip path (default: <root>/<id>.zip)."""
+def _write_private(path, text):
+    """Write a text file readable by its owner only (0600). The file never exists with wider rights."""
+    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
+        f.write(text)
+
+
+def export_zip(case_id, root=DEFAULT_ROOT, dest=None, include_privacy_map=False) -> str:
+    """Zip the case folder. Returns the zip path (default: <root>/<id>.zip). The token map with the real names
+    (privacy-map.json) is left out unless include_privacy_map is True. The caller deletes the zip once it is sent."""
     d = _case_dir(case_id, root)
     dest = Path(dest) if dest else Path(root) / f"{case_id}.zip"
     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
         for p in sorted(d.iterdir()):
-            if p.is_file():
+            if p.is_file() and (include_privacy_map or p.name != "privacy-map.json"):
                 z.write(p, f"{case_id}/{p.name}")
+    os.chmod(dest, 0o600)
     return str(dest)

@@ -17,6 +17,8 @@ import os
 import re
 import unicodedata
 
+from .guardrails import LinearEmail
+
 _TYPES = ("PERSON", "PLACE", "PHONE", "EMAIL", "ADDRESS", "DOB", "DATE", "ANUMBER", "CASE", "ID")
 _T = "|".join(_TYPES)
 _BRACKETED = re.compile(r"\[\s*(" + _T + r")[\s_\-]*(\d+)\s*\]", re.I)
@@ -45,7 +47,7 @@ _ADDR_EN = re.compile(r"(?<!\w)\d{1,6}\s+(?:(?-i:[NSEW])\.?\s+|(?:North|South|Ea
 _ADDR_ES = re.compile(r"\b(?:Calle|Avenida|Av\.|Camino|Carretera)\s+(?:[\wÁÉÍÓÚÑáéíóúñ'’.\-]+\s+){0,3}?"
                       r"(?:#|No\.?|núm\.?|número)?\s*\d{1,6}\b(?:,?\s*(?:Apt|Apartamento|Depto|Unit|#)\.?\s*[\w\-]+)?", re.I)
 _PO = re.compile(r"\bP\.?\s?O\.?\s+Box\s+\d+\b", re.I)
-_EMAIL = re.compile(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+")
+_EMAIL = LinearEmail(r"[\w\-]+(?:\.[\w\-]+)+")      # same matches as before, linear time on a long unbroken token
 _PHONE10 = re.compile(r"(?<![\w.])(?:\+?\d{1,3}[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}(?![\w])")
 _PHONE7 = re.compile(r"(?<![\d.\-])\d{3}[-.\s]\d{4}(?![\d\-])")
 _ANUM = re.compile(r"(?<![\w-])A[- ]?\d{8,9}(?!\d)")
