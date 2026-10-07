@@ -64,8 +64,6 @@ body.show-gated li[data-gated]::before{display:inline}
 @keyframes light{to{opacity:1}} @keyframes warm{from{stroke:#a39a86}to{stroke:#b8680f}}
 @media (prefers-reduced-motion:reduce){.lantern .flame{opacity:1;animation:none}.lantern .body{animation:none}}
 .photo.wide{max-height:24vh}
-.memorial{background:var(--paper);gap:3vh}.memorial .mtext{max-width:46ch;display:grid;gap:1.6vh}
-.memorial .mtext p{font-family:var(--serif);font-size:clamp(19px,2.35vw,32px);line-height:1.35;font-weight:400}
 body.nofoot .foot{visibility:hidden}
 .diagram{width:100%;height:auto;max-height:58vh;display:block}
 .diagram .bx rect{fill:var(--card);stroke:var(--ink);stroke-width:2}.diagram .bx.gl rect{fill:var(--paper);stroke:var(--amber);stroke-width:3}
@@ -115,7 +113,6 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 .slide[data-part=backup]{gap:1.6vh;padding:4.5vh 6.5vw 8vh}.slide[data-part=backup] h2{font-size:clamp(24px,2.7vw,38px)}
 .diagram{max-height:48vh}
 .slide.impact{gap:1.2vh;padding-top:3.5vh;padding-bottom:7vh}.impact .tight th,.impact .tight td{padding:.35vh 1vw .35vh 0}
-.slide.memorial{padding:4vh 6.5vw 8vh;gap:2.4vh}
 .tree{font:600 clamp(12px,1.45vw,22px)/1.6 var(--mono);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2.4vh 2vw;margin:0;color:var(--ink);white-space:pre;overflow:auto}
 .two.grow{grid-template-columns:1fr 1fr}.flow.grow li{font-size:clamp(20px,2.4vw,34px)}.flow.grow span{font-size:clamp(15px,1.7vw,24px)}
 .wf{display:grid;gap:1.6vh}.wr{display:grid;grid-template-columns:minmax(7em,10em) 1fr;gap:1.2vw;align-items:center;padding:.9vh 0;border-top:1px solid var(--line)}
@@ -302,8 +299,6 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 @media (min-width:761px){html,body{overflow:hidden}}@media print{html,body{overflow:visible}#help{display:none}}
 /* ===== build steps (engine in the script below): hidden until revealed; opacity only, so a slide never changes layout ===== */
 .pend{opacity:0!important}.pend[data-fx="light"]{opacity:.26!important}
-.slide.memorial.on{animation:slowfade 1.2s ease-out}@keyframes slowfade{from{opacity:0}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){.slide.memorial.on{animation:none}}
 .v2 .nodes{position:relative}.v2 .nodes .dotp{position:absolute;left:0;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 6px rgba(184,104,15,.25);opacity:0;pointer-events:none}
 .v2 .ln2{position:relative}.v2 .prog{position:absolute;left:1.4vw;right:1.4vw;bottom:5px;height:3px;border-radius:2px;background:var(--amber);opacity:0;pointer-events:none}
 .v2 .imgw{position:relative}.v2 .pulse{position:absolute;left:2%;top:80%;width:26.5%;height:17%;border-radius:14px;pointer-events:none;opacity:0}
@@ -330,7 +325,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p class="tagline-line">A given name from Arabic <i>nur</i>, light.</p>
 <div class="tags"><span class="tg">noun</span><span class="tg">/NOO-ree/</span></div>
 <p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">see also: lantern</span></p></div>
-<aside class="notes">LANTERN. 0:11 to 0:17. Criterion: Presentation and Concept. The slide turns from night to paper and the lantern lights. Say: "This is Nury." Pause while the entry builds (about 2 seconds), then read: "A given name from Arabic nur, light. An AI crisis response agent." Merged with the old "This is Nury." slide in the taste pass. Brand line locked: An AI Crisis Response Agent. Presenter credit line (cut from the slide, say it only if asked): Juan Peláez, 3Metas, Gloo AI Hackathon, Track 1. APPROVED by Juan. Do not say her name here: it appears once, in the memorial. Pronunciation /NOO-ree/. SOURCES: (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
+<aside class="notes">LANTERN. 0:11 to 0:17. Criterion: Presentation and Concept. The slide turns from night to paper and the lantern lights. Say: "This is Nury." Pause while the entry builds (about 2 seconds), then read: "A given name from Arabic nur, light. An AI crisis response agent." Merged with the old "This is Nury." slide in the taste pass. Brand line locked: An AI Crisis Response Agent. Presenter credit line (cut from the slide, say it only if asked): Juan Peláez, 3Metas, Gloo AI Hackathon, Track 1. APPROVED by Juan. Do not say her name here: it appears once, in the small memorial note on the Close slide. Pronunciation /NOO-ree/. SOURCES: (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
 
 <section class="slide v2 engs" data-part="talk" data-name="one-engine">
 <p class="lbl">03 · The product</p>
@@ -438,18 +433,9 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p class="tagl">An AI Crisis Response Agent.</p>
 <p class="sub">The next call will come. Nury is there when the pastor picks up.</p>
 <p class="fine">Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice. Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.</p>
-<p class="mem">In memory of T&iacute;a Nury, 08-2026</p></div>
+<p class="mem">In memory of T&iacute;a Nury<br>08-2026</p></div>
 <div><img class="photo2" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div></div>
 <aside class="notes">DAWN. 2:34 to 2:39. Criterion: Presentation. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here. The small note under the disclaimer, 'In memory of Tía Nury, 08-2026', fades in last, on the second press.</aside></section>
-
-<section class="slide center memorial nofoot" data-part="talk" data-gated="memorial" data-name="memorial" data-title="In memory">
-<div class="lantern small">{{MARKDEEP}}</div>
-<div class="mtext">
-<p>Nury is named for my aunt, Nury Peláez.</p>
-<p>She served her church for 83 years, in the small things and the big ones,<br>always with a smile, always with Jesus in her heart.</p>
-<p>She passed away a month ago. This is for her.</p></div>
-<div class="portrait" hidden></div>
-<aside class="notes">GATED, 2:39 to 2:55 (about 16 s): pending Juan's written approval. Criterion: Presentation, and the reason for the name. Do not show or publish as approved. These are Juan's words, Option 1 of presentation/MEMORIAL.md, verbatim. Nobody edits, shortens or humanizes them. The slide stays hidden (press G to preview) until Juan approves in writing. A hidden slot is ready for one portrait if Juan sends one.</aside></section>
 
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
 <section class="slide v2 bk" data-part="backup" data-name="the-evaluation-system-in-detail" data-title="The evaluation system in detail">

@@ -45,7 +45,7 @@ try:
     def lab(): return ev("document.getElementById('lab').textContent")
     def key(k, shift="false"): ev(f"window.dispatchEvent(new KeyboardEvent('keydown',{{key:'{k}',shiftKey:{shift},bubbles:true,cancelable:true}}));1"); ab("wait", "250")
     keyres = []
-    keyres.append(("Space with no click is step 1 of slide 1", (key(" "), lab())[1].startswith("1 / 24") and "step 1/4" in lab()))
+    keyres.append(("Space with no click is step 1 of slide 1", (key(" "), lab())[1].startswith("1 / ") and "step 1/4" in lab()))
     ev("(()=>{for(let n=0;n<100;n++)window.dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true,cancelable:true}));return 1})()"); ab("wait", "300")
     keyres.append(("a flood of 100 Space events moves at most one step", "step 2/4" in lab() or "step 1/4" in lab()))
     ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated"); ab("wait", "1200")
