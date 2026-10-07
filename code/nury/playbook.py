@@ -40,6 +40,7 @@ class Stage:
     variants: list = field(default_factory=list)   # [{"when", "prompt"}] first match swaps the prompt
     prompt_file: str = ""
     skills: list = field(default_factory=list)     # Skill objects, loaded from code/skills/
+    summary: str = ""                              # one plain line for the pastor's screen. Display only: never in a prompt, check or audit
 
 
 @dataclass
@@ -153,6 +154,7 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
             source_specs=specs, checks=sj.get("checks", []), input=sj.get("input", {"from": "intake"}),
             when=sj.get("when"),
             skills=_load_skills(sj, skills_root),
+            summary=_summary(sj),
             variants=[{"when": v["when"], "prompt": (d / v["prompt"]).read_text(encoding="utf-8").strip()}
                       for v in sj.get("variants", [])]))
     if not stages or stages[0].id != "triage":
@@ -179,6 +181,16 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
                     stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
     pb.pending_sources = pending
     return pb
+
+
+def _summary(sj):
+    """Optional display line for a stage. Plain text only, 140 characters at most. Never used by the engine."""
+    t = sj.get("summary", "")
+    if t == "":
+        return ""
+    if not isinstance(t, str) or len(t) > 140 or re.search(r"<[^>]*>|&\w+;|&#\d+;", t):
+        raise PlaybookError(f"stage {sj['id']}: summary must be plain text of 140 characters or fewer, no HTML")
+    return t.strip()
 
 
 def _load_skills(sj, skills_root):

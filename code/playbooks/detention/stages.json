@@ -2,6 +2,7 @@
   {
     "id": "triage",
     "title": "1. Triage",
+    "summary": "Turns the call into a clear case: people, place, language, what is still unknown.",
     "audience": "pastor",
     "prompt": "prompts/triage.txt",
     "input": {
@@ -34,6 +35,7 @@
   {
     "id": "rights",
     "title": "2. Rights brief",
+    "summary": "Rights information in the family's language, every point cited to a vetted source.",
     "audience": "family",
     "prompt": "prompts/rights.txt",
     "input": {
@@ -73,6 +75,7 @@
   {
     "id": "attorney",
     "title": "3. Attorney resources",
+    "summary": "Who to call: the church's own contacts first, then official lists.",
     "audience": "family",
     "prompt": "prompts/attorney.txt",
     "input": {
@@ -163,6 +166,7 @@
   {
     "id": "checklist",
     "title": "4. Family checklist",
+    "summary": "What to do tonight, what not to do, what to gather.",
     "audience": "family",
     "prompt": "prompts/checklist.txt",
     "input": {
@@ -208,6 +212,7 @@
   {
     "id": "pastoral",
     "title": "5. Pastoral message",
+    "summary": "A short message you can edit. It only invites; it promises nothing.",
     "audience": "family",
     "prompt": "prompts/pastoral.txt",
     "input": {

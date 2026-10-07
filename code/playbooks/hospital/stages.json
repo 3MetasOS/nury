@@ -2,6 +2,7 @@
   {
     "id": "triage",
     "title": "1. Triage",
+    "summary": "Turns the call into a clear case: people, hospital, language, what is still unknown.",
     "audience": "pastor",
     "prompt": "prompts/triage.txt",
     "input": {
@@ -31,6 +32,7 @@
   {
     "id": "info",
     "title": "2. Family information brief",
+    "summary": "What the hospital may share, visiting, interpreters and complaints, every point cited.",
     "audience": "family",
     "prompt": "prompts/info.txt",
     "input": {
@@ -70,6 +72,7 @@
   {
     "id": "resources",
     "title": "3. Hospital resources",
+    "summary": "Who to ask for: the church's own contacts first, then hospital and national resources.",
     "audience": "family",
     "prompt": "prompts/resources.txt",
     "input": {
@@ -152,6 +155,7 @@
   {
     "id": "checklist",
     "title": "4. Family checklist",
+    "summary": "What to do tonight, what not to do, what to bring and ask.",
     "audience": "family",
     "prompt": "prompts/checklist.txt",
     "input": {
@@ -194,6 +198,7 @@
   {
     "id": "pastoral",
     "title": "5. Pastoral message",
+    "summary": "A short message you can edit. It only invites; it promises nothing.",
     "audience": "family",
     "prompt": "prompts/pastoral.txt",
     "input": {

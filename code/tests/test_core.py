@@ -696,5 +696,60 @@ class Promises(unittest.TestCase):
             self.assertIn("ready in this package", text)
 
 
+class Summaries(unittest.TestCase):
+    """The stage summary is display text for the pastor's screen. It must never reach a model, a check or the audit log."""
+
+    def test_every_stage_has_a_plain_short_honest_summary(self):
+        from nury import checks as ck
+        ctx = type("C", (), {"state": CaseState("intake")})()
+        for pid in ("detention", "hospital"):
+            for st in pbm.load_playbook(pid).stages:
+                self.assertTrue(st.summary, (pid, st.id))
+                self.assertLessEqual(len(st.summary), 140)
+                self.assertEqual(ck.no_unauthorized_promises({}, st.summary, ctx), [], (pid, st.id))
+                self.assertEqual(ck.no_stock_phrases({}, st.summary, ctx), [], (pid, st.id))
+
+    def test_prompt_is_byte_identical_with_and_without_a_summary_and_never_contains_it(self):
+        for pid in ("detention", "hospital"):
+            pb = pbm.load_playbook(pid)
+            for st in pb.stages:
+                with_s = pbm.render_prompt(st, pb, "es", None, {})
+                text = st.summary
+                st.summary = ""
+                without = pbm.render_prompt(st, pb, "es", None, {})
+                st.summary = text
+                self.assertEqual(with_s, without, (pid, st.id))
+                self.assertNotIn(text, with_s)
+
+    def test_summary_never_appears_in_a_run_audit_or_the_model_request(self):
+        pb = pbm.load_playbook("detention")
+        sums = [s.summary for s in pb.stages]
+        c = FakeClient()
+        st, rs, au = run_scripted("intake", client=c)
+        blob = json.dumps(au.events, ensure_ascii=False) + "\n".join(c.inputs)
+        for text in sums:
+            self.assertNotIn(text, blob)
+        self.assertTrue(all("summary" not in r.metrics for r in rs))
+
+    def test_loader_rejects_html_and_long_summaries_and_allows_none(self):
+        tmp = Path(tempfile.mkdtemp())
+        try:
+            shutil.copytree(pbm.PLAYBOOKS_DIR, tmp, dirs_exist_ok=True)
+            f = tmp / "detention" / "stages.json"
+            base = json.loads(f.read_text())
+            for bad in ("<b>bold</b> claim", "A &amp; B", "x" * 141, 5):
+                j = json.loads(json.dumps(base))
+                j[1]["summary"] = bad
+                f.write_text(json.dumps(j))
+                with self.assertRaises(pbm.PlaybookError):
+                    pbm.load_playbook("detention", tmp)
+            j = json.loads(json.dumps(base))
+            del j[1]["summary"]
+            f.write_text(json.dumps(j))
+            self.assertEqual(pbm.load_playbook("detention", tmp).stages[1].summary, "")
+        finally:
+            shutil.rmtree(tmp)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -53,6 +53,7 @@ StageResult(stage_id, title,
 `code/playbooks/<id>/` holds `playbook.json`, `stages.json`, `prompts/`, `sources/`, `outcomes.json`. The engine never names a crisis. Detention is `playbooks/detention/`. To add a crisis, add a folder. See `documents/ARCHITECTURE.md`.
 
 - `playbook.json` carries the domain wording the engine's rules template fills in: `boundary: {who, domain, professional, professional_kind}`, the `disclaimer` (en, es), `draft_label`, and optional `extra_banned: [{pattern, why}]`. The rules stay in the engine (`nury/guardrails.py`). The engine holds no immigration words.
+- `summary` (optional, on a stage in `stages.json`): one plain line for the pastor's screen, at most 140 characters, no HTML. Display only: it is never put in a prompt, a check, the audit log or a model request (tests prove it). Read it as `stage.summary` from `get_playbook(id).stages`; it is an empty string when absent.
 - `stages.json` per stage: `id, title, audience ("pastor"|"family"), prompt, input, deps, sources, checks, when, variants`.
 - `sources[]`: `{name, file, var, groups:[{list, line, empty?}]}`. The engine renders the vetted JSON into the prompt variable `{{var}}`. `{{lang_name}}` is also available.
 - `checks[]`: named checks from `nury/checks.py`: `required_labels, numbered_after, cited_bullets, ends_with_referral, vetted_links_present, required_headings, max_words`. They add to the safety floor.
