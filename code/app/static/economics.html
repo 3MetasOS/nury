@@ -92,7 +92,7 @@ td:first-child code{white-space:nowrap}
 <div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>
 <thead>
 <tr>
-<th>Set (final build <code>8a28a18</code>)</th>
+<th>Set (final build <code>9bc5c6d</code>)</th>
 <th>Runs</th>
 <th>Mean time per run</th>
 <th>Tokens in / out</th>
@@ -104,34 +104,34 @@ td:first-child code{white-space:nowrap}
 <tr>
 <td>Detention</td>
 <td>20</td>
-<td>33.5 s</td>
-<td>280,561 / 29,511</td>
-<td>$1.2844</td>
+<td>34.2 s</td>
+<td>279,860 / 29,050</td>
+<td>$1.2753</td>
 <td><strong>$0.064</strong></td>
 </tr>
 <tr>
 <td>Hospital</td>
 <td>8</td>
-<td>48.7 s</td>
-<td>155,093 / 15,821</td>
-<td>$0.7026</td>
-<td><strong>$0.088</strong></td>
+<td>49.5 s</td>
+<td>155,128 / 16,287</td>
+<td>$0.7097</td>
+<td><strong>$0.089</strong></td>
 </tr>
 <tr>
 <td>Hostile intakes</td>
 <td>18</td>
-<td>38 s</td>
+<td>42 s</td>
 <td>not split here</td>
-<td>$1.38</td>
-<td>$0.077</td>
+<td>$1.51</td>
+<td>$0.084</td>
 </tr>
 <tr>
 <td>Network</td>
 <td>3</td>
-<td>67 s</td>
+<td>52 s</td>
 <td>not split here</td>
-<td>$0.33</td>
-<td>$0.11</td>
+<td>$0.27</td>
+<td>$0.09</td>
 </tr>
 <tr>
 <td>Case file</td>
@@ -145,10 +145,10 @@ td:first-child code{white-space:nowrap}
 </table></div>
 <ul>
 <li><strong>Range.</strong> Review note 3 reports $0.063 to $0.126 per package across its sample. The scorecard means sit inside that range.</li>
-<li><strong>Per run in tokens.</strong> Detention averages about 14,000 tokens in and 1,500 out. Hospital averages about 19,400 in and 2,000 out.</li>
+<li><strong>Per run in tokens.</strong> Detention averages about 14,000 tokens in and 1,450 out. Hospital averages about 19,400 in and 2,000 out.</li>
 <li><strong>Input dominates tokens, not cost.</strong> Input is about 90 percent of tokens. By cost it is about <strong>66 percent</strong> (computed from the detention and hospital totals above). Review note 3 says 72 percent on its sample. I could not reproduce 72 from the scorecards, so I use the numbers I can recompute.</li>
-<li><strong>Hospital costs more than detention</strong> by about 37 percent per run ($0.088 against $0.064) and takes about 15 seconds longer. The reason I can show: hospital runs carry more input tokens (about 19,400 against 14,000). Why they carry more I did not investigate.</li>
-<li><strong>Order of magnitude.</strong> At the scorecard means, 100 packages cost about $6.40 (detention) to $8.80 (hospital) in Gloo spend. 1,000 packages cost about $64 to $88. That excludes Jev, hosting, people and everything in section 3.</li>
+<li><strong>Hospital costs more than detention</strong> by about 39 percent per run ($0.089 against $0.064) and takes about 15 seconds longer. The reason I can show: hospital runs carry more input tokens (about 19,400 against 14,000). Why they carry more I did not investigate.</li>
+<li><strong>Order of magnitude.</strong> At the scorecard means, 100 packages cost about $6.40 (detention) to $8.90 (hospital) in Gloo spend. 1,000 packages cost about $64 to $89. That excludes Jev, hosting, people and everything in section 3.</li>
 </ul>
 <h2 id="2-where-the-time-goes">2. Where the time goes<a class="anc" href="#2-where-the-time-goes" aria-label="Link to this section">#</a></h2>
 <p>Per review note 3: Gloo latency per stage has a median of <strong>6.0 to 11.8 seconds</strong>. Jev adds about <strong>160 to 224 ms per draft</strong>, about <strong>3 percent</strong> of the time. The stages run one after another because each reads the approved text of the stage before it, so five stages is roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.</p>
@@ -234,7 +234,7 @@ td:first-child code{white-space:nowrap}
 <li>The cost with real intakes. Every number comes from synthetic scenarios written by us.</li>
 <li>The cost of a pastor's second pass: an edit and a revision runs the pipeline again (a revision run cost about $0.15 to $0.16 in slot C of the cost log).</li>
 <li>TypeSafe's data retention and terms, and the cost of the red-team panel. The panel is a pre-release audit, not part of a package. I have not added its cost to the figures above.</li>
-<li>Whether 33 to 49 seconds is acceptable to a pastor at 2 AM. We have not asked one.</li>
+<li>Whether 34 to 50 seconds is acceptable to a pastor at 2 AM. We have not asked one.</li>
 </ul>
     </article>
   </div>

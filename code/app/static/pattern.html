@@ -118,7 +118,7 @@ td:first-child code{white-space:nowrap}
 <ul>
 <li><strong>Safety by itself.</strong> Rules and a classifier lower the chance that an unsafe draft reaches the human. They do not make the human's review unnecessary. In our runs a model sometimes wrote sentences no vetted source supported, and the checks passed them.</li>
 <li><strong>A calibrated classifier.</strong> Our Jev gate was smoke-tested on 20 pairs. We do not know its false-reject rate.</li>
-<li><strong>Quality of tone or truth.</strong> A judge for warmth scored plainer text colder, and we did not make it warmer.</li>
+<li><strong>Quality of tone or truth.</strong> A judge for warmth sits near 3 of 5 against a target of 4, it is noisy, and no human has rated warmth.</li>
 <li><strong>Security and hosting.</strong> No sign-in, no encryption at rest, one shared pool of cases, one shared key with no budget cap.</li>
 <li><strong>Evidence from real users.</strong> Tested on synthetic families only. No real pastor has used it.</li>
 <li><strong>Low cost under failure.</strong> A stage that never passes still costs three attempts. The worst case computed from the code is 135 model calls for one package (<code>ECONOMICS.md</code>).</li>
