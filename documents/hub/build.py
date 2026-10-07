@@ -141,6 +141,7 @@ MENU = [
     ("Architecture", "How this was built (page content)", "md", "documents/product/HOW_IT_WAS_BUILT.md"),
     ("Architecture", "How the engine thinks (walkthrough)", "md", "documents/product/ENGINE_WALKTHROUGH.md"),
     ("Architecture", "How to add a rule", "md", "documents/product/ADD_A_RULE.md"),
+    ("Architecture", "Pi review (what to learn from it)", "md", "documents/product/PI_REVIEW.md"),
     ("Architecture", "Architecture decisions", "md", "documents/ARCHITECTURE.md"),
     ("Architecture", "Diagrams (10 tabs)", "html_repo", "documents/architecture/diagrams.html"),
     ("Architecture", "Diagrams notes", "md", "documents/architecture/README.md"),
