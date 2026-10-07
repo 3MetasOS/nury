@@ -252,3 +252,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Found while checking the case-file sample: `guardrails.url_reasons` only looked at text starting with http or www. A made-up bare domain ("detentionlocator.org") passed. The live checklist already writes bare domains (both vetted), so an invented one could have reached the pastor.
 - Decision (hack-sensei): GO. Same allowlist, bare domains (org, com, gov, net, edu and the sources' own endings) now scanned. Tests: invented domain rejected; vetted bare domains pass; hospital too; email-like strings and file names do not false-alarm. Live re-check on detention 01, 18, 20 and hospital h01 before the 06:00 freeze.
 - Learning: asking before touching the floor during a freeze was right; a floor bug beats a freeze.
+
+## 36. 2026-10-06 21:03 MDT — Case viewer, case revision, and privacy layer decided (Juan)
+
+- Decision (Juan): build the case-file UI now (no waiting on jedi's confirmation); add a case viewer; add a revision flow so a pastor can reopen a case, record what happened ("went as hoped / did not / unknown"), and re-run the affected stages. The case keeps versions (v1 untouched, v2 beside it, change log, compare).
+- Decision (Juan): nothing leaves the device with direct identifiers. A PrivacyClient wraps the Gloo client and replaces names, phones, emails, addresses, dates of birth and IDs with tokens before sending; the map stays local; responses are detokenized locally. The pastor confirms the protected-terms list. Honest limit: context can still hint. Proof: a leak test on the captured outbound request body.
+- Owners: hack-artisans (UI, viewer, revision, protected-terms step), hack-jedi (privacy.py, leak test, after the bare-domain fix). Final eval re-run now waits for privacy so the scorecard measures what we ship. Details in documents/ARCHITECTURE.md.
