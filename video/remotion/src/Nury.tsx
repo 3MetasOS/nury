@@ -43,7 +43,7 @@ type Scene = {
   fixed?: boolean; // fixed scenes keep their length; the others (min set) shrink to fit 90 s
 };
 const SCENES: Scene[] = [
-  {id: 'intro', kind: 'intro', dur: 4, fixed: true, needs: 'intro'},
+  {id: 'intro', kind: 'intro', dur: 5, fixed: true, needs: 'intro'},
   {id: 'lock', kind: 'lock', dur: 9, min: 5.1, vo: [{k: '01', at: 1.5}]},
   {id: 'selector', kind: 'clip', dur: 4, min: 3, from: ['selector', 0], to: ['selector', 3.7], label: 'The pastor picks the crisis.'},
   {id: 'intake', kind: 'clip', dur: 6, min: 5.6, from: ['selector', 3.7], to: ['start', 0.3], label: 'Solo pastor. No staff. No lawyer.', vo: [{k: '02', at: 0.2}]},
@@ -168,16 +168,27 @@ const Lock: React.FC = () => {
   );
 };
 
+// Opener (5 s, no VO): the lantern lights, "This is Nury." (about 1.2 s), then the dictionary entry (about 3.5 s). Text approved by Juan via hack-sensei.
 const Intro: React.FC = () => {
   const f = useCurrentFrame();
-  const lit = interpolate(f, [6, 34], [0.18, 1], {easing: ease, extrapolateRight: 'clamp'});
-  const t1 = interpolate(f, [30, 52], [0, 1], {extrapolateRight: 'clamp'});
-  const t2 = interpolate(f, [58, 84], [0, 1], {extrapolateRight: 'clamp'});
+  const lit = interpolate(f, [4, 26], [0.18, 1], {easing: ease, extrapolateRight: 'clamp'});
+  const t1 = interpolate(f, [10, 24, 34, 44], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const e = interpolate(f, [38, 56], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const lift = interpolate(f, [34, 56], [0, -310], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
-    <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 28}}>
-      <Img src={staticFile('logo-mark-paper.svg')} style={{width: 150, height: 150, opacity: lit}} />
-      <div style={{fontFamily: serif, fontWeight: 600, fontSize: 120, color: C.text, opacity: t1}}>This is Nury.</div>
-      <div style={{fontFamily: serif, fontSize: 40, color: C.muted, opacity: t2}}>the crisis-response agent for solo pastors.</div>
+    <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
+      <Img src={staticFile('logo-mark-paper.svg')} style={{position: 'absolute', top: 440 + lift, width: 150, height: 150, opacity: lit}} />
+      <div style={{position: 'absolute', top: 640, fontFamily: serif, fontWeight: 600, fontSize: 120, color: C.text, opacity: t1}}>This is Nury.</div>
+      <div style={{position: 'absolute', top: 360, left: 0, right: 0, display: 'grid', justifyItems: 'center', gap: 12, opacity: e}}>
+        <div style={{display: 'flex', alignItems: 'baseline', gap: 28}}>
+          <span style={{fontFamily: serif, fontWeight: 600, fontSize: 110, color: C.text}}>Nury</span>
+          <span style={{fontFamily: sans, fontSize: 38, color: C.muted}}>/NOO-ree/</span>
+        </div>
+        <div style={{fontFamily: serif, fontStyle: 'italic', fontSize: 30, color: C.muted}}>proper noun</div>
+        <div style={{fontFamily: serif, fontSize: 40, color: C.text, marginTop: 14, maxWidth: 1200, textWrap: 'balance' as any}}>1. A given name from Arabic <i>nur</i>, “light”.</div>
+        <div style={{fontFamily: serif, fontSize: 40, color: C.text, maxWidth: 1200, textWrap: 'balance' as any}}>2. The crisis-response agent for solo pastors.</div>
+        <div style={{fontFamily: sans, fontSize: 24, color: C.muted, marginTop: 10}}>see also: lantern</div>
+      </div>
     </AbsoluteFill>
   );
 };
