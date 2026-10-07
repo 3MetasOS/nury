@@ -22,16 +22,18 @@
   const footer = `
 <footer class="sitefoot" data-shell="footer"><div class="wrap">
   <div class="lockup" data-lockup><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>
-  <p class="fl mono">For judges and reviewers</p>
-  <nav class="fnav" aria-label="For judges and reviewers">
-    <a href="/how-it-was-built" data-nav="how">How this was built</a>
-    <a href="/observability" data-nav="ops">Observability</a>
-    <a href="/self-improvement" data-nav="improve">Self-improvement</a>
-    <a href="/what-did-not-work" data-nav="wdnw">What did not work</a>
-    <a href="/economics" data-nav="economics">Economics</a>
-    <a href="/pattern" data-nav="pattern">The pattern</a>
-    <a href="/standards" data-nav="standards">Standards we use</a>
-  </nav>
+  <div class="fj">
+    <div class="flrow"><p class="fl mono">For judges and reviewers</p></div>
+    <nav class="fnav" aria-label="For judges and reviewers">
+      <a href="/how-it-was-built" data-nav="how">How this was built</a>
+      <a href="/observability" data-nav="ops">Observability</a>
+      <a href="/self-improvement" data-nav="improve">Self-improvement</a>
+      <a href="/what-did-not-work" data-nav="wdnw">What did not work</a>
+      <a href="/economics" data-nav="economics">Economics</a>
+      <a href="/pattern" data-nav="pattern">The pattern</a>
+      <a href="/standards" data-nav="standards">Standards we use</a>
+    </nav>
+  </div>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
 </div></footer>`;

@@ -64,7 +64,7 @@ function table(rows,header){const t=el("table"),th=el("thead"),tr=el("tr");heade
   $("mode").textContent=d.feedback_mode==="off"?"Feedback capture: off":"Feedback capture: "+d.feedback_mode;$("mode").classList.toggle("on",d.feedback_mode!=="off");
   const R=$("report");
   if(!d.report||!d.report.tables.length)R.append(el("p","empty","No learning report yet. Capture is "+(d.feedback_mode==="off"?"off.":"on, and not enough has been recorded.")));
-  else d.report.tables.forEach(t=>{R.append(el("h3",null,t.title));R.append(table(t.rows,t.header))});
+  else d.report.tables.forEach((t,k)=>{if(k>0)R.append(el("h3",null,t.title));R.append(table(t.rows,t.header))});    // the first table is introduced by the section heading above it
   const C=$("cands");
   if(!d.candidates.length)C.append(el("p","empty","No candidates yet. One is proposed only after at least three separate pastor edits point the same way."));
   d.candidates.forEach(c=>{const k=el("article","cand");k.id=c.id;k.append(el("h3",null,c.title));

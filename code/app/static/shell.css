@@ -66,17 +66,20 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 :root{--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--r:8px;--hl:rgba(232,163,61,.42);--note-ink:var(--text)}
 :root[data-theme="light"]{--hl:rgba(232,163,61,.62)}
 .mono{font:500 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-/* footer: the same on every page */
+/* footer: the same on every page. Row 1: the logo at the left, the pages for judges at the right. Row 2: the provenance line. Row 3: the disclaimer. */
 .sitefoot{border-top:1px solid var(--line);margin-top:24px;background:var(--bg)}
-.sitefoot .wrap{max-width:1120px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom));display:grid;gap:10px 24px;grid-template-columns:minmax(0,1fr)}
-.sitefoot .fl{margin:0}
-.fnav{display:flex;flex-wrap:wrap;gap:4px 22px}
-.fnav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text);font:600 15px var(--sans);text-decoration:none;border-bottom:1px solid transparent}
+.sitefoot .wrap{max-width:1120px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom));display:grid;gap:14px 24px;grid-template-columns:minmax(0,1fr);grid-template-areas:"logo" "judges" "prov" "fine"}
+.sitefoot .lockup{grid-area:logo}.sitefoot .fj{grid-area:judges;min-width:0}.sitefoot .prov{grid-area:prov}.sitefoot .fine{grid-area:fine}
+.flrow{display:flex;align-items:center;flex-wrap:wrap;gap:0 14px;min-height:26px}.flrow .fl{margin:0}
+.flrow .hnote{margin:0;white-space:nowrap}.flrow .hn-t{white-space:nowrap}
+.fnav{display:flex;flex-wrap:wrap;gap:0 16px}
+.fnav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text);font:600 14px var(--sans);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
 .fnav a:hover{border-bottom-color:var(--amber-text)}
 .fnav a[aria-current="page"]{color:var(--amber-text);border-bottom-color:var(--amber-text)}
 .sitefoot .fine{margin:0;max-width:62ch;font-size:13px;line-height:1.5;color:var(--muted)}
 .linkbtn{background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:minmax(0,1fr) auto;align-items:center}.sitefoot .fine{grid-column:1/-1}}
+@media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"logo judges" "prov prov" "fine fine";align-items:start}
+  .sitefoot .fj{justify-self:end}.sitefoot .fnav{justify-content:flex-end}.sitefoot .flrow{justify-content:flex-end}}
 body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 @media (min-width:960px){body{padding-bottom:0}}
 /* hand-written notes: in the flow, never over text. Decoration: the label beside the control says the same thing. */
@@ -94,5 +97,5 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 .lockup .tg{display:block;font:500 13px/1.3 var(--sans);color:var(--muted)}
 
 @media (max-width:639px){.brand .tg{font-size:11px}}
-.sitefoot .prov{margin:0;font:400 19px/1.3 "Gochi Hand","Bradley Hand","Segoe Print",cursive;color:var(--text)}
+.sitefoot .prov{margin:0;font:400 19px/1.35 "Gochi Hand","Bradley Hand","Segoe Print",cursive;color:var(--text)}
 .sitefoot .prov a{color:var(--amber-text);text-underline-offset:3px;margin-left:6px;white-space:nowrap}
