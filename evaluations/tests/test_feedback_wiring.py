@@ -101,3 +101,35 @@ def test_session_records_to_the_ledger_and_closes_it(monkeypatch, tmp_path):
     src = Path(server.__file__).read_text(encoding="utf-8")
     assert "ledger.Recorder(self.pb.id, language)" in src and "self.rec.stage_done(r, self.audit.events)" in src and "self.rec.finish(" in src
     assert "feedback.record_gate(" in src and "self.client" in src.split("feedback.record_gate(")[1][:200]
+
+
+POST_ROUTES = ["/api/propose-terms", "/api/revision-preview", "/api/run", "/api/feedback", "/api/evals/smoke", "/api/case/x/followup",
+               "/api/session/fake0001/save", "/api/session/fake0001/decision"]
+
+
+def _post_raw(base, path, raw):
+    import urllib.error
+    r = urllib.request.Request(base + path, data=raw, headers={"Content-Type": "application/json"})
+    try:
+        resp = urllib.request.urlopen(r, timeout=10)
+        return resp.status, resp.read()
+    except urllib.error.HTTPError as e:
+        return e.code, e.read()
+
+
+def test_garbage_json_gets_400_on_every_post_route(srv):
+    """A malformed body used to drop the connection (no try around the decode). Now every POST route answers 400 in plain words, no trace."""
+    base, _ = srv
+    for path in POST_ROUTES:
+        for raw in (b"{not json", b"\xff\xfe", b"[1, 2]", b'"text"'):
+            status, body = _post_raw(base, path, raw)
+            assert status == 400, f"{path} {raw!r} -> {status}"
+            msg = json.loads(body)["error"]
+            assert "Traceback" not in msg and "File " not in msg and len(msg) < 80
+
+
+def test_every_post_route_in_the_server_is_covered_by_the_garbage_test():
+    src = Path(server.__file__).read_text(encoding="utf-8").split("def do_POST")[1]
+    import re
+    routes = set(re.findall(r'p == "(/api/[a-z\-/]+)"', src))
+    assert routes <= set(POST_ROUTES), f"add these routes to the garbage test: {routes - set(POST_ROUTES)}"

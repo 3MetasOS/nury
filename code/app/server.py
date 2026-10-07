@@ -534,7 +534,12 @@ class H(BaseHTTPRequestHandler):
         p = self.path
         if self._network("POST", p):
             return
-        b = self._body()
+        try:
+            b = self._body()
+        except (ValueError, UnicodeDecodeError):      # json.JSONDecodeError is a ValueError
+            return self._json({"error": "The request was not valid JSON."}, 400)
+        if not isinstance(b, dict):
+            return self._json({"error": "The request must be a JSON object."}, 400)
         if p == "/api/propose-terms":
             self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
         elif p == "/api/revision-preview":
