@@ -13,5 +13,5 @@ for l in open(sys.argv[1]):
     m.setdefault(k,float(t))
 json.dump(m,open("public/marks.json","w"),indent=1); print(m)
 PY
-cp ../vo/out/*.wav public/vo/ 2>/dev/null || echo "no VO yet: run ../build_vo.sh"
+cp ../vo/final/*.wav public/vo/ 2>/dev/null || cp ../vo/out/*.wav public/vo/ 2>/dev/null || echo "no VO yet"   # vo/final = Eric (ElevenLabs); vo/out = scratch TTS
 [ -f public/proof.json ] || echo '{}' > public/proof.json   # real scorecard numbers only: {"pass":..,"n":..,"caught":..,"src":".."}

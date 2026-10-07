@@ -182,3 +182,19 @@ Characters sent per sample (plan: Starter, 40,000/month; keep 15,000 in reserve 
 - Kevo line names: 34 characters
 
 NOTE: the render command ran three times by mistake (180 calls, 11,016 characters in this log, about 7,300 of them wasted repeats of the same 60 samples). Real need: about 3,670 characters. Remaining budget after this: about 29,000 of 40,000; reserve 15,000 stays.
+- FINAL Eric 01: 59 characters
+- FINAL Eric 02: 90 characters
+- FINAL Eric 03: 61 characters
+- FINAL Eric 04: 38 characters
+- FINAL Eric 05: 88 characters
+- FINAL Eric 06: 118 characters
+- FINAL Eric 07: 43 characters
+- FINAL Eric 08: 57 characters
+- FINAL Eric 09: 58 characters
+- FINAL Eric 10: 49 characters
+- FINAL Eric T: 189 characters
+- FINAL Eric 03_noory: 62 characters
+- FINAL Eric 06_noory: 119 characters
+- FINAL Eric 09_noory: 59 characters
+- FINAL Eric 10_noory: 50 characters
+- FINAL Eric T re-render with speed 1.1 (to fit 12 s): 189 characters

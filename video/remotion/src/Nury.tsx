@@ -8,9 +8,10 @@ export const FPS = 30;
 export type Marks = Record<string, number>;
 export type Proof = {pass?: number | string; n?: number | string; caught?: number | string; src?: string};
 export type Memorial = {intro?: boolean; approved?: boolean; option?: number; portrait?: string | null};
+export type Voice = {noory?: boolean}; // voice.json: noory true = use the 'Noory' respelled takes (03, 06, 09, 10) once Juan says they sound right
 export type Credits = {narration?: boolean}; // credits.json; narration false = no credit line (ElevenLabs Starter plan needs none)
 export type Tech = {approved?: boolean; tests?: number | string}; // approved = Juan approved presentation/MEMORIAL.md
-export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits};
+export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits; voice?: Voice};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
 const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
@@ -32,8 +33,8 @@ const VO: Record<string, string> = {
   '10': 'Nury. The crisis-response agent for solo pastors.',
   'T': "Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.",
 };
-// Seconds of speech per line (macOS say, 150 wpm; see ../vo/out/durations.txt). Real voice: update these.
-const VOLEN: Record<string, number> = {'01': 3.56, '02': 5.79, '03': 4.79, '04': 2.96, '05': 5.67, '06': 7.5, '07': 3.05, '08': 3.9, '09': 4.18, '10': 3.78, 'T': 11.3};
+// Seconds of speech per line: ElevenLabs Eric (vo/eleven_durations.json). Update if the voice changes.
+const VOLEN: Record<string, number> = {'01': 3.3, '02': 5.2, '03': 4.4, '04': 2.2, '05': 4.8, '06': 7.3, '07': 2.4, '08': 3.1, '09': 3.5, '10': 3.4, 'T': 11.7}; // Eric, max of normal and Noory takes
 type Scene = {
   id: string; dur: number; min?: number; kind: 'intro' | 'lock' | 'clip' | 'proof' | 'end' | 'memorial' | 'tech';
   from?: [string, number]; to?: [string, number]; // src range as [mark, offset]
@@ -328,7 +329,7 @@ export const Nury: React.FC<{data: Data}> = ({data}) => {
                 {showCap && <Sequence from={Math.round(v.at * FPS)} durationInFrames={Math.round(Math.min(len, s.dur - v.at) * FPS)}>
                   <Caption text={text} dur={Math.round(Math.min(len, s.dur - v.at) * FPS)} />
                 </Sequence>}
-                <Sequence from={Math.round(v.at * FPS)}><Audio src={staticFile(`vo/${v.k}.wav`)} /></Sequence>
+                <Sequence from={Math.round(v.at * FPS)}><Audio src={staticFile(`vo/${v.k}${data.voice?.noory && ['03', '06', '09', '10'].includes(v.k) ? '_noory' : ''}.wav`)} /></Sequence>
               </React.Fragment>
             );
           })}

@@ -8,7 +8,8 @@ const load = async (): Promise<Data> => {
   const memorial = await j('memorial.json').catch(() => ({}));
   const tech = await j('tech.json').catch(() => ({}));
   const credits = await j('credits.json').catch(() => ({}));
-  return {marks: await j('marks.json'), proof: await j('proof.json'), confirmed, memorial, tech, credits};
+  const voice = await j('voice.json').catch(() => ({}));
+  return {marks: await j('marks.json'), proof: await j('proof.json'), confirmed, memorial, tech, credits, voice};
 };
 
 export const Root: React.FC = () => (
