@@ -116,6 +116,8 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 54 | The gate fails open. If Jev has no key, times out (8 s), errors, or answers badly, the draft goes on under the deterministic floor, the audit logs `unavailable` with the reason, and later stages of that run skip the gate. The product never blocks on Jev. Cost of this choice: with Jev down, drafts get the deterministic floor only. | `tests/test_jev_gate.py` (timeout, HTTP 500 and garbage answers all complete the run) | VERIFIED offline test; not tested against a real outage | 3 failure modes tested |
 | 55 | Speed and cost. Median 156 ms per Jev call (max 271 ms, 30 calls); one call per draft attempt; about 700 input and 80 output tokens for the pastoral stage. A full package adds about 0.8 to 1.1 s of Jev time. Jev bills on its own key and we have not seen its price, so we do NOT quote a Jev dollar cost. | `evaluations/validation/JEV_GATE_VALIDATION.md`; `jev_ms` and `jev_calls` in the stage metrics | VERIFIED live; Jev price NOT KNOWN | 5 calls per package |
 
+| 56 | The rules are listed in one place. Every floor rule, named check and Jev question has a hand-written plain description, the file it lives in and the stages that use it; a test fails if one is missing. Adding a rule today takes a code change, a test and a commit: there is no rule editor. A scaffold creates a new crisis folder that cannot run until a person approves its sources and flips its status. | `code/nury/rules.py`, `tests/test_rules.py`, `tools/new_playbook.py`, `tests/test_new_playbook.py`, `documents/product/ADD_A_RULE.md` | VERIFIED offline test | 41 entries: 13 floor, 20 checks, 8 Jev questions |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

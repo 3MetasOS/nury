@@ -192,6 +192,18 @@ Privacy: Jev gets the draft, the intake, earlier approved text and the vetted so
 
 Audit events (the progress phases, in order): `gloo_call` = writing; `check` = rules; `jev_gate_start` {stage, attempt, questions} = checking_jev (in flight until the matching `jev_gate` events arrive); `jev_gate` {stage, attempt, question, probability, decision} one per question; `jev_call` {ms, usage}; `gate` = ready. Stage metrics: `jev_ms`, `jev_calls`. A rejected draft logs `draft_rejected` with `jev_<question>` categories as usual. There is no second language-model reviewer in the product.
 
+## Rules registry and new-playbook scaffold
+
+```python
+from nury import rules
+rules.describe_all()   # [{name, kind: floor|check|classifier, explanation, where, stages: [{playbook, stage}], playbooks}]
+rules.describe("no_providence_claims")
+```
+
+Read-only metadata, written by hand in `nury/rules.py`; a test fails if a named check or a Jev question has no description. It changes no behavior. The app's `GET /api/rules` returns `describe_all()`.
+
+`cd code && python3 tools/new_playbook.py <id> "<Title>"` creates `playbooks/<id>/` from a template with status `soon` (it cannot run), runs the loader's validation on a copy with status `live` and pending sources allowed, and prints the next steps. It approves nothing. The note for writing a rule is `documents/product/ADD_A_RULE.md`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

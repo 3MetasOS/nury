@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 47 live verified, 24 offline tested, 3 built but not yet checked live, 6 planned, 18 not built.
+Count: 47 live verified, 27 offline tested, 3 built but not yet checked live, 6 planned, 20 not built.
 
 ## 1. Pastor experience
 
@@ -43,6 +43,9 @@ Count: 47 live verified, 24 offline tested, 3 built but not yet checked live, 6 
 | Jev sees only tokens | The draft, the intake, earlier text and the sources go to Jev through the same Pseudonymizer as the Gloo path. The token map never goes. | BUILT, offline tested | `tests/test_privacy.py` (Jev leak test, 15 canaries) | pastor, judge |
 | The gate fails open | No key, timeout (8 s), error or a bad answer: the draft goes on under the deterministic floor, the audit logs `unavailable`, later stages skip the gate. The pastor sees nothing. | BUILT, offline tested | `tests/test_jev_gate.py` | pastor |
 | Jev audit and progress | Each question logs stage, attempt, question, probability and decision (`reject`, `uncertain`, `pass`, `unavailable`, `skipped`). Stage metrics gain `jev_ms` and `jev_calls`. `jev_gate_start` marks the call in flight, for a `checking_jev` phase. | BUILT, offline tested | `nury/jev_gate.py`; `tests/test_jev_gate.py` | developer |
+| Rules registry | Every floor rule, named check and Jev question has a plain-English description, a kind, the file it lives in and the stages that use it. Read-only. | BUILT, offline tested | `nury/rules.py`; `tests/test_rules.py`; the app route `GET /api/rules` is hack-artisans' | pastor, judge, developer |
+| New-crisis scaffold | One command creates a playbook folder from a template, status soon, runs the loader's validation, and prints what is left: prompts, sources and their approval, scenarios, tests, then the status flip. | BUILT, offline tested | `tools/new_playbook.py`; `tests/test_new_playbook.py` | developer |
+| How to add a rule | A written note with two worked examples (a data rule and a code check) whose code is run by a test. | BUILT, offline tested | `documents/product/ADD_A_RULE.md`; `tests/test_add_a_rule_doc.py` | developer |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
@@ -138,6 +141,8 @@ Nothing in this section may be claimed in the film, the deck or the description.
 | Verse source you can swap | The verse text comes from a provider. The bank (public domain) is the default and the fallback. The YouVersion provider turns on only when YVP_APP_KEY and a Bible id are set (Spanish VBL, English BSB). On any failure Nury uses the bank and logs it. | BUILT, live verified | `nury/scripture_providers.py`; `tests/test_scripture.py`; live runs 2026-10-07 (LIVE_COST_LOG, slot F) | pastor, judge |
 | Commercially licensed Bible versions | NVI and RVR1960 are not available to our YouVersion app key. The versions in use (BSB, VBL) are Public Domain or Creative Commons. Nothing licensed is claimed. | NOT BUILT | the app key's version list | pastor |
 | Other traditions' canons | A verse list per tradition. The bank has a `tradition` field, set to none; the loader refuses any other value. | NOT BUILT | `scripture.load_bank` | pastor |
+| Rule editor | Adding or changing a rule from the app, with review, approval and staged rollout. Today a rule goes in through a code change, the tests and a commit. | NOT BUILT | `documents/product/ADD_A_RULE.md` | developer |
+| Workflow editor | Creating a new crisis from the app. Today a developer runs the scaffold and writes the files. | NOT BUILT | `tools/new_playbook.py` | developer |
 | Teams and roles | Several pastors or staff sharing a church account with different permissions. Nury today has one shared pool of cases and no sign-in. | NOT BUILT | not designed; everyone who can reach the app sees the same cases and the same church network | pastor |
 | Shared cases | A case owned by a person or a church and opened by the right people. Today there is one shared pool of cases on the server. | NOT BUILT | cases live in one folder on the server; no owner field | pastor |
 | Encryption at rest | Case files, the church network and the token map are saved as plain files on the server's disk. Nury adds no encryption. | NOT BUILT | `nury/casefile.py` writes plain files | pastor, judge |
