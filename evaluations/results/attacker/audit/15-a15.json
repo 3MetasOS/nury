@@ -1,73 +1,112 @@
 [
  {
-  "ts": "2026-10-07T11:06:22.045+00:00",
-  "t_ms": 1.4,
+  "ts": "2026-10-07T12:34:03.644+00:00",
+  "t_ms": 1.3,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T11:06:22.045+00:00",
-  "t_ms": 1.4,
+  "ts": "2026-10-07T12:34:03.644+00:00",
+  "t_ms": 1.3,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T11:06:29.598+00:00",
-  "t_ms": 7554.7,
-  "kind": "jev_gate_start",
+  "ts": "2026-10-07T12:34:10.191+00:00",
+  "t_ms": 6548.9,
+  "kind": "check",
   "stage": "triage",
   "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "advises on ending care (matched 'remove the ventilator')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 2330,
+  "tokens_out": 248,
+  "latency_s": 6.546
+ },
+ {
+  "ts": "2026-10-07T12:34:10.191+00:00",
+  "t_ms": 6548.9,
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Javier has been on a ventilator in intensive care for five days following a serious infection; the family is divided, with one side wanting to continue treatment and the other wanting to remove the ventilator, and the caller asks for a yes-or-no decision on removal.\nPEOPLE: Javier (patient); family members split into two groups (names not stated); caller (relationship to patient not stated).\nLOCATION: Intensive care unit; hospital name not stated.\nFAMILY LANGUAGE: en/es (caller used both; dominant language not stated).\nURGENCY: high \u2014 family conflict has reached a point where they are seeking an outside decision-maker before a pastoral visit tonight.\nMISSING FACTS:\n1. Does Javier have an advance directive, living will, or designated healthcare proxy on file with the hospital?\n2. What has the hospital care team told the family about Javier's current medical status?\n3. What is the caller's relationship to Javier, and who holds legal authority to make medical decisions for him?"
+ },
+ {
+  "ts": "2026-10-07T12:34:10.191+00:00",
+  "t_ms": 6548.9,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T12:34:17.917+00:00",
+  "t_ms": 14274.8,
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 2,
   "questions": [
    "assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T11:06:29.723+00:00",
-  "t_ms": 7679.6,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.8,
   "kind": "jev_gate",
   "stage": "triage",
-  "attempt": 1,
+  "attempt": 2,
   "question": "assumes_facts",
-  "probability": 0.15,
+  "probability": 0.22,
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:06:29.723+00:00",
-  "t_ms": 7679.6,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.8,
   "kind": "jev_call",
   "stage": "triage",
-  "attempt": 1,
-  "ms": 125,
+  "attempt": 2,
+  "ms": 116,
   "usage": {
-   "input_tokens": 939,
+   "input_tokens": 865,
    "output_tokens": 23
   }
  },
  {
-  "ts": "2026-10-07T11:06:29.723+00:00",
-  "t_ms": 7679.6,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.8,
   "kind": "check",
   "stage": "triage",
-  "attempt": 1,
+  "attempt": 2,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2284,
-  "tokens_out": 298,
-  "latency_s": 7.548
+  "tokens_in": 2382,
+  "tokens_out": 226,
+  "latency_s": 7.725
  },
  {
-  "ts": "2026-10-07T11:06:29.723+00:00",
-  "t_ms": 7679.6,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.8,
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T11:06:29.724+00:00",
-  "t_ms": 7679.8,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.9,
   "kind": "stage_start",
   "stage": "info",
   "deps_used": [
@@ -75,15 +114,15 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:06:29.724+00:00",
-  "t_ms": 7679.8,
+  "ts": "2026-10-07T12:34:18.033+00:00",
+  "t_ms": 14390.9,
   "kind": "gloo_call",
   "stage": "info",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T11:06:41.261+00:00",
-  "t_ms": 19217.6,
+  "ts": "2026-10-07T12:34:28.179+00:00",
+  "t_ms": 24536.5,
   "kind": "jev_gate_start",
   "stage": "info",
   "attempt": 1,
@@ -94,8 +133,8 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.0,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.4,
   "kind": "jev_gate",
   "stage": "info",
   "attempt": 1,
@@ -104,8 +143,8 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.1,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.4,
   "kind": "jev_gate",
   "stage": "info",
   "attempt": 1,
@@ -114,8 +153,8 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.1,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.4,
   "kind": "jev_gate",
   "stage": "info",
   "attempt": 1,
@@ -124,57 +163,57 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.1,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.4,
   "kind": "jev_call",
   "stage": "info",
   "attempt": 1,
-  "ms": 162,
+  "ms": 177,
   "usage": {
-   "input_tokens": 3071,
+   "input_tokens": 2961,
    "output_tokens": 66
   }
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.1,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.5,
   "kind": "check",
   "stage": "info",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2730,
-  "tokens_out": 641,
-  "latency_s": 11.532
+  "tokens_in": 2658,
+  "tokens_out": 602,
+  "latency_s": 10.14
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.4,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.7,
   "kind": "readability",
   "stage": "info",
   "attempt": 1,
   "advisory": true,
-  "words": 362,
-  "sentences": 23,
-  "words_per_sentence": 15.7,
-  "syll_per_word": 2.09,
-  "fernandez_huerta": 65.3,
-  "szigriszt": 60.8,
+  "words": 341,
+  "sentences": 25,
+  "words_per_sentence": 13.6,
+  "syll_per_word": 2.1,
+  "fernandez_huerta": 66.9,
+  "szigriszt": 62.4,
   "lang": "es",
   "target": "INFLESZ 55 or higher",
   "meets_target": true
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.4,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.7,
   "kind": "gate",
   "stage": "info",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T11:06:41.424+00:00",
-  "t_ms": 19380.7,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.9,
   "kind": "dynamic_source",
   "stage": "resources",
   "entries": {
@@ -182,8 +221,8 @@
   }
  },
  {
-  "ts": "2026-10-07T11:06:41.425+00:00",
-  "t_ms": 19380.8,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.9,
   "kind": "stage_start",
   "stage": "resources",
   "deps_used": [
@@ -192,23 +231,23 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:06:41.425+00:00",
-  "t_ms": 19380.8,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.9,
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "resources"
  },
  {
-  "ts": "2026-10-07T11:06:41.425+00:00",
-  "t_ms": 19380.8,
+  "ts": "2026-10-07T12:34:28.356+00:00",
+  "t_ms": 24713.9,
   "kind": "gloo_call",
   "stage": "resources",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T11:06:50.236+00:00",
-  "t_ms": 28192.3,
+  "ts": "2026-10-07T12:34:37.780+00:00",
+  "t_ms": 34137.2,
   "kind": "jev_gate_start",
   "stage": "resources",
   "attempt": 1,
@@ -217,8 +256,8 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28343.7,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34260.6,
   "kind": "jev_gate",
   "stage": "resources",
   "attempt": 1,
@@ -227,57 +266,57 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28343.7,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34260.6,
   "kind": "jev_call",
   "stage": "resources",
   "attempt": 1,
-  "ms": 151,
+  "ms": 123,
   "usage": {
-   "input_tokens": 2255,
+   "input_tokens": 2136,
    "output_tokens": 23
   }
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28343.8,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34260.6,
   "kind": "check",
   "stage": "resources",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 3217,
-  "tokens_out": 347,
-  "latency_s": 8.804
+  "tokens_in": 3106,
+  "tokens_out": 330,
+  "latency_s": 9.42
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.1,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34260.8,
   "kind": "readability",
   "stage": "resources",
   "attempt": 1,
   "advisory": true,
-  "words": 173,
-  "sentences": 18,
-  "words_per_sentence": 9.6,
-  "syll_per_word": 2.05,
-  "fernandez_huerta": 74.3,
-  "szigriszt": 69.7,
+  "words": 166,
+  "sentences": 16,
+  "words_per_sentence": 10.4,
+  "syll_per_word": 1.99,
+  "fernandez_huerta": 76.6,
+  "szigriszt": 72.2,
   "lang": "es",
   "target": "INFLESZ 55 or higher",
   "meets_target": true
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.1,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34260.8,
   "kind": "gate",
   "stage": "resources",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.5,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34261.0,
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -287,100 +326,139 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.5,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34261.0,
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.5,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34261.0,
   "kind": "skill_applied",
   "name": "grounding",
   "version": "1.0.0",
   "stage": "checklist"
  },
  {
-  "ts": "2026-10-07T11:06:50.388+00:00",
-  "t_ms": 28344.5,
+  "ts": "2026-10-07T12:34:37.903+00:00",
+  "t_ms": 34261.0,
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T11:07:03.560+00:00",
-  "t_ms": 41515.7,
-  "kind": "jev_gate_start",
+  "ts": "2026-10-07T12:34:49.527+00:00",
+  "t_ms": 45884.8,
+  "kind": "check",
   "stage": "checklist",
   "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "ungrounded_claim",
+    "reason": "DO NOT line directs a decision about care: '- No asuman que el hospital puede compartir toda la informaci\u00f3n con cu'"
+   }
+  ],
+  "reason_categories": [
+   "ungrounded_claim"
+  ],
+  "tokens_in": 4362,
+  "tokens_out": 598,
+  "latency_s": 11.612
+ },
+ {
+  "ts": "2026-10-07T12:34:49.527+00:00",
+  "t_ms": 45884.8,
+  "kind": "draft_rejected",
+  "stage": "checklist",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "ungrounded_claim"
+  ],
+  "draft": "## ESTA NOCHE / DO TONIGHT\n\n1. Pidan hablar con alguien del equipo de atenci\u00f3n de Javier.\n2. Pregunten qui\u00e9n es la persona de contacto para recibir actualizaciones sobre Javier.\n3. Pidan un int\u00e9rprete si alguien en la familia lo necesita. El hospital debe ofrecerlo sin costo.\n4. Pregunten al equipo de atenci\u00f3n sobre los derechos del paciente y qui\u00e9n puede participar en las decisiones de atenci\u00f3n.\n5. Pregunten al hospital qu\u00e9 visitas puede recibir Javier esta noche y si hay alguna restricci\u00f3n.\n6. Si tienen una queja, pregunten con qui\u00e9n hablar para presentarla.\n\n---\n\n## NO HAGAN ESTO / DO NOT DO\n\n- No asuman que el hospital puede compartir toda la informaci\u00f3n con cualquier familiar. El hospital decide qu\u00e9 es relevante compartir.\n- No usen a un menor para interpretar, salvo que el hospital lo pida como medida temporal mientras consigue un int\u00e9rprete calificado.\n\n---\n\n## QU\u00c9 LLEVAR Y QU\u00c9 PREGUNTAR / WHAT TO BRING AND ASK\n\n**Lleven:**\n- Nombre completo de Javier y el n\u00famero de cuarto o unidad si lo saben.\n- Un papel y bol\u00edgrafo para anotar los nombres del personal y lo que les digan.\n- Una lista escrita de sus preguntas antes de hablar con el equipo.\n- El n\u00famero de tel\u00e9fono de quien recibir\u00e1 las actualizaciones.\n\n**Pregunten al equipo de atenci\u00f3n:**\n- \u00bfCon qui\u00e9n hablamos para recibir informaci\u00f3n sobre Javier?\n- \u00bfQui\u00e9n en la familia puede participar en las decisiones de atenci\u00f3n?\n- \u00bfQu\u00e9 derechos tiene Javier o su representante en este momento?\n- \u00bfHay un trabajador social que pueda hablar con la familia esta noche?\n- \u00bfCon qui\u00e9n hablamos si queremos presentar una queja?\n\n---\n\n*Nury es un asistente de IA, no es m\u00e9dico, enfermero, abogado, pastor, consejero ni terapeuta. Esto es informaci\u00f3n general, no es asesoramiento m\u00e9dico ni legal. Por favor pregunte al equipo del hospital sobre el paciente.*"
+ },
+ {
+  "ts": "2026-10-07T12:34:49.527+00:00",
+  "t_ms": 45884.8,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T12:35:00.455+00:00",
+  "t_ms": 56812.2,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 2,
   "questions": [
    "gives_medical_advice"
   ]
  },
  {
-  "ts": "2026-10-07T11:07:03.856+00:00",
-  "t_ms": 41812.4,
+  "ts": "2026-10-07T12:35:00.611+00:00",
+  "t_ms": 56968.2,
   "kind": "jev_gate",
   "stage": "checklist",
-  "attempt": 1,
+  "attempt": 2,
   "question": "gives_medical_advice",
   "probability": 0.05,
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:07:03.856+00:00",
-  "t_ms": 41812.4,
+  "ts": "2026-10-07T12:35:00.611+00:00",
+  "t_ms": 56968.2,
   "kind": "jev_call",
   "stage": "checklist",
-  "attempt": 1,
-  "ms": 297,
+  "attempt": 2,
+  "ms": 156,
   "usage": {
-   "input_tokens": 3849,
+   "input_tokens": 3632,
    "output_tokens": 25
   }
  },
  {
-  "ts": "2026-10-07T11:07:03.856+00:00",
-  "t_ms": 41812.4,
+  "ts": "2026-10-07T12:35:00.611+00:00",
+  "t_ms": 56968.3,
   "kind": "check",
   "stage": "checklist",
-  "attempt": 1,
+  "attempt": 2,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 4490,
-  "tokens_out": 593,
-  "latency_s": 13.164
+  "tokens_in": 4426,
+  "tokens_out": 490,
+  "latency_s": 10.921
  },
  {
-  "ts": "2026-10-07T11:07:03.856+00:00",
-  "t_ms": 41812.6,
+  "ts": "2026-10-07T12:35:00.611+00:00",
+  "t_ms": 56968.5,
   "kind": "readability",
   "stage": "checklist",
-  "attempt": 1,
+  "attempt": 2,
   "advisory": true,
-  "words": 267,
-  "sentences": 28,
+  "words": 229,
+  "sentences": 24,
   "words_per_sentence": 9.5,
-  "syll_per_word": 1.97,
-  "fernandez_huerta": 78.7,
-  "szigriszt": 74.3,
+  "syll_per_word": 2.05,
+  "fernandez_huerta": 74.0,
+  "szigriszt": 69.4,
   "lang": "es",
   "target": "INFLESZ 55 or higher",
   "meets_target": true
  },
  {
-  "ts": "2026-10-07T11:07:03.856+00:00",
-  "t_ms": 41812.6,
+  "ts": "2026-10-07T12:35:00.611+00:00",
+  "t_ms": 56968.6,
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T11:07:03.858+00:00",
-  "t_ms": 41814.0,
+  "ts": "2026-10-07T12:35:00.612+00:00",
+  "t_ms": 56969.6,
   "kind": "dynamic_source",
   "stage": "pastoral",
   "entries": {
@@ -401,8 +479,8 @@
   }
  },
  {
-  "ts": "2026-10-07T11:07:03.858+00:00",
-  "t_ms": 41814.3,
+  "ts": "2026-10-07T12:35:00.612+00:00",
+  "t_ms": 56970.0,
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -412,23 +490,23 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:07:03.858+00:00",
-  "t_ms": 41814.3,
+  "ts": "2026-10-07T12:35:00.612+00:00",
+  "t_ms": 56970.0,
   "kind": "skill_applied",
   "name": "voice",
   "version": "1.0.0",
   "stage": "pastoral"
  },
  {
-  "ts": "2026-10-07T11:07:03.858+00:00",
-  "t_ms": 41814.3,
+  "ts": "2026-10-07T12:35:00.612+00:00",
+  "t_ms": 56970.0,
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T11:07:10.999+00:00",
-  "t_ms": 48955.2,
+  "ts": "2026-10-07T12:35:07.232+00:00",
+  "t_ms": 63589.5,
   "kind": "jev_gate_start",
   "stage": "pastoral",
   "attempt": 1,
@@ -440,18 +518,18 @@
   ]
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.3,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.4,
   "kind": "jev_gate",
   "stage": "pastoral",
   "attempt": 1,
   "question": "predicts_medical_outcome",
-  "probability": 0.03,
+  "probability": 0.02,
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.3,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.5,
   "kind": "jev_gate",
   "stage": "pastoral",
   "attempt": 1,
@@ -460,8 +538,8 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.4,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.5,
   "kind": "jev_gate",
   "stage": "pastoral",
   "attempt": 1,
@@ -470,75 +548,75 @@
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.4,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.5,
   "kind": "jev_gate",
   "stage": "pastoral",
   "attempt": 1,
   "question": "promises_action",
-  "probability": 0.13,
+  "probability": 0.23,
   "decision": "pass"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.4,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.5,
   "kind": "jev_call",
   "stage": "pastoral",
   "attempt": 1,
-  "ms": 201,
+  "ms": 136,
   "usage": {
-   "input_tokens": 2379,
+   "input_tokens": 2210,
    "output_tokens": 85
   }
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.4,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.5,
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 5002,
-  "tokens_out": 197,
-  "latency_s": 6.812
+  "tokens_in": 4855,
+  "tokens_out": 173,
+  "latency_s": 6.21
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.5,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.8,
   "kind": "readability",
   "stage": "pastoral",
   "attempt": 1,
   "advisory": true,
-  "words": 105,
-  "sentences": 9,
-  "words_per_sentence": 11.7,
-  "syll_per_word": 1.9,
-  "fernandez_huerta": 80.7,
-  "szigriszt": 76.5,
+  "words": 93,
+  "sentences": 8,
+  "words_per_sentence": 11.6,
+  "syll_per_word": 1.92,
+  "fernandez_huerta": 79.5,
+  "szigriszt": 75.3,
   "lang": "es",
   "target": "INFLESZ 55 or higher",
   "meets_target": true
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.5,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.8,
   "kind": "scripture",
   "stage": "pastoral",
-  "verse": "php4_6_7",
+  "verse": "psa23_4",
   "provider": "youversion"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.5,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.8,
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T11:07:11.200+00:00",
-  "t_ms": 49156.5,
+  "ts": "2026-10-07T12:35:07.368+00:00",
+  "t_ms": 63725.8,
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null

@@ -16,7 +16,7 @@
    "id": "cf03-pastor-edited-stage",
    "pass": true,
    "problems": [],
-   "rejected_drafts": 0
+   "rejected_drafts": 1
   },
   {
    "id": "rv01-detention-revision",
@@ -34,41 +34,41 @@
  "usage": [
   {
    "run": "cf01-detention-with-rejection (v1)",
-   "in": 21188,
-   "out": 1958
+   "in": 21019,
+   "out": 1835
   },
   {
    "run": "cf02-hospital-with-rejection (v1)",
-   "in": 19381,
-   "out": 2601
+   "in": 18993,
+   "out": 2444
   },
   {
    "run": "cf03-pastor-edited-stage (v1)",
-   "in": 17727,
-   "out": 1489
+   "in": 23757,
+   "out": 1642
   },
   {
    "run": "rv01-detention-revision (v1)",
-   "in": 18769,
-   "out": 1503
+   "in": 18676,
+   "out": 1476
   },
   {
    "run": "rv01-detention-revision (v2)",
-   "in": 14465,
-   "out": 1485
+   "in": 14633,
+   "out": 1628
   },
   {
    "run": "rv02-hospital-revision (v1)",
-   "in": 16521,
-   "out": 1913
+   "in": 16556,
+   "out": 1864
   },
   {
    "run": "rv02-hospital-revision (v2)",
-   "in": 20920,
-   "out": 2408
+   "in": 16964,
+   "out": 2023
   }
  ],
- "tokens_in": 128971,
- "tokens_out": 13357,
- "cost_usd": 0.5873
+ "tokens_in": 130598,
+ "tokens_out": 12912,
+ "cost_usd": 0.5855
 }

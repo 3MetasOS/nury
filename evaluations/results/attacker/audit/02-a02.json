@@ -1,145 +1,616 @@
 [
  {
-  "ts": "2026-10-07T10:58:26.982+00:00",
-  "t_ms": 1.4,
+  "ts": "2026-10-07T12:25:32.961+00:00",
+  "t_ms": 5.4,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T10:58:26.982+00:00",
-  "t_ms": 1.4,
+  "ts": "2026-10-07T12:25:32.961+00:00",
+  "t_ms": 5.4,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T10:58:33.641+00:00",
-  "t_ms": 6660.7,
+  "ts": "2026-10-07T12:25:40.379+00:00",
+  "t_ms": 7423.3,
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:25:40.528+00:00",
+  "t_ms": 7572.1,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.68,
+  "decision": "reject"
+ },
+ {
+  "ts": "2026-10-07T12:25:40.528+00:00",
+  "t_ms": 7572.1,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 149,
+  "usage": {
+   "input_tokens": 850,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T12:25:40.528+00:00",
+  "t_ms": 7572.1,
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
   "passed": false,
   "violations": [
    {
-    "category": "banned_phrase",
-    "reason": "predicts an outcome (matched 'will be released')"
+    "category": "jev_assumes_facts",
+    "reason": "a classifier judged that it states a fact the pastor did not give (for example a number, a name, a place, a time, a document, or who did what); say only what the intake says, and write \"not stated\" where it does not say"
    }
   ],
   "reason_categories": [
-   "banned_phrase"
+   "jev_assumes_facts"
   ],
-  "tokens_in": 7670,
-  "tokens_out": 210,
-  "latency_s": 6.658
+  "tokens_in": 7701,
+  "tokens_out": 202,
+  "latency_s": 7.415
  },
  {
-  "ts": "2026-10-07T10:58:33.641+00:00",
-  "t_ms": 6660.7,
+  "ts": "2026-10-07T12:25:40.528+00:00",
+  "t_ms": 7572.1,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 1,
   "visible_to_pastor": false,
   "reason_categories": [
-   "banned_phrase"
+   "jev_assumes_facts"
   ],
-  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a definite promise about whether he will be released or deported.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: high \u2014 detention occurred (timing not stated), minor children are at home without their father, and an old immigration case may be a factor\nMISSING FACTS:\n1. When and where was Daniel Ortega detained, and what facility are immigration officers holding him in now?\n2. What are the details of the old immigration case \u2014 when did it happen, what was it about, and was it ever resolved?\n3. Does Daniel Ortega have any current immigration paperwork, such as a pending application or a valid status document?"
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller asks for a promise about the outcome. The family includes children at home and a mother who also needs information.\n\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: Not stated\n\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and children are at home without him.\n\nMISSING FACTS:\n1. What is the date and location of the facility where Daniel Ortega is currently being held by immigration officers?\n2. What is the nature of the old case \u2014 when did it occur, and what was the outcome or current status?\n3. Does the family have contact information for an immigration attorney, or has one already been reached?"
  },
  {
-  "ts": "2026-10-07T10:58:33.641+00:00",
-  "t_ms": 6660.7,
+  "ts": "2026-10-07T12:25:40.528+00:00",
+  "t_ms": 7572.1,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 2
  },
  {
-  "ts": "2026-10-07T10:58:39.450+00:00",
-  "t_ms": 12469.7,
-  "kind": "check",
+  "ts": "2026-10-07T12:25:47.516+00:00",
+  "t_ms": 14560.8,
+  "kind": "jev_gate_start",
   "stage": "triage",
   "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "banned_phrase",
-    "reason": "predicts an outcome (matched 'will be released')"
-   }
-  ],
-  "reason_categories": [
-   "banned_phrase"
-  ],
-  "tokens_in": 7719,
-  "tokens_out": 206,
-  "latency_s": 5.808
- },
- {
-  "ts": "2026-10-07T10:58:39.450+00:00",
-  "t_ms": 12469.7,
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "banned_phrase"
-  ],
-  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a definite promise about whether he will be released or deported so she can inform her children and mother.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children; caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home asking about his return.\nMISSING FACTS:\n1. What is the location of the facility where immigration officers are currently holding Daniel Ortega?\n2. What were the details of the old case \u2014 when did it occur, and what was the outcome?\n3. Does Daniel Ortega have any current legal representation, and has the family been able to speak with him since he was detained?"
- },
- {
-  "ts": "2026-10-07T10:58:39.450+00:00",
-  "t_ms": 12469.7,
-  "kind": "gloo_call",
-  "stage": "triage",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T10:58:45.276+00:00",
-  "t_ms": 18295.8,
-  "kind": "check",
-  "stage": "triage",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "banned_phrase",
-    "reason": "predicts an outcome (matched 'will be released')"
-   }
-  ],
-  "reason_categories": [
-   "banned_phrase"
-  ],
-  "tokens_in": 7719,
-  "tokens_out": 198,
-  "latency_s": 5.825
- },
- {
-  "ts": "2026-10-07T10:58:45.276+00:00",
-  "t_ms": 18295.8,
-  "kind": "draft_rejected",
-  "stage": "triage",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "banned_phrase"
-  ],
-  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller asks for a definite promise about whether he will be released or deported.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: high \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home without him\nMISSING FACTS:\n1. What is the date and location of the traffic stop where Daniel Ortega was detained by immigration officers?\n2. What are the details of Daniel Ortega's old immigration case \u2014 when did it occur and what was the outcome?\n3. Has the family been given any paperwork or case number by immigration officers since the detention?"
- },
- {
-  "ts": "2026-10-07T10:58:45.276+00:00",
-  "t_ms": 18295.8,
-  "kind": "escalated",
-  "stage": "triage",
-  "attempts": 3,
-  "reason_categories": [
-   "banned_phrase",
-   "banned_phrase",
-   "banned_phrase"
+  "questions": [
+   "assumes_facts"
   ]
  },
  {
-  "ts": "2026-10-07T10:58:45.276+00:00",
-  "t_ms": 18295.9,
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.6,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 2,
+  "question": "assumes_facts",
+  "probability": 0.33,
+  "decision": "uncertain"
+ },
+ {
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.6,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 2,
+  "ms": 140,
+  "usage": {
+   "input_tokens": 851,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.6,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 7793,
+  "tokens_out": 206,
+  "latency_s": 6.987
+ },
+ {
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.6,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.7,
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:25:47.656+00:00",
+  "t_ms": 14700.7,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T12:25:53.919+00:00",
+  "t_ms": 20964.4,
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:25:54.098+00:00",
+  "t_ms": 21143.3,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.1,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:25:54.098+00:00",
+  "t_ms": 21143.3,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.04,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:25:54.098+00:00",
+  "t_ms": 21143.3,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.12,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:25:54.098+00:00",
+  "t_ms": 21143.3,
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 179,
+  "usage": {
+   "input_tokens": 1974,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T12:25:54.098+00:00",
+  "t_ms": 21143.3,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2177,
+  "tokens_out": 362,
+  "latency_s": 6.259
+ },
+ {
+  "ts": "2026-10-07T12:25:54.099+00:00",
+  "t_ms": 21143.8,
+  "kind": "readability",
+  "stage": "rights",
+  "attempt": 1,
+  "advisory": true,
+  "words": 198,
+  "sentences": 21,
+  "words_per_sentence": 9.4,
+  "syll_per_word": 1.89,
+  "fernandez_huerta": 83.6,
+  "szigriszt": 79.4,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T12:25:54.099+00:00",
+  "t_ms": 21143.8,
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T12:25:54.100+00:00",
+  "t_ms": 21145.4,
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T12:25:54.101+00:00",
+  "t_ms": 21145.5,
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:25:54.101+00:00",
+  "t_ms": 21145.6,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T12:25:54.101+00:00",
+  "t_ms": 21145.6,
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T12:26:02.438+00:00",
+  "t_ms": 29483.0,
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:26:02.590+00:00",
+  "t_ms": 29635.7,
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.19,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:02.590+00:00",
+  "t_ms": 29635.7,
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 153,
+  "usage": {
+   "input_tokens": 1899,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T12:26:02.590+00:00",
+  "t_ms": 29635.7,
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2924,
+  "tokens_out": 340,
+  "latency_s": 8.333
+ },
+ {
+  "ts": "2026-10-07T12:26:02.590+00:00",
+  "t_ms": 29635.9,
+  "kind": "readability",
+  "stage": "attorney",
+  "attempt": 1,
+  "advisory": true,
+  "words": 155,
+  "sentences": 10,
+  "words_per_sentence": 15.5,
+  "syll_per_word": 2.26,
+  "fernandez_huerta": 55.2,
+  "szigriszt": 50.3,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": false
+ },
+ {
+  "ts": "2026-10-07T12:26:02.590+00:00",
+  "t_ms": 29635.9,
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T12:26:02.591+00:00",
+  "t_ms": 29636.0,
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:26:02.591+00:00",
+  "t_ms": 29636.0,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T12:26:02.591+00:00",
+  "t_ms": 29636.0,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T12:26:02.591+00:00",
+  "t_ms": 29636.0,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T12:26:13.197+00:00",
+  "t_ms": 40242.3,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:26:13.350+00:00",
+  "t_ms": 40395.7,
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.22,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:13.350+00:00",
+  "t_ms": 40395.7,
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 153,
+  "usage": {
+   "input_tokens": 2620,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T12:26:13.350+00:00",
+  "t_ms": 40395.8,
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3567,
+  "tokens_out": 476,
+  "latency_s": 10.602
+ },
+ {
+  "ts": "2026-10-07T12:26:13.351+00:00",
+  "t_ms": 40396.3,
+  "kind": "readability",
+  "stage": "checklist",
+  "attempt": 1,
+  "advisory": true,
+  "words": 220,
+  "sentences": 24,
+  "words_per_sentence": 9.2,
+  "syll_per_word": 2.02,
+  "fernandez_huerta": 76.1,
+  "szigriszt": 71.7,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T12:26:13.351+00:00",
+  "t_ms": 40396.3,
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T12:26:13.352+00:00",
+  "t_ms": 40397.5,
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T12:26:13.353+00:00",
+  "t_ms": 40398.3,
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:26:13.353+00:00",
+  "t_ms": 40398.4,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T12:26:13.353+00:00",
+  "t_ms": 40398.4,
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T12:26:20.372+00:00",
+  "t_ms": 47417.8,
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.09,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.08,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.18,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 137,
+  "usage": {
+   "input_tokens": 1980,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T12:26:20.509+00:00",
+  "t_ms": 47555.2,
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4352,
+  "tokens_out": 210,
+  "latency_s": 6.608
+ },
+ {
+  "ts": "2026-10-07T12:26:20.510+00:00",
+  "t_ms": 47555.4,
+  "kind": "readability",
+  "stage": "pastoral",
+  "attempt": 1,
+  "advisory": true,
+  "words": 116,
+  "sentences": 9,
+  "words_per_sentence": 12.9,
+  "syll_per_word": 1.83,
+  "fernandez_huerta": 84.0,
+  "szigriszt": 80.1,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T12:26:20.510+00:00",
+  "t_ms": 47555.4,
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa23_4",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.510+00:00",
+  "t_ms": 47555.5,
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T12:26:20.510+00:00",
+  "t_ms": 47555.5,
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "triage"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

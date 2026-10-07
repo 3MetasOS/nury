@@ -35,16 +35,16 @@ def cell(r):
 
 
 def main():
-    before, after, mid, mid3 = load(HERE / "results/before_tone_fix"), load(HERE / "results"), load(HERE / "results/before_final2"), load(HERE / "results/before_final3")
+    before, after, mid, mid3, mid4 = load(HERE / "results/before_tone_fix"), load(HERE / "results"), load(HERE / "results/before_final2"), load(HERE / "results/before_final3"), load(HERE / "results/before_final4")
     L = ["# Tone before and after the scoped fix", "",
          "Same scenarios, same Jev question and thresholds (target 4 of 5, fail below 3), same privacy and judges. Only the core changed: pastoral prompt, `no_unauthorized_promises` check, names-proposer stopwords.", "",
          f"Before: core `{before.get('detention_core')}`. After: core `{after.get('detention_core') if after.get('detention_core') != before.get('detention_core') else '(not yet re-run)'}`.", "",
          "Promise phrases = an eval-side scan (not the core's check) for sentences that promise a church action in the pastoral message or checklist, such as 'Estamos buscando un abogado' or 'Les mandamos más información'. Advisory.", "",
-         "| Scenario | Tone, first scored build | Promise phrases | Tone, c317050 (before_final2) | Promise phrases | Tone, 8a28a18 (before_final3) | Promise phrases | Tone, FINAL build 07f020c | Promise phrases |", "|---|---|---|---|---|---|---|---|---|"]
+         "| Scenario | Tone, first scored build | Promise phrases | Tone, c317050 (before_final2) | Promise phrases | Tone, 8a28a18 (before_final3) | Promise phrases | Tone, 07f020c (before_final4) | Promise phrases | Tone, FINAL build 9bc5c6d | Promise phrases |", "|---|---|---|---|---|---|---|---|---|---|---|"]
     for pb, n in SCEN:
         rb, ra = before.get(pb, {}).get(n), (after.get(pb, {}).get(n) if after.get(pb + "_core") != before.get(pb + "_core") else None)
-        b, a, m, m3 = cell(rb), cell(ra), cell(mid.get(pb, {}).get(n)), cell(mid3.get(pb, {}).get(n))
-        L.append(f"| {pb} {n:02d} {(rb or {}).get('id','')} | {b[0]} | {b[1]} | {m[0]} | {m[1]} | {m3[0]} | {m3[1]} | {a[0]} | {a[1]} {('(' + a[2] + ')') if a[2] else ''} |")
+        b, a, m, m3, m4 = cell(rb), cell(ra), cell(mid.get(pb, {}).get(n)), cell(mid3.get(pb, {}).get(n)), cell(mid4.get(pb, {}).get(n))
+        L.append(f"| {pb} {n:02d} {(rb or {}).get('id','')} | {b[0]} | {b[1]} | {m[0]} | {m[1]} | {m3[0]} | {m3[1]} | {m4[0]} | {m4[1]} | {a[0]} | {a[1]} {('(' + a[2] + ')') if a[2] else ''} |")
     L += ["", "## Whole sets", "", "| Set | First scored build (pass / review / fail) | Previous build | Final build |", "|---|---|---|---|"]
     for pb in ("detention", "hospital"):
         b = before.get(pb + "_agg"); aft = after.get(pb + "_agg") if after.get(pb + "_core") != before.get(pb + "_core") else None

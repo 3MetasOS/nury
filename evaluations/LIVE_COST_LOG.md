@@ -207,3 +207,15 @@ Run from a clean checkout of 07f020c (`git worktree add /tmp/nury_final 07f020c`
 | | **Total** | **$4.19** (cap $5.5) |
 
 Note on J4: the network scenario folder is gitignored, so the first network step in the clean checkout found no scenarios and ran for one second. It was re-run from the main repo's folder against the same 07f020c code. Two jedi recording runs on the same keys (04:44 to 04:46) overlapped detention scenarios 05 to 10; no error, no slow single-attempt stage in those files (retries are not logged, COR-13).
+
+## Slot K: the final scored sets on 9bc5c6d (hack-artisans, 2026-10-07, 06:07 to 06:45)
+Run from a clean checkout of 9bc5c6d (`git worktree add /tmp/nury_final2 9bc5c6d`, with `evaluations/network/` copied in; it is gitignored), core last commit 9bc5c6d, clean at the start and the end. The 07f020c results are in `results/before_final4/`.
+
+| Step | Set | Model and Jev cost |
+|---|---|---|
+| K1 | detention 20 | $1.2753 |
+| K2 | hospital 8 | $0.7097 |
+| K3 | attacker 18 | $1.5072 |
+| K4 | network 3 | $0.2726 |
+| K5 | case-file 5 | $0.5855 |
+| | **Total** | **$4.35** (cap $5.5) |
