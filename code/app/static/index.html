@@ -786,8 +786,9 @@ async function openCase(id,tabName){
     const ok=await askConfirm(on?{title:"Mark this case as needs follow-up?",body:"It moves to the top of your list.",ok:"Mark as needs follow-up"}:{title:"Clear the follow-up flag?",body:"The case goes back to its normal place.",ok:"Clear follow-up"});
     if(!ok)return;
     if(await apply(on))toast(on?"Marked as needs follow-up.":"Follow-up cleared.",()=>apply(!on))};
-  {const st=c.meta.status==="complete"?"Package complete":String(c.meta.status||"").replace(/^./,x=>x.toUpperCase());const vsn=(c.versions||[c.meta.id]).length;
-   $("case-meta").replaceChildren(h("span",{class:"sc tag"},shortWhen(c.meta.created)),h("span",{class:"sc tag"},st+(c.meta.edited&&c.meta.edited.length?", edited by the pastor":"")),h("span",{class:"sc s-saved"},ic("i-check"),"Saved"),
+  {const vsn=(c.versions||[c.meta.id]).length;
+   $("case-meta").replaceChildren(h("span",{class:"sc tag"},shortWhen(c.meta.created)),
+     c.meta.status!=="complete"?h("span",{class:"sc s-follow"},/stop/i.test(c.meta.status)?"Stopped":"In progress"):"",
      vsn>1?h("span",{class:"sc s-v2"},ic("i-v2"),vsn===2?"Updated":vsn===3?"Updated twice":`Updated ${vsn-1} times`):"",h("span",{class:"sc tag cid",title:c.meta.id,"aria-label":"Case id "+c.meta.id},"\u2026"+c.meta.id.slice(-4)))}
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
