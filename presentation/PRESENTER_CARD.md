@@ -1,4 +1,4 @@
-# Presenter card: the live pitch (2:49, 2.5 words a second)
+# Presenter card: the live pitch (2:55, 2.5 words a second)
 
 Juan reads this one page. Keys: `n` notes, `g` slide index, `G` show gated, `b` backup, `f` clean mode. The memorial stays hidden until Juan approves in writing.
 
@@ -14,7 +14,7 @@ Juan reads this one page. Keys: `n` notes, `g` slide index, `G` show gated, `b` 
 | 8 | Use of AI | Claude writes. Rules and Jev check. | Top band first, then the bottom band. 14 s. |
 | 9 | The evaluation system | Two evaluation systems. One builds, one checks. | Top lane, then bottom lane. 16 s. |
 | 10 | Impact | 46 made-up cases: 29 pass, 2 fail. | Do not read the Jev line. Say the tone gap. 13 s. |
-| 11 | What we built | One founder, five AI agents, every step logged. | Point at the six ticks. 6 s. |
+| 11 | What we built | One engine. Crises on top. Tools around it. | Point at the four layers. 12 s. |
 | 12 | Close | The next call will come. | Pause. 5 s. (90-second cut ends here.) |
 | 13 | Memorial | Juan's words, only after written approval. | Nothing else on screen. 16 s. |
 

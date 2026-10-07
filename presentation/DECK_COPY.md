@@ -53,7 +53,7 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Line: Add a folder, not engine code. Rules and tests are files too.
 - Labels: Add a crisis · Add a rule · Add a test
 - Spoken (10 s): "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. Rules and tests are files too."
-- Notes: Evidence: `code/nury/playbook.py`, `code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md`, test `test_second_playbook_zero_engine_changes`. Criterion: Innovation. Say nothing about skills or the church network.
+- Notes: Evidence: `code/nury/playbook.py`, `code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md`, test `test_second_playbook_zero_engine_changes`. Criterion: Innovation. Skills may be named now (gate lifted): shared skills, voice and grounding.
 - Screens: none (file tree diagram).
 
 ### 7. how-it-is-built
@@ -92,18 +92,16 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 - Notes: Build 9bc5c6d. No Before column, no pass rate. If asked for another failure: the tone judge sits near 3 of 5 against 4 and moves up to 0.75 between identical runs. Criterion: Impact and Execution.
 - Screens: none.
 
-### 11. what-we-built (was where-we-stand; the "Not done yet" column is removed, per Juan)
+### 11. what-we-built (an architecture map; gate lifted by sensei, Juan's written confirmation)
 - Headline: One founder. Five AI agents.
 - Line: Every step is in the commit log.
-- Labels: none. Six big ticks, one line each, 1 to 6 words:
-  1. Two live crises, plain files
-  2. The app, with PDF export
-  3. Rules, a safety floor, Jev
-  4. Verses from a verified list
-  5. 46 test cases, outside review
-  6. Learning loop, replay, command line
-- Spoken (6 s): "One founder and five AI agents built it. Every step is in the commit log."
-- Notes: 2:22 to 2:28. Criterion: Presentation and Teamwork. Every tick is checked against documents/product/ALIGNMENT_AUDIT.md (46 scenarios, replay, CLI and MCP shipped, learning loop built and off). Honest status is NOT on this slide on purpose: it lives on the Impact slide ("Made-up families only."), the About page, How this was built (Limits) and What did not work. If asked: no real pastor has used it, no attorney has reviewed our sources, nothing has been learned yet. Do not volunteer "not read" or "nothing learned" on a slide. "Five AI agents" has no audit row: sensei to confirm.
+- Four layers (labels, 1 to 4 words each; this is a map, not a list of claims):
+  1. CRISES: Immigration matter · Hospital emergency · two coming soon (plain files)
+  2. THE AGENT: Nury engine, plain Python, no framework · stages and gates · named rules and safety floor · privacy tokens · shared skills: voice and grounding
+  3. CONNECTED TO: Gloo AI Studio · Jev from TypeSafe · YouVersion
+  4. AROUND IT: app with PDF export · evaluation system · observability · CLI and MCP server for other agents
+- Spoken (12 s, 30 words): "Nury is one engine. Crises sit on top as plain files. It connects to Gloo, Jev and YouVersion. Around it: the app, the evaluation system, and tools for other agents."
+- Notes: 2:22 to 2:34. Criterion: Technical Execution and Presentation. Check against documents/FEATURES.md section 6 and ALIGNMENT_AUDIT.md: voice and grounding skills are BUILT and live verified; the loader refuses a skill that overrides the safety floor; a switch turns skills off. The skills before-and-after test is NOT run yet: never say skills help or improve results. CLI and MCP are read-only and need no key. "Five AI agents" has no audit row: sensei to confirm. The church network and the case file may be named (gate lifted); the church network lists only vetted contacts, labeled as the church's own, and never endorses.
 - Screens: none.
 
 ### 12. close (dawn)
@@ -133,7 +131,7 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 | four-test-layers | Four test layers | Before release, never at run time. | Plain code · Jev · Red team · A person | Each layer and what it cannot do. |
 | privacy-that-is-tested | Privacy that is tested | Names become tokens before any model request. | Tokens · Leak test | 90 checks per playbook, 0 found. Details like a workplace can still hint at who. |
 | cases-export-and-pdf | Cases, export and PDF | Family copy and pastor copy, as PDF or a zip. | Export · Family copy · Pastor copy | Screen: `images/app/export-menu.png`. PDF needs Chrome or Chromium. The next-steps map lists steps and questions; it never says what will happen. |
-| listed-does-not-mean-recommended (gated) | Listed does not mean recommended | Nury lists vetted contacts. It never endorses anyone. | Church's own list · Official lists | Show only after sensei confirms in writing. |
+| listed-does-not-mean-recommended | Listed does not mean recommended | Nury lists vetted contacts. It never endorses anyone. | Church's own list · Official lists | Gate lifted by sensei (Juan's written confirmation). |
 | informed-by-case-management-practice | Informed by case-management practice | Six functions from the NASW standards. | none | STANDARDS_PAGE.md. |
 | where-nury-fits | Where Nury fits | Routine church tools and Nury cover different moments. | Routine · Crisis | Neutral. No team or product names. |
 | credits | Credits | Photos, fonts, Scripture, voice and technology. | none | Porch light (Henryemix, CC0), lanterns (Peter Hershey, CC0); fonts Fraunces, Inter, Gochi Hand (SIL OFL); YouVersion; Gloo AI Studio; TypeSafe (Jev, not built by us); ElevenLabs (AI voice). Details: branding/IMAGES.md. |

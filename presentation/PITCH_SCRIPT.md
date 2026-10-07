@@ -1,13 +1,13 @@
 # Nury: 3-minute pitch script (deck v2, with the technical story)
 
-Speaker: Juan Peláez (3Metas). Target about 2:53 with the memorial, 3:00 at most, at a calm pace. Slides are named in the deck footer. Press `n` for notes, `g` for the slide index, `G` to show gated items, `b` for backup, `f` for clean mode.
+Speaker: Juan Peláez (3Metas). Target 2:55 at most with the memorial, at a calm pace. Slides are named in the deck footer. Press `n` for notes, `g` for the slide index, `G` to show gated items, `b` for backup, `f` for clean mode.
 Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
 `[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
 Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
 Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from `documents/TECH_CLAIMS.md`, VERIFIED rows only.
 
 ## Timing table (13 talk slides at 2.5 words a second; the arc is night, lantern, light, dawn)
-Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, What we built, Close, Memorial). Total 2:49 with the memorial, 2:33 without. Limit 2:55.
+Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, What we built, Close, Memorial). Total 2:55 with the memorial (the limit), 2:39 without. Limit 2:55.
 | # | Slide (title in the deck) | Act | Time | Length |
 |---|---|---|---|---|
 | 1 | The call | Night | 0:00 to 0:11 | 11 s |
@@ -20,9 +20,9 @@ Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The de
 | 8 | Use of AI | Light | 1:39 to 1:53 | 14 s |
 | 9 | The evaluation system | Light | 1:53 to 2:09 | 16 s |
 | 10 | Impact | Light | 2:09 to 2:22 | 13 s |
-| 11 | What we built | Light | 2:22 to 2:28 | 6 s |
-| 12 | Close | Dawn | 2:28 to 2:33 | 5 s |
-| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:33 to 2:49 | 16 s |
+| 11 | What we built | Light | 2:22 to 2:34 | 12 s |
+| 12 | Close | Dawn | 2:34 to 2:39 | 5 s |
+| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:39 to 2:55 | 16 s |
 
 ## 1. The call (night)  [90s]
 The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." (29 words, 11 s)
@@ -63,8 +63,8 @@ Do not read the disclosure aloud: it is on the slide. "We judged 46 made-up case
 Source: `evaluations/results/build_comparison.md`, build 9bc5c6d. Judge results, not human verdicts. Do not add the counts into a pass rate.
 One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the triage prompt.
 
-## 11. What we built
-"One founder and five AI agents built it. Every step is in the commit log." (15 words, 6 s) Six ticks on the slide. The honest status is on the Impact slide, the About page, How this was built and What did not work, not here.
+## 11. What we built (architecture map)
+"Nury is one engine. Crises sit on top as plain files. It connects to Gloo, Jev and YouVersion. Around it: the app, the evaluation system, and tools for other agents." (30 words, 12 s) Four layers on the slide. The honest status is on the Impact slide, the About page, How this was built and What did not work. Skills, the church network and the case file may be named now (gate lifted, Juan's written confirmation). Do not say skills improve results: the before-and-after test has not run.
 
 ## 12. Close (dawn)  [90s]
 "The next call will come. Nury is there when the pastor picks up." (5 s) The slide ends with "Read more: the About page."
@@ -77,7 +77,7 @@ Slides 1, 2, 4, 7, 12 and the memorial: about 11 + 10 + 34 + 14 + 5 + 16 = 90 s.
 
 ## Backup slides (do not speak; use for questions). Press `b`.
 What broke and what changed. Four evaluation layers, with what each cannot do. The evaluation system in detail. Privacy that is tested. Informed by case-management practice (not in the talk). Cases, export and PDF. Where Nury fits. Credits.
-Gated, hidden until Sensei confirms in writing: "listed does not mean recommended" (church network and official list), and the memorial.
+Gated, hidden until Juan approves in writing: the memorial only.
 For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, how we know the guardrails work, hallucinated links, personal information, and what Jev adds.
 
 ## Rules for the speaker
@@ -86,4 +86,4 @@ For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, 
 - Humanitarian, never political. Name no agency and no party.
 - Do not claim a pastor, attorney or family has used it. We have not validated with one.
 - Say "smoke test" and "first pass" where the numbers come from one. Do not round up.
-- Say nothing about the church network, the skill system or the case file until Sensei confirms in writing. Hospital is open (2026-10-07); its numbers wait for the final re-run.
+- The church network, skills and the case file may be named (gate lifted 2026-10-07). Hospital is open (2026-10-07); its numbers wait for the final re-run.

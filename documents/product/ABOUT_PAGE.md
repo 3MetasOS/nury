@@ -20,6 +20,8 @@ After every stage the pastor can Approve, Edit or Stop. Later stages build on th
 
 **Rules can be added.** Every draft is checked by named rules. A new rule is one small function, a line that registers it and names it in a stage, one plain sentence for the rules page, and a test. It then shows up in the registry and on the rules page.
 
+**Skills are shared.** A skill is a small set of instructions, such as voice (plain words, natural Spanish) or grounding (every line from a vetted point), kept in one place and added to a stage's prompt by name. A skill cannot override the safety floor, and one switch turns skills off. We have not yet tested whether skills improve results.
+
 **Evaluations can be added.** Scenarios and hostile intakes are plain files, and the judge questions sit in one code file. A new crisis brings its own scenarios. A proposed improvement is a file too: a script runs it against the same sets before and after, with a gate, and only then does a person decide whether to adopt it.
 
 Anyone with the repository can add a crisis, a rule or a scenario. See `documents/product/ADD_A_RULE.md` and the playbook folder (`code/playbooks/`) in the README. A person still approves the sources and the release.
