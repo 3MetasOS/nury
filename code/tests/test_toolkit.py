@@ -95,10 +95,11 @@ class Safe(unittest.TestCase):
                 seen.append(k)
                 return super().__getitem__(k)
         env = Rec(os.environ)
-        env.update(GLOO_API_KEY="sentinel-gloo", JEV_API_KEY="sentinel-jev", YVP_APP_KEY="sentinel-yv", ELEVENLABS_API_KEY="sentinel-el")
+        keys = ("GLOO_API_KEY", "JEV_API_KEY", "YVP_APP_KEY", "ELEVENLABS_API_KEY")
+        env.update({k: "sentinel-" + k.lower() for k in keys})
         with mock.patch.object(os, "environ", env):
             self.run_all()
-        for k in ("GLOO_API_KEY", "JEV_API_KEY", "YVP_APP_KEY", "ELEVENLABS_API_KEY"):
+        for k in keys:
             self.assertNotIn(k, seen)
 
     def test_no_file_is_written_and_nothing_leaves_the_machine(self):
