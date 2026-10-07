@@ -36,7 +36,10 @@ textarea{min-height:170px;resize:vertical}
 .bgrp .btn.sm{border:0;border-radius:0;background:transparent;height:36px;min-height:36px;padding:0 14px;font-size:14px;margin:0;width:auto;flex:1 1 auto;justify-content:center}.bgrp .btn.sm:hover{background:var(--amber-soft)}
 .bgrp>.btn+.btn,.bgrp>.btn.hidden+.btn{border-left:1px solid var(--line-2)}.bgrp>.hidden{display:none}
 .casehd .hnote{max-width:none;width:auto}.casehd .hnote .hn-t{white-space:normal}
-.bgrp .btn.sm{white-space:nowrap}@media (max-width:959px){.bgrp .btn.sm{padding:0 8px}.cb-r{flex-direction:column;align-items:stretch}.cb-r #b-changed{width:100%}.bgrp{width:100%}.bgrp .btn.sm{flex:1 1 0}}
+.bgrp .btn.sm{white-space:nowrap}
+.casehd .cb-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-wrap:nowrap}.cb-rb{display:flex;flex-wrap:nowrap;gap:8px;align-items:center}
+.casehd .cb-r .hnote{align-self:flex-end;margin:0;width:max-content;max-width:none}.casehd .cb-r .hnote .hn-t{white-space:nowrap}
+@media (max-width:959px){.casehd .cb-r{align-items:stretch;gap:6px}.cb-rb{display:contents}.cb-r #b-changed{order:0}.casehd .cb-r .hnote{order:1;align-self:flex-start;max-width:100%}.casehd .cb-r .hnote .hn-t{white-space:normal}.cb-r .bgrp{order:2}.cb-r #b-compare{order:3}}@media (max-width:959px){.bgrp .btn.sm{padding:0 8px}.cb-r{flex-direction:column;align-items:stretch}.cb-r #b-changed{width:100%}.bgrp{width:100%}.bgrp .btn.sm{flex:1 1 0}}
 @media (min-width:960px){.casehd .hnote .hn-t{white-space:nowrap}}
 @media (min-width:960px){.band.casehd{grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:start;padding:16px 24px}.cb-r{justify-content:flex-end;flex-wrap:nowrap;align-self:start;margin-top:0}.casehd .cb-row{flex-wrap:nowrap}.casehd .chrow .sc{font-size:12px;padding:0 6px;min-height:24px;white-space:nowrap}.casehd .chrow{flex-wrap:nowrap}.casehd .chrow .sc .i{display:none}.bgrp .btn.sm{padding:0 8px;gap:5px}.cb-r #b-changed{padding:0 10px}.casehd h2{font-size:1.35rem}}
 .chd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin:0 0 6px}.chd-t{min-width:0;flex:1 1 320px}.chd h2{margin:6px 0 4px;font:600 clamp(1.4rem,5vw,1.8rem)/1.2 var(--serif)}
@@ -496,9 +499,10 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <a class="back" id="back-case" href="#/cases">&larr; Cases</a>
   <div class="band cases casehd">
     <div class="cb-l">
-      <div class="cb-row" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5"><h2 id="case-title"></h2><div class="chrow" id="case-meta"></div></div>
+      <div class="cb-row"><h2 id="case-title"></h2><div class="chrow" id="case-meta"></div></div>
     </div>
     <div class="cb-r chd-a">
+    <div class="cb-rb" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5">
       <button class="btn primary" id="b-changed" type="button">Something changed</button>
       <button class="btn sm hidden" id="b-compare" type="button">Compare drafts</button>
       <div class="bgrp" role="group" aria-label="Case actions">
@@ -506,6 +510,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
         <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
       </div>
+    </div>
     </div>
   </div>
   <p class="note chd-m" id="case-follow-msg" role="status"></p>
