@@ -115,3 +115,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Read from the Gloo models API (`pricing` field): gloo-anthropic-claude-sonnet-4.6 costs $3.00 per 1M input tokens and $15.00 per 1M output tokens. The scorecard cost column uses these.
 - Note for the model-selection evidence in EVAL_DESIGN: gloo-anthropic-claude-sonnet-5.5 lists $2.00 in / $10.00 out per 1M. We keep sonnet-4.6 for the run; no model switch this late. A cheap-vs-flagship comparison is optional if time allows.
+
+## 17. 2026-10-06 20:13 MDT — Skills policy; first canvas; browser check of the app
+
+- Decision (Juan): the crew must use agent-browser (validate every page we show), humanizer (all human-readable text; never the Jev line, locked VO, disclaimers, guardrail wording or playbook prompts), impeccable (UI and visual work), and canvas-actions (documents Juan reads or evaluates). Written into the root and all five agent CLAUDE.md files.
+- hack-sensei used them: first status canvas for Juan built; the pastor app checked in a real browser at 390x844 with agent-browser (intake view renders: heading, textbox, language select, demo checkbox, "Use demo intake", "Start"; no console errors). Server and browser session closed afterwards.
