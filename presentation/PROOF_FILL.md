@@ -46,6 +46,8 @@ Stale lines today:
 - deck.html slide 4 flow item "Attorney resources": "Never one named attorney."
 Planned replacements:
 - Description: "Nury lists only pastor-vetted contacts and official lists, endorsing no one." (10 words, net +4: 249 alone; with the two-playbooks variant it reaches 253, so cut one sentence, for example "Family materials come out in Spanish.", only if both ship.)
-- Deck: "Lists only contacts the pastor has vetted, labeled as the church's own, plus official lists. Never endorses anyone."
+- Deck (slide 4, Attorney resources): "Lists only contacts the pastor has vetted, labeled as the church's own, plus official lists. Never endorses anyone." This is the rule wording from hack-sensei.
 - Pitch script, 1:35 block: "Attorney resources come from two places: contacts the pastor has vetted, labeled as the church's own, and official lists. Nury endorses no one."
 Do not say "find more" or any web search. It is after submission.
+
+Note: the full rule wording is 18 words, too long for the 250-word description (it would reach 257). The description keeps the compact form above. The deck and script use the full wording.
