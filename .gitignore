@@ -7,3 +7,4 @@ cases/
 network/
 video/incoming/*
 !video/incoming/README.md
+data/
