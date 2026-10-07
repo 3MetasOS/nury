@@ -1,7 +1,7 @@
-# Nury Evaluation Scorecard: scenarios playbook
+# Nury Evaluation Scorecard: detention playbook
 
 Agent: `nury`. Jev judges: on.
-Build id (repo head when this scorecard was built): `53128a6`.
+Build id (repo head when this scorecard was built): `63cca78`.
 Core (code/nury and code/playbooks): last commit `cb9b4c4 2026-10-06 21:40:56 -0600`, clean at start; unchanged during the run. Repo head at start `52c7346`.
 Privacy layer: on (names, phones, emails, addresses, dates and ID numbers are replaced by tokens before anything reaches the model).
 Model: `gloo-anthropic-claude-sonnet-4.6`. Price: $3.00 per 1M input tokens, $15.00 per 1M output tokens (Gloo /platform/v2/models). Cache pricing not used.
