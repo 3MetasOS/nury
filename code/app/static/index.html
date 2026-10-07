@@ -42,6 +42,7 @@ textarea{min-height:170px;resize:vertical}
 details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--muted);white-space:pre-wrap;word-break:break-word}
 .hidden{display:none}
+.dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
 .bar .row{margin-top:10px}
 .bar p{margin:0}
@@ -80,12 +81,12 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <textarea id="g-edit" class="hidden family"></textarea>
     <div class="disc" id="g-disc"></div>
     <div class="metrics" id="g-metrics"></div>
-    <div class="row" id="g-btns">
+    <div class="row dock" id="g-btns">
       <button class="btn primary" id="b-approve">Approve</button>
       <button class="btn" id="b-edit">Edit</button>
       <button class="btn danger" id="b-stop">Stop</button>
     </div>
-    <div class="row two hidden" id="g-edit-btns">
+    <div class="row two dock hidden" id="g-edit-btns">
       <button class="btn" id="b-cancel">Cancel</button>
       <button class="btn primary" id="b-save">Save and approve</button>
     </div>
