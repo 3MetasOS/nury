@@ -11,9 +11,11 @@ Entry fields: id, name, kind, services, languages, city, state, phone, url, note
               nationwide (optional). The pastor's `note` stays on the pastor's screen. It is never put in a prompt.
 """
 
+import functools
 import json
 import os
 import re
+import threading
 import uuid
 from datetime import date
 from pathlib import Path
@@ -36,6 +38,17 @@ STATES = {"alabama": "AL", "alaska": "AK", "arizona": "AZ", "arkansas": "AR", "c
           "wisconsin": "WI", "wyoming": "WY", "district of columbia": "DC"}
 _ABBR = set(STATES.values())
 _PHONE = re.compile(r"^[\d\s().+\-]{7,25}$")
+
+
+_LOCK = threading.RLock()      # one writer at a time: two adds at once no longer lose one
+
+
+def _locked(fn):
+    @functools.wraps(fn)
+    def wrapper(self, *a, **k):
+        with _LOCK:
+            return fn(self, *a, **k)
+    return wrapper
 
 
 class NetworkError(Exception):
@@ -126,6 +139,7 @@ class Network:
         h = json.loads(self.path.read_text(encoding="utf-8")).get("home") or {}
         return ((h.get("city") or "").strip(), state_abbr(h.get("state") or ""))
 
+    @_locked
     def set_home(self, city, state):
         st = state_abbr(state)
         if not st:
@@ -145,7 +159,9 @@ class Network:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         h = home or ({"city": self.home[0], "state": self.home[1]} if self.home[1] else None)
         data = ({"home": h} if h else {}) | {"entries": entries}
-        self.path.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        tmp = self.path.with_name(f"{self.path.name}.{uuid.uuid4().hex[:8]}.tmp")      # write beside, then rename: a reader never sees half a file
+        tmp.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
+        os.replace(tmp, self.path)
 
     def list(self):
         return self._read()
@@ -156,6 +172,7 @@ class Network:
                 return e
         raise NetworkError(f"no entry {entry_id!r}")
 
+    @_locked
     def add(self, entry):
         e = validate(entry)
         items = self._read()
@@ -164,6 +181,7 @@ class Network:
         self._write(items + [e])
         return e
 
+    @_locked
     def update(self, entry_id, fields):
         items = self._read()
         for i, x in enumerate(items):
@@ -173,6 +191,7 @@ class Network:
                 return items[i]
         raise NetworkError(f"no entry {entry_id!r}")
 
+    @_locked
     def delete(self, entry_id):
         items = self._read()
         keep = [x for x in items if x["id"] != entry_id]
@@ -180,6 +199,7 @@ class Network:
             raise NetworkError(f"no entry {entry_id!r}")
         self._write(keep)
 
+    @_locked
     def mark_used(self, entry_id, when: Optional[str] = None):
         return self.update(entry_id, {"last_used": when or date.today().isoformat()})
 
@@ -187,6 +207,7 @@ class Network:
         Path(dest).write_text(json.dumps({"entries": self._read()}, indent=2, ensure_ascii=False), encoding="utf-8")
         return str(dest)
 
+    @_locked
     def import_json(self, src, merge=True):
         """Validates every entry first; one bad entry refuses the whole import. Returns the count added."""
         j = json.loads(Path(src).read_text(encoding="utf-8"))

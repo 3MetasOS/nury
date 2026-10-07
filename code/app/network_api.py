@@ -15,6 +15,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -65,9 +66,11 @@ def handle(method, path, body=b""):
             n.set_home(data.get("city", ""), data.get("state", ""))
             return _out(200, snapshot())
         if method == "POST" and p == "/api/network/import":
-            tmp = Path(_root()) / ".import.json"
             Path(_root()).mkdir(parents=True, exist_ok=True)
-            tmp.write_text(json.dumps({"entries": data.get("entries", [])}), encoding="utf-8")
+            fd, name = tempfile.mkstemp(prefix=".import-", suffix=".json", dir=_root())      # a name of its own: two imports never share a file
+            tmp = Path(name)
+            with os.fdopen(fd, "w", encoding="utf-8") as fh:
+                json.dump({"entries": data.get("entries", [])}, fh)
             try:
                 added = n.import_json(tmp)
             finally:

@@ -263,13 +263,13 @@ def render_prompt(stage, pb, lang, state, fields, skills=None, dynamic=None):
             prompt = v["prompt"]
             break
     vars_ = {"lang_name": LANG_NAME[lang], **render_sources(stage, pb, lang, dynamic)}
-    for k, v in vars_.items():
-        prompt = prompt.replace("{{" + k + "}}", v)
-    prompt += skills_lib.render(stage.skills if skills is None else skills, lang, pb.boundary)
-    left = re.findall(r"\{\{(\w+)\}\}", prompt)
+    skills_text = skills_lib.render(stage.skills if skills is None else skills, lang, pb.boundary)
+    # The TEMPLATE is checked and filled in one pass. A value that holds braces (a church contact named '{{x}}') is only text.
+    left = [v for v in re.findall(r"\{\{(\w+)\}\}", prompt) if v not in vars_] + re.findall(r"\{\{(\w+)\}\}", skills_text)
     if left:
         raise PlaybookError(f"stage {stage.id}: unfilled prompt variables {left}")
-    return prompt
+    prompt = re.sub(r"\{\{(\w+)\}\}", lambda m: vars_[m.group(1)], prompt)
+    return prompt + skills_text
 
 
 def build_input(stage, state):

@@ -28,6 +28,7 @@ from pathlib import Path
 from typing import Optional
 
 from . import guardrails as g
+from . import log
 from .engine import get_playbook
 
 DEFAULT_ROOT = "cases"
@@ -345,11 +346,14 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     d = Path(root) / cid
     if d.exists():
         raise CaseError(f"case {cid} already exists")
-    d.mkdir(parents=True)
+    try:
+        d.mkdir(parents=True)
+    except FileExistsError:                  # two saves of the same case id at once
+        raise CaseError(f"case {cid} already exists")
     os.chmod(d, 0o700)                       # a case holds real names: owner only
     for name, text in files.items():
         _write_private(d / name, text)
-    _write_private(d / "case.json", json.dumps(manifest, indent=2))
+    _write_private(d / "case.json", json.dumps(manifest, indent=2), atomic=True)
     if pmap:
         _write_private(d / "privacy-map.json", json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
                                                           indent=2, ensure_ascii=False))
@@ -365,7 +369,12 @@ def list_cases(root=DEFAULT_ROOT):
     for d in r.iterdir():
         f = d / "case.json"
         if f.is_file():
-            m = json.loads(f.read_text(encoding="utf-8"))
+            try:
+                m = json.loads(f.read_text(encoding="utf-8"))
+                m["id"], m["playbook"], m["title"], m["created"], m["status"]
+            except (ValueError, KeyError, OSError, TypeError) as e:       # one damaged case must not hide every other case
+                log.note("casefile.list_cases", e)
+                continue
             out.append({"id": m["id"], "playbook": m["playbook"], "title": m["title"], "created": m["created"],
                         "status": m["status"], "needs_follow_up": bool(m.get("needs_follow_up", False)), "path": str(d)})
     return sorted(out, key=lambda c: c["created"], reverse=True)
@@ -388,9 +397,7 @@ def set_follow_up(case_id, value, root=DEFAULT_ROOT) -> dict:
     f = _case_dir(case_id, root) / "case.json"
     m = json.loads(f.read_text(encoding="utf-8"))
     m["needs_follow_up"] = value
-    tmp = f.with_suffix(".json.tmp")
-    _write_private(tmp, json.dumps(m, indent=2))
-    tmp.replace(f)
+    _write_private(f, json.dumps(m, indent=2), atomic=True)
     return m
 
 
@@ -402,11 +409,16 @@ def load_case(case_id, root=DEFAULT_ROOT) -> dict:
     return {"meta": meta, "pages": pages, "svg": (d / "nextsteps.svg").read_text(encoding="utf-8")}
 
 
-def _write_private(path, text):
-    """Write a text file readable by its owner only (0600). The file never exists with wider rights."""
-    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+def _write_private(path, text, atomic=False):
+    """Write a text file readable by its owner only (0600). The file never exists with wider rights. atomic=True writes a
+    temporary file and renames it, so a reader (or a crash) never sees half a file."""
+    path = Path(path)
+    target = path.with_name(path.name + ".tmp") if atomic else path
+    fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
     with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(text)
+    if atomic:
+        os.replace(target, path)
 
 
 def export_zip(case_id, root=DEFAULT_ROOT, dest=None, include_privacy_map=False) -> str:
