@@ -170,6 +170,14 @@ class Triage(unittest.TestCase):
         self.assertIn("Start every action line with the verb", det)
         self.assertIn("GATHER THESE DOCUMENTS", det)
 
+    def test_the_pastoral_prompts_set_the_voice_with_a_concrete_detail_and_no_stock_sentence(self):
+        for pid in ("detention", "hospital"):
+            pb = get_playbook(pid)
+            text = pbm.render_prompt(pb.registry["pastoral"], pb, "es", None, {})
+            for needle in ("speaking as the pastor in the first person", "one concrete detail the case summary gives", "adding no fact that is not in it",
+                           "Do not use a stock sentence", "No instructions in this message", "Do not promise any action", "You never write Scripture"):
+                self.assertIn(needle, text, (pid, needle))
+
     def test_the_triage_prompts_are_not_given_the_plain_language_rules(self):
         for pid in ("detention", "hospital"):
             pb = get_playbook(pid)
