@@ -233,8 +233,7 @@ def build_standards():
     return len(page), len(toc)
 
 
-SIMPLE_DOCS = [("WHAT_DID_NOT_WORK.md", "what-did-not-work.html", "What did not work", "What we tried that did not work, what happened, what we changed, and what we do not know."),
-               ("ECONOMICS.md", "economics.html", "Economics", "What a Nury case costs, where the time goes, and what could break the economics."),
+SIMPLE_DOCS = [("ECONOMICS.md", "economics.html", "Economics", "What a Nury case costs, where the time goes, and what could break the economics."),
                ("PATTERN.md", "pattern.html", "The pattern", "The approve-gated stage pipeline for high-stakes drafting, and when to reuse it.")]
 
 
@@ -253,17 +252,6 @@ def build_simple(src_name, out_name, title, desc):
     page = (tpl.replace("@@TITLE@@", html.escape(title)).replace("@@DESC@@", html.escape(desc)).replace("@@TOC@@", tocs).replace("@@BODY@@", body))
     (Path(__file__).resolve().parent / "static" / out_name).write_text(page, encoding="utf-8")
     return len(page)
-
-
-if __name__ == "__main__":
-    n, t = build()
-    print(f"wrote {OUT} ({n} bytes, {t} sections)")
-    n, e = build_log()
-    print(f"wrote {LOG_OUT} ({n} bytes, {e} entries)")
-    n, t = build_standards()
-    print(f"wrote {STD_OUT} ({n} bytes, {t} sections)")
-    for a, b, c, d in SIMPLE_DOCS:
-        print(f"wrote {b} ({build_simple(a, b, c, d)} bytes)")
 
 
 ABOUT_SRC = ROOT / "documents" / "product" / "ABOUT_PAGE.md"
@@ -325,3 +313,65 @@ def build_about(out=None, src=None, data=None):
     page = Path(__file__).resolve().parent.joinpath("about_template.html").read_text(encoding="utf-8").replace("@@SECTIONS@@", "".join(parts)).replace("@@MEMORIAL@@", memorial)
     Path(out or ABOUT_OUT).write_text(page, encoding="utf-8")
     return len(page)
+
+
+WDNW_SRC = ROOT / "documents" / "product" / "WHAT_DID_NOT_WORK.md"
+WDNW_OUT = Path(__file__).resolve().parent / "static" / "what-did-not-work.html"
+WDNW_GROUPS = {"the product": "product", "the evaluation": "evaluation", "the reviewers": "evaluation", "us": "us", "how we worked": "us"}
+WDNW_CHIPS = [("all", "All"), ("product", "The product"), ("evaluation", "The evaluation"), ("us", "Us")]
+WDNW_LABELS = [("tried", "Tried"), ("happened", "Happened"), ("changed", "Changed"), ("not known", "Not known")]
+
+
+def build_wdnw(out=None, src=None):
+    """What did not work: the page as cards with a filter, from documents/product/WHAT_DID_NOT_WORK.md. The text is not changed.
+    Each '### N. Title' item has bullets Tried / Happened / Changed / Not known; an optional 'Takeaway' (or 'In short') bullet becomes the bold line under the title."""
+    text = Path(src or WDNW_SRC).read_text(encoding="utf-8")
+    def inline(t):
+        return re.sub(r"^<p>(.*)</p>$", r"\1", markdown.markdown(t.strip(), extensions=["sane_lists"]).strip(), flags=re.S)
+    cards, closing, group = [], "", None
+    for m in re.finditer(r"(?ms)^(##|###) (.+?)\n(.*?)(?=^##+ |\Z)", text):
+        lvl, head, body = m.group(1), m.group(2).strip(), m.group(3)
+        if lvl == "##":
+            key = head.lower()
+            group = next((g for k, g in WDNW_GROUPS.items() if key.startswith(k)), None)
+            if group is None and key.startswith("what this list is for"):
+                paras = "".join(f"<p>{inline(x)}</p>" for x in re.split(r"\n{2,}", body.strip()) if x.strip())
+                closing = f'<section class="closing" aria-labelledby="c-h"><h2 id="c-h">{html.escape(head)}</h2>{paras}</section>'
+            continue
+        nm = re.match(r"(\d+)\.\s+(.*)$", head)
+        if not nm or not group:
+            continue
+        num, title = nm.group(1), nm.group(2)
+        fields = {}
+        tk = re.search(r"\n\n\*\*([^\n*][^\n]*?)\*\*\s*$", body)
+        take = tk.group(1) if tk else None
+        if tk:
+            body = body[:tk.start()]
+        for fm in re.finditer(r"(?ms)^- \*\*(.+?)\.?\*\*\s*(.*?)(?=^- \*\*|\Z)", body):
+            fields[fm.group(1).strip().rstrip(".").lower()] = fm.group(2).strip()
+        take = take or fields.get("takeaway") or fields.get("in short")
+        rows = "".join(f'<div class="row"><span class="lab">{html.escape(lab)}</span><p>{inline(fields[k])}</p></div>' for k, lab in WDNW_LABELS[:3] if fields.get(k))
+        nk = fields.get("not known")
+        nkh = f'<div class="row nk"><span class="lab">Not known</span><p>{inline(nk)}</p></div>' if nk else ""
+        cards.append(f'<article class="item" id="item-{num}" data-g="{group}" aria-labelledby="item-{num}-t"><div class="ihead"><span class="badge" aria-hidden="true">{num}</span>'
+                     f'<h2 id="item-{num}-t">{html.escape(title)}</h2>' + (f'<p class="take">{inline(take)}</p>' if take else "") + "</div>"
+                     f'<div class="body"><div class="rows" id="item-{num}-r">{rows}</div><button class="more" type="button" aria-expanded="false" aria-controls="item-{num}-r" hidden>Read more</button>{nkh}</div></article>')
+    chips = "".join(f'<button class="fchip" type="button" data-g="{g}" aria-pressed="{"true" if g == "all" else "false"}">{html.escape(t)}</button>' for g, t in WDNW_CHIPS)
+    tpl = (Path(__file__).resolve().parent / "wdnw_template.html").read_text(encoding="utf-8")
+    page = (tpl.replace("@@TITLE@@", "What did not work").replace("@@DESC@@", html.escape("What we tried that did not work, what happened, what we changed, and what we do not know."))
+            .replace("@@CHIPS@@", chips).replace("@@ITEMS@@", "\n".join(cards)).replace("@@CLOSING@@", closing))
+    Path(out or WDNW_OUT).write_text(page, encoding="utf-8")
+    return len(page), len(cards)
+
+
+if __name__ == "__main__":
+    n, t = build()
+    print(f"wrote {OUT} ({n} bytes, {t} sections)")
+    n, e = build_log()
+    print(f"wrote {LOG_OUT} ({n} bytes, {e} entries)")
+    n, t = build_standards()
+    print(f"wrote {STD_OUT} ({n} bytes, {t} sections)")
+    for a, b, c, d in SIMPLE_DOCS:
+        print(f"wrote {b} ({build_simple(a, b, c, d)} bytes)")
+    n, k = build_wdnw()
+    print(f"wrote what-did-not-work.html ({n} bytes, {k} items)")

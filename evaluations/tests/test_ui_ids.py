@@ -285,7 +285,7 @@ def test_footer_links_and_document_pages():
         assert '<script src="/shell.js"></script>' in page and "<header" not in page and 'class="lockup"' not in page, name
     std = (STATIC / "standards.html").read_text(encoding="utf-8")
     assert std.count('class="fr ') == 6 and 'role="img"' in std, "the six functions are drawn with a text alternative"
-    assert "Not known." in (STATIC / "what-did-not-work.html").read_text(encoding="utf-8")
+    assert 'class="row nk"' in (STATIC / "what-did-not-work.html").read_text(encoding="utf-8"), "every item keeps its Not known row"
 
 
 def test_diagrams_are_drawn_from_data_and_have_text_alternatives():

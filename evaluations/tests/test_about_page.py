@@ -83,3 +83,17 @@ def test_no_page_says_package_in_visible_text():
             if word.search(lit[0] or lit[1]):
                 bad.append(f"{n}: {(lit[0] or lit[1])[:50]}")
     assert not bad, bad
+
+
+def test_what_did_not_work_page_is_cards_with_filters_and_anchors(tmp_path):
+    import re
+    page = (STATIC / "what-did-not-work.html").read_text(encoding="utf-8")
+    n = page.count('class="item"')
+    assert n >= 10 and page.count('class="row nk"') == n, "each item has a distinct Not known row"
+    assert all(f'id="item-{i}"' in page for i in range(1, n + 1)), "anchors #item-1 ..."
+    assert page.count('class="fchip"') == 4 and "All" in page and "The product" in page and "The evaluation" in page and ">Us<" in page
+    assert 'aria-expanded="false"' in page and "Written 20" not in page
+    assert page.count('class="badge"') == n and 'data-note="what we tried that failed, and what we do not know yet"' in page
+    out = tmp_path / "w.html"
+    build_docs.build_wdnw(out=out)
+    assert out.read_text(encoding="utf-8") == page, "what-did-not-work.html is stale: run python3 -m app.build_docs"

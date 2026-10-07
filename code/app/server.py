@@ -909,7 +909,7 @@ def rebuild_static_pages():
     The server itself needs no extra package: without it, the committed pages are served as they are. Never stops the server."""
     try:
         from app import build_docs
-        build_docs.build(); build_docs.build_log(); build_docs.build_standards(); build_docs.build_about()
+        build_docs.build(); build_docs.build_log(); build_docs.build_standards(); build_docs.build_about(); build_docs.build_wdnw()
         for a, b, c, d in build_docs.SIMPLE_DOCS:
             build_docs.build_simple(a, b, c, d)
         return True
