@@ -895,3 +895,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 07:52: Cases locked (Juan). Network page to follow the Cases structure: same width, banner with solid background and a handwriting note, one filter bar with the Cases-style search, contact cards grouped by type, add-a-contact in a dialog, confirmation on every network change.
 - 07:58: Network diagram removed (Juan: one real step, the rest are notes): replaced by three note cards (you add, yours first, official after) and one hand-written aside.
 - 08:07: church place form removed from the Network page (Juan: made no sense). The fallback it fed stays in the engine as an optional 'home' in the network file (a case without a state uses it; without it only nationwide contacts are listed; the fictional demo network uses Aurora, CO). No engine change; documented as a setting and a limit.
+- 08:14: Juan: Home, Cases and Network pages are LOCKED (no more changes unless he asks).
