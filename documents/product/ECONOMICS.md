@@ -22,7 +22,7 @@ A case is one run through the stages of a crisis (both live crises have five: tr
 
 ## 2. Where the time goes
 
-Per review note 3: Gloo latency per stage has a median of **6.0 to 11.8 seconds**. The Jev gate adds one call per draft attempt, a median of about **155 ms** each. On the final scored sets that is about 0.8 seconds per case against 34 to 46 seconds of model time: about **2 percent** of the time the calls take (detention 2.2, hospital 1.7). The stages run one after another because each reads the approved text of the stage before it, so five stages is roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.
+Per review note 3: Gloo latency per stage has a median of **6.0 to 11.8 seconds**. The Jev gate adds one call per draft attempt, a median of about **155 ms** each. On the final scored sets that is about 0.8 seconds per case against 34 to 46 seconds of model time: about **2 percent** of the time the calls take (detention 2.2, hospital 1.7). The stages run one after another because each reads the approved text of the stage before it, so the five stages of a live crisis take roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.
 
 Two consequences:
 - A pastor waits 30 to 50 seconds per case, plus however long they take to read and approve. The product is built around that wait, not around speed.
