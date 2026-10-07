@@ -93,11 +93,6 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 .nn{padding:16px 0}.nn+.nn{border-top:1px solid var(--line)}
 .nn p{margin:0}.nn p.mono{margin:0 0 6px}.nn p:not(.mono){font-size:15px;line-height:1.5;color:var(--muted);max-width:42ch}
 @media(min-width:760px){.nbc{grid-template-columns:repeat(3,minmax(0,1fr))}.nn{padding:4px 28px 4px 28px}.nn:first-child{padding-left:0}.nn+.nn{border-top:0;border-left:1px solid var(--line)}}
-.panel#home-panel{background:transparent;border:0;padding:8px 0 0;margin:0 0 8px}
-#home-panel h2{font:600 1rem var(--sans);margin:0}
-#home-panel .grid2{grid-template-columns:minmax(0,200px) minmax(0,120px);gap:0 12px}
-#home-panel input{min-height:40px;height:40px;padding:0 10px;border-radius:8px}
-#home-panel .btn.sm{min-height:40px}
 .rows{display:grid;gap:10px;list-style:none;margin:0;padding:0}
 .empty{padding:28px 0;color:var(--muted)}
 .lrow .sv{margin:6px 0 0;font-size:15px;color:var(--text)}.lrow .ct2{margin:4px 0 0;font-size:14px;overflow-wrap:anywhere}
@@ -125,8 +120,8 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 <div class="fbar">
   <div class="fgroup seg" role="group" aria-label="Where they serve" id="f-scope">
     <button type="button" data-v="all" aria-pressed="true">All <b></b></button>
-    <button type="button" data-v="state" aria-pressed="false">In our state <b></b></button>
-    <button type="button" data-v="any" aria-pressed="false">Any state <b></b></button>
+    <button type="button" data-v="onestate" aria-pressed="false">One state <b></b></button>
+    <button type="button" data-v="nationwide" aria-pressed="false">Nationwide <b></b></button>
   </div>
   <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search contacts</label><input id="q" type="search" placeholder="Search name, city, service, tag" autocomplete="off"></div>
   <button class="cta primary addbtn" id="add-btn" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Add a contact</button>
@@ -146,17 +141,6 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   </div>
 </section>
 <div class="pw after">
-<section class="panel" id="home-panel">
-  <h2>Our church's place</h2>
-  <p class="meta">Used when a case does not say which state the family is in.</p>
-  <div class="grid2">
-    <div><label for="h-city">City</label><input id="h-city" autocomplete="off"></div>
-    <div><label for="h-state">State</label><input id="h-state" placeholder="CO or Colorado" autocomplete="off"></div>
-  </div>
-  <div class="acts"><button class="btn sm" id="h-save">Save place</button></div>
-  <p class="err" id="h-msg" role="status"></p>
-  <p class="notice" id="h-warn" hidden>No place is set. When a case does not say which state the family is in, Nury lists only contacts marked "serves any state". Set your church's state so contacts in that state are listed.</p>
-</section>
 <details style="margin-top:22px">
   <summary>Import or export</summary>
   <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>
@@ -218,13 +202,10 @@ function askConfirm({title,body,ok}){return new Promise(res=>{const d=$("confirm
 let toastTimer=null;
 function toast(text){const t=$("toast");$("toast-t").textContent=text;t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.hidden=true},6000)}
 async function load(){S=await api("GET","/api/network");paint()}
-const inScope=(e,s)=>s==="all"||(s==="any"&&e.nationwide)||(s==="state"&&!e.nationwide);
+const inScope=(e,s)=>s==="all"||(s==="nationwide"&&e.nationwide)||(s==="onestate"&&!e.nationwide&&!!e.state);
 function paint(){
   $("banner").hidden=!S.fictional;
-  document.querySelectorAll("#add-btn,#h-save,#imp").forEach(e=>e.disabled=S.readonly);
-  $("h-city").value=S.home.city;$("h-state").value=S.home.state;
-  [$("h-city"),$("h-state")].forEach(e=>e.disabled=S.readonly);
-  $("h-warn").hidden=!!S.home.state;
+  document.querySelectorAll("#add-btn,#imp").forEach(e=>e.disabled=S.readonly);
   $("f-kind").innerHTML=S.kinds.map(k=>`<option value="${k}">${esc(KIND[k]||k)}</option>`).join("");
   document.querySelectorAll("#f-scope button").forEach(b=>{b.setAttribute("aria-pressed",String(b.dataset.v===scope));b.querySelector("b").textContent=String(S.entries.filter(e=>inScope(e,b.dataset.v)).length)});
   const present=S.kinds.filter(k=>S.entries.some(e=>e.kind===k));
@@ -266,9 +247,6 @@ $("f-del").onclick=async()=>{
 $("f-used").onclick=async()=>{
   if(!await askConfirm({title:"Mark this contact as used today?",body:"It records today as the last time you used them.",ok:"Mark as used"}))return;
   try{await api("POST","/api/network/"+editing+"/used");$("form-dialog").close();toast("Marked as used.");await load()}catch(e){$("f-err").textContent=e.message}};
-$("h-save").onclick=async()=>{
-  if(!await askConfirm({title:"Save your church's place?",body:"Nury uses it when a case does not say which state the family is in.",ok:"Save place"}))return;
-  try{S=await api("POST","/api/network/home",{city:$("h-city").value,state:$("h-state").value});$("h-msg").className="err ok";$("h-msg").textContent="Saved.";paint()}catch(e){$("h-msg").className="err";$("h-msg").textContent=e.message}};
 $("list").onclick=ev=>{const b=ev.target.closest("[data-act]");if(!b)return;const id=b.closest(".lrow").dataset.id;if(b.dataset.act==="edit")openForm(S.entries.find(x=>x.id===id))};
 $("q").oninput=list;
 $("f-scope").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;scope=b.dataset.v;paint()};
