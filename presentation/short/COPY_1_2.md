@@ -19,13 +19,14 @@ Story: a crisis rings the phone, the pastor needs help, so we built Nury, and th
 
 ## Slide 2: the-name
 **On screen:**
+- Headline line, above the wordmark: So we built:
 - The name, large, once: Nury
 - Tagline, below the logo: An AI Crisis Response Agent.
 - The entry line: A given name from Arabic nur, light.
 - Two tags: noun · /NOO-ree/
 - One handwritten line: The pastor will never be alone.
 
-Removed (do not show): "So we built Nury.", "Comfort · Faith · Action", "Tonight, and what comes next.", "see also: lantern".
+Removed (do not show): the full sentence "So we built Nury." (the headline line "So we built:" stays), "Comfort · Faith · Action", "Tonight, and what comes next.", "see also: lantern".
 
 **Presenter notes (talking points; say them in your own words):**
 - A crisis rings the phone. The pastor needs help. So Nury exists.
