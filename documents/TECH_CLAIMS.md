@@ -4,7 +4,7 @@ Written 2026-10-07 by hack-jedi, from the repo at the commit that adds this file
 
 Status words:
 - **VERIFIED live**: it ran against the real Gloo endpoint and the result is in a file or a log you can open.
-- **VERIFIED offline test**: a test in `code/tests/` proves it, with no model call. Run `cd code && python3 -m unittest discover -s tests` (85 tests pass today).
+- **VERIFIED offline test**: a test in `code/tests/` proves it, with no model call. Run `cd code && python3 -m unittest discover -s tests` (86 tests pass today; the evaluation harness adds 39 more in `evaluations/tests`).
 - **PENDING final scorecard**: it depends on the final scored runs (detention 20, hospital 8, privacy ON, with Jev). Do not quote it yet.
 
 ## 1. Platform: Gloo and Claude
@@ -69,6 +69,8 @@ Status words:
 | 26 | The Jev judge separates unsafe from safe text on real Nury output. Unsafe text scored 0.89 to 0.98; safe text scored 0.02 to 0.24, on ten checks. | `evaluations/validation/JUDGE_VALIDATION.md`. Unsafe cases are synthetic paragraphs appended to real output; ten points, not a calibration study. | VERIFIED live | 0.89 to 0.98 vs 0.02 to 0.24 |
 | 27 | The first fix for a judge confusion failed, and we said so. Telling the judge to ignore rejected drafts dropped unsafe scores to 0.29 to 0.78, below the 0.80 bar, so it was rejected. The adopted fix removes rejected text from what the judge reads. | Same file, section "Final judge design". | VERIFIED live | 6 cases fell below 0.80, then 10 of 10 met it |
 | 28 | The red-team panel uses three non-Claude reviewers through the same Gloo endpoint. First pass: two reviewers caught all 8 injected problems but also flagged safe text, so they are advisory; the third failed on a parser bug. No reviewer invented a quote. | `evaluations/validation/PANEL_VALIDATION.md` ($0.58 first pass; the raw file was overwritten, the analysis was kept). Second validation pass and the final run have not happened. | VERIFIED live (first pass only); final PENDING | 8 of 8 caught by 2 reviewers; 13 of 16 gemini calls failed on a parser, not the model |
+| 32 | The Jev decision API is used at evaluation time only. The product code never names Jev, the red-team panel, or the attacker intakes. | Test `test_the_product_never_uses_jev_the_panel_or_the_attacker` scans `code/nury` and `code/app`. Disclosed as prior technology in the submission text. | VERIFIED offline test | 0 mentions in the product |
+| 33 | The product has 86 offline tests (about half a second) and the evaluation harness has 39 more, 125 in all, plus 54 scenarios. | `cd code && python3 -m unittest discover -s tests`; `cd evaluations && python3 -m pytest tests -q`. The count grows; re-run before quoting. | VERIFIED offline test | 86 + 39 = 125 |
 | 29 | Pass rate, escalation rate, and the scorecard for detention 20 and hospital 8 with privacy on. | `evaluations/results/` holds interim runs from older code (detention: 9 judge passes, 11 awaiting human review, 0 failed; hospital: 7 of 8). Not final. | PENDING final scorecard | not quoted yet |
 
 ## 7. Cost and speed
