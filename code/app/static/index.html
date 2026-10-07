@@ -262,6 +262,9 @@ body:not([data-view="crisis"]) .startbar{display:none}
 .seg input:checked+span{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
 .seg input:focus-visible+span{outline:2px solid var(--amber-text);outline-offset:2px}
 .leave-b{display:grid;gap:12px;padding:16px 20px 24px}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:60;max-width:min(92vw,460px);padding:12px 16px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:15px;display:flex;align-items:center;gap:10px}
+.toast[hidden]{display:none}
+@media (min-width:960px){.toast{bottom:28px}}
 @media (min-width:640px){
   .nv h1{font-size:36px}
   .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
@@ -503,6 +506,13 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <button class="cta primary block" type="button" id="leave-stay">Stay</button>
     <button class="cta block" type="button" id="leave-go">Leave without saving</button></div>
 </dialog>
+<dialog class="sheet" id="confirm" aria-labelledby="confirm-t" aria-describedby="confirm-b">
+  <div class="sheet-h"><h2 id="confirm-t"></h2></div>
+  <div class="leave-b nv"><p class="muted" id="confirm-b"></p>
+    <button class="cta primary block" type="button" id="confirm-ok"></button>
+    <button class="cta block" type="button" id="confirm-no">Cancel</button></div>
+</dialog>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden><span id="toast-t"></span> <button class="linkbtn" type="button" id="toast-undo">Undo</button></div>
 
 <script src="/final.js"></script>
 <script src="/diagrams.js"></script>
@@ -685,6 +695,12 @@ document.addEventListener("click",e=>{
 function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 document.querySelectorAll("dialog.sheet").forEach(d=>{d.addEventListener("click",e=>{if(e.target===d)d.close()});
   d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())});
+/* one confirm dialog for every action that changes a case; focus starts on Cancel, Escape cancels */
+function askConfirm({title,body,ok}){return new Promise(res=>{const d=$("confirm");$("confirm-t").textContent=title;$("confirm-b").textContent=body;$("confirm-ok").textContent=ok;let out=false;
+  const fin=v=>{out=v;d.close()};$("confirm-ok").onclick=()=>fin(true);$("confirm-no").onclick=()=>fin(false);
+  d.addEventListener("close",()=>res(out),{once:true});openD(d);$("confirm-no").focus()})}
+let toastTimer=null;
+function toast(text,undo){const t=$("toast");$("toast-t").textContent=text;$("toast-undo").hidden=!undo;$("toast-undo").onclick=()=>{clearTimeout(toastTimer);t.hidden=true;undo&&undo()};t.hidden=false;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.hidden=true},6000)}
 $("leave-stay").onclick=()=>$("leave").close();
 $("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);sid=null;allowLeave=true;const t=pendingHash||"#/";pendingHash=null;go(t)};
 /* ---- cases filters ---- */
@@ -702,16 +718,15 @@ async function openCase(id){
   const fb=$("case-follow");fb.classList.toggle("hidden",!FEATURES.followup);$("case-follow-msg").textContent="";
   const paintF=on=>{fb.setAttribute("aria-pressed",String(on));fb.replaceChildren(ic("i-flag"),on?"Needs follow-up. Tap to clear":"Mark as needs follow-up")};
   paintF(!!c.meta.needs_follow_up);
-  fb.onclick=()=>{const on=fb.getAttribute("aria-pressed")!=="true";const msg=$("case-follow-msg");
-    msg.replaceChildren(h("span",null,on?"Mark this case as needing follow-up? It will show first on Home and in Cases. ":"Clear the follow-up mark on this case? "),
-      h("button",{class:"linkbtn yes",type:"button"},on?"Yes, mark it":"Yes, clear it")," ",h("button",{class:"linkbtn no",type:"button"},"Cancel"));
-    msg.querySelector(".no").onclick=()=>{msg.textContent=""};
-    msg.querySelector(".yes").onclick=()=>apply(on)};
-  const apply=async on=>{fb.disabled=true;
+  const apply=async(on,quiet)=>{fb.disabled=true;
     const r=await api("/api/case/"+encodeURIComponent(c.meta.id)+"/followup",{value:on});
     fb.disabled=false;
-    if(r&&r.ok){c.meta.needs_follow_up=on;paintF(on);$("case-follow-msg").textContent=on?"Marked. It shows first on Home and in Cases.":"Cleared."}
-    else $("case-follow-msg").textContent=(r&&r.error)||"Could not save the mark. Try again."};
+    if(r&&r.ok){c.meta.needs_follow_up=on;paintF(on);$("case-follow-msg").textContent="";return true}
+    $("case-follow-msg").textContent=(r&&r.error)||"Could not save the mark. Try again.";return false};
+  fb.onclick=async()=>{const on=fb.getAttribute("aria-pressed")!=="true";
+    const ok=await askConfirm(on?{title:"Mark this case as needs follow-up?",body:"It moves to the top of your list.",ok:"Mark as needs follow-up"}:{title:"Clear the follow-up flag?",body:"The case goes back to its normal place.",ok:"Clear follow-up"});
+    if(!ok)return;
+    if(await apply(on))toast(on?"Marked as needs follow-up.":"Follow-up cleared.",()=>apply(!on))};
   {const fig=$("case-strip");fig.replaceChildren();
    const stg=Object.keys(c.pages||{}).filter(k=>/^0\d-[a-z]+\.md$/.test(k)).sort().map(k=>({id:k.slice(3,-3),title:((c.pages[k].match(/^#\s*(.+)$/m)||[])[1])||k,state:(c.meta.edited||[]).includes(k.slice(3,-3))?"edited":"approved"}));
    fig.classList.toggle("hidden",!stg.length);
@@ -742,6 +757,7 @@ $("b-changed").onclick=()=>{
 $("rv-cancel").onclick=()=>$("revise").classList.add("hidden");
 $("rv-go").onclick=async()=>{
   const note=$("rv-note").value.trim();if(!note){$("rv-err").textContent="Write what happened first.";return}
+  if(!await askConfirm({title:"Record what changed?",body:"Nury drafts again as version 2 and keeps version 1 as it was.",ok:"Record and draft version 2"}))return;
   reviseCtx={case_id:curCase.meta.id,step:$("rv-step").value,result:document.querySelector('input[name="rv-res"]:checked').value,note};
   const pv=await api("/api/revision-preview",reviseCtx);if(pv.error){$("rv-err").textContent=pv.error;return}
   pb=pbs.find(p=>p.id===pv.playbook)||{id:pv.playbook};$("lang").value=pv.language||"es";$("intake").value=pv.intake;$("demo").checked=false;

@@ -171,15 +171,31 @@ JS
   click "#rows a.lrow"; agent-browser wait 700 >/dev/null 2>&1
   CASEHASH=$(ev "location.hash" | tr -d '"')
   check "$T follow-up: toggle is offered in the case viewer" "$(ev "!document.getElementById('case-follow').classList.contains('hidden')")" "true"
-  click "#case-follow"; agent-browser wait 700 >/dev/null 2>&1
-  check "$T follow-up: marking shows visible feedback and pressed state" "$(ev "document.getElementById('case-follow').getAttribute('aria-pressed')==='true'&&/Marked/.test(document.getElementById('case-follow-msg').textContent)")" "true"
+  P="document.getElementById('case-follow').getAttribute('aria-pressed')"
+  click "#case-follow"
+  check "$T follow-up: a single click only opens the dialog, focus starts on Cancel, nothing changed yet" "$(waitexp "document.getElementById('confirm').open&&document.activeElement.id==='confirm-no'&&/Mark this case as needs follow-up\?/.test(document.getElementById('confirm-t').textContent)&&/moves to the top of your list/.test(document.getElementById('confirm-b').textContent)&&document.getElementById('confirm-ok').textContent==='Mark as needs follow-up'&&$P==='false'")" "true"
+  click "#confirm-no"
+  check "$T follow-up: Cancel changes nothing" "$(waitexp "!document.getElementById('confirm').open&&$P==='false'")" "true"
+  click "#case-follow"; waitexp "document.getElementById('confirm').open" >/dev/null; ev "document.getElementById('confirm').dispatchEvent(new Event('cancel',{cancelable:true}));document.getElementById('confirm').close();1" >/dev/null
+  check "$T follow-up: Escape (cancel) changes nothing" "$(waitexp "!document.getElementById('confirm').open&&$P==='false'")" "true"
+  click "#case-follow"; waitexp "document.getElementById('confirm').open" >/dev/null; click "#confirm-ok"
+  check "$T follow-up: Confirm marks it and a toast with Undo appears" "$(waitexp "$P==='true'&&!document.getElementById('toast').hidden&&/Marked as needs follow-up\./.test(document.getElementById('toast-t').textContent)&&!document.getElementById('toast-undo').hidden")" "true"
+  click "#toast-undo"
+  check "$T follow-up: Undo restores it and the toast goes" "$(waitexp "$P==='false'&&document.getElementById('toast').hidden")" "true"
+  click "#case-follow"; waitexp "document.getElementById('confirm').open" >/dev/null; click "#confirm-ok"; waitexp "$P==='true'" >/dev/null
   agent-browser eval "location.hash='#/cases/follow';1" >/dev/null 2>&1; agent-browser wait 900 >/dev/null 2>&1
   check "$T follow-up: Cases filter 'Needs follow-up' lists it with the chip" "$(ev "document.querySelectorAll('#rows li').length>=1&&!!document.querySelector('#rows .s-follow')")" "true"
   agent-browser eval "location.hash='#/';1" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
   check "$T follow-up: Home shows the marked case first with the chip" "$(ev "!!document.querySelector('#cont-list li:first-child .s-follow')")" "true"
   agent-browser eval "location.hash='$CASEHASH';1" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
-  click "#case-follow"; agent-browser wait 700 >/dev/null 2>&1
-  check "$T follow-up: clearing returns it to normal" "$(ev "document.getElementById('case-follow').getAttribute('aria-pressed')==='false'&&/Cleared/.test(document.getElementById('case-follow-msg').textContent)")" "true"
+  click "#case-follow"
+  check "$T follow-up: clearing asks first, with the clear wording" "$(waitexp "document.getElementById('confirm').open&&/Clear the follow-up flag\?/.test(document.getElementById('confirm-t').textContent)&&document.getElementById('confirm-ok').textContent==='Clear follow-up'&&$P==='true'")" "true"
+  click "#confirm-ok"
+  check "$T follow-up: confirming clears it, with a toast" "$(waitexp "$P==='false'&&/Follow-up cleared\./.test(document.getElementById('toast-t').textContent)")" "true"
+  # ---- 'Something changed' asks before it drafts version 2 (only the Cancel path runs: Confirm would call the model)
+  click "#b-changed"; ev "document.getElementById('rv-note').value='A test note';1" >/dev/null; click "#rv-go"
+  check "$T changed: Record asks first, with the version 2 wording, and Cancel sends nothing" "$(waitexp "document.getElementById('confirm').open&&/Record what changed\?/.test(document.getElementById('confirm-t').textContent)&&/keeps version 1 as it was/.test(document.getElementById('confirm-b').textContent)&&document.getElementById('confirm-ok').textContent==='Record and draft version 2'&&document.activeElement.id==='confirm-no'")" "true"
+  click "#confirm-no"; check "$T changed: Cancel closes it and nothing was drafted" "$(waitexp "!document.getElementById('confirm').open&&document.body.dataset.view!=='pipe'")" "true"
   # ---- unsaved-work guard (stubbed package screen)
   ev "$(cat $HERE/pkgstub.js)" >/dev/null; ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 900 >/dev/null 2>&1
   click ".brand"
