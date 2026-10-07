@@ -53,7 +53,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 <script src="/shell.js"></script>
 <main id="main" class="nv">
   <h1 id="h-ops" tabindex="-1">Observability</h1>
-  <p class="lede">How the cases Nury has run are doing: cost, speed, rejections and checks. One case is one run through the five stages. Numbers and labels only. A draft or a name never appears on this page or in its exports.</p>
+  <p class="lede">How the cases Nury has run are doing: cost, speed, rejections and checks. One case is one run through all the stages of a crisis. Numbers and labels only. A draft or a name never appears on this page or in its exports.</p>
   <p class="honest" id="honest">No alerts, no retention policy, no per-church separation yet.</p>
   <p><span class="src" id="src">Loading…</span></p>
   <p class="out bad" id="load-err" role="alert" hidden></p>
@@ -121,8 +121,8 @@ function hbars(c,rows,label,fmt){      // rows: [[name,value]]
 function render(d){
   const s=$("src");s.textContent="Source: "+d.source;s.classList.toggle("stub",!/^ledger/.test(d.source));
   const h=d.headline||{},C=$("cards");C.replaceChildren();
-  card(C,h.packages??"0","Cases run","How many cases are in the record below. One case is one run through the five stages.");
-  card(C,usd(h.cost_avg),"Average cost per case","Gloo cost of all five stages, averaged. Jev is billed on its own key and is not included.");
+  card(C,h.packages??"0","Cases run","How many cases are in the record below. One case is one run through all the stages of a crisis.");
+  card(C,usd(h.cost_avg),"Average cost per case","Gloo cost of all the stages, averaged. Jev is billed on its own key and is not included.");
   card(C,usd(h.cost_p95),"Cost, 95th percentile","19 of 20 cases cost this much or less.");
   card(C,sec(h.latency_p50_s),"Time per case, median","Half of the cases finished in this time or less.");
   card(C,sec(h.latency_p95_s),"Time per case, 95th percentile","19 of 20 cases finished in this time or less.");
