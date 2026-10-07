@@ -139,6 +139,8 @@ MENU = [
     ("Overview", "Who Gloo's customers are", "md", "documents/GLOO_CUSTOMERS.md"),
     ("Overview", "Case management standards", "md", "documents/STANDARDS_ALIGNMENT.md"),
     ("Architecture", "How this was built (page content)", "md", "documents/product/HOW_IT_WAS_BUILT.md"),
+    ("Architecture", "How the engine thinks (walkthrough)", "md", "documents/product/ENGINE_WALKTHROUGH.md"),
+    ("Architecture", "How to add a rule", "md", "documents/product/ADD_A_RULE.md"),
     ("Architecture", "Architecture decisions", "md", "documents/ARCHITECTURE.md"),
     ("Architecture", "Diagrams (10 tabs)", "html_repo", "documents/architecture/diagrams.html"),
     ("Architecture", "Diagrams notes", "md", "documents/architecture/README.md"),
