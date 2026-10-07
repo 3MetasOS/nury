@@ -1,0 +1,892 @@
+diff --git a/code/app/network_api.py b/code/app/network_api.py
+index a73420c..e25098f 100644
+--- a/code/app/network_api.py
++++ b/code/app/network_api.py
+@@ -46,7 +46,12 @@ def handle(method, path, body=b""):
+         data = json.loads(body.decode("utf-8")) if body else {}
+     except ValueError:
+         return _out(400, {"error": "that was not valid JSON"})
+-    n = net.load_network(_root())
++    if not isinstance(data, dict):
++        return _out(400, {"error": "the request must be a JSON object"})
++    try:
++        n = net.load_network(_root())
++    except (ValueError, OSError):
++        return _out(500, {"error": "the church network file could not be read"})
+     try:
+         if method == "GET" and p == "/api/network":
+             return _out(200, snapshot())
+@@ -81,6 +86,10 @@ def handle(method, path, body=b""):
+         return _out(404, {"error": "not found"})
+     except net.NetworkError as e:
+         return _out(400, {"error": str(e)})
++    except (ValueError, OSError):            # a damaged or unreadable network file: the pastor's request was fine
++        return _out(500, {"error": "the church network file could not be read or written"})
++    except (KeyError, TypeError, AttributeError):         # a field of the wrong kind: a plain answer, never a dropped connection
++        return _out(400, {"error": "that request could not be used"})
+ 
+ 
+ class _H(BaseHTTPRequestHandler):
+diff --git a/code/app/server.py b/code/app/server.py
+index 769b969..02b8fe6 100644
+--- a/code/app/server.py
++++ b/code/app/server.py
+@@ -12,6 +12,7 @@ import uuid
+ import urllib.parse
+ import difflib
+ import textwrap
++import time
+ from datetime import datetime, timezone
+ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+ from pathlib import Path
+@@ -35,6 +36,44 @@ MIME = {"woff2": "font/woff2", "html": "text/html; charset=utf-8", "css": "text/
+ CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # saved by the app on the server's disk, gitignored
+ CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
+ SESSIONS = {}
++
++# Hardening limits (documents/product/CODE_REVIEW.md). Each can be raised with an environment variable.
++MAX_BODY = 1_000_000          # bytes of any request body
++MAX_INTAKE = 20_000           # characters of an intake, a revision note or a pastor's edit
++MAX_PROTECTED, MAX_TERM = 50, 80
++MAX_BUSY = int(os.environ.get("NURY_MAX_BUSY", "3"))            # runs writing at the same time (a run waiting at a gate costs nothing)
++MAX_SESSIONS = int(os.environ.get("NURY_MAX_SESSIONS", "50"))
++SESSION_TTL_S = int(os.environ.get("NURY_SESSION_TTL_S", str(4 * 3600)))
++RUN_CALL_BUDGET = int(os.environ.get("NURY_RUN_CALL_BUDGET", "60"))   # Gloo HTTP calls one run may make (a normal run makes 5 to 12)
++SEC_HEADERS = (("X-Content-Type-Options", "nosniff"), ("X-Frame-Options", "DENY"), ("Referrer-Policy", "no-referrer"),
++               ("Content-Security-Policy", "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; "
++                "img-src 'self' data: blob:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; "
++                "form-action 'self'; frame-ancestors 'none'"))
++
++
++class BadRequest(Exception):
++    def __init__(self, message, code=400):
++        super().__init__(message)
++        self.message, self.code = message, code
++
++
++def busy_count():
++    """Sessions that are writing a draft now. A session waiting at a gate or finished is not busy."""
++    return sum(1 for x in list(SESSIONS.values()) if not x.done and x.waiting is None)
++
++
++def purge_sessions(now=None):
++    """Drop sessions older than the TTL (a run left at a gate is stopped first) and, over the cap, the oldest finished ones."""
++    now = time.time() if now is None else now
++    for sid, x in list(SESSIONS.items()):
++        if now - getattr(x, "created", now) > SESSION_TTL_S:
++            if not x.done and hasattr(x, "abandon"):
++                x.abandon()
++            SESSIONS.pop(sid, None)
++    over = len(SESSIONS) - MAX_SESSIONS
++    if over > 0:
++        for sid in sorted((k for k, x in SESSIONS.items() if x.done), key=lambda k: SESSIONS[k].created)[:over]:
++            SESSIONS.pop(sid, None)
+ GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
+ 
+ 
+@@ -201,6 +240,8 @@ def safe_event(e):
+ class Session:
+     def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None, revision=None):
+         self.id = uuid.uuid4().hex[:12]
++        self.created = time.time()
++        self.abandoned = False
+         self.pb = get_playbook(playbook_id)
+         self.language = language
+         self.intake = intake
+@@ -219,6 +260,9 @@ class Session:
+                 self.client.allow_network(net.load_network(root=str(Path(CASES_ROOT).parent / "network")).list())
+         except Exception:
+             pass
++        inner = getattr(self.client, "inner", self.client)
++        if hasattr(inner, "max_calls"):           # the most Gloo HTTP calls this one run may make
++            inner.max_calls = RUN_CALL_BUDGET
+         self.state = CaseState(intake, language)
+         self.audit = AuditLog()
+         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
+@@ -246,6 +290,8 @@ class Session:
+ 
+     def gate(self, result):
+         with self.cv:
++            if self.abandoned:                      # the session expired while this draft was being written
++                return GateDecision("stop", None)
+             self.waiting, self.decision = result, None
+             self.cv.wait_for(lambda: self.decision is not None)
+             d, self.waiting = self.decision, None
+@@ -314,14 +360,26 @@ class Session:
+         except Exception:
+             return None
+ 
+-    def decide(self, action, text=None):
++    def decide(self, action, text=None, stage=None):
++        """Record the pastor's decision for the draft that is waiting. When stage is given it must be that draft's stage:
++        a double click, a second tab or a late click can never approve a draft the pastor has not seen."""
+         with self.cv:
+             if self.waiting is None:
+                 return False
++            if stage is not None and stage != self.waiting.stage_id:
++                return False
+             self.decision = GateDecision(action, text)
+             self.cv.notify_all()
+             return True
+ 
++    def abandon(self):
++        """Stop a run nobody is watching any more (called when its session expires)."""
++        with self.cv:
++            self.abandoned = True
++            if self.waiting is not None and self.decision is None:
++                self.decision = GateDecision("stop", None)
++                self.cv.notify_all()
++
+     def progress(self, ev):
+         """What the engine is doing right now, read from real audit events. No timers, no guesses.
+         phase: writing | checking | checking_jev | regenerating | ready | escalated | idle. Carries categories and counts only."""
+@@ -387,6 +445,35 @@ class Session:
+ 
+ 
+ class H(BaseHTTPRequestHandler):
++    timeout = 30      # seconds a connection may stall before the server drops it
++
++    def end_headers(self):
++        for k, v in SEC_HEADERS:
++            self.send_header(k, v)
++        super().end_headers()
++
++    def _hosts(self):
++        port = self.server.server_address[1]
++        hosts = {f"127.0.0.1:{port}", f"localhost:{port}", f"[::1]:{port}"}
++        hosts |= {h.strip().lower() for h in os.environ.get("NURY_ALLOWED_HOSTS", "").split(",") if h.strip()}
++        return hosts
++
++    def _guard(self, write):
++        """False (and a 403 or 415 is sent) unless the request is for this server: a Host we serve, an Origin that is us
++        (or absent), and, for a change, a JSON body. This stops a web page the pastor opens from driving the app."""
++        hosts = self._hosts()
++        if (self.headers.get("Host") or "").lower() not in hosts:
++            self._json({"error": "This address is not allowed."}, 403)
++            return False
++        origin = self.headers.get("Origin")
++        if origin is not None and origin.lower() not in {"http://" + h for h in hosts}:
++            self._json({"error": "This request came from another site."}, 403)
++            return False
++        if write and (self.headers.get("Content-Type") or "").split(";")[0].strip().lower() != "application/json":
++            self._json({"error": "Send JSON."}, 415)
++            return False
++        return True
++
+     def _json(self, obj, code=200):
+         b = json.dumps(obj, ensure_ascii=False).encode()
+         self.send_response(code)
+@@ -398,7 +485,18 @@ class H(BaseHTTPRequestHandler):
+ 
+     def _raw(self):
+         if not hasattr(self, "_rawcache"):
+-            self._rawcache = self.rfile.read(int(self.headers.get("Content-Length") or 0))
++            try:
++                n = int(self.headers.get("Content-Length") or 0)
++            except ValueError:
++                raise BadRequest("The request length was not a number.")
++            if n < 0:
++                raise BadRequest("The request length was not valid.")
++            if n > MAX_BODY:
++                raise BadRequest("The request is too large.", 413)
++            try:
++                self._rawcache = self.rfile.read(n)
++            except OSError:                                   # a stalled client: the socket timeout fired
++                raise BadRequest("The request took too long.", 408)
+         return self._rawcache
+ 
+     def _body(self):
+@@ -418,12 +516,30 @@ class H(BaseHTTPRequestHandler):
+         return True
+ 
+     def do_PUT(self):
+-        self._network("PUT", self.path) or self._json({"error": "not found"}, 404)
++        if not self._guard(True):
++            return
++        try:
++            self._network("PUT", self.path) or self._json({"error": "not found"}, 404)
++        except BadRequest as e:
++            self._json({"error": e.message}, e.code)
+ 
+     def do_DELETE(self):
+-        self._network("DELETE", self.path) or self._json({"error": "not found"}, 404)
++        if not self._guard(True):
++            return
++        try:
++            self._network("DELETE", self.path) or self._json({"error": "not found"}, 404)
++        except BadRequest as e:
++            self._json({"error": e.message}, e.code)
+ 
+     def do_GET(self):
++        if not self._guard(False):
++            return
++        try:
++            self._get()
++        except BadRequest as e:
++            self._json({"error": e.message}, e.code)
++
++    def _get(self):
+         p = self.path.split("?")[0]
+         if self._network("GET", p):
+             return
+@@ -508,7 +624,11 @@ class H(BaseHTTPRequestHandler):
+             if not CASE_ID.match(cid):
+                 return self._json({"error": "bad id"}, 400)
+             try:
+-                z = Path(cf.export_zip(cid, CASES_ROOT)).read_bytes()
++                zp = Path(cf.export_zip(cid, CASES_ROOT, include_privacy_map="include_map=1" in self.path))
++                try:
++                    z = zp.read_bytes()
++                finally:
++                    zp.unlink(missing_ok=True)          # no copy of the case is left behind on the server
+             except Exception:
+                 return self._json({"error": "case not found"}, 404)
+             self.send_response(200)
+@@ -538,6 +658,14 @@ class H(BaseHTTPRequestHandler):
+             self._json({"error": "not found"}, 404)
+ 
+     def do_POST(self):
++        if not self._guard(True):
++            return
++        try:
++            self._post()
++        except BadRequest as e:
++            self._json({"error": e.message}, e.code)
++
++    def _post(self):
+         p = self.path
+         if self._network("POST", p):
+             return
+@@ -548,6 +676,8 @@ class H(BaseHTTPRequestHandler):
+         if not isinstance(b, dict):
+             return self._json({"error": "The request must be a JSON object."}, 400)
+         if p == "/api/propose-terms":
++            if len(str(b.get("intake") or "")) > MAX_INTAKE:
++                return self._json({"error": f"That is too long. Keep it under {MAX_INTAKE:,} characters."}, 400)
+             self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
+         elif p == "/api/revision-preview":
+             try:
+@@ -571,10 +701,19 @@ class H(BaseHTTPRequestHandler):
+                 b["playbook"], b["language"] = meta["playbook"], meta.get("language", "es")
+             if not intake:
+                 return self._json({"error": "Type what the family told you."}, 400)
++            if len(intake) > MAX_INTAKE or (rev and len(str(rev.get("note", ""))) > MAX_INTAKE):
++                return self._json({"error": f"That is too long. Keep it under {MAX_INTAKE:,} characters."}, 400)
+             pid = b.get("playbook") or "detention"
+             chosen = next((p for p in playbooks() if p["id"] == pid), None)
+             if not chosen or chosen["status"] != "live":
+                 return self._json({"error": "That crisis is not available yet."}, 400)
++            if b.get("language", "es") not in chosen.get("languages", ["es"]):
++                return self._json({"error": "That language is not available for this crisis."}, 400)
++            if isinstance(b.get("protected"), list) and (len(b["protected"]) > MAX_PROTECTED or any(len(str(t.get("term", "") if isinstance(t, dict) else t)) > MAX_TERM for t in b["protected"])):
++                return self._json({"error": "Too many protected names, or a name is too long."}, 400)
++            purge_sessions()
++            if busy_count() >= MAX_BUSY:
++                return self._json({"error": "Nury is busy with other drafts. Try again in a minute."}, 429)
+             try:
+                 prot = b.get("protected")
+                 prot = [{"term": str(t.get("term", "")).strip(), "kind": t.get("kind", "person")} for t in prot if str(t.get("term", "")).strip()] if isinstance(prot, list) else None
+@@ -582,6 +721,8 @@ class H(BaseHTTPRequestHandler):
+                             {"case_id": rev["case_id"], "step": rev.get("step", ""), "result": rev.get("result", ""), "note": rev["note"]} if rev else None)
+             except PlaybookError:
+                 return self._json({"error": "That crisis is not available yet."}, 400)
++            except Exception:                           # for example a missing key: say so in plain words, never drop the connection
++                return self._json({"error": "Nury could not start. Check that the server has its keys, then try again."}, 500)
+             SESSIONS[s.id] = s
+             if rev and str(rev.get("result", "")).strip():
+                 try:   # the 'Something changed' outcome, counted without the pastor's note
+@@ -634,7 +775,10 @@ class H(BaseHTTPRequestHandler):
+             act = b.get("action")
+             if not s or act not in ("approve", "edit", "stop") or (act == "edit" and not (b.get("text") or "").strip()):
+                 return self._json({"error": "bad request"}, 400)
+-            self._json({"ok": s.decide(act, b.get("text"))})
++            if not isinstance(b.get("stage"), str) or len(str(b.get("text") or "")) > MAX_INTAKE:
++                return self._json({"error": "bad request"}, 400)
++            ok = s.decide(act, b.get("text"), stage=b["stage"])
++            self._json({"ok": ok}, 200 if ok else 409)
+         else:
+             self._json({"error": "not found"}, 404)
+ 
+diff --git a/code/app/static/index.html b/code/app/static/index.html
+index 1279bc4..3e26535 100644
+--- a/code/app/static/index.html
++++ b/code/app/static/index.html
+@@ -544,7 +544,7 @@ function fmt(el,text){
+ }
+ const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
+ let rawDraft="";
+-let sid=null,timer=null,lastGate=null;
++let sid=null,timer=null,lastGate=null,gateStage=null;
+ function renderChips(stage){const row=$("fb-row");row.classList.toggle("hidden",!(FEATURES.feedback&&(FEATURES.chips||[]).length));$("fb-msg").textContent="";
+   $("fb-chips").replaceChildren(...(FEATURES.chips||[]).map(c=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=c.label;b.setAttribute("aria-pressed","false");
+     b.onclick=async()=>{const r=await api("/api/feedback",{session:sid,stage,chip:c.slug});          // optional, never blocks Approve
+@@ -801,7 +801,7 @@ async function startRun(protectedList){
+ }
+ $("b-new1").onclick=()=>{clearInterval(timer);sid=null;show("v-intake")};      // Try again: the same words, ready to begin again
+ $("b-new2").onclick=()=>{clearInterval(timer);sid=null;allowLeave=true;go("#/")};
+-const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
++const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text,stage:gateStage});   // the stage the pastor is looking at: a late click cannot approve the next draft
+ $("b-approve").onclick=()=>{lock();decide("approve")};
+ $("b-stop").onclick=()=>{lock();decide("stop")};
+ $("b-edit").onclick=()=>{$("g-edit").value=rawDraft;$("g-draft").classList.add("hidden");
+@@ -872,6 +872,7 @@ async function poll(){
+   $("gate").classList.toggle("hidden",!g);
+   $("work").classList.toggle("hidden",!!g||!!halted);
+   if(g){
++    gateStage=g.id;
+     const key=g.id+JSON.stringify(g.metrics.attempts);
+     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
+       $("g-title").textContent=g.title;
+diff --git a/code/nury/casefile.py b/code/nury/casefile.py
+index 5900c20..7934f85 100644
+--- a/code/nury/casefile.py
++++ b/code/nury/casefile.py
+@@ -346,12 +346,13 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
+     if d.exists():
+         raise CaseError(f"case {cid} already exists")
+     d.mkdir(parents=True)
++    os.chmod(d, 0o700)                       # a case holds real names: owner only
+     for name, text in files.items():
+-        (d / name).write_text(text, encoding="utf-8")
+-    (d / "case.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
++        _write_private(d / name, text)
++    _write_private(d / "case.json", json.dumps(manifest, indent=2))
+     if pmap:
+-        (d / "privacy-map.json").write_text(json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
+-                                                       indent=2, ensure_ascii=False), encoding="utf-8")
++        _write_private(d / "privacy-map.json", json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
++                                                          indent=2, ensure_ascii=False))
+     return {"id": cid, "path": str(d), "files": manifest["files"]}
+ 
+ 
+@@ -388,7 +389,7 @@ def set_follow_up(case_id, value, root=DEFAULT_ROOT) -> dict:
+     m = json.loads(f.read_text(encoding="utf-8"))
+     m["needs_follow_up"] = value
+     tmp = f.with_suffix(".json.tmp")
+-    tmp.write_text(json.dumps(m, indent=2), encoding="utf-8")
++    _write_private(tmp, json.dumps(m, indent=2))
+     tmp.replace(f)
+     return m
+ 
+@@ -401,12 +402,21 @@ def load_case(case_id, root=DEFAULT_ROOT) -> dict:
+     return {"meta": meta, "pages": pages, "svg": (d / "nextsteps.svg").read_text(encoding="utf-8")}
+ 
+ 
+-def export_zip(case_id, root=DEFAULT_ROOT, dest=None) -> str:
+-    """Zip the case folder. Returns the zip path (default: <root>/<id>.zip)."""
++def _write_private(path, text):
++    """Write a text file readable by its owner only (0600). The file never exists with wider rights."""
++    fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
++    with os.fdopen(fd, "w", encoding="utf-8") as f:
++        f.write(text)
++
++
++def export_zip(case_id, root=DEFAULT_ROOT, dest=None, include_privacy_map=False) -> str:
++    """Zip the case folder. Returns the zip path (default: <root>/<id>.zip). The token map with the real names
++    (privacy-map.json) is left out unless include_privacy_map is True. The caller deletes the zip once it is sent."""
+     d = _case_dir(case_id, root)
+     dest = Path(dest) if dest else Path(root) / f"{case_id}.zip"
+     with zipfile.ZipFile(dest, "w", zipfile.ZIP_DEFLATED) as z:
+         for p in sorted(d.iterdir()):
+-            if p.is_file():
++            if p.is_file() and (include_privacy_map or p.name != "privacy-map.json"):
+                 z.write(p, f"{case_id}/{p.name}")
++    os.chmod(dest, 0o600)
+     return str(dest)
+diff --git a/code/nury/gloo_client.py b/code/nury/gloo_client.py
+index 1e361f9..842c510 100644
+--- a/code/nury/gloo_client.py
++++ b/code/nury/gloo_client.py
+@@ -68,6 +68,10 @@ def load_env():
+             return
+ 
+ 
++class CallBudgetExceeded(Exception):
++    """One run tried to make more Gloo HTTP calls than its budget allows."""
++
++
+ class GuardrailBlock(Exception):
+     """Gloo guardrails hard-blocked the request (HTTP 403)."""
+ 
+@@ -84,6 +88,8 @@ class GlooClient:
+             raise RuntimeError("Set GLOO_API_KEY in the environment.")
+         self.base_url = (base_url or BASE_URL).rstrip("/")
+         self.model = model or os.environ.get("GLOO_MODEL", DEFAULT_MODEL)
++        self.max_calls = None      # set by the app: the most HTTP calls this client may make (None = no limit)
++        self.calls = 0
+ 
+     def respond(self, user_input, instructions=None, model=None, **kwargs):
+         """Return (json, meta). meta has latency_s and token counts."""
+@@ -91,9 +97,15 @@ class GlooClient:
+         if instructions:
+             payload["instructions"] = instructions
+         payload.update(kwargs)
++        cap = os.environ.get("NURY_MAX_OUTPUT_TOKENS", "").strip()
++        if cap.isdigit() and "max_output_tokens" not in payload:   # off unless set: confirm the endpoint accepts it with one live call first
++            payload["max_output_tokens"] = int(cap)
+         t0 = time.monotonic()
+         retries = 0
+         while True:
++            if self.max_calls is not None and self.calls >= self.max_calls:
++                raise CallBudgetExceeded(f"more than {self.max_calls} calls in one run")
++            self.calls += 1
+             try:
+                 resp = requests.post(
+                     f"{self.base_url}/responses",
+diff --git a/code/nury/guardrails.py b/code/nury/guardrails.py
+index e16cfee..de91d85 100644
+--- a/code/nury/guardrails.py
++++ b/code/nury/guardrails.py
+@@ -134,7 +134,39 @@ def phone_reasons(text, *allowed_blobs):
+ 
+ 
+ # ---- email allowlist: an email must come from the vetted sources, the approved text, or the intake ----
+-_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
++class LinearEmail:
++    """An email pattern that is scanned in linear time and finds exactly what the plain pattern
++    `[\\w.+\\-]+@<domain>` finds. The plain pattern is quadratic on a long unbroken token (it retries from every letter).
++    A start is tried only where a run of local-part characters begins, and at the end of the previous match, which are
++    the only places the plain pattern can succeed. tests/test_hardening.py proves the equality on 20,000 strings."""
++    LOCAL = r"[\w.+\-]+@"
++
++    def __init__(self, domain):
++        self._adj = re.compile(self.LOCAL + domain)                      # used with .match(text, pos) only
++        self._run = re.compile(r"(?<![\w.+\-])" + self.LOCAL + domain)    # a start at the beginning of a run
++        self.pattern = self._adj.pattern
++
++    def finditer(self, text):
++        pos, n = 0, len(text)
++        while pos <= n:
++            m = self._adj.match(text, pos) or self._run.search(text, pos)
++            if not m:
++                return
++            yield m
++            pos = m.end()
++
++    def findall(self, text):
++        return [m.group(1) if self._adj.groups else m.group(0) for m in self.finditer(text)]
++
++    def sub(self, repl, text):
++        out, last = [], 0
++        for m in self.finditer(text):
++            out += [text[last:m.start()], repl(m) if callable(repl) else repl]
++            last = m.end()
++        return "".join(out) + text[last:]
++
++
++_EMAIL_IN_TEXT = LinearEmail(r"([\w\-]+(?:\.[\w\-]+)+)")
+ 
+ 
+ def email_reasons(text, vetted_blob, *known_blobs):
+diff --git a/code/nury/privacy.py b/code/nury/privacy.py
+index 1b3f1d7..1ba9321 100644
+--- a/code/nury/privacy.py
++++ b/code/nury/privacy.py
+@@ -17,6 +17,8 @@ import os
+ import re
+ import unicodedata
+ 
++from .guardrails import LinearEmail
++
+ _TYPES = ("PERSON", "PLACE", "PHONE", "EMAIL", "ADDRESS", "DOB", "DATE", "ANUMBER", "CASE", "ID")
+ _T = "|".join(_TYPES)
+ _BRACKETED = re.compile(r"\[\s*(" + _T + r")[\s_\-]*(\d+)\s*\]", re.I)
+@@ -45,7 +47,7 @@ _ADDR_EN = re.compile(r"(?<!\w)\d{1,6}\s+(?:(?-i:[NSEW])\.?\s+|(?:North|South|Ea
+ _ADDR_ES = re.compile(r"\b(?:Calle|Avenida|Av\.|Camino|Carretera)\s+(?:[\wÁÉÍÓÚÑáéíóúñ'’.\-]+\s+){0,3}?"
+                       r"(?:#|No\.?|núm\.?|número)?\s*\d{1,6}\b(?:,?\s*(?:Apt|Apartamento|Depto|Unit|#)\.?\s*[\w\-]+)?", re.I)
+ _PO = re.compile(r"\bP\.?\s?O\.?\s+Box\s+\d+\b", re.I)
+-_EMAIL = re.compile(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+")
++_EMAIL = LinearEmail(r"[\w\-]+(?:\.[\w\-]+)+")      # same matches as before, linear time on a long unbroken token
+ _PHONE10 = re.compile(r"(?<![\w.])(?:\+?\d{1,3}[\s.-]?)?(?:\(\d{3}\)|\d{3})[\s.-]?\d{3}[\s.-]?\d{4}(?![\w])")
+ _PHONE7 = re.compile(r"(?<![\d.\-])\d{3}[-.\s]\d{4}(?![\d\-])")
+ _ANUM = re.compile(r"(?<![\w-])A[- ]?\d{8,9}(?!\d)")
+diff --git a/code/tests/test_hardening.py b/code/tests/test_hardening.py
+new file mode 100644
+index 0000000..ec9ee0e
+--- /dev/null
++++ b/code/tests/test_hardening.py
+@@ -0,0 +1,384 @@
++"""Hardening tests (CODE_REVIEW.md): the HTTP layer, input limits, the approval gate's stage check, file rights,
++the export, the call budget and the linear email regex. No network: a fake client stands in for Gloo, and the
++server runs on 127.0.0.1 with a random port inside the test."""
++import http.client
++import json
++import os
++import random
++import re
++import shutil
++import socket
++import sys
++import tempfile
++import threading
++import time
++import unittest
++import zipfile
++from http.server import ThreadingHTTPServer
++from pathlib import Path
++from types import SimpleNamespace
++
++sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
++sys.path.insert(0, str(Path(__file__).resolve().parent))
++import nonet  # noqa: E402,F401
++from app import network_api, server  # noqa: E402
++from nury import casefile as cf  # noqa: E402
++from nury import gloo_client, guardrails, privacy  # noqa: E402
++from nury.engine import run_scripted  # noqa: E402
++from nury.privacy import PrivacyClient  # noqa: E402
++from test_core import CANNED, FakeClient  # noqa: E402
++
++JSON = {"Content-Type": "application/json"}
++
++
++class Live(unittest.TestCase):
++    """A real server on a random local port. Subclasses use self.call(...)."""
++
++    @classmethod
++    def setUpClass(cls):
++        cls.httpd = ThreadingHTTPServer(("127.0.0.1", 0), server.H)
++        cls.port = cls.httpd.server_address[1]
++        cls.thread = threading.Thread(target=cls.httpd.serve_forever, daemon=True)
++        cls.thread.start()
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.httpd.shutdown()
++        cls.httpd.server_close()
++
++    def call(self, method, path, body=None, headers=None, host=None, raw=None):
++        c = http.client.HTTPConnection("127.0.0.1", self.port, timeout=10)
++        h = dict(headers or {})
++        if host is not None:
++            c.putrequest(method, path, skip_host=True)
++            c.putheader("Host", host)
++            for k, v in h.items():
++                c.putheader(k, v)
++            data = raw if raw is not None else (json.dumps(body).encode() if body is not None else b"")
++            c.putheader("Content-Length", str(len(data)))
++            c.endheaders(data)
++        else:
++            data = raw if raw is not None else (json.dumps(body).encode() if body is not None else None)
++            c.request(method, path, body=data, headers=h)
++        r = c.getresponse()
++        text = r.read()
++        c.close()
++        try:
++            return r.status, json.loads(text), r
++        except ValueError:
++            return r.status, text, r
++
++
++class Guard(Live):
++    def test_a_cross_site_text_plain_post_is_refused(self):
++        st, j, _ = self.call("POST", "/api/network", {"name": "Evil", "kind": "other", "phone": "3035550199"},
++                             {"Content-Type": "text/plain", "Origin": "http://evil.example"})
++        self.assertEqual(st, 403)                                     # the origin is checked first
++        st, j, _ = self.call("POST", "/api/network", {"name": "Evil"}, {"Content-Type": "text/plain"})
++        self.assertEqual(st, 415)                                     # and without an Origin the body type still has to be JSON
++
++    def test_another_origin_or_host_is_refused_on_reads_too(self):
++        self.assertEqual(self.call("GET", "/api/privacy", headers={"Origin": "http://evil.example"})[0], 403)
++        self.assertEqual(self.call("GET", "/api/cases", host="attacker.example:8080")[0], 403)      # DNS rebinding
++        self.assertEqual(self.call("GET", "/api/cases", host=f"127.0.0.1:{self.port}")[0], 200)
++        self.assertEqual(self.call("GET", "/api/privacy", headers={"Origin": f"http://localhost:{self.port}"}, host=f"localhost:{self.port}")[0], 200)
++        self.assertEqual(self.call("GET", "/api/privacy", headers={"Origin": "null"})[0], 403)
++
++    def test_a_put_and_a_delete_need_the_same_checks(self):
++        self.assertEqual(self.call("DELETE", "/api/network/n-1", headers={"Origin": "http://evil.example", **JSON})[0], 403)
++        self.assertEqual(self.call("PUT", "/api/network/n-1", {"name": "x"}, {"Content-Type": "text/plain"})[0], 415)
++
++    def test_every_response_carries_the_security_headers(self):
++        for path in ("/api/privacy", "/", "/final.css", "/nope"):
++            st, _, r = self.call("GET", path)
++            for k in ("X-Content-Type-Options", "X-Frame-Options", "Referrer-Policy", "Content-Security-Policy"):
++                self.assertTrue(r.getheader(k), (path, k))
++            self.assertEqual(r.getheader("X-Frame-Options"), "DENY")
++            self.assertIn("frame-ancestors 'none'", r.getheader("Content-Security-Policy"))
++
++    def test_the_app_pages_only_use_things_the_policy_allows(self):
++        """The policy allows own scripts, styles, fonts and data: or blob: images. No page may pull anything from another site."""
++        for f in (server.STATIC / "index.html", server.STATIC / "network.html", server.STATIC / "observability.html"):
++            t = f.read_text(encoding="utf-8")
++            self.assertFalse(re.search(r"""(?:src|href)=["']https?://""", t.replace('rel="noopener"', "")) and "<script src=\"http" in t, f.name)
++            self.assertNotRegex(t, r"""<script[^>]+src=["']https?://""")
++            self.assertNotRegex(t, r"""<link[^>]+href=["']https?://""")
++
++
++class Limits(Live):
++    def test_body_and_length_limits(self):
++        c = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
++        c.putrequest("POST", "/api/propose-terms")
++        c.putheader("Content-Type", "application/json")
++        c.putheader("Content-Length", str(server.MAX_BODY + 1))
++        c.endheaders()
++        self.assertEqual(c.getresponse().status, 413)                # refused before a byte of the body is read
++        c.close()
++        for bad in ("-5", "abc"):
++            c = http.client.HTTPConnection("127.0.0.1", self.port, timeout=5)
++            c.putrequest("POST", "/api/propose-terms")
++            c.putheader("Content-Type", "application/json")
++            c.putheader("Content-Length", bad)
++            c.endheaders()
++            self.assertEqual(c.getresponse().status, 400, bad)
++            c.close()
++
++    def test_an_intake_is_capped_and_a_long_token_is_fast(self):
++        st, j, _ = self.call("POST", "/api/propose-terms", {"intake": "a" * (server.MAX_INTAKE + 1)}, JSON)
++        self.assertEqual(st, 400)
++        t0 = time.time()
++        st, j, _ = self.call("POST", "/api/propose-terms", {"intake": "x" * server.MAX_INTAKE}, JSON)
++        self.assertEqual(st, 200)
++        self.assertLess(time.time() - t0, 1.5)                        # was 4 s at 40,000 characters and grew with the square
++
++    def test_a_stalled_client_gets_a_408_instead_of_holding_a_thread(self):
++        old = server.H.timeout
++        server.H.timeout = 1
++        try:
++            s = socket.create_connection(("127.0.0.1", self.port), timeout=6)
++            s.sendall(b"POST /api/propose-terms HTTP/1.1\r\nHost: 127.0.0.1:%d\r\nContent-Type: application/json\r\nContent-Length: 50\r\n\r\n{\"in" % self.port)
++            data = s.recv(4096)
++            s.close()
++            self.assertIn(b" 408 ", data.split(b"\r\n")[0] + b" ")
++        finally:
++            server.H.timeout = old
++
++    def test_language_and_protected_names_are_checked(self):
++        st, j, _ = self.call("POST", "/api/run", {"intake": "x", "playbook": "detention", "language": "fr"}, JSON)
++        self.assertEqual(st, 400)
++        st, j, _ = self.call("POST", "/api/run", {"intake": "x", "playbook": "detention", "language": "es",
++                                                  "protected": [{"term": "n%d" % i} for i in range(server.MAX_PROTECTED + 1)]}, JSON)
++        self.assertEqual(st, 400)
++
++    def test_a_json_list_to_the_network_api_is_a_400_not_a_dropped_connection(self):
++        with tempfile.TemporaryDirectory() as d:
++            os.environ["NURY_NETWORK_DIR"] = d
++            try:
++                for path in ("/api/network/home", "/api/network", "/api/network/import"):
++                    st, j, _ = self.call("POST", path, [1], JSON)
++                    self.assertEqual(st, 400, path)
++                st, body = network_api.handle("POST", "/api/network", b"[1]")[:2]
++                self.assertEqual(st, 400)
++                Path(d, "network.json").write_text("{not json", encoding="utf-8")        # a damaged file is a plain answer too
++                self.assertEqual(self.call("GET", "/api/network")[0], 500)
++            finally:
++                del os.environ["NURY_NETWORK_DIR"]
++
++
++class Sessions(Live):
++    def setUp(self):
++        self._mc = server.make_client
++        server.make_client = lambda protected=None, intake=None: FakeClient(CANNED)
++        self._ids = []
++
++    def tearDown(self):
++        server.make_client = self._mc
++        for sid in self._ids:
++            s = server.SESSIONS.pop(sid, None)
++            if s:
++                s.abandon()
++                s.thread.join(timeout=5)
++
++    def start(self):
++        s = server.Session("detention", "Maria Lopez was detained in Aurora.", "es", False, [])
++        server.SESSIONS[s.id] = s
++        self._ids.append(s.id)
++        for _ in range(200):
++            if s.waiting is not None:
++                return s
++            time.sleep(0.05)
++        self.fail("no draft reached the gate")
++
++    def test_a_decision_must_name_the_stage_the_pastor_saw(self):
++        s = self.start()
++        url = f"/api/session/{s.id}/decision"
++        self.assertEqual(self.call("POST", url, {"action": "approve"}, JSON)[0], 400)                          # no stage
++        st, j, _ = self.call("POST", url, {"action": "approve", "stage": "rights"}, JSON)                     # the NEXT draft, not the one waiting
++        self.assertEqual((st, j["ok"]), (409, False))
++        self.assertEqual(s.waiting.stage_id, "triage")                                                       # nothing was approved
++        st, j, _ = self.call("POST", url, {"action": "approve", "stage": "triage"}, JSON)
++        self.assertEqual((st, j["ok"]), (200, True))
++        for _ in range(100):                                                                                 # the second click of a double click
++            if s.waiting is None or s.waiting.stage_id != "triage":
++                break
++            time.sleep(0.05)
++        st, j, _ = self.call("POST", url, {"action": "approve", "stage": "triage"}, JSON)
++        self.assertEqual((st, j["ok"]), (409, False))
++        self.assertNotIn("rights", {k for k, v in s.state.approved.items()})
++
++    def test_session_start_errors_are_a_500_in_plain_words(self):
++        def boom(protected=None, intake=None):
++            raise RuntimeError("Set GLOO_API_KEY in the environment.")
++        server.make_client = boom
++        st, j, _ = self.call("POST", "/api/run", {"intake": "x", "playbook": "detention", "language": "es"}, JSON)
++        self.assertEqual(st, 500)
++        self.assertNotIn("GLOO", json.dumps(j))
++
++    def test_only_a_few_runs_may_write_at_once(self):
++        old = server.MAX_BUSY
++        server.MAX_BUSY = 1
++        fake = SimpleNamespace(done=False, waiting=None, created=time.time())
++        server.SESSIONS["busy-test"] = fake
++        try:
++            st, j, _ = self.call("POST", "/api/run", {"intake": "x", "playbook": "detention", "language": "es"}, JSON)
++            self.assertEqual(st, 429)
++            fake.waiting = object()                                    # waiting at a gate costs nothing
++            self.assertEqual(server.busy_count(), 0)
++        finally:
++            server.MAX_BUSY = old
++            server.SESSIONS.pop("busy-test", None)
++
++    def test_old_sessions_are_dropped_and_a_run_left_at_a_gate_is_stopped(self):
++        s = self.start()
++        server.purge_sessions(now=time.time() + server.SESSION_TTL_S + 5)
++        self.assertNotIn(s.id, server.SESSIONS)
++        s.thread.join(timeout=10)
++        self.assertFalse(s.thread.is_alive())                          # the worker ended, it does not wait forever
++
++
++class Files(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.mkdtemp()
++        self.addCleanup(shutil.rmtree, self.tmp, True)
++
++    def saved(self):
++        st, rs, au = run_scripted("Maria Lopez was detained in Aurora.", client=FakeClient(CANNED))
++        pc = PrivacyClient(FakeClient(CANNED), protected=[{"term": "Maria Lopez"}])
++        return cf.save_case(st, au, playbook="detention", root=self.tmp, privacy=pc)
++
++    def test_case_files_are_owner_only(self):
++        r = self.saved()
++        d = Path(r["path"])
++        self.assertEqual(oct(d.stat().st_mode & 0o777), "0o700")
++        for f in d.iterdir():
++            self.assertEqual(oct(f.stat().st_mode & 0o777), "0o600", f.name)
++        self.assertTrue((d / "privacy-map.json").is_file())
++        cf.set_follow_up(r["id"], True, self.tmp)
++        self.assertEqual(oct((d / "case.json").stat().st_mode & 0o777), "0o600")
++
++    def test_the_export_leaves_out_the_privacy_map_unless_asked_and_is_owner_only(self):
++        r = self.saved()
++        z = cf.export_zip(r["id"], self.tmp)
++        names = {n.split("/")[1] for n in zipfile.ZipFile(z).namelist()}
++        self.assertNotIn("privacy-map.json", names)
++        self.assertIn("intake.md", names)
++        self.assertEqual(oct(Path(z).stat().st_mode & 0o777), "0o600")
++        z2 = cf.export_zip(r["id"], self.tmp, include_privacy_map=True)
++        self.assertIn("privacy-map.json", {n.split("/")[1] for n in zipfile.ZipFile(z2).namelist()})
++
++    def test_the_server_deletes_the_zip_after_sending_it(self):
++        r = self.saved()
++        old = server.CASES_ROOT
++        server.CASES_ROOT = self.tmp
++        httpd = ThreadingHTTPServer(("127.0.0.1", 0), server.H)
++        threading.Thread(target=httpd.serve_forever, daemon=True).start()
++        try:
++            c = http.client.HTTPConnection("127.0.0.1", httpd.server_address[1], timeout=10)
++            c.request("GET", f"/api/case/{r['id']}/export")
++            resp = c.getresponse()
++            body = resp.read()
++            self.assertEqual(resp.status, 200)
++            self.assertTrue(body.startswith(b"PK"))
++            c.close()
++            self.assertEqual([p.name for p in Path(self.tmp).iterdir()], [r["id"]])        # no zip left on the server
++        finally:
++            httpd.shutdown()
++            server.CASES_ROOT = old
++
++
++class Budget(unittest.TestCase):
++    class Resp:
++        status_code = 200
++        text = "{}"
++        headers = {}
++
++        def raise_for_status(self):
++            pass
++
++        def json(self):
++            return {"output": [], "usage": {"input_tokens": 1, "output_tokens": 1}}
++
++    def setUp(self):
++        self.sent = []
++        self._post = gloo_client.requests.post
++        gloo_client.requests.post = lambda url, json=None, **kw: (self.sent.append(json), self.Resp())[1]
++        self.addCleanup(setattr, gloo_client.requests, "post", self._post)
++
++    def test_a_run_cannot_make_more_calls_than_its_budget(self):
++        c = gloo_client.GlooClient(api_key="k")
++        c.max_calls = 2
++        c.respond("a")
++        c.respond("b")
++        with self.assertRaises(gloo_client.CallBudgetExceeded):
++            c.respond("c")
++        self.assertEqual(c.calls, 2)
++
++    def test_max_output_tokens_is_sent_only_when_asked(self):
++        c = gloo_client.GlooClient(api_key="k")
++        c.respond("a")
++        self.assertNotIn("max_output_tokens", self.sent[-1])
++        os.environ["NURY_MAX_OUTPUT_TOKENS"] = "1500"
++        try:
++            c.respond("a")
++        finally:
++            del os.environ["NURY_MAX_OUTPUT_TOKENS"]
++        self.assertEqual(self.sent[-1]["max_output_tokens"], 1500)
++
++    def test_the_session_sets_the_budget_on_the_real_client(self):
++        c = gloo_client.GlooClient(api_key="k")
++        pc = PrivacyClient(c)
++        mc = server.make_client
++        server.make_client = lambda protected=None, intake=None: pc
++        try:
++            s = server.Session("detention", "x", "es", False, [])
++            s.abandon()
++            s.thread.join(timeout=10)
++        finally:
++            server.make_client = mc
++        self.assertEqual(c.max_calls, server.RUN_CALL_BUDGET)
++
++
++OLD_EMAIL = re.compile(r"[\w.+\-]+@[\w\-]+(?:\.[\w\-]+)+")
++OLD_EMAIL_IN_TEXT = re.compile(r"[\w.+\-]+@([\w\-]+(?:\.[\w\-]+)+)")
++
++
++class EmailRegex(unittest.TestCase):
++    def corpus(self):
++        out = ["", "a@b.co", "maria.lopez+iglesia@example.org llamó", "@a@b.com", "x.y@z.w.v", "..@a.b", "a@b", "a@@b.com", "me@x.com,you@y.org",
++               "ñandú@correo.mx y José@Correo.com", "foo-bar_baz@sub-domain.example.co.uk.", "no email here", "a" * 200 + "@x.com", "x@" + "y" * 50]
++        for pb in ("detention", "hospital"):
++            root = Path(__file__).resolve().parents[1] / "playbooks" / pb
++            for f in list(root.rglob("*.json")) + list(root.rglob("*.txt")):
++                out.append(f.read_text(encoding="utf-8"))
++        for texts in list(CANNED.values()):
++            out.append(texts if isinstance(texts, str) else str(texts))
++        rnd = random.Random(7)
++        alpha = ["a", "B", "1", "_", "-", ".", "+", "@", " ", "\n", "é", "ñ", "x.y", "@z.co"]
++        out += ["".join(rnd.choice(alpha) for _ in range(rnd.randint(0, 40))) for _ in range(20000)]
++        return out
++
++    def test_the_linear_regex_matches_exactly_what_the_old_one_matched(self):
++        n = 0
++        for t in self.corpus():
++            self.assertEqual([m.group(0) for m in privacy._EMAIL.finditer(t)], [m.group(0) for m in OLD_EMAIL.finditer(t)], t[:60])
++            self.assertEqual([(m.group(0), m.group(1)) for m in guardrails._EMAIL_IN_TEXT.finditer(t)],
++                             [(m.group(0), m.group(1)) for m in OLD_EMAIL_IN_TEXT.finditer(t)], t[:60])
++            n += 1
++        self.assertGreater(n, 20000)
++
++    def test_a_long_unbroken_token_is_scanned_in_linear_time(self):
++        for rx in (privacy._EMAIL, guardrails._EMAIL_IN_TEXT):
++            for t in ("x" * 200_000, "1" * 200_000, "a." * 100_000, "a@" * 50_000):
++                t0 = time.time()
++                rx.findall(t)
++                self.assertLess(time.time() - t0, 1.0, (rx.pattern[:20], t[:6]))
++
++    def test_the_whole_pseudonymizer_and_the_email_check_stay_fast_on_a_long_token(self):
++        t0 = time.time()
++        privacy.propose_terms("x" * 20_000)
++        guardrails.email_reasons("x" * 20_000, "", "")
++        self.assertLess(time.time() - t0, 2.0)
++
++
++if __name__ == "__main__":
++    unittest.main()
