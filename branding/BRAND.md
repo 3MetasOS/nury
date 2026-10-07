@@ -41,6 +41,8 @@ Amber is the only accent. Green and red appear only on approved and rejected chi
 - Both are open fonts (SIL Open Font License) from Google Fonts.
 
 ## Tagline
+**Rule (Juan, 2026-10-07): "An AI Crisis Response Agent" always sits BELOW the logo, never to the side. Everywhere: app, deck, film, documents, social, README.** If there is not room for the tagline below the logo, drop the tagline; never move it beside the logo.
+
 "An AI Crisis Response Agent." This is the brand line, capitalised as shown. Do not reword it. In the lockup it is set small, in muted text. In running text, write "an AI crisis response agent".
 
 ## Clear space
