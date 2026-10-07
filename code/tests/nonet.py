@@ -12,8 +12,9 @@ from nury import gloo_client  # noqa: E402,F401
 
 def scrub():
     """Another test may build a GlooClient, which loads .env again. Call this in setUp of any test that picks a verse."""
-    for k in ("YVP_APP_KEY", "YVP_BIBLE_ES", "YVP_BIBLE_EN"):
+    for k in ("YVP_APP_KEY", "YVP_BIBLE_ES", "YVP_BIBLE_EN", "JEV_API_KEY"):
         os.environ.pop(k, None)
+    os.environ["NURY_JEV_GATE"] = "off"      # a test that wants the gate turns it on and patches requests.post
 
 
 scrub()

@@ -34,6 +34,9 @@
         "name": "triage_facts_only",
         "pattern": "\\b(urge[ds]?|urging|should|must|recommend\\w*|advis\\w*|make sure|ensure|critical|crucial|vital|preserv\\w+|best to|important to)\\b"
       }
+    ],
+    "jev": [
+      "assumes_facts"
     ]
   },
   {
@@ -74,6 +77,11 @@
         "pattern": "abogad|attorney|lawyer|legal aid|asistencia legal",
         "reason": "must end by urging an attorney"
       }
+    ],
+    "jev": [
+      "gives_legal_advice",
+      "predicts_outcome",
+      "assumes_facts"
     ]
   },
   {
@@ -165,6 +173,9 @@
     ],
     "skills": [
       "grounding"
+    ],
+    "jev": [
+      "assumes_facts"
     ]
   },
   {
@@ -215,6 +226,9 @@
     "skills": [
       "voice",
       "grounding"
+    ],
+    "jev": [
+      "gives_legal_advice"
     ]
   },
   {
@@ -267,6 +281,12 @@
     "skills": [
       "voice"
     ],
-    "scripture": true
+    "scripture": true,
+    "jev": [
+      "predicts_outcome",
+      "claims_pastoral_office",
+      "claims_counselor",
+      "promises_action"
+    ]
   }
 ]

@@ -38,8 +38,17 @@ class FakeHTTP:
     """Stands in for requests.post. Records the exact JSON body. Replies like a model that copies tokens."""
     def __init__(self, hospital=False, mangle=False, unknown_first=False):
         self.bodies, self.hospital, self.mangle, self.unknown_first, self.unknown_done = [], hospital, mangle, unknown_first, False
+        self.jev_bodies = []
 
     def __call__(self, url, json=None, headers=None, timeout=None):
+        if "systemone" in url:                      # the Jev classifier gate: record the body, answer "no" with low probability
+            self.jev_bodies.append(json)
+
+            class J:
+                status_code = 200
+                def json(self_):
+                    return {"answers": {q: {"type": "noul", "noul": 0.1} for q in json["questions"]}, "usage": {}}
+            return J()
         self.bodies.append(json)
         ins, inp = json["instructions"], json["input"]
         toks = re.findall(r"\[PERSON_\d+\]", inp)
@@ -102,6 +111,29 @@ class Leak(unittest.TestCase):
         self.assertIn("Brunhilda Vandersloot", st.approved["rights"])        # the edit is kept in the saved case
         self.assertTrue(any(e["event"] == "edit_name_protected" for e in pc.events))
         self.assertIn("Brunhilda Vandersloot", pc.map().values())
+
+    def test_the_jev_gate_requests_carry_tokens_never_names_or_the_map(self):
+        """Every request to Jev, for every stage, correction loop and a pastor edit that adds a new name."""
+        import os
+        os.environ.update(NURY_JEV_GATE="on", JEV_API_KEY="test-jev-key-not-real")
+        try:
+            http = FakeHTTP()
+            st, rs, au, pc = run("detention", INTAKE, http, decisions={"rights": ("edit", RIGHTS + "\n- Hable con Brunhilda Vandersloot, abogada. (ACLU Know Your Rights)")},
+                                 fault={"stage": "rights", "times": 1, "draft_suffix": UNSAFE_SUFFIX})
+        finally:
+            nonet.scrub()
+        self.assertEqual([r.status for r in rs], ["approved", "edited", "approved", "approved", "approved"])
+        self.assertGreaterEqual(len(http.jev_bodies), 5)                  # one batched call per accepted draft, at least
+        blob = fold(json.dumps(http.jev_bodies, ensure_ascii=False))
+        for c in CANARIES:
+            self.assertFalse(fold(c) in blob, f"LEAK of {c!r} to Jev")
+        real_ids = [v for v in pc.map().values() if any(fold(c) in fold(v) or fold(v) in fold(c) for c in CANARIES) and len(v) > 3]
+        self.assertTrue(real_ids)
+        for real in real_ids:
+            self.assertFalse(fold(real) in blob, f"the real value {real!r} went to Jev")
+        self.assertFalse('"[person_1]": "' in blob or "privacy-map" in blob)   # the map itself never goes
+        self.assertTrue(re.search(r"\[person_\d+\]", blob))                    # tokens did go, so the test saw real requests
+        self.assertTrue([e for e in au.events if e["kind"] == "jev_gate" and e["decision"] == "pass"])
 
     def test_hospital_all_stages_with_forced_rejection(self):
         http = FakeHTTP(hospital=True)

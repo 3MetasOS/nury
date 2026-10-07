@@ -40,6 +40,7 @@ class Stage:
     variants: list = field(default_factory=list)   # [{"when", "prompt"}] first match swaps the prompt
     prompt_file: str = ""
     skills: list = field(default_factory=list)     # Skill objects, loaded from code/skills/
+    jev: list = field(default_factory=list)        # Jev classifier questions for this stage's draft (see nury/jev_gate.py)
     scripture: bool = False                        # pastoral stage: the model picks a verse id, the engine inserts the text
     summary: str = ""                              # one plain line for the pastor's screen. Display only: never in a prompt, check or audit
 
@@ -155,7 +156,7 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
             source_specs=specs, checks=sj.get("checks", []), input=sj.get("input", {"from": "intake"}),
             when=sj.get("when"),
             skills=_load_skills(sj, skills_root),
-            summary=_summary(sj), scripture=bool(sj.get("scripture", False)),
+            summary=_summary(sj), scripture=bool(sj.get("scripture", False)), jev=_jev(sj),
             variants=[{"when": v["when"], "prompt": (d / v["prompt"]).read_text(encoding="utf-8").strip()}
                       for v in sj.get("variants", [])]))
     for s in stages:
@@ -185,6 +186,15 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
                     stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
     pb.pending_sources = pending
     return pb
+
+
+def _jev(sj):
+    from . import jev_gate
+    qs = sj.get("jev", [])
+    bad = [q for q in qs if q not in jev_gate.QUESTIONS]
+    if bad:
+        raise PlaybookError(f"stage {sj['id']}: unknown Jev question {bad}")
+    return list(qs)
 
 
 def _summary(sj):

@@ -646,18 +646,23 @@ class NoSendPath(unittest.TestCase):
             self.assertIsNone(banned.search(src), f"{f.name} has a way to send")
             if _re.search(r"\brequests\.(get|post|put|delete|request)\b", src):
                 uses_requests.append(f.name)
-        self.assertEqual(uses_requests, ["gloo_client.py"])
+        # Gloo, and the Jev classifier gate (a third-party API that only ever sees pseudonymized text). Nothing else.
+        self.assertEqual(sorted(uses_requests), ["gloo_client.py", "jev_gate.py"])
 
 
 class EvalOnly(unittest.TestCase):
-    def test_the_product_never_uses_jev_the_panel_or_the_attacker(self):
-        """Jev, the red-team panel and the attacker intakes are eval-time tools. The product code never imports or calls them."""
+    def test_the_product_uses_jev_only_through_the_gate_never_the_eval_tools(self):
+        """The red-team panel, the attacker intakes and the eval judges stay eval-time tools. The only Jev code in the
+        product is nury/jev_gate.py, the run-time classifier."""
         import re as _re
         root = Path(__file__).resolve().parent.parent
-        # The case-file guard names JEV_API_KEY so it can refuse to save it. That is a secret check, not a use.
-        pat = _re.compile(r"jev_judges|redteam_panel|api\.typesafe\.ai|\bimport\s+\w*jev|\bfrom\s+\S*jev|scenarios_attacker", _re.I)
+        tools = _re.compile(r"jev_judges|redteam_panel|scenarios_attacker|\bimport\s+evaluations|\bfrom\s+evaluations", _re.I)
+        typesafe = _re.compile(r"api\.typesafe\.ai", _re.I)
         for f in list((root / "nury").glob("*.py")) + list((root / "app").glob("*.py")):
-            self.assertIsNone(pat.search(f.read_text(encoding="utf-8")), f"{f.name} mentions an eval-only tool")
+            src = f.read_text(encoding="utf-8")
+            self.assertIsNone(tools.search(src), f"{f.name} mentions an eval-only tool")
+            if f.name != "jev_gate.py":
+                self.assertIsNone(typesafe.search(src), f"{f.name} calls Jev outside the gate")
 
 
 class Promises(unittest.TestCase):

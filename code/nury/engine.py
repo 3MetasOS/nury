@@ -15,6 +15,7 @@ from .gloo_client import GlooClient, GuardrailBlock
 from . import playbook as pbm
 from . import scripture as scr
 from . import scripture_providers as scrp
+from . import jev_gate
 from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
@@ -122,7 +123,8 @@ def with_disclaimer(text, disclaimer):
 
 def _new_metrics():
     return {"attempts": 0, "retries": 0, "self_corrections": 0, "latency_s": 0.0,
-            "input_tokens": 0, "output_tokens": 0, "cost_usd": None, "skills": []}
+            "input_tokens": 0, "output_tokens": 0, "cost_usd": None, "skills": [],
+            "jev_ms": 0, "jev_calls": 0}
 
 
 def _cost(m):
@@ -191,6 +193,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     contact_names = [x["name"] for d in data.values() if isinstance(d, dict) for k in ("entries", "national", "local")
                      for x in d.get(k, []) if isinstance(x, dict) and x.get("name")]
     sources_blob = json.dumps(data, ensure_ascii=False)
+    jev_sources = json.dumps({k: v for k, v in data.items() if k != "scripture"}, ensure_ascii=False)   # the verse bank is not a fact source
     vetted_blob = sources_blob + "\n" + "\n".join(ctx.values())
     verses = {}
     if stage.scripture:
@@ -262,6 +265,12 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
                     violations = CHECKS["verse_block_verbatim"]({}, scr.assemble(parts), ctx_ns)
         else:
             violations = all_violations(text)
+        if not violations and stage.jev and jev_gate.enabled():
+            ps = client.ps if getattr(client, "enabled", False) and hasattr(client, "ps") else None
+            violations, ms, called = jev_gate.run(stage, lang, parts["own"] if parts else text, state.intake, ctx,
+                                                  jev_sources, ps, audit, attempt, state)
+            m["jev_ms"] += ms
+            m["jev_calls"] += int(called)
         cats = sorted({v["category"] for v in violations})
         audit.log("check", stage=stage_id, attempt=attempt, passed=not violations, violations=violations,
                   reason_categories=cats, tokens_in=meta["input_tokens"], tokens_out=meta["output_tokens"],
