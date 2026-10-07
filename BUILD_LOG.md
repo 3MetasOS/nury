@@ -194,3 +194,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Verified by hack-sensei: 31 tests pass. Live all-five-stage runs (hack-jedi): detention 01 (36 s), detention 20 (37 s), hospital h01 (45 s), every stage passed on attempt 1, no regression.
 - Known limitations: grounding is not airtight. Detention checklists still say "memorize the number" and "leave copies with someone you trust"; the hospital h01 checklist had "don't share Luis's personal information". None is advice or a prediction, and no check flags them.
 - Not built yet: the before/after comparison with skills off and on (hack-artisans, needs a toggle).
+
+## 28. 2026-10-06 20:47 MDT — Case file and next-steps map approved (Juan)
+
+- Decision (Juan): build a local case file (linked markdown pages: index, one per stage, people, documents, timeline, log) the pastor can save, reopen and export, plus a next-steps map (SVG: tonight, this week, questions still open, who to call). Steps and questions only, never outcomes.
+- Guards: local only (`cases/` gitignored); approved content only; a rejected draft never enters a case file (a test proves it); built without a model call; synthetic families only in demo and evals.
+- Later, not before submission: a possible-paths map from vetted process sources, and a case update loop where Nury proposes page edits and the pastor approves each.
+- Owners: hack-jedi (casefile.py, additive, outside the frozen core, 10:00 Oct 7), hack-artisans (UI and eval, 12:00 Oct 7), hack-ninja (claim only after I confirm). Cut at 13:00 Oct 7 if not solid.
