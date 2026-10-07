@@ -60,5 +60,16 @@ def max_words(p, text, ctx):
     return [g.R("length", f"too long: {n} words (limit {p['limit']})")] if n > p["limit"] else []
 
 
+_AGENCY_ACRONYMS = r"\b(ICE|CBP|DHS|USCIS|ERO|HSI|DEA|FBI)\b"
+_AGENCY_NAMES = r"immigration and customs enforcement|customs and border protection|border patrol|homeland security|\bla migra\b|aduanas y protecci"
+
+
+def no_agency_names(p, text, ctx):
+    """Locked decision: no agency name or acronym on screen. Say 'immigration officers'."""
+    hits = {m.group(0) for m in re.finditer(_AGENCY_ACRONYMS, text)}
+    hits |= {m.group(0).lower() for m in re.finditer(_AGENCY_NAMES, text, re.I)}
+    return [g.R("agency_name", f"names an agency: {sorted(hits)}")] if hits else []
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
-                                    vetted_links_present, required_headings, max_words)}
+                                    vetted_links_present, required_headings, max_words, no_agency_names)}

@@ -102,6 +102,23 @@ class Core(unittest.TestCase):
             self.assertEqual(r.status, "escalated")
             self.assertIn(cat, r.reason_categories)
 
+    def test_triage_agency_names_flagged(self):
+        bad = dict(CANNED, triage=TRIAGE.replace("Any case number?", "Was he taken by, for example, ICE?"))
+        r = run_stage("triage", CaseState("intake"), client=FakeClient(bad))
+        self.assertEqual(r.status, "escalated")
+        self.assertIn("agency_name", r.reason_categories)
+        ok = run_stage("triage", CaseState("intake"), client=FakeClient())
+        self.assertEqual(ok.status, "approved")
+
+    def test_forced_rejection_env_targets_stage_2(self):
+        import os
+        os.environ["NURY_FORCE_REJECTION"] = "1"
+        try:
+            st, rs, _ = run_scripted("intake", client=FakeClient())
+        finally:
+            del os.environ["NURY_FORCE_REJECTION"]
+        self.assertEqual([r.metrics["attempts"] for r in rs], [1, 2, 1, 1, 1])
+
     def test_language_check(self):
         bad = dict(CANNED, pastoral="Dios está con ustedes. As the Psalm says, God is our refuge and the strength of those who hurt.")
         st = CaseState("intake")
@@ -157,11 +174,12 @@ class Playbooks(unittest.TestCase):
                   boundary={"who": "a family with a loved one in the hospital", "domain": "medical",
                             "professional": "hospital care team", "professional_kind": "doctor"})
         (d / "playbook.json").write_text(json.dumps(pj))
-        shutil.copy(self.src / "prompts" / "triage.txt", d / "prompts")
+        (d / "prompts" / "triage.txt").write_text("Task: turn the pastor's raw intake into a structured case. Write in English for the pastor. Use the labels SITUATION, PEOPLE, LOCATION, FAMILY LANGUAGE, URGENCY, MISSING FACTS (exactly 3). Facts only.")
         (d / "prompts" / "note.txt").write_text("Task: write a short note in {{lang_name}} from {{vetted_points}}")
         (d / "sources" / "facts.json").write_text(json.dumps({"items": [{"t": "Visiting hours", "es": "Hay visitas."}]}))
         (d / "stages.json").write_text(json.dumps([
-            json.loads((self.src / "stages.json").read_text())[0],
+            {**json.loads((self.src / "stages.json").read_text())[0],
+             "checks": [c for c in json.loads((self.src / "stages.json").read_text())[0]["checks"] if c["name"] != "no_agency_names"]},
             {"id": "note", "title": "2. Note", "audience": "family", "prompt": "prompts/note.txt",
              "input": {"from": "context"}, "deps": ["triage"],
              "sources": [{"name": "facts", "file": "facts.json", "var": "vetted_points",

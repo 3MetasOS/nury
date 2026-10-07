@@ -7,3 +7,4 @@ FAMILY LANGUAGE: (es or en)
 URGENCY: (high/medium/low) — one-line reason
 MISSING FACTS: exactly 3 numbered facts to ask the family
 Facts only. No advice. No prediction. Do not add facts the pastor did not give.
+Do not name any government agency and do not use agency acronyms, even if the pastor did. Say "immigration officers" instead. This applies to every line, including MISSING FACTS. Do not write examples that name an agency.
