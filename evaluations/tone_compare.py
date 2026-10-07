@@ -35,20 +35,21 @@ def cell(r):
 
 
 def main():
-    before, after = load(HERE / "results/before_tone_fix"), load(HERE / "results")
+    before, after, mid = load(HERE / "results/before_tone_fix"), load(HERE / "results"), load(HERE / "results/before_final")
     L = ["# Tone before and after the scoped fix", "",
          "Same scenarios, same Jev question and thresholds (target 4 of 5, fail below 3), same privacy and judges. Only the core changed: pastoral prompt, `no_unauthorized_promises` check, names-proposer stopwords.", "",
          f"Before: core `{before.get('detention_core')}`. After: core `{after.get('detention_core') if after.get('detention_core') != before.get('detention_core') else '(not yet re-run)'}`.", "",
          "Promise phrases = an eval-side scan (not the core's check) for sentences that promise a church action in the pastoral message or checklist, such as 'Estamos buscando un abogado' or 'Les mandamos más información'. Advisory.", "",
-         "| Scenario | Tone before | Promise phrases before | Tone after | Promise phrases after |", "|---|---|---|---|---|"]
+         "| Scenario | Tone, first scored build | Promise phrases | Tone, previous build (before_final) | Promise phrases | Tone, FINAL build | Promise phrases |", "|---|---|---|---|---|---|---|"]
     for pb, n in SCEN:
         rb, ra = before.get(pb, {}).get(n), (after.get(pb, {}).get(n) if after.get(pb + "_core") != before.get(pb + "_core") else None)
-        b, a = cell(rb), cell(ra)
-        L.append(f"| {pb} {n:02d} {(rb or {}).get('id','')} | {b[0]} | {b[1]} {('(' + b[2] + ')') if b[2] else ''} | {a[0]} | {a[1]} {('(' + a[2] + ')') if a[2] else ''} |")
-    L += ["", "## Whole sets", "", "| Set | Before (pass / review / fail) | After |", "|---|---|---|"]
+        b, a, m = cell(rb), cell(ra), cell(mid.get(pb, {}).get(n))
+        L.append(f"| {pb} {n:02d} {(rb or {}).get('id','')} | {b[0]} | {b[1]} | {m[0]} | {m[1]} | {a[0]} | {a[1]} {('(' + a[2] + ')') if a[2] else ''} |")
+    L += ["", "## Whole sets", "", "| Set | First scored build (pass / review / fail) | Previous build | Final build |", "|---|---|---|---|"]
     for pb in ("detention", "hospital"):
         b = before.get(pb + "_agg"); aft = after.get(pb + "_agg") if after.get(pb + "_core") != before.get(pb + "_core") else None
-        L.append(f"| {pb} | {b['pass']} / {b['review']} / {b['fail']} | {'(pending)' if not aft else str(aft['pass']) + ' / ' + str(aft['review']) + ' / ' + str(aft['fail'])} |")
+        mm = mid.get(pb + "_agg")
+        L.append(f"| {pb} | {b['pass']} / {b['review']} / {b['fail']} | {(str(mm['pass']) + ' / ' + str(mm['review']) + ' / ' + str(mm['fail'])) if mm else 'n/a'} | {'(pending)' if not aft else str(aft['pass']) + ' / ' + str(aft['review']) + ' / ' + str(aft['fail'])} |")
     L += ["", "Reading note: the tone score is one Jev question on one message. A better score is not proof that the message is true or safe. The review canvas group 'warm_plain_human_below_3' lets a person read the messages."]
     (HERE / "results/tone_before_after.md").write_text("\n".join(L) + "\n")
     print("\n".join(L[:20]))

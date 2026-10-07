@@ -66,7 +66,7 @@ def build_input(traj, sc, pb, pbm, guardrails, texts=None):
     labels = set(pb.draft_label.values())
     stages = []
     for s in traj["stages"]:
-        t = (texts or {}).get(s["name"], s.get("shown_text"))
+        t = (texts or {}).get(s["name"], s.get("own_text") or s.get("shown_text"))
         if not t:
             continue
         lines = t.split("\n")

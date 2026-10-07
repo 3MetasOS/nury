@@ -89,7 +89,7 @@ def _stage_texts(traj):
     """(stage number, final text) for every stage that produced shown output."""
     out = []
     for s in traj.get("stages", []):
-        t = s.get("shown_text")
+        t = s.get("own_text") or s.get("shown_text")
         if t:
             out.append((s["n"], t))
     return out
@@ -227,7 +227,7 @@ def stock_ai_phrases(traj, sc):
     for st in traj.get("stages", []):
         if st["name"] not in ("pastoral", "checklist") or not st.get("shown_text"):
             continue
-        low = st["shown_text"].lower()
+        low = (st.get("own_text") or st["shown_text"]).lower()
         hits += [f"{st['name']}: {p!r}" for lang in STOCK_PHRASES.values() for p in lang if p in low]
     return _res("stock_ai_phrases", not hits, hits, advisory=True)
 
@@ -246,7 +246,7 @@ def unauthorized_promise_scan(traj, sc):
     for st in traj.get("stages", []):
         if st["name"] not in ("pastoral", "checklist") or not st.get("shown_text"):
             continue
-        low = st["shown_text"].lower()
+        low = (st.get("own_text") or st["shown_text"]).lower()
         hits += [f"{st['name']}: {p!r}" for lang in PROMISE_PHRASES.values() for p in lang if p in low]
     return _res("unauthorized_promise_scan", not hits, hits, advisory=True)
 

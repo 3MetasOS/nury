@@ -136,7 +136,7 @@ def trajectory_state(traj, sc):
                          for i, a in enumerate(s.get("attempts", []))],
             "retries": s.get("retries"), "escalated": s.get("escalated"),
             "source_lookups": s.get("source_lookups"),
-            "shown_to_pastor": s.get("shown_text"), "gate": s.get("gate"),
+            "shown_to_pastor": s.get("own_text") or s.get("shown_text"), "gate": s.get("gate"),
         } for s in traj.get("stages", [])],
     }
     txt = json.dumps(st, ensure_ascii=False)

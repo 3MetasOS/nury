@@ -6,6 +6,61 @@ from pathlib import Path
 CATS = ["safety", "language", "role", "workflow", "adversarial", "network", "privacy"]
 
 
+def gate_lines(runs, jev_used):
+    """Run-time Jev gate and Scripture, counted from the stored trajectories. Empty when the run did not carry the fields."""
+    stages = [st for r in runs for st in (r.get("trajectory") or {}).get("stages", [])]
+    if not any("jev_calls" in st for st in stages):
+        return []
+    calls = sum(st.get("jev_calls", 0) for st in stages)
+    ms = sum(st.get("jev_ms", 0) for st in stages)
+    rejects, esc = {}, []
+    regen = 0
+    for r in runs:
+        for st in (r.get("trajectory") or {}).get("stages", []):
+            for a in st.get("attempts", []):
+                cats = [v for v in a.get("violations", []) if str(v).startswith("jev_")]
+                if cats:
+                    regen += 1
+                    for v in cats:
+                        q = str(v).split(":")[0]
+                        rejects[q] = rejects.get(q, 0) + 1
+            if st.get("escalated") and any(str(v).startswith("jev_") for a in st.get("attempts", [])[-1:] for v in a.get("violations", [])):
+                esc.append(f"{r.get('id')} stage {st.get('n')}")
+    prov = {}
+    for r in runs:
+        for e in (r.get("trajectory") or {}).get("scripture", []):
+            prov[e.get("provider")] = prov.get(e.get("provider"), 0) + 1
+    fb = sum(len((r.get("trajectory") or {}).get("scripture_fallbacks", [])) for r in runs)
+    out = [f"Run-time Jev gate: {calls} Jev calls, {round(ms / 1000, 1)} s of Jev time in all. Drafts rejected by a Jev question: {regen}"
+           + (f" ({', '.join(f'{q} {n}' for q, n in sorted(rejects.items()))})" if rejects else "") + ". "
+           + ("Escalations caused by a Jev question: " + ", ".join(esc) + "." if esc else "No escalation was caused by a Jev question."),
+           "Scripture: " + (", ".join(f"{n} from {p}" for p, n in sorted(prov.items(), key=lambda x: str(x[0]))) if prov else "no verse block recorded")
+           + f". Provider fallbacks logged: {fb}.",
+           "Independence: the Jev judges that score a run are no longer independent of the run-time gate, because Jev also classifies each draft while it is written. "
+           "The deterministic judges, the red team of three other makers and human review stay independent of it."]
+    tbl = {}
+    for st in stages:
+        for g in st.get("jev_gate", []):
+            q = g.get("question")
+            if not q or q == "*":
+                continue
+            e = tbl.setdefault(q, {"pass": 0, "uncertain": 0, "reject": 0, "unavailable": 0, "p": []})
+            e[g.get("decision") if g.get("decision") in e else "unavailable"] += 1
+            if isinstance(g.get("probability"), (int, float)):
+                e["p"].append(g["probability"])
+    rows = []
+    if tbl:
+        rows = ["", "Jev gate decisions by question (every draft checked, including regenerations):", "",
+                "| Question | pass | uncertain | reject | unavailable | probability range |", "|---|---|---|---|---|---|"]
+        for q, e in sorted(tbl.items()):
+            pr = f"{min(e['p']):.2f} to {max(e['p']):.2f}" if e["p"] else "n/a"
+            rows.append(f"| `{q}` | {e['pass']} | {e['uncertain']} | {e['reject']} | {e['unavailable']} | {pr} |")
+        rows.append("")
+    note = Path(__file__).parent / "scorecard_final_note.md"
+    extra = ["- " + l for l in note.read_text(encoding="utf-8").splitlines() if l.strip()] if note.is_file() else []
+    return ["- " + x for x in out] + extra + rows + [""]
+
+
 def build(runs_path, out_dir):
     d = json.loads(Path(runs_path).read_text())
     runs = d["runs"]
@@ -70,6 +125,7 @@ def build(runs_path, out_dir):
                      + f". Repo head at start `{c['start']['repo_head']}`.") if c else "Core commit: not recorded.")(d.get("core")),
          (f"Privacy layer: {'on' if d.get('privacy') else 'off'} (names, phones, emails, addresses, dates and ID numbers are replaced by tokens before anything reaches the model)." if d.get("privacy") is not None else "Privacy layer: not recorded."),
          (f"Model: `{d['pricing']['model']}`. Price: ${d['pricing']['usd_per_1m_in']} per 1M input tokens, ${d['pricing']['usd_per_1m_out']} per 1M output tokens (Gloo /platform/v2/models). Cache pricing not used." if d.get("pricing") and d["pricing"].get("usd_per_1m_in") else "Model and price: not recorded."), "",
+         *gate_lines(runs, d.get("jev_used")),
          "## Summary", "",
          f"- Scenarios run: {agg['scenarios']}. Passed by the judges: {agg['judge_pass']}. Passed after human review: {agg['human_pass']}. "
          f"Failed: {agg['fail_by_judges'] + agg['fail_by_human']} ({agg['fail_by_judges']} by judges, {agg['fail_by_human']} by human review). "
@@ -77,7 +133,7 @@ def build(runs_path, out_dir):
          (f"- Passed in total after review: {agg['judge_pass'] + agg['human_pass']} of {agg['scenarios']}." if agg['awaiting_human_review'] == 0 else "- No total is quoted until every review item is decided."),
          f"- Corrections per run (mean): {agg['mean_corrections']}. Retries: {agg['total_retries']}. Escalations: {agg['escalations']}.",
          f"- Latency per run (mean): {agg['mean_latency_s']} s. Tokens: {agg['tokens_in']} in / {agg['tokens_out']} out. Cost: {('$%s total, $%s per run' % (agg['total_cost_usd'], agg['mean_cost_usd'])) if agg['total_cost_usd'] is not None else 'not measured (token rates not set)'}.", "",
-         *(["## Red-team panel", "",
+         *(["## Red-team panel (pre-release audit on build 00fe7b1, not re-run on the final build)", "",
             f"- Reviewers (not Claude, same Gloo endpoint): {', '.join('`'+m+'`' for m in rt['reviewers'])}. Prompt `{rt['version']}`. Prices per 1M tokens in/out: " + "; ".join(f"{m.split('gloo-')[1]} ${p['in']}/${p['out']}" for m, p in rt.get('prices_usd_per_1m', {}).items()) + f". Cost of this panel run: ${rt.get('total_cost_usd')}.",
             f"- Scenarios with a corroborated finding (two reviewers quoted the same sentence): {sum(1 for x in rt['results'] if x['corroborated'])} of {len(rt['results'])}. Sent to the human canvas: {sum(1 for x in rt['results'] if x['needs_human'])}.",
             "- All reviewers are advisory (see `validation/PANEL_VALIDATION.md`): they catch injected problems but also flag safe text. Panel findings never change a scenario's result. Corroborated ones are in the review canvas group `red_team_corroborated` and summarized in `results/panel_digest.md`. Unanimous none would be extra evidence, not a pass.", ""] if rt else []),
@@ -120,7 +176,7 @@ def build(runs_path, out_dir):
     fl = Path(__file__).parent / "FAILURE_LOG.md"
     if fl.exists():
         L.append(fl.read_text())
-    L += ["", "Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules."]
+    L += ["", "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."]
     (out / "scorecard.md").write_text("\n".join(L) + "\n")
 
 

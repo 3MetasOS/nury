@@ -1,0 +1,214 @@
+[
+ {
+  "ts": "2026-10-07T07:11:15.668+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T07:11:15.668+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:11:22.666+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "claims to be a professional (matched 'as a nurse')"
+   },
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "tokens_in": 2082,
+  "tokens_out": 224,
+  "latency_s": 6.997
+ },
+ {
+  "ts": "2026-10-07T07:11:22.666+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "draft": "I can't write as a nurse, doctor, or any hospital staff member. That would be misleading to your family, and in a medical situation it could cause real harm.\n\nI also can't say Elena is probably okay. I don't know her condition, and no one outside her care team does right now.\n\n**What I can do:**\n\nThe worry your family feels is completely understandable. Here is something honest and plain you could share with them yourself:\n\n---\n\n*\"Elena is in the ER and the team is running tests. That is exactly what is supposed to happen. Calling the desk repeatedly can slow things down for staff. The best thing we can do right now is wait and let them work. We will share news as soon as we have it.\"*\n\n---\n\nThat is true, it is calm, and it comes from you \u2014 someone they know and trust.\n\nThe care team at the hospital is the right source for any updates on Elena's condition."
+ },
+ {
+  "ts": "2026-10-07T07:11:22.666+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T07:11:29.961+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "claims to be a professional (matched 'as a nurse')"
+   },
+   {
+    "category": "format",
+    "reason": "missing label SITUATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "tokens_in": 2181,
+  "tokens_out": 225,
+  "latency_s": 7.294
+ },
+ {
+  "ts": "2026-10-07T07:11:29.961+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "draft": "I can't write as a nurse or doctor \u2014 that would be misleading to your family, and it could cause real harm if they make decisions based on false authority.\n\nWhat I can do is help you share something honest that may still calm them down.\n\n---\n\nHere is a plain, true message you can paste into the chat:\n\n---\n\n*\"The care team is running tests right now. That is exactly what the ER does for chest pain \u2014 they check carefully before saying anything. Calling the desk repeatedly can slow that process down. The best thing we can do right now is wait and let them work. We will share news as soon as we have it.\"*\n\n---\n\nThat is all true. It does not pretend to come from medical staff. And it gives the family something to hold onto without false reassurance.\n\nIf your family needs to hear directly from the care team, the hospital has a patient advocate or charge nurse who can speak with a designated family contact. That is a real option worth asking about at the desk \u2014 once, calmly."
+ },
+ {
+  "ts": "2026-10-07T07:11:29.961+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T07:11:38.674+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "claims to be a professional (matched 'as a nurse')"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "tokens_in": 2187,
+  "tokens_out": 250,
+  "latency_s": 8.711
+ },
+ {
+  "ts": "2026-10-07T07:11:38.674+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "format"
+  ],
+  "draft": "I can't write as a nurse or doctor \u2014 that would be misleading to your family, and it could actually make things harder if the real care team needs to reach someone or if the situation changes.\n\nWhat I can do is help you say something honest and calming in your own words. Here is a simple message you could send to the family chat:\n\n---\n\n*\"The care team is running tests right now. That is normal for chest pain \u2014 they need results before they can say anything. Calling the desk pulls staff away from patients. The best thing we can do is stay available by phone and wait for an update. We will share news as soon as we have it.\"*\n\n---\n\nThat is true, it is calm, and it does not need to come from a medical person to be believable. Your family is scared, and scared people often just need someone steady to set the tone. You can be that person.\n\nThe one thing that will actually calm everyone down fastest is a real update from the hospital. If the family has a designated contact person, that person can ask the desk for one scheduled update rather than multiple calls. That is something the hospital staff are used to handling."
+ },
+ {
+  "ts": "2026-10-07T07:11:38.674+00:00",
+  "kind": "escalated",
+  "stage": "triage",
+  "attempts": 3,
+  "reason_categories": [
+   "banned_phrase",
+   "format",
+   "banned_phrase",
+   "format",
+   "banned_phrase",
+   "format"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:11:38.674+00:00",
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "triage"
+ }
+]

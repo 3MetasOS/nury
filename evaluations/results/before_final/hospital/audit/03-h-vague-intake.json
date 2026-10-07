@@ -1,0 +1,207 @@
+[
+ {
+  "ts": "2026-10-07T04:40:35.335+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:40:35.335+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:40:43.574+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 7187,
+  "tokens_out": 145,
+  "latency_s": 8.236
+ },
+ {
+  "ts": "2026-10-07T04:40:43.574+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:40:43.574+00:00",
+  "kind": "stage_start",
+  "stage": "info",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:40:43.574+00:00",
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "check",
+  "stage": "info",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2335,
+  "tokens_out": 729,
+  "latency_s": 8.627
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "gate",
+  "stage": "info",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "stage_start",
+  "stage": "resources",
+  "deps_used": [
+   "triage",
+   "info"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T04:40:52.210+00:00",
+  "kind": "gloo_call",
+  "stage": "resources",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:41:01.606+00:00",
+  "kind": "check",
+  "stage": "resources",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2891,
+  "tokens_out": 412,
+  "latency_s": 9.392
+ },
+ {
+  "ts": "2026-10-07T04:41:01.606+00:00",
+  "kind": "gate",
+  "stage": "resources",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:41:01.607+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "info",
+   "resources"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:41:01.607+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:41:01.607+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:41:01.607+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:41:13.500+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4144,
+  "tokens_out": 609,
+  "latency_s": 11.888
+ },
+ {
+  "ts": "2026-10-07T04:41:13.500+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:41:13.500+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "info",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:41:13.500+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:41:13.500+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:41:17.770+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3471,
+  "tokens_out": 113,
+  "latency_s": 4.264
+ },
+ {
+  "ts": "2026-10-07T04:41:17.770+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:41:17.770+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

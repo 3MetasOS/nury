@@ -65,6 +65,24 @@ def panel_items(playbook, runs_path):
     return out
 
 
+GARBLED = {"language-mismatch"}   # the pastoral line with a name where "me" belongs (scenario 10), read first
+
+
+def candidate_scenarios():
+    """Scenario ids the panel digest lists as candidates (possible real problems). Parsed from results/panel_digest.md."""
+    f = HERE / "results/panel_digest.md"
+    ids, on = set(), False
+    if f.exists():
+        for line in f.read_text(encoding="utf-8").splitlines():
+            if line.startswith("## "):
+                on = line.startswith("## Candidates")
+            elif on and line.startswith("|") and not line.startswith("|---") and not line.startswith("| Set"):
+                cells = [c.strip() for c in line.strip("|").split("|")]
+                if len(cells) >= 3:
+                    ids.update(x.strip() for x in cells[2].split(","))
+    return ids
+
+
 def main():
     ap = argparse.ArgumentParser()
     aid = os.environ.get("AIM_AGENT_ID", "")
@@ -74,8 +92,19 @@ def main():
     if a.out is None:
         name = "interim-review.html" if a.interim else "review.html"
         a.out = str(Path.home() / ".aimaestro/agents" / aid / "canvas" / name) if aid else name
-    items = (items_for("detention", HERE / "results/runs.json") + panel_items("detention", HERE / "results/runs.json") +
-             items_for("hospital", HERE / "results/hospital/runs.json") + panel_items("hospital", HERE / "results/hospital/runs.json"))
+    BF = HERE / "results/before_final"       # the panel's evidence belongs to the build it reviewed (00fe7b1), so its texts come from there
+    items = (items_for("detention", HERE / "results/runs.json") + items_for("hospital", HERE / "results/hospital/runs.json") +
+             items_for("attacker", HERE / "results/attacker/runs.json") +
+             panel_items("detention", BF / "runs.json" if (BF / "runs.json").exists() else HERE / "results/runs.json") +
+             panel_items("hospital", BF / "hospital/runs.json" if (BF / "hospital/runs.json").exists() else HERE / "results/hospital/runs.json"))
+    cand = candidate_scenarios()
+    for it in items:
+        if it["question"] == "red_team_corroborated":
+            it["question_text"] = "PRE-RELEASE AUDIT on build 00fe7b1 (not re-run on the final build). " + it["question_text"]
+            it["priority"] = 0 if it["scenario"] in GARBLED else (1 if it["scenario"] in cand else 2)
+        else:
+            it["priority"] = 3
+    items.sort(key=lambda i: (i["priority"], i["playbook"], i["number"]))
     # intake text lives in the scenario files, not the trajectory
     import yaml
     intakes = {}
@@ -145,7 +174,8 @@ function render(){
   count.textContent=`${rows.length} shown, ${D.items.filter(i=>state[i.key]).length} of ${D.items.length} decided`;
   list.innerHTML=rows.length?'':'<div class="empty">Nothing matches.</div>';
   const groups={};rows.forEach(i=>(groups[i.question]=groups[i.question]||[]).push(i));
-  Object.entries(groups).sort().forEach(([q,items])=>{
+  const rank=q=>q==='red_team_corroborated'?0:(q==='warm_plain_human_below_3'?1:2);
+  Object.entries(groups).sort((a,b)=>rank(a[0])-rank(b[0])||a[0].localeCompare(b[0])).forEach(([q,items])=>{
     const g=document.createElement('section');g.className='grp';
     const open=items.filter(i=>!state[i.key]);
     const kind=items[0].kind;

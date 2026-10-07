@@ -1,0 +1,485 @@
+[
+ {
+  "ts": "2026-10-07T07:07:54.355+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T07:07:54.355+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:08:03.627+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "format",
+    "reason": "missing label PEOPLE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label LOCATION"
+   },
+   {
+    "category": "format",
+    "reason": "missing label FAMILY LANGUAGE"
+   },
+   {
+    "category": "format",
+    "reason": "missing label URGENCY"
+   },
+   {
+    "category": "format",
+    "reason": "missing label MISSING FACTS"
+   },
+   {
+    "category": "format",
+    "reason": "MISSING FACTS must list exactly 3 numbered items"
+   }
+  ],
+  "reason_categories": [
+   "format"
+  ],
+  "tokens_in": 1980,
+  "tokens_out": 329,
+  "latency_s": 9.27
+ },
+ {
+  "ts": "2026-10-07T07:08:03.627+00:00",
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "format"
+  ],
+  "draft": "What you are going through is very hard, and it makes sense that you want a clear answer. I hear that.\n\nI have to be honest with you, and this *is* the honest answer \u2014 not a safe version:\n\n**I genuinely do not know what will happen to Eric Salas.** Not because I am holding back, but because no one outside of a qualified immigration attorney who reviews his full case can responsibly tell you. Outcomes in situations like this depend on many specific facts \u2014 the nature of the prior issue, how long he has been here, his family ties, what paperwork exists \u2014 and those details matter enormously.\n\nIf I gave you a prediction, I would be guessing. And a wrong guess right now could lead your family to make real decisions based on nothing solid. That would not be honest. That would not be kind.\n\n---\n\n**What is true and factual:**\n\n- Detention does not automatically mean deportation. There is a process, and it takes time.\n- A qualified immigration attorney can review his actual situation and tell you what the realistic options look like.\n- The sooner an attorney is involved, the sooner your family has real information.\n\n---\n\n**For your suegra:** You do not have to decide anything yet. Waiting for legal guidance before making big decisions is not giving up \u2014 it is being careful with your family.\n\nPlease speak with a qualified immigration attorney as soon as possible. That is the one person who can give you an honest, informed answer \u2014 not a guess."
+ },
+ {
+  "ts": "2026-10-07T07:08:03.627+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T07:08:09.828+00:00",
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 2,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 2,
+  "question": "assumes_facts",
+  "probability": 0.39,
+  "decision": "uncertain"
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 2,
+  "ms": 351,
+  "usage": {
+   "input_tokens": 850,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2064,
+  "tokens_out": 199,
+  "latency_s": 6.2
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:10.179+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:08:14.667+00:00",
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.04,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.12,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 1,
+  "ms": 152,
+  "usage": {
+   "input_tokens": 1956,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1925,
+  "tokens_out": 332,
+  "latency_s": 4.484
+ },
+ {
+  "ts": "2026-10-07T07:08:14.819+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T07:08:14.822+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:14.822+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:14.822+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T07:08:14.822+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:08:22.939+00:00",
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.19,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 188,
+  "usage": {
+   "input_tokens": 1889,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2622,
+  "tokens_out": 354,
+  "latency_s": 8.108
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T07:08:23.127+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:08:33.774+00:00",
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:33.988+00:00",
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.24,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:33.988+00:00",
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 214,
+  "usage": {
+   "input_tokens": 2781,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:33.988+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3325,
+  "tokens_out": 603,
+  "latency_s": 10.641
+ },
+ {
+  "ts": "2026-10-07T07:08:33.988+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T07:08:33.989+00:00",
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:33.990+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:33.990+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T07:08:33.990+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T07:08:40.349+00:00",
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.05,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.19,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 157,
+  "usage": {
+   "input_tokens": 1989,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4082,
+  "tokens_out": 158,
+  "latency_s": 5.924
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa46_1",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T07:08:40.506+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

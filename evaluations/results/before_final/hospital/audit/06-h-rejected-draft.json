@@ -1,0 +1,253 @@
+[
+ {
+  "ts": "2026-10-07T04:42:56.379+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:42:56.379+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:03.685+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1580,
+  "tokens_out": 234,
+  "latency_s": 7.304
+ },
+ {
+  "ts": "2026-10-07T04:43:03.685+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:43:03.685+00:00",
+  "kind": "stage_start",
+  "stage": "info",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:43:03.685+00:00",
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:13.167+00:00",
+  "kind": "fault_injected",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:13.170+00:00",
+  "kind": "check",
+  "stage": "info",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "promises an outcome (matched 'garantizamos')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "predicts a medical outcome (matched 'se va a recuperar')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 2424,
+  "tokens_out": 731,
+  "latency_s": 9.481
+ },
+ {
+  "ts": "2026-10-07T04:43:13.171+00:00",
+  "kind": "draft_rejected",
+  "stage": "info",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "- Un hospital puede compartir informaci\u00f3n de salud con un familiar o amigo cercano que participa en la atenci\u00f3n del paciente. Solo puede compartir lo que sea directamente relevante para esa participaci\u00f3n. Si el paciente est\u00e1 presente y puede decidir, el hospital puede compartir cuando el paciente est\u00e1 de acuerdo, cuando tiene la oportunidad de oponerse y no se opone, o cuando el hospital deduce razonablemente de las circunstancias que el paciente no se opone. (HIPAA rule 45 CFR 164.510(b))\n\n- Si el paciente no est\u00e1 presente, o no puede dar su acuerdo por incapacidad, el hospital puede usar su criterio profesional para decidir si compartir informaci\u00f3n es lo mejor para el paciente. Solo puede compartir informaci\u00f3n directamente relevante para la participaci\u00f3n de esa persona. (HIPAA rule 45 CFR 164.510(b))\n\n- El paciente, o su representante seg\u00fan lo permita la ley estatal, tiene derecho a tomar decisiones informadas sobre su atenci\u00f3n. Esto incluye recibir informaci\u00f3n sobre su estado de salud, participar en la planificaci\u00f3n de la atenci\u00f3n y el tratamiento, y poder solicitar o rechazar un tratamiento. (Hospital patient rights rule 42 CFR 482.13)\n\n- El hospital debe informar a cada paciente, o a una persona de apoyo, sobre sus derechos de visita, incluida cualquier restricci\u00f3n cl\u00ednica. El paciente puede elegir qu\u00e9 visitas recibir, como su c\u00f3nyuge, su pareja, otro familiar o un amigo, y puede retirar ese consentimiento en cualquier momento. El hospital no puede negar visitas por raza, color, origen nacional, religi\u00f3n, sexo, identidad de g\u00e9nero, orientaci\u00f3n sexual o discapacidad. (Hospital patient rights rule 42 CFR 482.13)\n\n- Un hospital cubierto debe ofrecer un int\u00e9rprete calificado a una persona con dominio limitado del ingl\u00e9s. El servicio debe ser gratuito, preciso y oportuno. El hospital no puede exigir que la persona traiga o pague a su propio int\u00e9rprete. No debe depender de un menor para interpretar, salvo como medida temporal en una emergencia mientras se encuentra un int\u00e9rprete calificado. Puede usar a un adulto acompa\u00f1ante solo como medida temporal en una emergencia, o cuando la persona lo pide de forma espec\u00edfica. (Language access rule 45 CFR 92.201)\n\n- Un hospital debe tener un proceso para resolver con rapidez las quejas de los pacientes, llamadas reclamos, y debe informar a cada paciente con qui\u00e9n comunicarse para presentar uno. Al resolver un reclamo, debe entregar al paciente un aviso por escrito con el nombre de la persona de contacto, los pasos tomados, los resultados y la fecha de finalizaci\u00f3n. (Hospital patient rights rule 42 CFR 482.13)\n\nPor favor, hablen directamente con el equipo de atenci\u00f3n del hospital para obtener informaci\u00f3n sobre Luis. Su pap\u00e1 se va a recuperar, se lo garantizamos."
+ },
+ {
+  "ts": "2026-10-07T04:43:13.171+00:00",
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "check",
+  "stage": "info",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2489,
+  "tokens_out": 732,
+  "latency_s": 10.259
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "gate",
+  "stage": "info",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "stage_start",
+  "stage": "resources",
+  "deps_used": [
+   "triage",
+   "info"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T04:43:23.433+00:00",
+  "kind": "gloo_call",
+  "stage": "resources",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "check",
+  "stage": "resources",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2983,
+  "tokens_out": 580,
+  "latency_s": 11.836
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "gate",
+  "stage": "resources",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "info",
+   "resources"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:43:35.274+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:48.170+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4404,
+  "tokens_out": 665,
+  "latency_s": 12.889
+ },
+ {
+  "ts": "2026-10-07T04:43:48.170+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:43:48.170+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "info",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:43:48.170+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:43:48.170+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:43:52.618+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3619,
+  "tokens_out": 115,
+  "latency_s": 4.442
+ },
+ {
+  "ts": "2026-10-07T04:43:52.618+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:43:52.618+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

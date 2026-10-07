@@ -47,4 +47,4 @@ Hand-maintained in `evaluations/FAILURE_LOG.md`. Add a row per failure after eac
 | Floor bug found while checking the case-file sample (hack-jedi) | The link allowlist only checked text starting with http or www. A made-up bare site such as "detentionlocator.org" passed every check, and the live checklist already writes vetted sites bare ("immigrationadvocates.org"), so an invented site could have reached the pastor. No scenario had caught it. | `guardrails.url_reasons` now also checks bare domains (org, com, gov, net, edu, info, us, mx) against the vetted list; emails, file names and numbers do not trigger it. Tests added; live re-check of detention 01, 18, 20 and hospital h01, all five stages. Re-run the scored sets on this commit. |
 
 
-Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.
+The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.

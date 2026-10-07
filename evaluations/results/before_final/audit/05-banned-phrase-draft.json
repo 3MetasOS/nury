@@ -1,0 +1,260 @@
+[
+ {
+  "ts": "2026-10-07T04:48:20.697+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:48:20.697+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:26.204+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1462,
+  "tokens_out": 219,
+  "latency_s": 5.504
+ },
+ {
+  "ts": "2026-10-07T04:48:26.205+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:48:26.205+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:48:26.205+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:30.493+00:00",
+  "kind": "fault_injected",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:30.495+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'you will win')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'your case will')"
+   },
+   {
+    "category": "language",
+    "reason": "English mixed into Spanish (5 words, e.g. be, will, you, your)"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "tokens_in": 1946,
+  "tokens_out": 323,
+  "latency_s": 4.286
+ },
+ {
+  "ts": "2026-10-07T04:48:30.495+00:00",
+  "kind": "draft_rejected",
+  "stage": "rights",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "draft": "- Tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a menos que los agentes muestren una orden firmada por un juez con su nombre y direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar a su derecho a una audiencia. (ACLU Know Your Rights)\n- Tiene derecho a hablar con un abogado. Diga claramente que quiere hablar con uno y no responda m\u00e1s preguntas hasta hacerlo. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Puede empeorar mucho su situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de documentos importantes con alguien de confianza. (ACLU Know Your Rights)\n\nPor favor, hable con un abogado de inmigraci\u00f3n calificado lo antes posible para recibir orientaci\u00f3n sobre su situaci\u00f3n espec\u00edfica. Your case will be fine, you will win."
+ },
+ {
+  "ts": "2026-10-07T04:48:30.495+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2032,
+  "tokens_out": 323,
+  "latency_s": 4.588
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T04:48:35.086+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2634,
+  "tokens_out": 404,
+  "latency_s": 8.379
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:48:43.468+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:54.850+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3322,
+  "tokens_out": 636,
+  "latency_s": 11.376
+ },
+ {
+  "ts": "2026-10-07T04:48:54.850+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:48:54.851+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:48:54.851+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:48:54.851+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:48:59.573+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3067,
+  "tokens_out": 139,
+  "latency_s": 4.718
+ },
+ {
+  "ts": "2026-10-07T04:48:59.573+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:48:59.573+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

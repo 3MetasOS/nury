@@ -119,4 +119,4 @@ Hand-maintained in `evaluations/FAILURE_LOG.md`. Add a row per failure after eac
 | Run records | The first record of the core commit was the repo head at the END of the run; other agents' unrelated commits moved it. | run.py now records, at the START and again at the END, the repo head, the last commit that touched code/nury and code/playbooks, and whether they are dirty. The scorecard states whether the core changed during the run. Detention's start values were reconstructed (documented in its record). |
 
 
-Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.
+The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.

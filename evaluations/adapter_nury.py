@@ -56,6 +56,15 @@ def _static_text(pbid):
     return "\n".join(parts)
 
 
+def _own(text):
+    """Nury's own sentences. The verse block is the vetted source, not Nury's words, so judges read the text without it."""
+    try:
+        from nury import scripture
+        return scripture.strip_block(text) if text else text
+    except Exception:
+        return text
+
+
 def _contains(text, term):
     import re
     t = term.strip()
@@ -138,6 +147,10 @@ def _run(sc, t0, pbid, ids, fi, kw):
             "shown_text": r.shown_text, "final_text": r.final, "gate": r.gate,
             "latency_s": m.get("latency_s", 0), "tokens_in": m.get("input_tokens", 0),
             "tokens_out": m.get("output_tokens", 0), "cost_usd": m.get("cost_usd"),
+            "own_text": _own(r.shown_text),   # Nury's own words: the verse block removed (it is Scripture, judged separately)
+            "jev_calls": m.get("jev_calls", 0), "jev_ms": m.get("jev_ms", 0),
+            "jev_gate": [{k: e.get(k) for k in ("attempt", "question", "probability", "decision")} for e in audit.events
+                         if e.get("kind") == "jev_gate" and e.get("stage") == r.stage_id],
         })
         if r.status == "error":
             raise RuntimeError(r.message or "stage error")
@@ -158,4 +171,6 @@ def _run(sc, t0, pbid, ids, fi, kw):
     return {"scenario_id": sc["id"], "stages": stages, "halted": halted, "halt_stage": halt_stage,
             "escalated": escalated, "audit_log": audit.events, "package": pkg,
             "ui_strings": ["Approve", "Edit", "Stop"], "n_stages": len(ids), "playbook": pbid, "privacy": PRIVACY,
+            "scripture": [{k: e.get(k) for k in ("stage", "verse", "provider")} for e in audit.events if e.get("kind") == "scripture"],
+            "scripture_fallbacks": [{k: e.get(k) for k in ("stage", "verse", "provider", "reasons")} for e in audit.events if e.get("kind") == "scripture_fallback"],
             "privacy_checked_values": len(values), "privacy_bodies": len(cap.bodies), "privacy_leaks": leaks, "protected_present": protected_present, "latency_s": round(time.time() - t0, 2)}
