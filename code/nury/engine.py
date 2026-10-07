@@ -4,6 +4,7 @@ There is no send path here. Output goes to the pastor's gate and nowhere else.
 """
 
 import json
+import logging
 import os
 from types import SimpleNamespace
 from dataclasses import dataclass, field, replace
@@ -140,13 +141,41 @@ def _correction_note(violations):
             + "\nWrite a new draft that fixes every reason. Do not mention the rejection. Output only the draft.")
 
 
+def forced_rejections(value, pb):
+    """{stage id: times} from NURY_FORCE_REJECTION (a test and demo hook; unset does nothing).
+    '1' is the old behavior: one rejection at the first stage after triage ('rights' in detention, 'info' in hospital).
+    'rights:2,checklist:1' is stage:times pairs. Times is 1 or 2 (more is cut to 2, 0 is ignored): the third try always
+    passes, so a case is never stopped by the hook. A stage id this playbook does not have is ignored, with a log line."""
+    value = (value or "").strip()
+    if not value or pb is None:
+        return {}
+    if value == "1":
+        return {pb.stages[1].id: 1} if len(pb.stages) > 1 else {}
+    ids = {s.id for s in pb.stages}
+    out = {}
+    for part in value.split(","):
+        stage, _, n = part.strip().partition(":")
+        stage = stage.strip()
+        if stage not in ids:
+            logging.getLogger("nury").warning("NURY_FORCE_REJECTION: stage %r is not in playbook %s, ignored", stage, pb.id)
+            continue
+        try:
+            times = int(n) if n.strip() else 1
+        except ValueError:
+            logging.getLogger("nury").warning("NURY_FORCE_REJECTION: %r is not stage:times, ignored", part.strip())
+            continue
+        if times >= 1:
+            out[stage] = min(times, 2)
+    return out
+
+
 def _fault_for(stage_id, fault_injection, pb=None):
-    """Resolve the fault: explicit arg, else NURY_FORCE_REJECTION=1 (demo: the first stage after triage, once).
-    That is 'rights' in detention and 'info' in hospital: whichever playbook runs."""
+    """Resolve the fault: an explicit argument, else the NURY_FORCE_REJECTION hook (see forced_rejections)."""
     if fault_injection and fault_injection.get("stage") == stage_id:
         return fault_injection
-    if os.environ.get("NURY_FORCE_REJECTION") == "1" and pb is not None and len(pb.stages) > 1 and stage_id == pb.stages[1].id:
-        return {"stage": stage_id, "times": 1, "draft_suffix": UNSAFE_SUFFIX}
+    times = forced_rejections(os.environ.get("NURY_FORCE_REJECTION"), pb).get(stage_id)
+    if times:
+        return {"stage": stage_id, "times": times, "draft_suffix": UNSAFE_SUFFIX}
     return None
 
 
