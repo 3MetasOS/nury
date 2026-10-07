@@ -54,10 +54,16 @@ details.full>summary,details.more>summary{cursor:pointer;min-height:48px;display
 .fp-rec{margin:10px 0 0;color:var(--muted);font:500 .9rem/1.5 var(--sans)}
 .fp-rec .g-fam{display:none}
 .fp-disc{margin:0;color:var(--muted);font-size:.85rem;line-height:1.5;max-width:64ch}
-.fp-actions{display:grid;gap:8px;grid-template-columns:1fr 1fr;margin:18px 0 0}
-.fp-actions .btn{min-height:52px}
+.fp-actions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;margin:18px 0 0}
+.fp-actions .tbtn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;min-height:40px;padding:0 14px;font:600 14px/1 var(--sans);border-radius:10px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);cursor:pointer;width:auto;white-space:nowrap}
+.fp-actions .tbtn.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.fp-actions .tbtn .i{width:18px;height:18px;flex:none}.fp-actions .tbtn .chv{transform:rotate(90deg)}.fp-actions .tbtn .tl{display:block;line-height:18px}
+.bgrp2{display:inline-flex;height:40px;border-radius:10px;outline:1px solid var(--line-2);outline-offset:-1px;background:var(--surface-2)}
+.bgrp2>.tbtn,.bgrp2>.exw>.tbtn{border:0;background:transparent;border-radius:0;height:40px}.bgrp2>.tbtn{border-radius:10px 0 0 10px}.bgrp2>.exw>.tbtn{border-radius:0 10px 10px 0;width:100%}.bgrp2>*+*{border-left:1px solid var(--line-2)}
+.bgrp2 .tbtn:hover{background:var(--amber-soft)}
+@media (max-width:639px){.fp-actions{flex-direction:column;align-items:stretch}.fp-actions>.tbtn{width:100%}.bgrp2{display:flex;width:100%}.bgrp2>*{flex:1 1 0}.bgrp2>.exw{display:flex}.bgrp2>.exw>.tbtn{flex:1}}
 .fp-more{margin-top:28px}
-@media (min-width:640px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.fp-actions{grid-template-columns:repeat(4,1fr)}.keyfacts{grid-template-columns:1fr 1fr}.keyfacts>div:nth-child(2){border-top:0}.keyfacts>div{grid-template-columns:104px minmax(0,1fr)}}
+@media (min-width:640px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}.keyfacts{grid-template-columns:1fr 1fr}.keyfacts>div:nth-child(2){border-top:0}.keyfacts>div{grid-template-columns:104px minmax(0,1fr)}}
 @media (min-width:960px){body.pkgview .top{position:static}}
 /* print: one clean page of the family copy */
 @media print{

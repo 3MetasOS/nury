@@ -487,8 +487,10 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <article id="final" class="final" aria-label="The package for the family">
     <div id="final-head"></div>
     <div class="fp-actions" id="fp-actions">
-      <button class="btn primary" id="b-copyall">Copy all</button>
-      <div class="exw"><button class="btn" id="b-export" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="b-export-menu" aria-label="Export" title="Export"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</button>
+      <button class="btn primary tbtn" id="b-save" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-check"/></svg><span class="tl">Save to case file</span></button>
+      <div class="bgrp2" role="group" aria-label="More actions">
+        <button class="tbtn" id="b-copyall" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg><span class="tl">Copy all</span></button>
+        <div class="exw"><button class="tbtn" id="b-export" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="b-export-menu" aria-label="Export" title="Export"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg><span class="tl">Export</span><svg class="i chv" aria-hidden="true" focusable="false"><use href="/icons.svg#i-chev"/></svg></button>
           <div class="mmenu" id="b-export-menu" role="menu" aria-label="Export" hidden>
             <button type="button" role="menuitem" data-ex="family">Family copy (PDF)</button>
             <button type="button" role="menuitem" data-ex="pastor">Pastor copy (PDF)</button>
@@ -497,7 +499,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
             <button type="button" role="menuitem" data-ex="print-family">Print family copy</button>
             <button type="button" role="menuitem" data-ex="print-pastor">Print pastor copy</button>
           </div></div>
-      <button class="btn" id="b-save">Save to case file</button>
+      </div>
     </div>
     <div id="final-body"></div>
   </article>
@@ -787,12 +789,12 @@ function wireExport(btn,menu,pick){const items=()=>[...menu.querySelectorAll("[r
   items().forEach(b=>b.onclick=e=>{e.stopPropagation();close(false);pick(b.dataset.ex)});
   document.addEventListener("click",e=>{if(!menu.hidden&&!e.target.closest(".exw"))close(false)})}
 /* PDF copies: the server makes them with Chrome or Chromium; without one the print view opens and says so */
-async function downloadPdf(kind,id,which,btn){const old=btn.textContent;btn.disabled=true;btn.textContent="Making the PDF...";
+async function downloadPdf(kind,id,which,btn){const lb=btn.querySelector(".tl")||btn,old=lb.textContent;btn.disabled=true;lb.textContent="Making the PDF...";
   try{const r=await fetch(`/api/${kind}/${encodeURIComponent(id)}/pdf/${which}`);
     if(r.ok){const b=await r.blob();const a=document.createElement("a");a.href=URL.createObjectURL(b);const cd=r.headers.get("Content-Disposition")||"";a.download=(cd.match(/filename="([^"]+)"/)||[])[1]||"nury-copy.pdf";a.style.display="none";document.body.append(a);a.click();setTimeout(()=>{a.remove();URL.revokeObjectURL(a.href)},4000)}
     else{const j=await r.json().catch(()=>({}));toast((j.error||"The PDF could not be made")+".");if(j.print_url)window.open(j.print_url,"_blank","noopener")}}
   catch(e){toast("The PDF could not be made.")}
-  btn.disabled=false;btn.textContent=old}
+  btn.disabled=false;lb.textContent=old}
 /* one confirm dialog for every action that changes a case; focus starts on Cancel, Escape cancels */
 function askConfirm({title,body,ok}){return new Promise(res=>{const d=$("confirm");$("confirm-t").textContent=title;$("confirm-b").textContent=body;$("confirm-ok").textContent=ok;let out=false;
   const fin=v=>{out=v;d.close()};$("confirm-ok").onclick=()=>fin(true);$("confirm-no").onclick=()=>fin(false);
@@ -1013,15 +1015,15 @@ async function poll(){
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
       c.append(h,d1,p,d,b);return c}));
     const whole=NuryFinal.text(s);
-    $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
+    $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").querySelector(".tl").textContent="Copied";setTimeout(()=>$("b-copyall").querySelector(".tl").textContent="Copy all",1500)});
     wireExport($("b-export"),$("b-export-menu"),which=>{if(!sid)return;which==="zip"?(location.href=`/api/session/${encodeURIComponent(sid)}/export`):which.startsWith("print-")?window.open(`/session-print/${encodeURIComponent(sid)}/${which.slice(6)}?print=1`,"_blank","noopener"):downloadPdf("session",sid,which,$("b-export"))});
     $("map-card").classList.toggle("hidden",!s.map_svg);if(s.map_svg)$("map-img").src=svgUrl(s.map_svg);
-    const sv=$("saved"),er=$("save-err"),btn=$("b-save");sv.classList.add("hidden");er.textContent="";er.removeAttribute("role");btn.disabled=false;btn.textContent="Save to case file";
+    const sv=$("saved"),er=$("save-err"),btn=$("b-save");sv.classList.add("hidden");er.textContent="";er.removeAttribute("role");btn.disabled=false;btn.querySelector(".tl").textContent="Save to case file";
     btn.onclick=async()=>{
       btn.disabled=true;er.textContent="";sv.classList.add("hidden");
       let r;try{r=await api(`/api/session/${sid}/save`,{})}catch(e){r={error:"Could not reach the server. Nothing was saved."}}
       if(!r||r.error||!r.id){er.setAttribute("role","alert");er.textContent=(r&&r.error)||"Could not save. Try again.";btn.disabled=false;er.scrollIntoView({block:"center",behavior:"smooth"});return}
-      btn.textContent="Saved";sv.replaceChildren();
+      btn.querySelector(".tl").textContent="Saved";sv.replaceChildren();
       const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`Saved as ${r.id}${vm?` (an updated draft, beside the first draft)`:""}. Nothing was sent to anyone. `));
       const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>{allowLeave=true;go("#/case/"+encodeURIComponent(r.id))};a.onkeydown=e=>{if(e.key==="Enter")a.onclick()};sv.append(a);
       sv.classList.remove("hidden");sv.scrollIntoView({block:"center",behavior:"smooth"})};
