@@ -817,3 +817,5 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Brand: the logo lockup files put the tagline to the right of the lantern; hack-video makes stacked lockups (lantern, name, tagline below) the default.
 
 ## 136. 2026-10-07 03:19 MDT — Juan: remove the Hide notes toggle and hidden note text; notes are always shown.
+
+## 137. 2026-10-07 03:22 MDT — Correction (my error): the tagline belongs in the app header, under the logo. I had told hack-artisans to remove it from the 60 px header to avoid putting it beside the logo; Juan: the header has room, branding is critical. The header grows to 72 to 80 px with the tagline directly under the logo at every width; a bounding-box test enforces it.
