@@ -107,7 +107,7 @@ Every line below is true today and has a source. None quotes a pass rate. Pick w
 1. "Nury is An AI Crisis Response Agent: a pastor types what a family said, and Nury drafts five stages for the pastor to approve, edit or stop. Nothing is sent to the family." (CLAUDE.md; TECH_CLAIMS 3)
 2. "Claude writes, through Gloo AI Studio. Plain-code rules check every draft. Jev, a classifier from TypeSafe, checks it too. A person decides." (TECH_CLAIMS 1, 50)
 3. "Names become tokens before anything leaves the app, so the model sees tokens, not names." (TECH_CLAIMS 16; say "direct identifiers", not "private")
-4. "A draft that fails a check is regenerated, up to three tries. The pastor never sees an unsafe draft." (`engine.py`; CLAUDE.md)
+4. "A draft that fails a check is regenerated, up to three tries. The pastor sees only drafts that passed our checks, and approves every stage." (`engine.py`; CODE_REVIEW L1, L2)
 5. "We tested it on synthetic families only. No real pastor has used Nury yet." (BUILD_LOG; this is the honest line and it helps)
 6. "Built at the Gloo AI Hackathon with a small team of AI agents. Jev is a third-party service from TypeSafe: we use it, we did not build it." (CLAUDE.md disclosure)
 

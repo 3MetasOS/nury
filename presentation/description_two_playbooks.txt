@@ -1,16 +1,16 @@
 Nury. An AI Crisis Response Agent.
 
-Nury is a crisis-management engine that runs playbooks. It runs two playbooks: a family detention and a hospital emergency.
+Nury is a crisis-management engine that runs playbooks. It runs two playbooks: family detention and hospital emergency.
 
-It is 2 AM. A pastor's phone rings. A panicked immigrant family says a relative was detained. There is no lawyer on the line, only a phone.
+It is 2 AM. A pastor's phone rings. A panicked immigrant family says a relative was detained. No lawyer is on the line, only a phone.
 
-Nury turns that call into a complete response package. The pastor types what the family said. Nury runs five stages: triage the case, write a plain-language rights brief, list attorney resources, build a family checklist, and draft a short pastoral message. Family materials come out in Spanish.
+Nury turns that call into a response package. The pastor types what the family said. Nury runs five stages: triage the case, write a plain-language rights brief, list attorney resources, build a family checklist, and draft a short pastoral message. Family materials come out in Spanish.
 
 After every stage, the pastor can Approve, Edit, or Stop. Later stages use the edits. Nury has no send path. Nothing reaches the family except through the pastor.
 
 Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source file. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
 
-Each draft passes our rules and, when Jev is reachable, a Jev classifier. An unsafe draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it.
+Each draft passes our rules and, when Jev is reachable, a Jev classifier. A failing draft is regenerated, up to three tries, then escalated. The pastor sees only drafts that passed, and approves every stage.
 
 Nury runs on Gloo's guarded Responses endpoint. 46 scenarios, judged: 28 pass, 9 fail, 9 undecided.
 
