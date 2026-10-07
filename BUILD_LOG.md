@@ -332,3 +332,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - hack-jedi's "Our network" screen mounted and linked from the selector. Eval side: network scenarios n01–n03, a must_not_echo check, `run.py --scenarios <folder>` so the 18 attacker scenarios run with one command, and the adapter now uses the privacy client. 82 tests pass (verified by hack-sensei).
 - Not verified live: the revision run, network scenarios and the adapter's privacy path. Owed live checks listed in `evaluations/LIVE_CHECKS_OWED.md` (about $6.5 for hack-artisans' share).
 - Honest note: one 16-token probe call at about 21:50 to confirm the 402, before the pause arrived.
+
+## 48. 2026-10-06 21:30 MDT — Credit back; live runs released in a planned order
+
+- Juan added credit in Gloo Studio. hack-sensei's one-line test call returned HTTP 200 ("ready", 869 in / 4 out tokens).
+- Rule: one live job at a time on the key (Gloo rate limits showed up when two runs shared it); each agent reports to hack-sensei when done and hack-sensei releases the next. Order: (A) hack-artisans smoke test; (B) hack-jedi owed live checks; (C) hack-artisans case-file, revision, app end-to-end and network scenarios; (D) fixes; (E) core freeze declared by hack-sensei once B and C pass (target about 01:00); (F) final scored runs with Jev; (G) panel; (H) attacker scenarios; (I) skills before/after; (J) hack-video final capture after F. Every live script logs tokens and dollars per run.
