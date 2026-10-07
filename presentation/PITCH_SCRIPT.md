@@ -11,9 +11,9 @@ Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The de
 | # | Slide (title in the deck) | Act | Time | Length |
 |---|---|---|---|---|
 | 1 | The call | Night | 0:00 to 0:11 | 11 s |
-| 2 | The name | Lantern | 0:11 to 0:21 | 10 s |
-| 3 | One engine | Light | 0:21 to 0:33 | 12 s |
-| 4 | The demo (Eric's film) | Light | 0:33 to 1:07 | 34 s |
+| 2 | The name | Lantern | 0:11 to 0:17 | 6 s |
+| 3 | One engine | Light | 0:17 to 0:29 | 12 s |
+| 4 | The demo (Eric's film) | Light | 0:29 to 1:07 | 38 s |
 | 5 | What the family gets | Light | 1:07 to 1:15 | 8 s |
 | 6 | Built to grow | Light | 1:15 to 1:25 | 10 s |
 | 7 | How it is built | Light | 1:25 to 1:39 | 14 s |
@@ -28,7 +28,7 @@ Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The de
 The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." (29 words, 11 s)
 
 ## 2. The name (lantern)  [90s]
-The slide turns from paper to light. "This is Nury." Pause. The entry builds itself. Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
+The slide turns from paper to light. "This is Nury." Pause. The entry builds itself in about 2 seconds. Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
 
 ## 3. One engine
 "Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." (29 words, 12 s)
