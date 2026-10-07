@@ -93,5 +93,11 @@ A pastor reopens a saved case, records **what happened** (a step, and whether it
 - The case keeps **versions**: `v1` stays untouched; `v2` is saved beside it with a change log (what the pastor reported, which stages were re-run, what changed). The pastor can compare v1 and v2.
 - Revision runs go through the PrivacyClient like every other run.
 
+## Church network and official lists (decided by Juan 2026-10-07)
+Rule change (Juan): "Nury never recommends a specific attorney" becomes "Nury lists only contacts the pastor has vetted, labeled as the church's own, plus official vetted lists. It never endorses anyone."
+- **Church network:** a local directory the pastor keeps (`network/`, gitignored, like `cases/`): name, kind (pro bono immigration lawyer, Medicare/Medicaid helper...), languages, city and state, phone or link, the pastor's note, last-used date. The attorney and resources stages match the case (place, language, need) and list these first under "People our church has worked with". The vetted link and phone allowlist includes them. A small "Our network" screen adds, edits and tags entries.
+- **Official list:** the U.S. Department of Justice list of recognized free legal service providers by state, ingested at build time as a vetted source (Juan approves it on a canvas first). Same pattern for other crises where an official list exists.
+- **No open web at runtime.** A later pastor-triggered "find more" panel (unverified candidates, never in a family message, one-click "add to our network" after the pastor checks them) is after submission. Reason: fake "notario" services target these families; search results can include them.
+
 ## Rules that stay
 Vetted sources only. No open web. No send path. Nury is not a pastor. Humanitarian, never political. Keys from the environment only.

@@ -10,7 +10,7 @@ Specific user: a solo pastor, no staff, no lawyer on the line, taking a panicked
 ## The five stages
 1. Triage: raw intake to structured case (situation, people, location, family language, urgency + reason, 3 missing facts). Factual, no advice.
 2. Rights brief: plain language, family's language, built only from the vetted source file, every point cited, ends urging an attorney.
-3. Attorney resources: national hotlines plus church-vetted local entries. Never recommends a specific attorney.
+3. Attorney resources: national hotlines plus church-vetted local entries. Lists only contacts the pastor has vetted (the church network, labeled as the church's own) and official vetted lists. Never endorses anyone.
 4. Family checklist: DO TONIGHT / DO NOT DO / GATHER THESE DOCUMENTS.
 5. Pastoral message: under 120 words, warm, steady, hopeful, family's language.
 
