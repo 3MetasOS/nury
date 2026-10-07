@@ -14,10 +14,10 @@ export type Tech = {approved?: boolean; tests?: number | string}; // approved = 
 export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits; voice?: Voice};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
-const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
+export const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
 const D = {bg: '#080a0e', text: '#ece7dc', muted: '#a79f8d', amber: '#e8a33d'}; // dark phone interior (lock card)
-const serif = '"Fraunces", Georgia, serif';
-const sans = '"Inter", -apple-system, sans-serif';
+export const serif = '"Fraunces", Georgia, serif';
+export const sans = '"Inter", -apple-system, sans-serif';
 
 // ---- Timeline (seconds). VO lines are the LOCKED text in presentation/SHARED_DEMO.md. ----
 const VO: Record<string, string> = {
@@ -97,9 +97,9 @@ export const useFonts = () => {
   }, [h]);
 };
 
-const PH = 900;
-const ease = Easing.bezier(0.16, 1, 0.3, 1);
-const Fade: React.FC<{dur: number; slow?: boolean; children: React.ReactNode}> = ({dur, slow, children}) => {
+export const PH = 900;
+export const ease = Easing.bezier(0.16, 1, 0.3, 1);
+export const Fade: React.FC<{dur: number; slow?: boolean; children: React.ReactNode}> = ({dur, slow, children}) => {
   const f = useCurrentFrame();
   const a = slow ? 30 : 10, b = slow ? 45 : 10;
   const o = interpolate(f, [0, a, dur * FPS - b, dur * FPS], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
@@ -118,7 +118,7 @@ const Backdrop: React.FC = () => (
 );
 
 // phone-size footage on ink, caption right
-const Clip: React.FC<{s: any; marks: Marks}> = ({s, marks}) => {
+export const Clip: React.FC<{s: any; marks: Marks}> = ({s, marks}) => {
   const a = marks[s.from[0]] + s.from[1], b = marks[s.to[0]] + s.to[1];
   const srcLen = b - a;
   const rate = Math.min(4, Math.max(0.85, srcLen / s.dur));
@@ -144,7 +144,7 @@ const Clip: React.FC<{s: any; marks: Marks}> = ({s, marks}) => {
       </div>
       {s.label && (
         <div style={{position: 'absolute', left: 1000 + 110, top: 0, bottom: 0, width: 600, display: 'grid', alignContent: 'center'}}>
-          <div style={{fontFamily: serif, fontSize: 64, lineHeight: 1.15, color: C.text, textWrap: 'balance' as any,
+          <div style={{fontFamily: serif, fontSize: 64, lineHeight: 1.15, color: C.text, textWrap: 'balance' as any, whiteSpace: 'pre-line',
             opacity: interpolate(f, [8, 30], [0, 1], {extrapolateRight: 'clamp'})}}>{s.label}</div>
         </div>
       )}
@@ -194,13 +194,13 @@ const Intro: React.FC = () => {
 
 // Juan's words, verbatim from presentation/MEMORIAL.md (sections 1 and 4). Never edit, shorten or voice with TTS.
 // memorial.json: {approved: false|true, option: 0..3, portrait: null | "file in public/"}. Nothing shows until Juan approves.
-const MEMORIALS: Record<number, string[]> = {
+export const MEMORIALS: Record<number, string[]> = {
   0: ['Nury is named for my aunt, Nury.', 'For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.', 'She never married.', 'She passed away a month ago.', 'This is for her.'],
   1: ['Nury is named for my aunt, Nury Pelaez.', 'She served her church for 83 years, in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'She passed away a month ago. This is for her.'],
   2: ['In memory of Nury Pelaez, 83.', 'She served her church in the small things and the big ones,', 'always with a smile, always with Jesus in her heart.', 'Nury is named for her.', 'May it be ready to help, the way she always was.'],
   3: ['In memory of Nury Pelaez.', 'Always ready to help. Always with a smile.', 'Always with Jesus in her heart.'],
 };
-const Memorial: React.FC<{m?: Memorial}> = ({m}) => {
+export const Memorial: React.FC<{m?: Memorial}> = ({m}) => {
   const f = useCurrentFrame();
   const lines = MEMORIALS[m?.option ?? 3] ?? MEMORIALS[3];
   const step = Math.max(14, Math.round(130 / lines.length));
@@ -227,17 +227,18 @@ const NODES = [
   {t: 'Checks', s: 'reject and regenerate, up to 3 tries', at: 5.6},
   {t: 'Approval gate', s: 'Approve, Edit or Stop', at: 9.4},
 ];
-const Tech: React.FC<{tests: number | string}> = ({tests}) => {
+export const Tech: React.FC<{tests: number | string; captions?: string[]; times?: number[]; evalAt?: number}> = ({tests, captions, times, evalAt: evalAtProp}) => {
   const f = useCurrentFrame(); const sec = f / FPS;
-  const caps = ['Leak test: canary names and numbers, zero in any request', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
+  const caps = captions ?? ['Leak test: canary names and numbers, zero in any request', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
   const ci = sec < 3.6 ? 0 : sec < 7.2 ? 1 : 2; // each caption about 3.6 s
   const X0 = 145, W = 270, GAP = 70, Y = 250, H = 170;
   const vis = (a: number) => interpolate(sec, [a, a + 0.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const evalAt = 7.6;
+  const evalAt = evalAtProp ?? 7.6;
   return (
     <AbsoluteFill style={{fontFamily: sans}}>
       <div style={{position: 'absolute', left: 150, top: 80, fontFamily: serif, fontSize: 52, color: C.text, opacity: vis(0)}}>How it is built</div>
-      {NODES.map((n, i) => {
+      {NODES.map((n0, i) => {
+        const n = times ? {...n0, at: times[i]} : n0;
         const x = X0 + i * (W + GAP), o = vis(n.at);
         return (
           <React.Fragment key={n.t}>
@@ -290,7 +291,7 @@ const Proof: React.FC<{p: Proof}> = ({p}) => !hasProof(p) ? null : (
   </AbsoluteFill>
 );
 
-const End: React.FC<{credit?: boolean}> = ({credit}) => (
+export const End: React.FC<{credit?: boolean}> = ({credit}) => (
   <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 30}}>
     <Img src={staticFile('logo-mark-paper.svg')} style={{width: 132, height: 132}} />
     <div style={{fontFamily: serif, fontWeight: 600, fontSize: 188, color: C.amber, lineHeight: 1}}>Nury</div>
@@ -302,7 +303,7 @@ const End: React.FC<{credit?: boolean}> = ({credit}) => (
   </AbsoluteFill>
 );
 
-const Caption: React.FC<{text: string; dur: number}> = ({text, dur}) => {
+export const Caption: React.FC<{text: string; dur: number}> = ({text, dur}) => {
   const f = useCurrentFrame();
   const o = interpolate(f, [0, 8, dur - 8, dur], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
