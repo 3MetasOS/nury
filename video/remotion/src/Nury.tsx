@@ -8,8 +8,9 @@ export const FPS = 30;
 export type Marks = Record<string, number>;
 export type Proof = {pass?: number | string; n?: number | string; caught?: number | string; src?: string};
 export type Memorial = {intro?: boolean; approved?: boolean; option?: number; portrait?: string | null};
+export type Credits = {narration?: boolean}; // credits.json; narration false = no credit line (ElevenLabs Starter plan needs none)
 export type Tech = {approved?: boolean; tests?: number | string}; // approved = Juan approved presentation/MEMORIAL.md
-export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech};
+export type Data = {marks: Marks; proof: Proof; confirmed?: Record<string, boolean>; memorial?: Memorial; tech?: Tech; credits?: Credits};
 
 // LIGHT video palette (Juan, Oct 6): warm paper, ink text, deep amber on paper (branding/BRAND.md). App footage stays dark.
 const C = {bg: '#f7f3ea', ink: '#0d1015', amber: '#b8680f', text: '#0d1015', muted: '#5b5547'};
@@ -217,7 +218,7 @@ const NODES = [
 ];
 const Tech: React.FC<{tests: number | string}> = ({tests}) => {
   const f = useCurrentFrame(); const sec = f / FPS;
-  const caps = ['Leak test: canary names and numbers, zero in any request', 'Typed judge, five-scenario check: safe 0.17 to 0.30, unsafe 0.83 to 0.90', `${tests} tests pass, offline`];
+  const caps = ['Leak test: canary names and numbers, zero in any request', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
   const ci = sec < 3.6 ? 0 : sec < 7.2 ? 1 : 2; // each caption about 3.6 s
   const X0 = 145, W = 270, GAP = 70, Y = 250, H = 170;
   const vis = (a: number) => interpolate(sec, [a, a + 0.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
@@ -278,7 +279,7 @@ const Proof: React.FC<{p: Proof}> = ({p}) => !hasProof(p) ? null : (
   </AbsoluteFill>
 );
 
-const End: React.FC = () => (
+const End: React.FC<{credit?: boolean}> = ({credit}) => (
   <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 30}}>
     <Img src={staticFile('logo-mark-paper.svg')} style={{width: 132, height: 132}} />
     <div style={{fontFamily: serif, fontWeight: 600, fontSize: 188, color: C.amber, lineHeight: 1}}>Nury</div>
@@ -286,6 +287,7 @@ const End: React.FC = () => (
     <div style={{fontFamily: sans, fontSize: 30, color: C.muted, maxWidth: 1200, textWrap: 'balance' as any}}>
       Nury is an AI assistant, not a pastor, counselor or lawyer. Legal information only. Not legal advice.
     </div>
+    {credit && <div style={{fontFamily: sans, fontSize: 24, color: C.muted, marginTop: 8}}>Narration voice by ElevenLabs.</div>}
   </AbsoluteFill>
 );
 
@@ -315,7 +317,7 @@ export const Nury: React.FC<{data: Data}> = ({data}) => {
             {s.kind === 'tech' && <Tech tests={data.tech?.tests ?? 'N'} />}
             {s.kind === 'clip' && <Clip s={s} marks={data.marks} />}
             {s.kind === 'proof' && <Proof p={data.proof} />}
-            {s.kind === 'end' && <End />}
+            {s.kind === 'end' && <End credit={data.credits?.narration === true} />}
           </Fade>
           {(s.vo ?? []).map((v: any) => {
             const showCap = s.kind !== 'tech'; // the tech beat carries its own captions

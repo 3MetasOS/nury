@@ -7,7 +7,8 @@ const load = async (): Promise<Data> => {
   const confirmed = await j('confirmed.json').catch(() => ({}));
   const memorial = await j('memorial.json').catch(() => ({}));
   const tech = await j('tech.json').catch(() => ({}));
-  return {marks: await j('marks.json'), proof: await j('proof.json'), confirmed, memorial, tech};
+  const credits = await j('credits.json').catch(() => ({}));
+  return {marks: await j('marks.json'), proof: await j('proof.json'), confirmed, memorial, tech, credits};
 };
 
 export const Root: React.FC = () => (

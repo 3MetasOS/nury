@@ -1,0 +1,184 @@
+# ElevenLabs audition log
+Characters sent per sample (plan: Starter, 40,000/month; keep 15,000 in reserve for the final cut).
+- Brian line 01: 59 characters
+- Brian line 02: 90 characters
+- Brian line 03: 61 characters
+- Brian line 03b: 62 characters
+- Brian line names: 34 characters
+- George line 01: 59 characters
+- George line 02: 90 characters
+- George line 03: 61 characters
+- George line 03b: 62 characters
+- George line names: 34 characters
+- Bella line 01: 59 characters
+- Bella line 02: 90 characters
+- Bella line 03: 61 characters
+- Bella line 03b: 62 characters
+- Bella line names: 34 characters
+- Eric line 01: 59 characters
+- Eric line 02: 90 characters
+- Eric line 03: 61 characters
+- Eric line 03b: 62 characters
+- Eric line names: 34 characters
+- Sarah line 01: 59 characters
+- Sarah line 02: 90 characters
+- Sarah line 03: 61 characters
+- Sarah line 03b: 62 characters
+- Sarah line names: 34 characters
+- Jerome line 01: 59 characters
+- Jerome line 02: 90 characters
+- Jerome line 03: 61 characters
+- Jerome line 03b: 62 characters
+- Jerome line names: 34 characters
+- Juan Esteban line 01: 59 characters
+- Juan Esteban line 02: 90 characters
+- Juan Esteban line 03: 61 characters
+- Juan Esteban line 03b: 62 characters
+- Juan Esteban line names: 34 characters
+- Jose Dominguez line 01: 59 characters
+- Jose Dominguez line 02: 90 characters
+- Jose Dominguez line 03: 61 characters
+- Jose Dominguez line 03b: 62 characters
+- Jose Dominguez line names: 34 characters
+- AD-berto line 01: 59 characters
+- AD-berto line 02: 90 characters
+- AD-berto line 03: 61 characters
+- AD-berto line 03b: 62 characters
+- AD-berto line names: 34 characters
+- Nayla line 01: 59 characters
+- Nayla line 02: 90 characters
+- Nayla line 03: 61 characters
+- Nayla line 03b: 62 characters
+- Nayla line names: 34 characters
+- Ivan Rodriguez line 01: 59 characters
+- Ivan Rodriguez line 02: 90 characters
+- Ivan Rodriguez line 03: 61 characters
+- Ivan Rodriguez line 03b: 62 characters
+- Ivan Rodriguez line names: 34 characters
+- Kevo line 01: 59 characters
+- Kevo line 02: 90 characters
+- Kevo line 03: 61 characters
+- Kevo line 03b: 62 characters
+- Kevo line names: 34 characters
+- Brian line 01: 59 characters
+- Brian line 02: 90 characters
+- Brian line 03: 61 characters
+- Brian line 03b: 62 characters
+- Brian line names: 34 characters
+- George line 01: 59 characters
+- George line 02: 90 characters
+- George line 03: 61 characters
+- George line 03b: 62 characters
+- George line names: 34 characters
+- Bella line 01: 59 characters
+- Bella line 02: 90 characters
+- Bella line 03: 61 characters
+- Bella line 03b: 62 characters
+- Bella line names: 34 characters
+- Eric line 01: 59 characters
+- Eric line 02: 90 characters
+- Eric line 03: 61 characters
+- Eric line 03b: 62 characters
+- Eric line names: 34 characters
+- Sarah line 01: 59 characters
+- Sarah line 02: 90 characters
+- Sarah line 03: 61 characters
+- Sarah line 03b: 62 characters
+- Sarah line names: 34 characters
+- Jerome line 01: 59 characters
+- Jerome line 02: 90 characters
+- Jerome line 03: 61 characters
+- Jerome line 03b: 62 characters
+- Jerome line names: 34 characters
+- Juan Esteban line 01: 59 characters
+- Juan Esteban line 02: 90 characters
+- Juan Esteban line 03: 61 characters
+- Juan Esteban line 03b: 62 characters
+- Juan Esteban line names: 34 characters
+- Jose Dominguez line 01: 59 characters
+- Jose Dominguez line 02: 90 characters
+- Jose Dominguez line 03: 61 characters
+- Jose Dominguez line 03b: 62 characters
+- Jose Dominguez line names: 34 characters
+- AD-berto line 01: 59 characters
+- AD-berto line 02: 90 characters
+- AD-berto line 03: 61 characters
+- AD-berto line 03b: 62 characters
+- AD-berto line names: 34 characters
+- Nayla line 01: 59 characters
+- Nayla line 02: 90 characters
+- Nayla line 03: 61 characters
+- Nayla line 03b: 62 characters
+- Nayla line names: 34 characters
+- Ivan Rodriguez line 01: 59 characters
+- Ivan Rodriguez line 02: 90 characters
+- Ivan Rodriguez line 03: 61 characters
+- Ivan Rodriguez line 03b: 62 characters
+- Ivan Rodriguez line names: 34 characters
+- Kevo line 01: 59 characters
+- Kevo line 02: 90 characters
+- Kevo line 03: 61 characters
+- Kevo line 03b: 62 characters
+- Kevo line names: 34 characters
+- Brian line 01: 59 characters
+- Brian line 02: 90 characters
+- Brian line 03: 61 characters
+- Brian line 03b: 62 characters
+- Brian line names: 34 characters
+- George line 01: 59 characters
+- George line 02: 90 characters
+- George line 03: 61 characters
+- George line 03b: 62 characters
+- George line names: 34 characters
+- Bella line 01: 59 characters
+- Bella line 02: 90 characters
+- Bella line 03: 61 characters
+- Bella line 03b: 62 characters
+- Bella line names: 34 characters
+- Eric line 01: 59 characters
+- Eric line 02: 90 characters
+- Eric line 03: 61 characters
+- Eric line 03b: 62 characters
+- Eric line names: 34 characters
+- Sarah line 01: 59 characters
+- Sarah line 02: 90 characters
+- Sarah line 03: 61 characters
+- Sarah line 03b: 62 characters
+- Sarah line names: 34 characters
+- Jerome line 01: 59 characters
+- Jerome line 02: 90 characters
+- Jerome line 03: 61 characters
+- Jerome line 03b: 62 characters
+- Jerome line names: 34 characters
+- Juan Esteban line 01: 59 characters
+- Juan Esteban line 02: 90 characters
+- Juan Esteban line 03: 61 characters
+- Juan Esteban line 03b: 62 characters
+- Juan Esteban line names: 34 characters
+- Jose Dominguez line 01: 59 characters
+- Jose Dominguez line 02: 90 characters
+- Jose Dominguez line 03: 61 characters
+- Jose Dominguez line 03b: 62 characters
+- Jose Dominguez line names: 34 characters
+- AD-berto line 01: 59 characters
+- AD-berto line 02: 90 characters
+- AD-berto line 03: 61 characters
+- AD-berto line 03b: 62 characters
+- AD-berto line names: 34 characters
+- Nayla line 01: 59 characters
+- Nayla line 02: 90 characters
+- Nayla line 03: 61 characters
+- Nayla line 03b: 62 characters
+- Nayla line names: 34 characters
+- Ivan Rodriguez line 01: 59 characters
+- Ivan Rodriguez line 02: 90 characters
+- Ivan Rodriguez line 03: 61 characters
+- Ivan Rodriguez line 03b: 62 characters
+- Ivan Rodriguez line names: 34 characters
+- Kevo line 01: 59 characters
+- Kevo line 02: 90 characters
+- Kevo line 03: 61 characters
+- Kevo line 03b: 62 characters
+- Kevo line names: 34 characters
+
+NOTE: the render command ran three times by mistake (180 calls, 11,016 characters in this log, about 7,300 of them wasted repeats of the same 60 samples). Real need: about 3,670 characters. Remaining budget after this: about 29,000 of 40,000; reserve 15,000 stays.
