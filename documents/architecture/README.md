@@ -13,7 +13,7 @@ Open `diagrams.html` in a browser. It is one page with ten tabs, drawn as inline
 | Sources | The playbook sources, the DOJ official list and the church network, and the checks that keep contacts exact and unranked. |
 | Skills | The voice and grounding skills, what the loader refuses, and how the audit log records them. |
 | Case file | The case folder the app saves, the next-steps map, and revision v1 to v2. |
-| Evals | Scenarios and attacker intakes to the scorecard, the three judge layers (deterministic, Jev, the red-team panel), the review canvas, and where each API key is used. |
+| Evals | Scenarios and attacker intakes to the scorecard, the three judge layers (deterministic, Jev from TypeSafe as a third-party service, the red-team panel), the review canvas, and where each API key is used. |
 
 ## How to read the boxes
 

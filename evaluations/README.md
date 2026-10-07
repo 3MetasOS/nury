@@ -37,7 +37,7 @@ Needed from the core:
 
 ## Judges
 - `judges/deterministic.py`: banned phrases (project list + office claims), disclaimers, URL/phone allowlist, language, workflow contract, completeness. No AI.
-- `judges/jev_judges.py`: typed Jev noul/score/choice on the full trajectory. Eval time only. `JEV_API_KEY` from env. Accept at >=80% confident-correct, fail at <=20%, middle goes to human review.
+- `judges/jev_judges.py`: typed noul/score/choice calls to the Jev decision API from TypeSafe, a third-party service the harness calls at test time, on the full trajectory. Eval time only. `JEV_API_KEY` from env. Accept at >=80% confident-correct, fail at <=20%, middle goes to human review.
 
 ## Test-only switches (never set for the demo, the eval or a recording)
 - `NURY_TEST_ESCALATE=1` (app server env): with the demo box ticked, stage 2 fails all three tries so the escalation screen can be viewed once.

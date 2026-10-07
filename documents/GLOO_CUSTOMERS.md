@@ -6,8 +6,8 @@
 - The press release states $250,000 in cash prizes; the official rules document we read earlier says $200,000. Use the rules document.
 
 ## What this means for our target
-- Gloo's core customer is the **church and ministry leader**, including very small churches, and **denominations and networks** that serve many of them. A solo pastor is squarely inside that audience. The solo pastor is the sharpest persona; "denominations and networks could offer Nury to every small-church pastor" is a true and strong distribution line (a Q and A line, not a built feature).
-- Not found: a number for how many Gloo customers are solo pastors. Do not claim one.
+- Gloo's core customer is the **church and ministry leader**, including very small churches, and **denominations and networks** that serve many of them. Churches, and the pastors who answer the call, are squarely inside that audience. "Denominations and networks could offer Nury to the churches they serve" is a true and strong distribution line (a Q and A line, not a built feature).
+- Not found: a number for how many Gloo customers are small churches. Do not claim one.
 
 ## Gloo and immigration: what we found (2026-10-07)
 - **No public statement from Gloo about immigration** turned up in the searches (company pages, press coverage, the 2026 hackathon announcement and landing page). Not finding one is not the same as a view; we assume nothing.

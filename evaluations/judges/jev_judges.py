@@ -1,5 +1,7 @@
 """Layer 2 judges: typed Jev calls. EVAL TIME ONLY. Never imported by the product.
 
+Jev is the Jev decision API from TypeSafe, a third-party service the harness calls at test time.
+
 API: POST {JEV_BASE_URL or https://api.typesafe.ai}/v1/systemone, Bearer JEV_API_KEY.
 The key comes from the environment. This file never stores it.
 

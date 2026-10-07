@@ -66,7 +66,7 @@ stages.json                     "skills": ["voice", "grounding"] on a stage
 - **Safety floor wins.** A skill can add rules and checks. It can never remove or override the floor, the disclaimer or a playbook's banned patterns. The loader refuses a skill that tries.
 - **Evidence.** The audit log records a `skill_applied` event (name, version, stage) every time. The scorecard shows which skills ran.
 - **First two skills.** `voice` (distilled from the humanizer ideas: plain words, no stock phrases, no inflated language, natural Spanish for the family) on the pastoral and checklist stages. `grounding` (every line comes from the vetted points, or is a plain question for the professional) on checklist and resources stages.
-- **Proof.** Deterministic check for stock AI phrases, a Jev tone score, and a before/after comparison for the judges.
+- **Proof.** Deterministic check for stock AI phrases, a tone score from the Jev decision API (TypeSafe, a third-party service used at eval time only), and a before/after comparison for the judges.
 - No extra model call. Skills change the prompt, not the number of calls.
 
 ## Case file and next-steps map (decided by Juan 2026-10-06)
