@@ -958,3 +958,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 15:42: hack-video is back ('queue ok' at 15:4x): owns the raw app recording again; the reassignment to hack-artisans is withdrawn.
 - 16:02: Juan approved new copy for short-deck slides 1 and 2 (crisis, pastor needs help, so we built Nury, never alone); words to hack-ninja, build to hack-artisans.
 - 16:12: Juan: short deck slides 1 and 2 look different from the original design; hack-sensei had judged from the diff, not from images. Restore ordered; side-by-side PNGs required. Lesson: compare real images, not diffs.
+- 16:39: Juan locked short-deck slide 1 and the app video (3x, 61 s, no audio, made by hack-sensei with fixed record_app.py; 1080p 183 s); slide 2 simplified (name once, dictionary line below, one hand note 'The pastor will never be alone.'); slide 4 film frame bigger. Live take cancelled.
