@@ -198,7 +198,11 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .respond .cta{width:100%}.respond p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
 .respond .cta.primary{animation:ring 2.5s ease-out infinite}
 .respond .cta.primary:hover,.respond .cta.primary:focus-visible{animation:none}
-@keyframes ring{0%{box-shadow:0 0 0 0 rgba(232,163,61,.5)}70%,100%{box-shadow:0 0 0 14px rgba(232,163,61,0)}}
+@keyframes ring{0%{box-shadow:0 0 0 0 rgba(232,163,61,.5)}70%,100%{box-shadow:0 0 0 var(--ring,14px) rgba(232,163,61,0)}}
+/* the one glow: a soft amber ring about every 2.5 s on whatever is current (case sequence, run strip, crisis flow); off on hover, focus and for reduced motion */
+.glow{animation:ring 2.5s ease-out infinite;--ring:10px}.glow:hover,.glow:focus-visible,a:hover .glow,a:focus-visible .glow{animation:none}
+.step.glow{--ring:7px;animation:ring 2.5s ease-out infinite}
+@media (prefers-reduced-motion:reduce){.glow,.step.glow{animation:none}}
 @media (prefers-reduced-motion:reduce){.respond .cta.primary{animation:none}}
 .start{order:1}#netcard{order:2}#continue{order:3}#stats{order:4}
 .cardlist{display:grid;gap:12px}
@@ -689,7 +693,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
   const langs=(p.languages||[]).map(l=>LANGNAME[l]||l).join(" or ");
   const never=(d.common_never||[]).map(t=>t.replace("{domain}",d.domain||"legal or medical"));if(d.never_extra)never.push(d.never_extra);
   const rail=h("ol",{class:"rail","aria-label":`The ${n} stages`}),flow=h("ol",{class:"flow"});
-  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-protect")),h("div",{class:"capcard"},h("h3",null,"First, you and Nury get ready"),
+  flow.append(h("li",null,h("span",{class:"node cap glow"},ic("i-protect")),h("div",{class:"capcard"},h("h3",null,"First, you and Nury get ready"),
     h("p",null,"You type what the family said, in your own words, and pick the family’s language. Nury proposes names to protect. You tick the ones to hide. Tokens, not names, go to the model."))));
   st.forEach((s,i)=>{const x=ds[i]||{},title=s.title,icon=x.icon||"i-triage";
     rail.append(h("li",{class:"n"},h("a",{href:"#s"+(i+1),"aria-label":`Stage ${i+1}, ${title}`},ic(icon)),h("span",null,x.short||title)));
@@ -831,7 +835,7 @@ function renderOverview(){const root=$("case-page");root.replaceChildren();const
     stg.forEach((s,i)=>{if(i)ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")));
       ol.append(h("li",null,h("a",{href:"#/case/"+cid+"/"+slugOf(s.k),class:"stn "+s.state,"aria-label":`${s.title}, ${word[s.state]}. Open it.`},
         h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},word[s.state]))))});
-    ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
+    ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd glow","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
     seq.append(ol)}
   { const fb=h("button",{type:"button",class:"btn sm",id:"o-pdf-fam"},ic("i-save"),"Family copy (PDF)"),pb2=h("button",{type:"button",class:"btn sm",id:"o-pdf-pas"},ic("i-save"),"Pastor copy (PDF)");
     fb.onclick=()=>downloadPdf("case",c.meta.id,"family",fb);pb2.onclick=()=>downloadPdf("case",c.meta.id,"pastor",pb2);
@@ -955,7 +959,7 @@ async function poll(){
     if(["stopped","escalated","error"].includes(x.status)||(x.id===P.stage&&P.phase==="escalated"))return"bad";
     if(x.id!==P.stage)return"";
     return{writing:"work",regenerating:"work",checking:"chk",checking_jev:"chk",ready:"ready"}[P.phase]||""};
-  $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");d.className="step "+cls(x);d.title=x.title;return d}));
+  $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");d.className="step "+cls(x)+(["work","chk","ready"].includes(cls(x))?" glow":"");d.title=x.title;return d}));
   const idx=s.stages.findIndex(x=>x.id===P.stage);
   $("stage-of").textContent=idx>=0?`Stage ${idx+1} of ${N}`:"";
   renderLog($("log"),s.log);$("replay-note").hidden=!s.replay_note;$("replay-note").textContent=s.replay_note||"";
