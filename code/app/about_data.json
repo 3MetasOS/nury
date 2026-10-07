@@ -11,7 +11,7 @@
     ]
   },
   "fallback": {
-    "what": "Nury is an AI crisis response agent for churches and the pastors who answer the call. When a family calls in a crisis, Nury helps the pastor prepare a response in five stages. The pastor reviews and approves every step. Nothing reaches the family except through the pastor.",
+    "what": "Nury is an AI crisis response agent for churches and the pastors who answer the call. When a family calls in a crisis, Nury helps the pastor prepare a response stage by stage. The pastor reviews and approves every step. Nothing reaches the family except through the pastor.",
     "origin": "Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026."
   }
 }

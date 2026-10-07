@@ -731,7 +731,7 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
     blk("h-get","What you will get",h("ul",{class:"give"},gives)),
     blk("h-how","How it works",h("figure",{class:"dfig"},NuryDiagram.flow(st,{narrow:innerWidth<640}),h("figcaption",{class:"sm muted"},"The path of one response. Each diamond is your gate: nothing moves on until you decide. The cards below say the same in words.")),flow),
     never.length&&blk("h-never","What Nury will never do",h("ul",{class:"never nvcard"},never.map(t=>h("li",null,ic("i-never"),h("span",null,t))))),
-    blk("h-time","A note on time",h("div",{class:"time"},ic("i-clock"),h("div",null,h("p",null,"Nury drafts all five stages in about a minute."),
+    blk("h-time","A note on time",h("div",{class:"time"},ic("i-clock"),h("div",null,h("p",null,"Nury drafts the whole case in about a minute."),
       h("p",null,"That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.")))),
     h("p",{class:"sm",style:"margin:0"},h("a",{class:"linkbtn",href:"/how-it-was-built"},ic("i-build","sm"),"How this was built")));
   const aside=h("aside",{class:"aside","aria-label":"Begin"},h("div",{class:"nvcard"},h("h2",null,"Ready when you are"),
