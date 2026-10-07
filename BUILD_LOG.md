@@ -385,3 +385,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Harness bugs found by hack-artisans and fixed (no core or prompt change): the network check flagged the required caveat as an endorsement; the revision privacy step proposed "Esto", "Llame", "Result", "Step" as people.
 - Observation: the attorney stage prints the disclaimer near the top as well as at the end; accepted as harmless.
 - DECISION: the core is FROZEN from now (bug fixes only, announced and approved first). The final scored runs start now: detention 20 and hospital 8, privacy on, with Jev.
+
+## 57. 2026-10-06 21:57 MDT — Voice: scratch voice rejected, auditions started
+
+- Juan: the scratch voice (macOS Samantha) is robotic. Gloo has no speech models (176 models checked). Options ranked: Juan's own voice; ElevenLabs (account and key from Juan, Starter plan includes commercial use; key only in the gitignored `.env`; narration labeled as an AI voice in the submission); free fallbacks (Apple Premium voices, Kokoro). hack-video auditions the free ones now and ElevenLabs once the key exists. The locked voiceover text is unchanged.
