@@ -1,6 +1,6 @@
 # Nury architecture diagrams
 
-Open `diagrams.html` in a browser. It is one page with six tabs, drawn as inline SVG from the code in this repo. It works offline and fits a phone screen.
+Open `diagrams.html` in a browser. It is one page with ten tabs, drawn as inline SVG from the code in this repo. It works offline and fits a phone screen.
 
 | Tab | What it shows |
 |---|---|
@@ -9,14 +9,18 @@ Open `diagrams.html` in a browser. It is one page with six tabs, drawn as inline
 | Playbook | The folder a crisis is made of, what the loader checks, how `when` paths work, and which playbooks exist. Detention is the first. Hospital is a test fixture. |
 | Run flow | Five stages, an approval gate after each, how edited text carries forward, and the four outcomes. |
 | Correction | One stage: draft, check, reject with a reason category, regenerate, three attempts, then escalate. It also marks where fault injection plugs in. |
-| Evals | Scenarios to scorecard, the two judge layers, and where each API key is used. |
+| Privacy | How names and numbers become tokens before a request leaves, where the map stays, and the leak test that checks the request body. |
+| Sources | The playbook sources, the DOJ official list and the church network, and the checks that keep contacts exact and unranked. |
+| Skills | The voice and grounding skills, what the loader refuses, and how the audit log records them. |
+| Case file | The local case folder, the next-steps map, and revision v1 to v2. |
+| Evals | Scenarios and attacker intakes to the scorecard, the three judge layers (deterministic, Jev, the red-team panel), the review canvas, and where each API key is used. |
 
 ## How to read the boxes
 
 - Solid: the thing exists in the repo.
 - Amber: where a guarantee lives.
 - Dashed red: something Nury does not have, on purpose.
-- Dashed grey: a test fixture, or planned.
+- Dashed grey: a test fixture, planned, or built but not yet checked live. The box label says which.
 
 ## Keeping it true
 
