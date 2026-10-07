@@ -324,3 +324,11 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Rules: a held entry is rejected if a draft names it; a listed entry keeps its exact name and contact; nothing from the list is called free (free, gratis, sin costo); the caveat "Listed by the U.S. Department of Justice. Listed does not mean recommended." must appear; a dropped entry is rejected; an unknown or held phone is rejected by the floor.
 - Found: the American Bar Association entry's toll-free number on the DOJ page is for people held at military facilities; for someone held by ICE the page says to email. A family shown that phone would be misled, so Nury lists the email route only. Juan approved the entry; what it shows changed. Also fixed: the language check flagged vetted English organization names inside Spanish text; the endorsement check flagged the required caveat itself.
 - Owed live checks when credit returns: detention 01 (Aurora CO, demo network and privacy on), 18 (Mesa AZ), 20, hospital h01, and two forced-rejection runs; capped at about 12 pipelines.
+
+## 47. 2026-10-06 21:28 MDT — Privacy step, case revision, network screen mounted (hack-artisans, commit 24c51df)
+
+- "Protected names" step on the intake screen (Nury proposes names, the pastor ticks and adds); one privacy client per session; real names at every gate; the privacy map is saved with the case; no tokens in saved pages (checked on a live run before the credit ran out).
+- Case revision flow: "Something changed" (step, result, what happened) then "Draft again" through the same privacy step and gates; saved as v2 beside v1 with `changes.md`; v1/v2 chips and a red/green compare view. 2 revision scenarios, 6 offline tests.
+- hack-jedi's "Our network" screen mounted and linked from the selector. Eval side: network scenarios n01–n03, a must_not_echo check, `run.py --scenarios <folder>` so the 18 attacker scenarios run with one command, and the adapter now uses the privacy client. 82 tests pass (verified by hack-sensei).
+- Not verified live: the revision run, network scenarios and the adapter's privacy path. Owed live checks listed in `evaluations/LIVE_CHECKS_OWED.md` (about $6.5 for hack-artisans' share).
+- Honest note: one 16-token probe call at about 21:50 to confirm the 402, before the pause arrived.
