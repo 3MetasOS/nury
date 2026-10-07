@@ -63,6 +63,11 @@ body.show-gated li[data-gated]::before{display:inline}
 .memorial{background:var(--paper);gap:3vh}.memorial .mtext{max-width:46ch;display:grid;gap:1.6vh}
 .memorial .mtext p{font-family:var(--serif);font-size:clamp(19px,2.35vw,32px);line-height:1.35;font-weight:400}
 body.nofoot .foot{visibility:hidden}
+.diagram{width:100%;height:auto;max-height:58vh;display:block}
+.diagram .bx rect{fill:var(--card);stroke:var(--ink);stroke-width:2}.diagram .bx.gl rect{fill:var(--paper);stroke:var(--amber);stroke-width:3}
+.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .bt{font-family:var(--serif);font-weight:600;font-size:24px;text-anchor:middle}
+.diagram .bs{font-size:19px;text-anchor:middle;fill:var(--muted)}.diagram .dl{font-size:17px;fill:var(--muted)}.diagram .dl.am{fill:var(--amber-text);font-weight:600}
+.diagram .ln{fill:none;stroke:var(--ink);stroke-width:2.4}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
@@ -96,6 +101,31 @@ body.nofoot .foot{visibility:hidden}
 <aside class="notes">0:30 to 1:25. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
 
 <section class="slide" data-part="talk">
+<h2>How it is built: nothing leaves with a name in it</h2>
+<svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
+<title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer on the pastor's computer replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, tokens are restored on the computer, and named checks reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text and sends it by hand. A separate strip shows the evaluation layers, used at evaluation time only.</desc>
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0d1015"/></marker></defs>
+<rect x="6" y="6" width="796" height="300" rx="18" fill="none" stroke="#5b564c" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="24" y="34" class="dl muted">On the pastor's computer</text>
+<g class="bx"><rect x="28" y="56" width="212" height="92" rx="12"/><text x="134" y="96" class="bt">Pastor types</text><text x="134" y="124" class="bt">the intake</text></g>
+<g class="bx"><rect x="300" y="56" width="240" height="92" rx="12"/><text x="420" y="96" class="bt">Privacy layer</text><text x="420" y="124" class="bs">names become tokens</text></g>
+<g class="bx gl"><rect x="842" y="56" width="248" height="92" rx="12"/><text x="966" y="96" class="bt">Gloo AI Studio</text><text x="966" y="124" class="bs">guarded endpoint</text></g>
+<path d="M240 102 H296" class="ln" marker-end="url(#ar)"/>
+<path d="M540 102 H838" class="ln" marker-end="url(#ar)"/><text x="690" y="90" class="dl" text-anchor="middle">tokens only</text>
+<path d="M966 148 V232 H802" class="ln" marker-end="url(#ar)"/><text x="900" y="206" class="dl" text-anchor="middle">reply</text>
+<g class="bx"><rect x="560" y="196" width="240" height="92" rx="12"/><text x="680" y="236" class="bt">Named checks</text><text x="680" y="264" class="bs">3 tries, then escalate</text></g>
+<g class="bx"><rect x="300" y="196" width="240" height="92" rx="12"/><text x="420" y="236" class="bt">Approval gate</text><text x="420" y="264" class="bs">Approve, Edit or Stop</text></g>
+<path d="M560 242 H544" class="ln" marker-end="url(#ar)"/>
+<g class="bx"><rect x="28" y="196" width="212" height="92" rx="12"/><text x="134" y="236" class="bt">Pastor sends</text><text x="134" y="264" class="bs">by hand</text></g>
+<path d="M300 242 H244" class="ln" marker-end="url(#ar)"/>
+<rect x="6" y="334" width="1084" height="88" rx="18" fill="none" stroke="#b8680f" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="24" y="362" class="dl am">Evaluation time only</text>
+<text x="548" y="400" class="bs" text-anchor="middle">Plain code checks  ·  Jev typed judges  ·  red-team panel  ·  a person</text>
+</svg>
+<p class="muted">Names stay on the computer. Nothing reaches the family except through the pastor.</p>
+<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and tokens are restored here, named checks reject unsafe drafts up to three tries, the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it, and it runs at evaluation time only. Evidence for each box: presentation/TECH_STORY.md (claims 1 to 7). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
+
+<section class="slide" data-part="talk">
 <h2>Concept and product: the pastor stays in charge</h2>
 <div class="two"><div class="col">
 <ol class="flow">
@@ -125,16 +155,18 @@ body.nofoot .foot{visibility:hidden}
 <section class="slide" data-part="talk">
 <h2>Use of AI: one model writes, other makers' models check</h2>
 <div class="cols"><div class="col">
-<ul><li>Nury runs on Gloo's guarded Responses endpoint.</li>
-<li>It gives legal information only, from vetted sources. No open web.</li></ul></div>
+<ul><li>Nury runs on Gloo's guarded Responses endpoint and gives legal information only, from vetted sources.</li></ul>
+<table class="tbl">
+<tr><th>Typed judge, 5-scenario check</th><td>safe 0.17 to 0.30, unsafe 0.83 to 0.90</td></tr>
+<tr><th>Red-team panel, first pass</th><td>caught 8 of 8, also flagged every safe review</td></tr>
+<tr><th>Tests, offline</th><td>121 pass</td></tr></table></div>
 <div class="col"><h3>Four layers check it</h3>
 <ol class="flow">
-<li><b>Deterministic checks</b><span>Banned phrases, disclaimers, link and phone allowlist. No AI.</span></li>
+<li><b>Deterministic checks</b><span>Banned phrases, disclaimers, links and phones from vetted sources. No AI.</span></li>
 <li><b>Typed judges</b><span>Jev, at evaluation time only.</span></li>
 <li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
 <li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<p class="muted">Why other makers: the writer is one model. A reviewer from another maker has different blind spots.</p>
-<aside class="notes">2:15 to 2:35. Criterion: Use of AI. The panel caught every injected problem in the first validation pass, and it also flagged every safe review, so it advises and never gates. Say that: it is why the human layer exists.</aside></section>
+<aside class="notes">About 18 seconds. Criterion: Use of AI. The numbers are real but small: a five-scenario smoke test and a first-pass panel check; say so. Re-run the tests before export and change 121 if it moved. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Impact and execution: what we measured, and what broke</h2>
