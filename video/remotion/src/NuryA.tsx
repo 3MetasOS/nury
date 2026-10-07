@@ -2,7 +2,8 @@
 // Eric lines: public/arc/L1..L11.wav. Sound: public/arc/snd/*.wav (all synthesized, sound/build_arc_sound.py). Footage: public/run.mp4 + marks.json.
 import React from 'react';
 import {AbsoluteFill, Audio, Img, Sequence, interpolate, staticFile, useCurrentFrame, useVideoConfig} from 'remotion';
-import {C, serif, sans, ease, FPS, Clip, Fade, End, Memorial, Tech, useFonts, type Data} from './Nury';
+import {C, serif, sans, ease, FPS, Fade, End, Memorial, Tech, useFonts, type Data, type Marks} from './Nury';
+import {OffthreadVideo, Freeze} from 'remotion';
 
 const INK = '#0d1015', GREY = '#d9d4c8', PAPER = '#f7f3ea';
 type S = {id: string; dur: number; kind: string; trim?: number; from?: [string, number]; to?: [string, number]; label?: string; start?: number};
@@ -33,7 +34,31 @@ export const buildA = (d: Data) => {
   return {scenes, total: t};
 };
 
-// ---- night shots (vector, no people, no faces) ----
+
+// The real app, LARGE: the phone window is 645x900 (83% of the frame height) and the video is zoomed 1.55x so the strip, the card and the gate text can be read.
+// Caption is a quiet line on the right. `y` = how far down the app (0 to 1) the window starts.
+const AppClip: React.FC<{s: any; marks: Marks; y?: number}> = ({s, marks, y = 0.0}) => {
+  const a = marks[s.from[0]] + s.from[1], b = marks[s.to[0]] + s.to[1], srcLen = b - a;
+  const rate = Math.min(4, Math.max(0.85, srcLen / s.dur)), play = Math.floor((srcLen / rate) * FPS);
+  const f = useCurrentFrame();
+  const W = 645, H = 900, VH = W * 1688 / 780;
+  const slide = interpolate(f, [0, 20], [18, 0], {easing: ease, extrapolateRight: 'clamp'});
+  const vid = <OffthreadVideo src={staticFile('run.mp4')} startFrom={Math.round(a * FPS)} playbackRate={rate} muted style={{width: W, height: VH, marginTop: -y * VH}} />;
+  return (
+    <AbsoluteFill>
+      <div style={{position: 'absolute', left: 330, top: 90, width: W, height: H, borderRadius: 30, overflow: 'hidden', boxShadow: '0 40px 90px rgba(70,45,10,.30), 0 8px 24px rgba(70,45,10,.16), 0 0 0 1px rgba(13,16,21,.16)', transform: `translateY(${slide}px)`}}>
+        {play >= s.dur * FPS ? vid : (<><Sequence durationInFrames={Math.max(1, play)}>{vid}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{vid}</Freeze></Sequence></>)}
+      </div>
+      {s.label && (
+        <div style={{position: 'absolute', left: 1060, top: 0, bottom: 0, width: 640, display: 'grid', alignContent: 'center'}}>
+          <div style={{fontFamily: serif, fontSize: 50, lineHeight: 1.2, color: C.text, whiteSpace: 'pre-line', textWrap: 'balance' as any, opacity: interpolate(f, [8, 28], [0, 1], {extrapolateRight: 'clamp'})}}>{s.label}</div>
+        </div>
+      )}
+    </AbsoluteFill>
+  );
+};
+
+// ---- night shots (vector, no faces) ----
 const Grain: React.FC<{o?: number}> = ({o = 0.09}) => (
   <svg width="100%" height="100%" style={{position: 'absolute', inset: 0, opacity: o, mixBlendMode: 'overlay'}}>
     <filter id="g2"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" /><feColorMatrix type="saturate" values="0" /></filter>
@@ -64,28 +89,35 @@ const NightHook: React.FC = () => {
 };
 const Persona: React.FC<{dur: number}> = ({dur}) => {
   const f = useCurrentFrame(), t = f / FPS;
-  const reach = interpolate(t, [dur * 0.45, dur * 0.8], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const reach = interpolate(t, [dur * 0.35, dur * 0.7], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const lift = interpolate(t, [dur * 0.72, dur * 0.95], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const push = interpolate(t, [0, dur], [1, 1.05]);
-  const hx = 1010 + reach * 20, hy = 690 - reach * 140; // hand and phone rise together
+  const px = 790, py = 560 - lift * 120;               // phone position
+  const hx = 1500 - reach * 640, hy = 760 - reach * 140 - lift * 120; // the hand slides in from the right edge
   return (
     <AbsoluteFill style={{background: '#07090c', transform: `scale(${push})`, transformOrigin: '50% 60%'}}>
-      <div style={{position: 'absolute', left: 1160, top: 120, width: 520, height: 600, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,163,61,.34), transparent 68%)', filter: 'blur(10px)'}} />
+      <div style={{position: 'absolute', left: 1180, top: 60, width: 560, height: 620, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,163,61,.38), transparent 68%)', filter: 'blur(10px)'}} />
       <svg viewBox="0 0 1920 1080" width="1920" height="1080" style={{position: 'absolute', inset: 0}}>
         <rect x="0" y="700" width="1920" height="380" fill="#0f141b" />
-        <rect x="0" y="696" width="1920" height="6" fill="rgba(232,163,61,.22)" />
-        {/* lamp */}
-        <path d="M1340 700 L1340 520 L1300 440 L1440 440 L1400 520 L1400 700 Z" fill="#171c25" />
-        <ellipse cx="1370" cy="440" rx="82" ry="22" fill="#e8a33d" opacity=".9" />
-        {/* cold mug */}
-        <rect x="1130" y="640" width="60" height="62" rx="8" fill="#10151c" stroke="rgba(236,231,220,.18)" />
-        <path d="M1190 655 q26 4 0 36" stroke="rgba(236,231,220,.18)" strokeWidth="6" fill="none" />
-        {/* the man, silhouette only: warm rim light on the lamp side */}
-        <circle cx="720" cy="420" r="78" fill="#0a0d12" stroke="rgba(232,163,61,.28)" strokeWidth="3" />
-        <path d="M560 760 Q560 560 720 540 Q880 560 880 760 Z" fill="#0a0d12" stroke="rgba(232,163,61,.22)" strokeWidth="3" />
-        <line x1="840" y1="600" x2={hx} y2={hy + 20} stroke="#0a0d12" strokeWidth="64" strokeLinecap="round" />
-        <circle cx={hx} cy={hy + 20} r="34" fill="#0a0d12" />
+        <rect x="0" y="696" width="1920" height="6" fill="rgba(232,163,61,.24)" />
+        <path d="M1340 700 L1340 500 L1296 420 L1444 420 L1400 500 L1400 700 Z" fill="#171c25" />
+        <ellipse cx="1370" cy="420" rx="86" ry="22" fill="#e8a33d" opacity=".92" />
+        <rect x="1050" y="640" width="62" height="64" rx="8" fill="#10151c" stroke="rgba(236,231,220,.2)" />
+        <path d="M1112 655 q26 4 0 36" stroke="rgba(236,231,220,.2)" strokeWidth="6" fill="none" />
+        {/* the hand: a shadow shape with a warm rim from the lamp side, forearm entering from the lower right */}
+        {(() => {
+          const ex = hx + 30, ey = hy + 18; // wrist / palm centre
+          const fingers = [[-88, -36], [-96, -10], [-90, 16], [-78, 40]]; // fingertip offsets from the palm
+          const draw = (col: string, extra: number) => (<g stroke={col} fill={col} strokeLinecap="round">
+            <line x1="2000" y1="1180" x2={ex + 40} y2={ey + 10} strokeWidth={96 + extra} />
+            <circle cx={ex} cy={ey} r={54 + extra / 2} stroke="none" />
+            {fingers.map(([dx, dy], i) => <line key={i} x1={ex - 10} y1={ey + (i - 1.5) * 18} x2={ex + dx} y2={ey + dy} strokeWidth={26 + extra} />)}
+            <line x1={ex + 10} y1={ey + 36} x2={ex - 46} y2={ey + 78} strokeWidth={28 + extra} />
+          </g>);
+          return <>{draw('rgba(232,163,61,.34)', 6)}{draw('#090c10', 0)}</>;
+        })()}
       </svg>
-      <div style={{opacity: 1}}><PhoneOnTable x={hx - 150} y={hy - 150} lift={reach * 40} glow={0.9} /></div>
+      <PhoneOnTable x={px} y={py} lift={lift * 40} glow={0.9} />
       <Vig s={0.85} /><Grain o={0.1} />
       <div style={{position: 'absolute', left: 150, bottom: 100, fontFamily: serif, fontSize: 52, color: 'rgba(236,231,220,.95)', opacity: interpolate(t, [1, 1.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>Solo pastor. No staff. No lawyer.</div>
     </AbsoluteFill>
@@ -119,6 +151,7 @@ const NameCard: React.FC = () => {
   const move = interpolate(t, [1.6, 2.4], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
+      <AbsoluteFill style={{background: 'radial-gradient(700px 520px at 50% 40%, rgba(255,214,140,.55), transparent 70%)', opacity: interpolate(t, [0.6, 1.6, 3.4], [0, 1, 0.25], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}} />
       <Img src={staticFile(t < 2.4 ? 'logo-mark.svg' : 'logo-mark-paper.svg')} style={{position: 'absolute', left: 960 - 75 - move * 380, top: 450 - move * 250, width: 150 - move * 70, height: 150 - move * 70, opacity: lit}} />
       <div style={{position: 'absolute', top: 640, fontFamily: serif, fontWeight: 600, fontSize: 112, color: '#ece7dc', opacity: interpolate(t, [0.3, 0.7, 1.7, 2.1], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>This is Nury.</div>
       <div style={{position: 'absolute', top: 290, left: 0, right: 0, display: 'grid', justifyItems: 'center', gap: 14, color: dark}}>
@@ -137,9 +170,11 @@ const NameCard: React.FC = () => {
 
 // ---- grade: ink to paper, one way ----
 const mix = (a: string, b: string, k: number) => { const h = (x: string, i: number) => parseInt(x.slice(1 + i * 2, 3 + i * 2), 16); return '#' + [0, 1, 2].map((i) => Math.round(h(a, i) + (h(b, i) - h(a, i)) * k).toString(16).padStart(2, '0')).join(''); };
-const Grade: React.FC<{t0: number; t1: number; t2: number}> = ({t0, t1, t2}) => {
+// keyframes: [seconds, colour]. Ink, a warm brown as the lantern lights, an amber glow, warm paper, paper. No neutral grey anywhere.
+const Grade: React.FC<{k: [number, string][]}> = ({k}) => {
   const t = useCurrentFrame() / FPS;
-  const bg = t < t0 ? INK : t < t1 ? mix(INK, GREY, interpolate(t, [t0, t1], [0, 1])) : t < t2 ? mix(GREY, PAPER, interpolate(t, [t1, t2], [0, 1])) : PAPER;
+  let bg = k[0][1];
+  for (let i = 0; i < k.length - 1; i++) if (t >= k[i][0]) bg = t >= k[i + 1][0] ? k[i + 1][1] : mix(k[i][1], k[i + 1][1], (t - k[i][0]) / (k[i + 1][0] - k[i][0]));
   return <AbsoluteFill style={{background: bg}} />;
 };
 
@@ -183,17 +218,17 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
   const caps = ['Leak test: 90 checks per playbook, 0 found', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', 'A full package: 50 to 56 s, about 9 cents'];
   return (
     <AbsoluteFill>
-      <Grade t0={st('nury')} t1={st('nury') + 3.6} t2={st('dawn')} />
+      <Grade k={[[0, INK], [st('nury'), INK], [st('nury') + 1.2, '#4a2f14'], [st('nury') + 2.3, '#dfa04c'], [st('nury') + 3.6, '#f3e6cc'], [st('tool') + 4, '#f5ecd9'], [st('dawn'), PAPER]]} />
       {scenes.map((s: any) => (
         <Sequence key={s.id} from={Math.round(s.start * FPS)} durationInFrames={Math.round(s.dur * FPS)}>
           {s.kind === 'night' && <NightHook />}
           {s.kind === 'persona' && <Fade dur={s.dur}><Persona dur={s.dur} /></Fade>}
           {s.kind === 'stakes' && (<>
-            <Sequence durationInFrames={Math.round(s.dur * FPS * 0.5)}><AbsoluteFill style={{background: '#07090c'}}><Clip s={{...s, dur: s.dur * 0.5, label: undefined}} marks={data.marks} /></AbsoluteFill></Sequence>
+            <Sequence durationInFrames={Math.round(s.dur * FPS * 0.5)}><AbsoluteFill style={{background: '#07090c'}}><AppClip s={{...s, dur: s.dur * 0.5, label: undefined}} marks={data.marks} /></AbsoluteFill></Sequence>
             <Sequence from={Math.round(s.dur * FPS * 0.5)}><WindowShot dur={s.dur * 0.5} /></Sequence>
           </>)}
           {s.kind === 'name' && <NameCard />}
-          {s.kind === 'clip' && <Fade dur={s.dur}><Clip s={s} marks={data.marks} /></Fade>}
+          {s.kind === 'clip' && <Fade dur={s.dur}><AppClip s={s} marks={data.marks} y={s.id === 'stages' || s.id === 'copy' ? 0.0 : 0.0} /></Fade>}
           {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} /></Fade>}
           {s.kind === 'dawn' && <Fade dur={s.dur}><End /></Fade>}
           {s.kind === 'memorial' && <Fade dur={s.dur} slow><Memorial m={data.memorial} /></Fade>}
