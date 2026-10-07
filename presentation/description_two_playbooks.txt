@@ -12,7 +12,7 @@ Nury gives legal information only, never advice or predictions. Every rights poi
 
 Each draft passes our rules and, when Jev is reachable, a Jev classifier. An unsafe draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it.
 
-Nury runs on Gloo's guarded Responses endpoint. We tested 20 hand-built scenarios. Results: [PLACEHOLDER: scorecard numbers].
+Nury runs on Gloo's guarded Responses endpoint. 46 scenarios, judged: 28 pass, 9 fail, 9 undecided.
 
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
 

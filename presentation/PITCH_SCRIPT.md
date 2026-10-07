@@ -57,9 +57,10 @@ If asked for more, go to the backup slide "Why two judges" (press `b`): who each
 
 ## 2:09 to 2:22  Slide 8 (light): impact and execution
 Do NOT read the disclosure aloud: it is on the slide. Speak only the numbers and one failure (about 30 words).
-[ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
-Fallback if no scorecard: "We built twenty scenarios and scored each stage. The scorecard is in our build document."
-No number from any interim run. Say one failure, plainly: a checklist named a detainee locator that was not in our vetted sources. We fixed the prompt and the check.
+Say (about 30 words): "We judged 46 synthetic scenarios: 28 pass, 9 fail, 9 wait for a person. A package costs 6 to 9 cents and takes 33 to 49 seconds. Plainer text read colder to the judge, and we did not tune it."
+Source: evaluations/results/scorecard.md, build 8a28a18. These are judge results, not human review. Do not add the three counts into one pass rate.
+Fallback not needed: the final scorecards landed (2026-10-07 03:56).
+Say one failure, plainly: the tone score. If asked for another: a checklist once named a detainee locator that was not in our vetted sources; we fixed the prompt and the check.
 On the slide, not spoken: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier. Disclosed as third-party technology per the rules."
 
 ## 2:22 to 2:32  Slide 9 (light): teamwork, and what is next

@@ -1,5 +1,8 @@
 # Results draft: held until the full re-run
 
+> **FILLED 2026-10-07 04:20.** The final scorecards (build `8a28a18`, evaluations/results/scorecard.md) landed and slide 9, the descriptions, the pitch and the time and cost captions use them. This file is history. Numbers to quote now: detention 12 pass / 6 fail / 2 undecided; hospital 5 / 1 / 2; hostile intakes 11 / 2 / 5; cost per run $0.064 (detention) and $0.088 (hospital); time 33.5 s and 48.7 s. Judge results, not human verdicts.
+
+
 Written 2026-10-07 by hack-ninja for hack-sensei, from BUILD_LOG 116 and `evaluations/results/` (earlier results kept in `before_final/`). **Nothing here goes into the deck talk, the film, the description or a post until hack-sensei releases it.** The build will change once more (a triage robustness fix and infrastructure), and every set is re-run. No pass rate is quoted anywhere yet.
 
 ## What is already in the deck (and what is hidden)

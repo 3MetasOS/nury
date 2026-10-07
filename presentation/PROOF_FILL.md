@@ -1,5 +1,8 @@
 # Proof numbers: where they go, and the cut rule
 
+> **DONE 2026-10-07 04:20.** All placeholders filled from the final scorecards. This file is history.
+
+
 Source: a clean `evaluations/results/scorecard.md` from `--agent nury` (real Gloo). Not `Agent: mock`. hack-sensei says when it exists.
 Cut rule: no real numbers by Oct 7 16:00 MDT, then cut every item below that needs them.
 
