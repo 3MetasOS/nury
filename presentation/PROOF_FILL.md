@@ -21,3 +21,6 @@ Cut rule: no real numbers by Oct 7 16:00 MDT, then cut every item below that nee
 ## Check before filling
 - Numbers match the scorecard exactly. No rounding up. Say "hand-built scenarios", never "benchmark".
 - Report failures too. If any scenario failed, say pass rate honestly and name the fix in the build log.
+
+## Hospital (added Oct 6)
+Hospital results go in only after hack-sensei confirms in writing that hospital runs and has at least 5 scored scenarios. Places: deck slide 7 table row, pitch script 1:35 block placeholder. If not confirmed by the cut time, delete both. Coming-soon cards are never described beyond their labels.

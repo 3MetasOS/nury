@@ -21,8 +21,10 @@ Play the 90-second video, or run the app live on the locked intake. Speak over i
 [90s] At the end, the pastor has a package. Copy, not Send. Nury never sends. The pastor does.
 
 ## 1:35 to 2:10  Slide 4 and 5: why it works  (Innovation, Use of AI)
-Nury is a crisis-management engine. It runs playbooks. The first playbook is a detention, and that is what you just saw.
-Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a second, test playbook. Do not say a second crisis ships or is scored. Only detention does.
+Nury is a crisis-management engine. The app opens on a crisis selector. Each card is a playbook. Detention is the one you just saw.
+[ONLY AFTER SENSEI CONFIRMS IN WRITING THAT HOSPITAL RUNS AND IS SCORED] A second playbook, hospital emergency, runs on the same engine. [PLACEHOLDER: hospital scenario count and pass rate from the scorecard]
+Two more cards, sudden death in a family and house fire or displacement, say coming soon. Say nothing more about them.
+Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a test playbook. Until sensei confirms hospital in writing, say only that detention runs and is scored.
 Two design choices keep the pastor in control.
 First, the approval gate. The agent drafts. The pastor decides. Nothing reaches the family except through the pastor's hands.
 Second, the self-correction loop. Every draft is checked. Unsafe drafts are rejected and regenerated, up to three tries, then handed to the pastor. The pastor never sees the unsafe one.

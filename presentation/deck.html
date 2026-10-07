@@ -33,6 +33,8 @@ ul{margin:0;padding-left:1.1em;display:grid;gap:1.4vh}
 ::selection{background:var(--amber);color:var(--ink)}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 h1,h2{text-wrap:balance}
+.shot{min-height:22vh;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(15px,1.8vw,22px);max-width:62ch;padding:2vh 2vw}
+.sel{list-style:none;padding:0;display:grid;gap:1vh}.sel span{color:var(--muted);font-size:.8em;margin-left:.6em}.sel span.ph{color:var(--amber)}
 @media print{.slide{display:flex;page-break-after:always}.foot{display:none}}
 </style></head><body>
 
@@ -48,6 +50,16 @@ h1,h2{text-wrap:balance}
 <li>A panicked call from an immigrant family. Sunday afternoon, or 2 AM.</li>
 <li>They have a phone and a few minutes.</li></ul>
 <p class="amber">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></section>
+
+<section class="slide" id="s2b">
+<h2>The app opens on a crisis selector</h2>
+<div class="shot ph">[SCREENSHOT SLOT: crisis selector from the live app, phone width. Capture after hack-artisans ships it.]</div>
+<ul class="sel">
+<li><b>Detention</b> <span>flagship, the demo</span></li>
+<li><b>Hospital emergency</b> <span class="ph">[confirm live in writing before showing]</span></li>
+<li><b>Sudden death in a family</b> <span>coming soon</span></li>
+<li><b>House fire or displacement</b> <span>coming soon</span></li></ul>
+<p class="muted">Each card is a playbook. Nothing is claimed about the coming-soon cards.</p></section>
 
 <section class="slide" id="s3">
 <h2>Playbook #1: detention. Five stages, the pastor decides each.</h2>
@@ -84,7 +96,8 @@ h1,h2{text-wrap:balance}
 <tr><th>Pass rate</th><td class="ph">[PLACEHOLDER]</td></tr>
 <tr><th>Drafts rejected and regenerated</th><td class="ph">[PLACEHOLDER]</td></tr>
 <tr><th>Cost per run</th><td class="ph">[PLACEHOLDER]</td></tr>
-<tr><th>Latency per run</th><td class="ph">[PLACEHOLDER]</td></tr></table>
+<tr><th>Latency per run</th><td class="ph">[PLACEHOLDER]</td></tr>
+<tr><th>Hospital scenarios and pass rate</th><td class="ph">[PLACEHOLDER, only if confirmed]</td></tr></table>
 <p class="muted">Fill from hack-artisans' real scorecard only (not the mock). No real numbers by Oct 7 16:00 MDT: delete this slide.</p>
 <p class="muted">Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.</p></section>
 
@@ -100,10 +113,11 @@ h1,h2{text-wrap:balance}
 <p>The crisis-response agent for solo pastors.</p>
 <p class="muted">Legal information only. Not legal advice.</p></section>
 
-<div class="foot"><span>Nury</span><span id="n">1 / 8</span></div>
+<div class="foot"><span>Nury</span><span id="n">1 / 9</span></div>
 <script>
 const S=[...document.querySelectorAll('.slide')];let i=0;
 function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length}
+go(0);
 addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key))go(i+1);if(['ArrowLeft','PageUp'].includes(e.key))go(i-1)});
 addEventListener('click',e=>go(e.clientX>innerWidth/2?i+1:i-1));
 </script></body></html>
