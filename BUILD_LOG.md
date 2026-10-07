@@ -258,3 +258,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Decision (Juan): build the case-file UI now (no waiting on jedi's confirmation); add a case viewer; add a revision flow so a pastor can reopen a case, record what happened ("went as hoped / did not / unknown"), and re-run the affected stages. The case keeps versions (v1 untouched, v2 beside it, change log, compare).
 - Decision (Juan): nothing leaves the device with direct identifiers. A PrivacyClient wraps the Gloo client and replaces names, phones, emails, addresses, dates of birth and IDs with tokens before sending; the map stays local; responses are detokenized locally. The pastor confirms the protected-terms list. Honest limit: context can still hint. Proof: a leak test on the captured outbound request body.
 - Owners: hack-artisans (UI, viewer, revision, protected-terms step), hack-jedi (privacy.py, leak test, after the bare-domain fix). Final eval re-run now waits for privacy so the scorecard measures what we ship. Details in documents/ARCHITECTURE.md.
+
+## 37. 2026-10-06 21:03 MDT — Bare-domain floor fix landed (hack-jedi, commit 3376542)
+
+- `guardrails.url_reasons` now also scans bare domains (org, com, gov, net, edu, info, us, mx) against the same allowlist. 45 tests pass (verified by hack-sensei; 3 new). Invented bare domains are rejected with ungrounded_claim at stage level for detention (checklist) and hospital (resources); vetted ones pass; emails, file names, numbers and "nada.Hable" do not false-alarm.
+- Live, five stages: detention 01 and 18 and hospital h01 clean on attempt 1. Detention 20 passed but its triage needed 3 attempts (banned_phrase twice): the triage echoed the family's plea ("Promise me he will be released"). It did not escalate. Scenario 20 may show a retry in the scored run; that is real self-correction data.
+- Known limit: an email with an invented domain (x@invented.org) was not checked. Follow-up requested: flag any email whose domain is not vetted.
+- Final scored runs use commit 3376542 or later.
