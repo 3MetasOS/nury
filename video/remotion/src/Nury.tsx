@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   AbsoluteFill, Audio, Freeze, OffthreadVideo, Sequence, continueRender, delayRender,
-  interpolate, staticFile, useCurrentFrame, useVideoConfig, Easing,
+  Img, interpolate, staticFile, useCurrentFrame, useVideoConfig, Easing,
 } from 'remotion';
 
 export const FPS = 30;
@@ -147,6 +147,7 @@ const Proof: React.FC<{p: Proof}> = ({p}) => !hasProof(p) ? null : (
 
 const End: React.FC = () => (
   <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 30}}>
+    <Img src={staticFile('logo-mark.svg')} style={{width: 132, height: 132}} />
     <div style={{fontFamily: serif, fontWeight: 600, fontSize: 188, color: C.amber, lineHeight: 1}}>Nury</div>
     <div style={{fontFamily: serif, fontSize: 54, color: C.text}}>The crisis-response agent for solo pastors.</div>
     <div style={{fontFamily: sans, fontSize: 30, color: C.muted, maxWidth: 1200, textWrap: 'balance' as any}}>
