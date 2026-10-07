@@ -83,10 +83,10 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 @media (min-width:960px){body{padding-bottom:0}}
 /* hand-written notes: in the flow, never over text. Decoration: the label beside the control says the same thing. */
-.hnote{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%;margin:6px 0 2px;color:var(--note-ink);font:400 21px/1.15 "Gochi Hand","Bradley Hand","Segoe Print",cursive;transform:rotate(var(--rot,-1.5deg));transform-origin:left center;pointer-events:none;user-select:none}
-.hnote .hn-a{width:34px;height:30px;flex:none;fill:none;stroke:var(--amber-text);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hnote{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%;margin:2px 0 0;color:var(--note-ink);font:400 21px/1 "Gochi Hand","Bradley Hand","Segoe Print",cursive;transform:rotate(var(--rot,-1.5deg));transform-origin:left center;pointer-events:none;user-select:none}
+.hnote .hn-a{width:28px;height:22px;flex:none;margin:-4px 0;fill:none;stroke:var(--amber-text);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hnote .hn-t{background:linear-gradient(transparent 60%,var(--hl) 60% 90%,transparent 90%);padding:0 4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-@media (max-width:639px){.hnote{transform:none;font-size:17px;margin:4px 0 0}.hnote .hn-a{display:none}}
+@media (max-width:639px){.hnote{transform:none;font-size:17px;margin:2px 0 0}.hnote .hn-a{display:none}}
 @media (prefers-reduced-motion:reduce){.hnote{transform:none}}
 @media print{.hnote{display:none!important}}
 
