@@ -221,11 +221,19 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .seqlive .end .cn{background:var(--amber);color:#fff}
 .v2.demo .sub{font-size:clamp(16px,1.9vw,36px);max-width:none}.v2.demo .hand{white-space:nowrap;font-size:clamp(20px,2.1vw,38px);flex:none}.v2.demo .dhead .stack{flex:1;min-width:0}.v2.demo{gap:1.6vh;padding-top:4vh}.v2.demo h2.h{font-size:clamp(30px,3.8vw,80px);max-width:none}
 @media (max-width:760px){.v2 .demo2{grid-template-columns:1fr}}
-.v2 .ticks{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2.4vh 3vw}
-.v2 .ticks li{display:flex;align-items:center;gap:1vw;background:var(--card2);border:1px solid var(--line2);border-radius:20px;padding:2.2vh 1.6vw;font:600 clamp(18px,2.1vw,40px)/1.15 var(--sans)}
-.v2 .ticks .cn{flex:none;width:clamp(30px,3vw,54px);height:clamp(30px,3vw,54px);border-radius:50%;background:var(--amber);color:#fff;display:grid;place-items:center}
-.v2 .ticks .cn svg{width:62%;height:62%;fill:none;stroke:currentColor;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
-@media (max-width:760px){.v2 .ticks{grid-template-columns:1fr}}
+.v2.archm{padding-top:4vh;padding-bottom:9vh;gap:1.4vh}.v2.archm .stack{gap:.6vh}.v2.archm h2.h{font-size:clamp(34px,4.4vw,92px)}
+.v2 .subl{font:400 clamp(16px,1.7vw,32px)/1.25 var(--sans);color:var(--muted);margin:0}
+.v2 .arch{display:grid;gap:1.3vh}
+.v2 .layer{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,2.1fr);gap:1.6vw;align-items:center;background:var(--card2);border:1px solid var(--line2);border-radius:20px;padding:1.4vh 1.5vw}
+.v2 .layer.l2{border:3px solid var(--amber)}
+.v2 .layer .cap{font:600 clamp(11px,1vw,16px)/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--amber-text);margin:0}
+.v2 .layer .ln{font:500 clamp(16px,1.72vw,32px)/1.2 var(--sans);margin:.4vh 0 0}.v2 .layer .ln:empty{display:none}
+.v2 .layer .hand{font-size:clamp(20px,2vw,36px);margin:.6vh 0 0}.v2 .layer .arrow{width:clamp(30px,3.2vw,54px)}
+.v2 .chips{display:flex;flex-wrap:wrap;gap:.7vh .6vw;align-items:center}
+.v2 .ch{display:inline-flex;flex-direction:column;background:var(--paper);border:1.5px solid var(--line2);border-radius:14px;padding:.8vh .9vw;font:600 clamp(16px,1.72vw,32px)/1.2 var(--sans)}
+.v2 .ch b{font-weight:600}.v2 .ch i{font-style:normal;font-weight:400;color:var(--muted)}
+.v2 .layer.l3 .chips{display:grid;grid-template-columns:repeat(3,1fr)}
+@media (max-width:760px){.v2 .layer{grid-template-columns:1fr}.v2 .layer.l3 .chips{grid-template-columns:1fr}}
 /* family */
 .v2 .fam{grid-template-columns:.7fr 1.3fr}
 .v2 .pages{display:flex;gap:1.8vw;justify-content:center;align-items:flex-start}
@@ -395,12 +403,16 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p class="fine">The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.</p>
 <aside class="notes">2:09 to 2:22. Say: "We judged 46 made-up cases: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents. Tone is still under target, and no person has rated warmth." Criterion: Impact and Execution (first tie-break). FINAL numbers only, from evaluations/results/build_comparison.md (build 9bc5c6d; ALIGNMENT_AUDIT.md): immigration 11 / 1 / 8, hospital 5 / 0 / 3, hostile intakes 13 / 1 / 4. These are JUDGE results, not human verdicts. Do not add them into a pass rate. A case costs about 6 cents (immigration, mean of 20) to 9 cents (hospital, mean of 8) and takes about 34 to 50 seconds. Say one failure plainly; if asked for another: the tone judge sits near 3 of 5 against a target of 4, it moves up to 0.75 between identical runs, and no person has rated warmth. Do not read the Jev disclosure aloud: it is on the slide. All numbers synthetic.</aside></section>
 
-<section class="slide v2 built" data-part="talk" data-name="what-we-built" data-title="What we built">
+<section class="slide v2 built archm" data-part="talk" data-name="what-we-built" data-title="What we built">
 <p class="lbl">11 · What we built</p>
-<div class="stack"><h2 class="h">One founder. Five AI agents.</h2>
-<p class="sub">Every step is in the commit log.</p></div>
-<ul class="ticks"><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>Two live crises, plain files</li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>The app, with PDF export</li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>Rules, a safety floor, Jev</li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>Verses from a verified list</li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>46 test cases, outside review</li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span>Learning loop, replay, command line</li></ul>
-<aside class="notes">2:22 to 2:28. Criterion: Presentation and Teamwork. Say: "One founder and five AI agents built it. Every step is in the commit log." Every tick is checked against documents/product/ALIGNMENT_AUDIT.md (46 scenarios, replay, CLI and MCP shipped, learning loop built and off). Honest status is NOT on this slide on purpose: it lives on the Impact slide ("Made-up families only."), the About page, How this was built (Limits) and What did not work. If asked: no real pastor has used it, no attorney has reviewed our sources, nothing has been learned yet. Do not volunteer "not read" or "nothing learned" on a slide. "Five AI agents" has no audit row: sensei to confirm.</aside>
+<div class="stack"><h2 class="h">What we built.</h2><p class="subl">One founder. Five AI agents. Every step is in the commit log.</p></div>
+<div class="arch" role="group" aria-label="The Nury architecture, four layers">
+<div class="layer l1"><div class="lt"><p class="cap">Layer 1 &middot; Crises</p><p class="ln">Each crisis is a folder of plain files.</p></div><div class="chips"><span class="ch">Immigration matter</span><span class="ch">Hospital emergency</span><span class="ch">More coming</span></div></div>
+<div class="layer l2"><div class="lt"><p class="cap">Layer 2 &middot; The agent</p><p class="ln">Plain Python. No agent framework.</p><p class="hand"><svg class="arrow" viewBox="0 0 90 64" aria-hidden="true"><path d="M8 52 C 30 58, 62 44, 72 12"/><path d="M58 22 L73 8 L80 26"/></svg><span class="hl">the agent is the engine</span></p></div><div class="chips"><span class="ch">Stages and gates</span><span class="ch">Named rules and safety floor</span><span class="ch">Privacy tokens</span><span class="ch">Shared skills (voice, grounding)</span></div></div>
+<div class="layer l3"><div class="lt"><p class="cap">Layer 3 &middot; Connected to</p><p class="ln"></p></div><div class="chips"><span class="ch"><b>Gloo AI Studio</b><i>writer: Claude Sonnet 4.6</i></span><span class="ch"><b>Jev from TypeSafe</b><i>second check</i></span><span class="ch"><b>YouVersion</b><i>verses</i></span></div></div>
+<div class="layer l4"><div class="lt"><p class="cap">Layer 4 &middot; Around it</p><p class="ln"></p></div><div class="chips"><span class="ch">App with PDF export</span><span class="ch">Evaluation system</span><span class="ch">Observability</span><span class="ch">CLI and MCP server (for other agents)</span></div></div>
+</div>
+<aside class="notes">2:22 to 2:34. Criterion: Technical Execution and Presentation. Say (12 s): "Nury is one engine. Crises sit on top as plain files. It connects to Gloo, Jev and YouVersion. Around it: the app, the evaluation system, and tools for other agents." Check against documents/FEATURES.md section 6 and ALIGNMENT_AUDIT.md: voice and grounding skills are BUILT and live verified; the loader refuses a skill that overrides the safety floor; a switch turns skills off. The skills before-and-after test is NOT run yet: never say skills help or improve results. CLI and MCP are read-only and need no key. "Five AI agents" has no audit row: sensei to confirm. The church network and the case file may be named (gate lifted); the church network lists only vetted contacts, labeled as the church's own, and never endorses.</aside>
 </section>
 
 <section class="slide v2 close" data-cut="90" data-part="talk" data-name="close" data-title="Close">
@@ -412,7 +424,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <div class="tags"><span class="tg">Read more: the About page</span></div>
 <p class="fine">Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice. Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.</p></div>
 <div><img class="photo2" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div></div>
-<aside class="notes">DAWN. 2:28 to 2:33. Criterion: Presentation. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here. Add on the slide: Read more, the About page.</aside></section>
+<aside class="notes">DAWN. 2:34 to 2:39. Criterion: Presentation. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here. Add on the slide: Read more, the About page.</aside></section>
 
 <section class="slide center memorial nofoot" data-part="talk" data-gated="memorial" data-name="memorial" data-title="In memory">
 <div class="lantern small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nury lantern mark"><g fill="#b8680f" stroke="#b8680f"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></svg></div>
@@ -421,7 +433,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p>She served her church for 83 years, in the small things and the big ones,<br>always with a smile, always with Jesus in her heart.</p>
 <p>She passed away a month ago. This is for her.</p></div>
 <div class="portrait" hidden></div>
-<aside class="notes">GATED, 2:36 to 2:52 (about 16 s): pending Juan's written approval. Criterion: Presentation, and the reason for the name. Do not show or publish as approved. These are Juan's words, Option 1 of presentation/MEMORIAL.md, verbatim. Nobody edits, shortens or humanizes them. The slide stays hidden (press G to preview) until Juan approves in writing. A hidden slot is ready for one portrait if Juan sends one.</aside></section>
+<aside class="notes">GATED, 2:39 to 2:55 (about 16 s): pending Juan's written approval. Criterion: Presentation, and the reason for the name. Do not show or publish as approved. These are Juan's words, Option 1 of presentation/MEMORIAL.md, verbatim. Nobody edits, shortens or humanizes them. The slide stays hidden (press G to preview) until Juan approves in writing. A hidden slot is ready for one portrait if Juan sends one.</aside></section>
 
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
 <section class="slide v2 bk" data-part="backup" data-name="the-evaluation-system-in-detail" data-title="The evaluation system in detail">
