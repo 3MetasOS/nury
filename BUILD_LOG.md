@@ -906,3 +906,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 09:25: case detail page LOCKED (Juan), with the Export/Print menu and PDFs.
 - 09:28: crisis pages LOCKED (Juan): #/crisis/detention and the hospital crisis page.
 - 09:38: crisis pages LOCKED FOR GOOD (Juan), with the banner, the Begin glow and the workflow summary. Locked: Home, Cases, Network, case detail, both crisis pages.
+- 09:58: intake and run and final pages LOCKED (Juan). Next: a few small new features (Juan: nothing major, simple adjustments).
