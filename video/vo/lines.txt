@@ -8,4 +8,3 @@
 08|And a short, warm message, in the pastor's hands to edit.
 09|Nury is not a pastor, and it never sends. The pastor does.
 10|Nury. The crisis-response agent for solo pastors.
-T|Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.

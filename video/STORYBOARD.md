@@ -82,8 +82,8 @@ Caption text comes from hack-sensei. Nothing below is claimed until hack-sensei 
 
 | # | Cut | Time | Visual | VO | On-screen text |
 |---|---|---|---|---|---|
-| 2b | 90 s | after shot 2, 4 s | Intake screen with the "Protected names" list the pastor confirms (names Nury found, add or remove). | (silence) | "Nury keeps names on this computer" |
-| 11b | Pitch only | after the package, about 6 s | The saved case file opens: index page, one page per stage, the next-steps map (lanes: tonight, this week, open questions, who to call). Local folder view, no upload. | Pitch VO from hack-ninja | "Saved on the pastor's computer. Approved text only." (confirm wording) |
+| 2b | 90 s | after shot 2, 4 s | Intake screen with the "Protected names" list the pastor confirms (names Nury found, add or remove). | (silence) | "Tokens, not names" |
+| 11b | Pitch only | after the package, about 6 s | The saved case file opens: index page, one page per stage, the next-steps map (lanes: tonight, this week, open questions, who to call). The case page as the app shows it. | Pitch VO from hack-ninja | "Approved text only." (confirm wording; no claim about where it is stored) |
 
 Rules for these two:
 - Honest limit: the privacy layer removes direct identifiers, not context. No caption says "private" or "anonymous". Use the confirmed wording only.

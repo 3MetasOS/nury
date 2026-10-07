@@ -31,10 +31,10 @@ const VO: Record<string, string> = {
   '08': "And a short, warm message, in the pastor's hands to edit.",
   '09': 'Nury is not a pastor, and it never sends. The pastor does.',
   '10': 'Nury. The crisis-response agent for solo pastors.',
-  'T': "Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.",
+  // 'T' line removed: its audio said 'the pastor's computer'. This old cut (Nury90) is superseded by NuryA.
 };
 // Seconds of speech per line: ElevenLabs Eric (vo/eleven_durations.json). Update if the voice changes.
-const VOLEN: Record<string, number> = {'01': 3.3, '02': 5.2, '03': 4.4, '04': 2.2, '05': 4.8, '06': 7.3, '07': 2.4, '08': 3.1, '09': 3.5, '10': 3.4, 'T': 11.7}; // Eric, max of normal and Noory takes
+const VOLEN: Record<string, number> = {'01': 3.3, '02': 5.2, '03': 4.4, '04': 2.2, '05': 4.8, '06': 7.3, '07': 2.4, '08': 3.1, '09': 3.5, '10': 3.4}; // Eric, max of normal and Noory takes
 type Scene = {
   id: string; dur: number; min?: number; kind: 'intro' | 'lock' | 'clip' | 'proof' | 'end' | 'memorial' | 'tech';
   from?: [string, number]; to?: [string, number]; // src range as [mark, offset]
@@ -47,10 +47,10 @@ const SCENES: Scene[] = [
   {id: 'lock', kind: 'lock', dur: 9, min: 5.1, vo: [{k: '01', at: 1.5}]},
   {id: 'selector', kind: 'clip', dur: 4, min: 3, from: ['selector', 0], to: ['selector', 3.7], label: 'The pastor picks the crisis.'},
   {id: 'intake', kind: 'clip', dur: 6, min: 5.6, from: ['selector', 3.7], to: ['start', 0.3], label: 'Solo pastor. No staff. No lawyer.', vo: [{k: '02', at: 0.2}]},
-  {id: 'protected', kind: 'clip', dur: 4, fixed: true, needs: 'protected', from: ['protected', 0], to: ['protected', 3.7], label: 'Nury keeps names on this computer'},
+  {id: 'protected', kind: 'clip', dur: 4, fixed: true, needs: 'protected', from: ['protected', 0], to: ['protected', 3.7], label: 'Tokens, not names'},
   {id: 'triage', kind: 'clip', dur: 11, min: 6.8, from: ['start', 0.3], to: ['approve1', 0.4], label: '1  Triage', vo: [{k: '03', at: 4.5}, {k: '04', at: 8.2}]},
   {id: 'rights', kind: 'clip', dur: 18, min: 13, from: ['approve1', 0.4], to: ['approve2', 0.4], label: '2  Rights brief. Vetted sources only.', vo: [{k: '05', at: 6}, {k: '06', at: 10.5}]},
-  {id: 'tech', kind: 'tech', dur: 12, fixed: true, needs: 'tech', vo: [{k: 'T', at: 0.3}]},
+  {id: 'tech', kind: 'tech', dur: 12, fixed: true, needs: 'tech'},
   {id: 'montage', kind: 'clip', dur: 12, min: 4.5, from: ['approve2', 0.4], to: ['approve4', 0.4], label: '3  Attorneys   4  Checklist', vo: [{k: '07', at: 4}]},
   {id: 'pastoral', kind: 'clip', dur: 11, min: 4.8, from: ['approve4', 0.4], to: ['approve5', 0.4], label: '5  Pastoral message', vo: [{k: '08', at: 3}]},
   {id: 'proof', kind: 'proof', dur: 8, fixed: true},
