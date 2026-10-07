@@ -42,7 +42,7 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   if [ $W -ge 960 ]; then agent-browser click ".aside [data-begin]" >/dev/null 2>&1; else agent-browser click "#startbar-btn" >/dev/null 2>&1; fi; agent-browser wait 500 >/dev/null 2>&1
   check "$T begin: opens the intake" "$(view)" '"intake"'
   check "$T begin: intake button says Begin" "$(ev "document.getElementById('btn-start').textContent.trim()")" '"Begin"'
-  check "$T intake: the consent note sits above the Begin button" "$(ev "(()=>{const c=document.querySelector('#v-intake [data-consent]'),b=document.getElementById('btn-start');return !!c&&c.getBoundingClientRect().bottom<=b.getBoundingClientRect().top})()")" "true"
+  check "$T intake: the consent note sits above the Begin button" "$(ev "document.querySelector('#v-intake [data-consent]').getBoundingClientRect().bottom<=document.getElementById('btn-start').getBoundingClientRect().top")" "true"
   click "#back-intake"; check "$T back: returns to the crisis page" "$(view)" '"crisis"'
   click "#crisis-back"; check "$T all crises: returns home" "$(view)" '"home"'
   # ---- cases
