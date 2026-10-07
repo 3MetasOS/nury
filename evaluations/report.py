@@ -26,7 +26,8 @@ def build(runs_path, out_dir):
         "escalations": sum(x["escalated"] for x in m),
         "mean_latency_s": round(sum(x["latency_s"] for x in m) / n, 2),
         "tokens_in": sum(x["tokens_in"] for x in m), "tokens_out": sum(x["tokens_out"] for x in m),
-        "total_cost_usd": round(sum(x["cost_usd"] for x in m), 4),
+        "total_cost_usd": (None if any(x["cost_usd"] is None for x in m) else round(sum(x["cost_usd"] for x in m), 4)),
+        "mean_cost_usd": (None if any(x["cost_usd"] is None for x in m) else round(sum(x["cost_usd"] for x in m) / n, 5)),
     }
     slim = [{k: v for k, v in r.items() if k != "trajectory"} for r in runs]
     out = Path(out_dir)
@@ -36,7 +37,7 @@ def build(runs_path, out_dir):
          "## Summary", "",
          f"- Pass rate: **{agg['pass']}/{agg['scenarios']} ({agg['pass_rate']:.0%})**. Fail: {agg['fail']}. Human review: {agg['human_review']}.",
          f"- Corrections per run (mean): {agg['mean_corrections']}. Retries: {agg['total_retries']}. Escalations: {agg['escalations']}.",
-         f"- Latency per run (mean): {agg['mean_latency_s']} s. Tokens: {agg['tokens_in']} in / {agg['tokens_out']} out. Cost: ${agg['total_cost_usd']}.", "",
+         f"- Latency per run (mean): {agg['mean_latency_s']} s. Tokens: {agg['tokens_in']} in / {agg['tokens_out']} out. Cost: {('$%s total, $%s per run' % (agg['total_cost_usd'], agg['mean_cost_usd'])) if agg['total_cost_usd'] is not None else 'not measured (token rates not set)'}.", "",
          "## Pass rate by category", "", "| Category | Pass rate | Runs |", "|---|---|---|"]
     for c, v in agg["pass_rate_by_category"].items():
         L.append(f"| {c} | {v:.0%} | {len(by[c])} |")

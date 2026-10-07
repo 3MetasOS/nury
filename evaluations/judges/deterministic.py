@@ -24,7 +24,7 @@ BANNED = [
 ]
 
 DISCLAIMER_PATTERNS = [
-    r"not a lawyer", r"not legal advice", r"no soy abogad", r"no es asesoramiento legal",
+    r"not a lawyer", r"not legal advice", r"no soy abogad", r"no es abogad", r"no es asesoramiento legal", r"no asesoramiento legal",
 ]
 AI_ID_PATTERNS = [r"\bai assistant\b", r"\bai\b", r"asistente de ia", r"inteligencia artificial", r"\bia\b"]
 

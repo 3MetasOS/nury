@@ -88,7 +88,7 @@ def metrics(traj):
         "latency_s": round(traj.get("latency_s", 0), 2),
         "tokens_in": sum(s.get("tokens_in", 0) for s in st),
         "tokens_out": sum(s.get("tokens_out", 0) for s in st),
-        "cost_usd": round(sum(s.get("cost_usd", 0) for s in st), 5),
+        "cost_usd": (None if any(s.get("cost_usd") is None for s in st) else round(sum(s["cost_usd"] for s in st), 5)),
     }
 
 
