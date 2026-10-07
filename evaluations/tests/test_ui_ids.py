@@ -178,4 +178,4 @@ def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
     s = (STATIC / "index.html").read_text(encoding="utf-8")
     assert "14 named checks" not in s, "the count is read from the registry (/api/features named_checks)"
     assert "a red team, human review" not in s
-    assert "Jev checks every draft; typed judges and a red team test it before release" in s and 'id="built-checks"' in s
+    assert "Jev classifying every draft at run time, and before release a red team audit and human review" in s and 'id="built-checks"' in s
