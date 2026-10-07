@@ -804,3 +804,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Final page: layout only; reading-level of generated text will be reported honestly (a finding, not tuned); CDC teach-back with two real readers is an item for Juan and Lola (optional).
 
 ## 132. 2026-10-07 02:59 MDT — Brand rule (Juan): the tagline always sits below the logo, never to the side; the rule is in branding/BRAND.md; app header shows the mark only; crew checks all surfaces.
+
+## 133. 2026-10-07 03:00 MDT — Juan overrides the freeze: the family-facing prompts follow the communications guide
+
+- Juan: "we have time, change the prompt to follow the communications manuals." This replaces the layout-only decision in entry 131 follow-up. hack-jedi rewrites the rights/information brief, checklist, pastoral message and resources prompts of both playbooks (key facts first, short sentences, 6th to 8th grade, native plain Spanish, one action per line, verb first, consistent number format, no jargon or fear language), with an advisory reading-level number per stage in the audit log, tests, then live checks on seven scenarios, and a NEW final commit replacing e4d19b6 as the candidate; hack-artisans re-runs all sets once on it. Consequence: the scored scorecard build changes again, so the numbers will describe the new final commit. Cost: about $2 for checks plus about $4 for the full re-run; credit still needed.
