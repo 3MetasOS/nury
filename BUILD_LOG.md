@@ -50,3 +50,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Failed first run: the mock agent exposed 3 harness bugs (substring "ice" matched in "office"; escalation scenario wrongly required completeness; an edit dropped the disclaimer). All fixed.
 - Learning: after a pastor Edit, the gate must re-append the disclaimer.
 - Pending: adapter to the real agent once `code/INTERFACE.md` lands; fault-injection hook from hack-jedi; JEV_API_KEY from Juan at eval time.
+
+## 8. 2026-10-06 19:47 MDT — Finalist script; mock scorecard flagged
+
+- hack-ninja: `presentation/FINALIST_SCRIPT.md` (076346e) sent to hack-video. One proof beat needs real scorecard numbers; a fallback line is included.
+- Learning: the mock-agent scorecard was committed to main. It is a self-test, not proof. hack-artisans must remove it or label it mock. Real numbers come only from a run against the real agent.
+- Locked demo intake now in scenario 1 (hack-artisans).
