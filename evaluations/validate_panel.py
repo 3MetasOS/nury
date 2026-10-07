@@ -66,8 +66,17 @@ def main():
                 "unverified_quotes": len([f for f in rv["findings"] if not f["quote_verified"]])}
         out["rows"].append(row)
     out["total_cost_usd"] = round(sum(r["cost"] or 0 for row in out["rows"] for r in row["reviewers"].values()), 4)
-    (HERE / "validation/panel_validation.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
-    print("cost", out["total_cost_usd"])
+    from datetime import datetime, timezone
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    (HERE / f"validation/panel_validation_{stamp}.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    calls = [r for row in out["rows"] for r in row["reviewers"].values()]
+    failed = sum(1 for r in calls if r["error"])
+    out["failed_calls"], out["calls"] = failed, len(calls)
+    if failed > len(calls) // 3:   # a run that mostly failed (for example 402 credit) must not replace good data
+        print(f"NOT updating panel_validation.json: {failed} of {len(calls)} calls failed. Kept the stamped file only.")
+    else:
+        (HERE / "validation/panel_validation.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    print("cost", out["total_cost_usd"], "failed", failed, "of", len(calls))
 
 
 if __name__ == "__main__":

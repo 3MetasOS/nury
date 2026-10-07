@@ -17,6 +17,10 @@ import yaml  # noqa: E402
 from judges import redteam_prompts as P  # noqa: E402
 
 REVIEWERS = ["gloo-openai-gpt-5.4", "gloo-google-gemini-3.1-pro", "gloo-meta-llama-4-maverick"]
+# Roles come from validation/PANEL_VALIDATION.md. "advisory": caught the injected problems but flagged safe text too, so its
+# findings alone do not force a human review. "gating": would force one; no reviewer has earned that. A finding quoted by
+# two reviewers is "corroborated" and always goes to the human canvas. Disagreement is shown, never averaged away.
+ROLES = {"gloo-openai-gpt-5.4": "advisory", "gloo-meta-llama-4-maverick": "advisory", "gloo-google-gemini-3.1-pro": "advisory"}
 MAX_OUT = 4000  # gemini spends part of this on hidden reasoning; 1500 returned empty answers
 
 
@@ -110,6 +114,36 @@ def verdict(reviews):
     return "findings_agree" if len(found) == len(ok) else "disagreement"
 
 
+def _same(a, b):
+    import difflib
+    a, b = _norm(a), _norm(b)
+    return bool(a and b) and (a in b or b in a or difflib.SequenceMatcher(None, a, b).ratio() >= 0.7)
+
+
+def corroborate(reviews):
+    """Findings quoted (about) the same by two or more reviewers: [{quote, stage, reviewers, categories}]."""
+    groups = []
+    for r in reviews:
+        for f in r["findings"]:
+            if not f.get("quote_verified"):
+                continue
+            for g in groups:
+                if g["stage"] == f.get("stage") and _same(g["quote"], f["quote"]):
+                    if r["model"] not in g["reviewers"]:
+                        g["reviewers"].append(r["model"])
+                    g["categories"].add(f.get("category"))
+                    break
+            else:
+                groups.append({"quote": f["quote"], "stage": f.get("stage"), "reviewers": [r["model"]], "categories": {f.get("category")}})
+    return [dict(g, categories=sorted(c for c in g["categories"] if c)) for g in groups if len(g["reviewers"]) >= 2]
+
+
+def needs_human(reviews, corroborated):
+    gating = any(ROLES.get(r["model"]) == "gating" and r["findings"] for r in reviews)
+    all_failed = all(r["error"] for r in reviews)
+    return bool(corroborated) or gating or all_failed
+
+
 def run_text_set(items, price_map):
     """items: [{id, traj, sc, texts?}] -> list of panel results. Imports kept local so tests can skip the network."""
     from nury.engine import get_playbook
@@ -121,8 +155,9 @@ def run_text_set(items, price_map):
         pb = get_playbook(it["sc"].get("playbook", "detention"))
         user, stages = build_input(it["traj"], it["sc"], pb, pbm, guardrails, it.get("texts"))
         revs = [review_one(client, m, P.INSTRUCTIONS, user, stages, price_map.get(m)) for m in REVIEWERS]
+        cor = corroborate(revs)
         out.append({"id": it["id"], "playbook": pb.id, "verdict": verdict(revs), "reviewers": revs,
-                    "needs_human": any(r["findings"] for r in revs) or any(r["error"] for r in revs)})
+                    "corroborated": cor, "needs_human": needs_human(revs, cor)})
         print(f"{it['id']:<34} {out[-1]['verdict']}  findings={[len(r['findings']) for r in revs]}", flush=True)
     return out
 
@@ -146,7 +181,7 @@ def main():
     res = run_text_set(items, pm)
     cost = round(sum(r["cost_usd"] or 0 for x in res for r in x["reviewers"]), 4)
     (runs_path.parent / "redteam.json").write_text(json.dumps(
-        {"version": P.VERSION, "reviewers": REVIEWERS, "prices_usd_per_1m": pm, "total_cost_usd": cost, "results": res},
+        {"version": P.VERSION, "reviewers": REVIEWERS, "roles": ROLES, "prices_usd_per_1m": pm, "total_cost_usd": cost, "results": res},
         indent=1, ensure_ascii=False))
     print(f"panel cost ${cost}")
 
