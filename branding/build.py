@@ -2,7 +2,7 @@
 
 Fonts (Fraunces, Inter; both SIL Open Font License) are read at build time from BRAND_FONT_DIR
 (Fraunces.ttf, Inter.ttf, the Google Fonts variable files). Nothing here ships a font.
-Usage: BRAND_FONT_DIR=/path python3 branding/build.py [option]   (option: a, b or c; default a)
+Usage: BRAND_FONT_DIR=/path python3 branding/build.py [option]   (option: c is the brand; "options" writes the archive)
 """
 import os, sys
 from pathlib import Path
@@ -46,7 +46,13 @@ MARKS = {
        'M16.4 53 H47.6 V56.6 H16.4 Z"/>'
        '<circle cx="32" cy="12" r="4.4" fill="none" stroke-width="2.6"/>'
        '<path fill="none" stroke-width="2.6" stroke-linecap="round" d="M32 16.4 V19.6"/>', "stroke"),
- # C: heavier outline lantern, solid flame, ring at the top.
+ # CS: C with heavier strokes, for sizes under 24 px and the favicon.
+ "cs": ('<path fill="none" stroke-width="5.6" stroke-linejoin="round" d="M19 26 H45 L42.4 49 H21.6 Z"/>'
+        '<path fill="none" stroke-width="5.6" stroke-linecap="round" d="M14.4 26 H49.6 M16.4 54.2 H47.6"/>'
+        '<circle cx="32" cy="12" r="5.2" fill="none" stroke-width="3.6"/>'
+        '<path fill="none" stroke-width="3.6" d="M32 17.2 V23"/>'
+        '<path stroke="none" d="M32 31.2 C35.4 35 36.8 37.6 36.8 40.4 A4.8 4.8 0 0 1 27.2 40.4 C27.2 37.6 28.6 35 32 31.2 Z"/>', "stroke"),
+ # C: the Nury mark. Outline lantern, solid flame, ring at the top.
  "c": ('<path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/>'
        '<path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/>'
        '<circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/>'
@@ -83,31 +89,37 @@ def lockup(opt, mark_color, word_color, tag_color, bg=None, tagline=True):
             f'aria-label="Nury, the crisis-response agent for solo pastors">'+"".join(parts)+'</svg>'), W
 
 def favicon(opt):
-    body, kind = MARKS[opt]
+    body, kind = MARKS[opt + "s"] if opt + "s" in MARKS else MARKS[opt]
     stroke_attr = f' stroke="{AMBER}"' if kind else ""
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="32" height="32">'
             f'<rect width="64" height="64" rx="14" fill="{INK}"/>'
             f'<g transform="translate(32 32) scale(1.12) translate(-32 -33)" fill="{AMBER}"{stroke_attr}>{body}</g></svg>')
 
 if __name__ == "__main__":
-    opt = sys.argv[1] if len(sys.argv) > 1 else "a"
+    opt = sys.argv[1] if len(sys.argv) > 1 else "c"
     if opt == "options":
+        ARCH = OUT / "archive"; ARCH.mkdir(exist_ok=True)
         cells = []
-        for o, name in (("a", "A. Peaked lantern"), ("b", "B. Arched lantern, hung from a cord loop"), ("c", "C. Outline lantern")):
+        for o, name in (("a", "A. Peaked lantern (not chosen)"), ("b", "B. Arched lantern, hung from a cord loop (not chosen)"), ("c", "C. Outline lantern (chosen)")):
             dk, _ = lockup(o, AMBER, TEXT, "#a9a59b", bg=INK)
             lt, _ = lockup(o, AMBER_DEEP, INK, "#55524a", bg=PAPER)
             cells.append(f'<section><h2>{name}</h2><div class="r"><div class="dk">{dk}</div><div class="lt">{lt}</div></div>'
               f'<div class="r s"><div class="dk"><span>64</span>{mark_svg(o,AMBER,64)}<span>32</span>{mark_svg(o,AMBER,32)}<span>16</span>{mark_svg(o,AMBER,16)}</div>'
               f'<div class="lt"><span>64</span>{mark_svg(o,INK,64)}<span>32</span>{mark_svg(o,INK,32)}<span>16</span>{mark_svg(o,INK,16)}<span>one colour</span></div></div></section>')
-        html = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nury logo options</title>
+        html = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nury logo options (archive)</title>
 <style>body{{margin:0;background:#111;color:#ece7dc;font:15px/1.5 system-ui,sans-serif;padding:20px}}h1{{font-family:Georgia,serif}}h2{{margin:.2em 0 .4em;font-size:18px}}
 section{{margin:0 0 28px}}.r{{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px;margin-bottom:10px}}
 .dk,.lt{{border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}}.dk{{background:{INK}}}.lt{{background:{PAPER};color:{INK}}}
-.dk svg:not([aria-label^=Nury,]),.lt svg:not([aria-label^=Nury,]){{flex:none}}svg[aria-label^="Nury,"]{{max-width:100%;height:auto}}span{{font-size:12px;opacity:.7}}</style></head><body>
-<h1>Nury logo options</h1><p>Three marks. Each shown on ink and on paper, as a lockup and at 64, 32 and 16 px. Pure SVG; wordmark in Fraunces outlines.</p>{"".join(cells)}</body></html>'''
-        (OUT / "options.html").write_text(html); print("options.html")
+svg[aria-label^="Nury,"]{{max-width:100%;height:auto}}span{{font-size:12px;opacity:.7}}</style></head><body>
+<h1>Nury logo options (archive)</h1><p>Juan chose C. A and B are kept here for the record.</p>{"".join(cells)}</body></html>'''
+        (ARCH / "options.html").write_text(html)
+        for o in ("a", "b"):
+            (ARCH / f"logo-mark-{o}.svg").write_text(mark_svg(o, AMBER, 64))
+        print("archive written")
     else:
-        (OUT / "logo-mark.svg").write_text(mark_svg(opt, AMBER, 64).replace('<svg ', '<svg ', 1))
-        s, w = lockup(opt, AMBER, TEXT, "#a9a59b", bg=INK); (OUT / "logo-lockup.svg").write_text(s)
-        s, _ = lockup(opt, AMBER_DEEP, INK, "#55524a", bg=PAPER); (OUT / "logo-lockup-light.svg").write_text(s)
+        (OUT / "logo-mark.svg").write_text(mark_svg(opt, AMBER, 64))
+        small = opt + "s"
+        if small in MARKS: (OUT / "logo-mark-small.svg").write_text(mark_svg(small, AMBER, 64))
+        s_, w = lockup(opt, AMBER, TEXT, "#a9a59b", bg=INK); (OUT / "logo-lockup.svg").write_text(s_)
+        s_, _ = lockup(opt, AMBER_DEEP, INK, "#55524a", bg=PAPER); (OUT / "logo-lockup-light.svg").write_text(s_)
         (OUT / "favicon.svg").write_text(favicon(opt)); print("final", opt, round(w))
