@@ -221,7 +221,7 @@ def test_hand_written_notes_are_decoration_only_and_self_hosted():
     assert "data-notes" not in css and ".no-phone" not in css
     credits = (ROOT.parents[0] / "branding" / "IMAGES.md").read_text(encoding="utf-8") if False else ""
     page_notes = re.findall(r'data-note="([^"]+)"', (STATIC / "index.html").read_text(encoding="utf-8") + (STATIC / "network.html").read_text(encoding="utf-8"))
-    assert len(page_notes) >= 6 and all(len(n) <= 60 for n in page_notes), "short notes only"
+    assert len(page_notes) >= 6 and all(len(n) <= 72 for n in page_notes), "short notes only (the Cases note is 69 characters, by request)"
 
 
 def test_every_shell_css_brace_is_closed():
