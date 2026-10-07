@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Nury — crisis-response agent for solo pastors</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1015; --surface:#131824; --surface-2:#1a2233; --line:rgba(236,231,220,.10);
+  --amber:#e8a33d; --amber-soft:rgba(232,163,61,.13); --amber-ink:#1a1206;
+  --text:#ece7dc; --muted:#a79f8d; --faint:#8d8778;
+  --green:#8fce9e; --green-soft:rgba(143,206,158,.12);
+  --red:#e0785f; --red-soft:rgba(224,120,95,.12);
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:
+  radial-gradient(1100px 560px at 50% -120px, rgba(232,163,61,.075), transparent 70%),
+  var(--bg)}
+body{background:transparent;color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;min-height:100vh}
+::selection{background:var(--amber);color:var(--amber-ink)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface-2);border-radius:6px;border:2px solid var(--bg)}
+:focus{outline:none}
+:focus-visible{outline:2px solid var(--amber);outline-offset:2px;border-radius:6px}
+input,textarea,select{caret-color:var(--amber)}
+button{font-family:var(--sans);cursor:pointer}
+a{color:var(--amber)}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
+.hwrap{max-width:1120px;margin:0 auto;padding:0 20px;height:62px;display:flex;align-items:center;gap:14px}
+.brand{display:flex;align-items:center;gap:11px;margin-right:auto}
+.brand svg{width:30px;height:30px;flex:none}
+.brand .word{font-weight:700;letter-spacing:.14em;font-size:15px}
+.brand .sub{font-size:11px;color:var(--faint);letter-spacing:.04em;display:block;line-height:1.2}
+.iconbtn{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;
+  background:transparent;border:1px solid var(--line);color:var(--muted);transition:border-color .15s,color .15s}
+.iconbtn:hover{border-color:var(--amber);color:var(--amber)}
+.iconbtn svg{width:18px;height:18px}
+.keydot{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)}
+.keydot .dot{width:9px;height:9px;border-radius:50%;background:var(--amber)}
+.keydot.live .dot{background:var(--green)}
+
+/* ---------- layout ---------- */
+main{max-width:1120px;margin:0 auto;padding:34px 20px 90px}
+.view{display:none}
+.view.active{display:block;animation:fadein .25s ease-out}
+@keyframes fadein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.narrow{max-width:680px;margin:0 auto}
+.runcol{max-width:780px;margin:0 auto}
+.kicker{font-size:13px;color:var(--amber);font-weight:600;letter-spacing:.04em;margin-bottom:10px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(30px,5vw,44px);line-height:1.15;
+  letter-spacing:-0.02em;margin-bottom:12px;text-wrap:balance}
+.lede{color:var(--muted);font-size:16.5px;margin-bottom:28px;max-width:58ch}
+.ver{margin-top:44px;font-size:11.5px;color:var(--faint);letter-spacing:.03em}
+
+/* ---------- flow picker ---------- */
+.herolantern{width:88px;height:88px;border-radius:28px;background:var(--amber-soft);
+  display:flex;align-items:center;justify-content:center;margin-bottom:24px;
+  box-shadow:0 0 60px rgba(232,163,61,.20), inset 0 0 18px rgba(232,163,61,.08);
+  animation:breathe 5s ease-in-out infinite}
+.herolantern svg{width:48px;height:48px}
+@keyframes breathe{0%,100%{box-shadow:0 0 60px rgba(232,163,61,.20), inset 0 0 18px rgba(232,163,61,.08)}
+  50%{box-shadow:0 0 84px rgba(232,163,61,.30), inset 0 0 22px rgba(232,163,61,.12)}}
+.flows{display:flex;flex-direction:column;gap:12px;margin-top:6px}
+.flowcard{display:flex;align-items:center;gap:16px;width:100%;text-align:left;background:var(--surface);
+  border:1px solid var(--line);border-radius:16px;padding:18px 20px;color:var(--text);transition:border-color .15s, transform .15s}
+.flowcard:hover{border-color:var(--amber)}
+.flowcard:active{transform:scale(.995)}
+.fic{flex:none;width:46px;height:46px;border-radius:13px;background:var(--amber-soft);display:flex;
+  align-items:center;justify-content:center}
+.fic svg{width:24px;height:24px}
+.fbody{flex:1;min-width:0}
+.fname{display:block;font-size:16px;font-weight:700;letter-spacing:.01em}
+.ftag{display:block;font-size:13.5px;color:var(--muted);margin-top:3px;line-height:1.45}
+.fbadge{flex:none;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.fbadge.ready{color:var(--green);border-color:var(--green)}
+
+/* ---------- run page ---------- */
+.runhead{margin-bottom:8px}
+.runhead h1{font-size:clamp(26px,4vw,36px)}
+.backrow{margin-bottom:14px}
+#progressWrap{position:sticky;top:62px;z-index:40;background:var(--bg);border-bottom:1px solid var(--line);
+  padding:10px 0;margin:0 -20px 26px;display:none}
+#progressWrap.show{display:block}
+#progressWrap .stepper{max-width:780px;margin:0 auto;padding:0 20px}
+.stepper{display:flex;gap:4px;overflow-x:auto;padding-bottom:4px}
+.step{display:flex;gap:10px;align-items:center;padding:8px 10px;border-radius:10px;min-width:0;flex:none}
+.step .n{flex:none;width:26px;height:26px;border-radius:50%;border:1px solid var(--line);display:flex;
+  align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);transition:all .2s;background:var(--bg)}
+.step .t{font-size:12.5px;font-weight:600;white-space:nowrap}
+.step[data-state="working"] .n{border-color:var(--amber);color:var(--amber);animation:pulse 2.2s ease-in-out infinite}
+.step[data-state="review"] .n{border-color:var(--amber);background:var(--amber);color:var(--amber-ink);box-shadow:0 0 14px rgba(232,163,61,.5)}
+.step[data-state="approved"] .n{border-color:var(--green);background:var(--green-soft);color:var(--green);box-shadow:0 0 14px rgba(143,206,158,.4)}
+.step[data-state="blocked"] .n{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,163,61,.35)}50%{box-shadow:0 0 0 7px rgba(232,163,61,0)}}
+
+.stagecard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:20px;scroll-margin-top:140px}
+.stagecard[data-state="working"]{animation:lantern 2.6s ease-in-out infinite}
+@keyframes lantern{0%,100%{box-shadow:0 0 0 0 rgba(232,163,61,0)}50%{box-shadow:0 0 26px -6px rgba(232,163,61,.35)}}
+.schead{display:flex;align-items:flex-start;gap:14px;margin-bottom:6px}
+.schead h2{font-family:var(--serif);font-size:23px;font-weight:600;letter-spacing:-0.01em;flex:1}
+.statuspill{flex:none;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  padding:6px 13px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.stagecard[data-state="working"] .statuspill{color:var(--amber);border-color:var(--amber)}
+.stagecard[data-state="review"] .statuspill{color:var(--amber-ink);background:var(--amber);border-color:var(--amber)}
+.stagecard[data-state="approved"] .statuspill{color:var(--green);border-color:var(--green)}
+.stagecard[data-state="blocked"] .statuspill{color:var(--red);border-color:var(--red)}
+.activity{margin:14px 0 4px;display:flex;flex-direction:column;gap:7px;min-height:24px}
+.act{display:flex;gap:10px;align-items:baseline;font-size:13px;color:var(--muted);animation:fadein .2s ease-out}
+.act time{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px;color:var(--faint);flex:none}
+.act.retry{color:var(--amber)}
+.act.fail{color:var(--red)}
+.act.ok{color:var(--green)}
+.output{margin:16px 0 4px;font-size:15px}
+.output h3{font-family:var(--serif);font-size:17px;margin:20px 0 8px;font-weight:600}
+.output h3:first-child{margin-top:0}
+.output p{margin-bottom:10px;color:var(--text)}
+.output ul{margin:0 0 12px 20px}
+.output li{margin-bottom:7px}
+.output li::marker{color:var(--amber)}
+.output a{word-break:break-all}
+.kv{display:grid;grid-template-columns:150px 1fr;gap:8px 16px;margin-bottom:6px;font-size:14.5px}
+.kv dt{color:var(--faint);font-weight:500}
+.kv dd{color:var(--text)}
+@media(max-width:560px){.kv{grid-template-columns:1fr;gap:2px}.kv dt{margin-top:8px}}
+.cite{font-size:12.5px;color:var(--faint);margin-top:4px}
+.cite b{color:var(--muted);font-weight:600}
+.urlrow{font-size:13px;color:var(--muted);word-break:break-all;margin-top:2px}
+.disclaimer{margin-top:18px;padding:13px 16px;background:var(--surface-2);border-radius:10px;
+  font-size:12.5px;color:var(--muted);line-height:1.5}
+.pastoral{font-family:var(--serif);font-size:18.5px;line-height:1.7;background:var(--surface-2);
+  border-radius:12px;padding:22px;margin:6px 0 4px}
+.gates{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.editbox{width:100%;min-height:170px;margin-top:14px;background:var(--bg);border:1px solid var(--amber);
+  border-radius:12px;color:var(--text);font-size:14.5px;padding:16px;font-family:var(--sans);line-height:1.6}
+.intakequote{border-left:2px solid var(--amber);padding:4px 0 4px 16px;color:var(--muted);font-size:15px;margin:10px 0 4px}
+
+/* ---------- intake form ---------- */
+.field{margin-bottom:22px}
+.field label{display:block;font-size:13.5px;font-weight:600;margin-bottom:9px;letter-spacing:.02em}
+textarea{width:100%;min-height:150px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;padding:16px;resize:vertical;transition:border-color .15s, box-shadow .15s}
+textarea:focus{border-color:var(--amber)}
+textarea::placeholder{color:var(--faint)}
+textarea.error{border-color:var(--red);box-shadow:0 0 0 3px var(--red-soft)}
+.fieldhint{font-size:13.5px;color:var(--amber);margin-top:9px;animation:fadein .2s ease-out}
+.chips{display:flex;flex-wrap:wrap;gap:9px}
+.chip{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;
+  padding:9px 17px;font-size:14px;font-weight:500;transition:all .15s}
+.chip:hover{border-color:var(--amber);color:var(--text)}
+.chip[aria-pressed="true"]{background:var(--amber-soft);border-color:var(--amber);color:var(--amber)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.row2{grid-template-columns:1fr}}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);font-size:12.5px;font-weight:600;
+  padding:6px 13px;border-radius:999px;transition:background .15s,color .15s}
+.seg button[aria-pressed="true"]{background:var(--amber);color:var(--amber-ink)}
+.keyrow{display:flex;gap:10px;align-items:center}
+.keyrow input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:10px;color:var(--text);
+  font-size:14px;padding:11px 14px;font-family:var(--sans);min-width:0}
+.keyrow input::placeholder{color:var(--faint)}
+.demolink{background:none;border:0;color:var(--amber);font-size:13.5px;font-weight:500;text-decoration:underline;
+  text-underline-offset:3px;padding:0}
+.demolink:hover{color:var(--text)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border-radius:12px;
+  font-size:15px;font-weight:600;padding:14px 26px;border:1px solid var(--line);
+  background:var(--surface);color:var(--text);transition:all .15s;text-decoration:none}
+.btn:hover{border-color:var(--amber)}
+.btn-primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink);font-size:16px;padding:16px 34px}
+.btn-primary:hover{background:#f0b45a;border-color:#f0b45a}
+.btn-sm{padding:10px 18px;font-size:14px;border-radius:10px}
+.btn-danger{color:var(--red);border-color:rgba(224,120,95,.4);background:var(--red-soft)}
+.btn-danger:hover{border-color:var(--red)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.cta-row{display:flex;align-items:center;gap:18px;margin-top:30px;flex-wrap:wrap}
+.fineprint{font-size:12.5px;color:var(--faint);margin-top:18px;max-width:62ch}
+
+/* ---------- package ---------- */
+#packageSec{display:none;margin-top:8px}
+.pkg{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:clamp(24px,5vw,54px);scroll-margin-top:140px}
+.pkg h1{font-size:clamp(26px,4vw,36px);margin-bottom:4px}
+.pkg .meta{color:var(--faint);font-size:13px;margin-bottom:30px}
+.pkgsec{margin-bottom:30px;position:relative}
+.pkgsec h2{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+.pkgsec .copybtn{margin-left:auto}
+.copybtn{background:var(--surface-2);border:1px solid var(--line);color:var(--muted);border-radius:8px;
+  font-size:12px;font-weight:600;padding:6px 12px;display:inline-flex;align-items:center;gap:6px}
+.copybtn:hover{color:var(--amber);border-color:var(--amber)}
+.copybtn svg{width:13px;height:13px}
+.pkg .pastoral{font-size:19px}
+.pkgactions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+
+/* ---------- audit drawer ---------- */
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(430px,94vw);background:var(--surface);z-index:100;
+  border-left:1px solid var(--line);transform:translateX(102%);transition:transform .28s cubic-bezier(.2,.8,.2,1);
+  display:flex;flex-direction:column}
+.drawer.open{transform:none;box-shadow:-30px 0 60px rgba(0,0,0,.5)}
+.drawer header{position:static;border-bottom:1px solid var(--line);padding:16px 20px;display:flex;align-items:center;gap:12px}
+.drawer header h2{font-size:16px;font-weight:700;flex:1}
+.drawer .body{flex:1;overflow-y:auto;padding:18px 20px;display:flex;flex-direction:column;gap:9px}
+.scrim{position:fixed;inset:0;background:rgba(5,7,10,.6);z-index:90;opacity:0;pointer-events:none;transition:opacity .25s}
+.scrim.open{opacity:1;pointer-events:auto}
+
+/* ---------- toast / stopbar ---------- */
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,20px);background:var(--surface-2);
+  border:1px solid var(--amber);color:var(--text);padding:12px 22px;border-radius:12px;font-size:14px;max-width:92vw;
+  opacity:0;pointer-events:none;transition:all .25s;z-index:200;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.stopbar{position:sticky;bottom:0;z-index:40;background:linear-gradient(transparent,var(--bg) 40%);padding:26px 0 18px;
+  display:none;justify-content:center}
+.stopbar.show{display:flex}
+
+@media(max-width:520px){
+  .keydot span:last-child{display:none}
+  .brand .sub{display:none}
+  .hwrap{gap:10px;padding:0 14px}
+}
+@media print{
+  header,.stopbar,.gates,.pkgactions,.drawer,.scrim,.toast,.activity,.copybtn,#progressWrap,#intakeCard,.backrow{display:none!important}
+  body{background:#fff;color:#111}
+  #packageSec{display:block!important}
+  .pkg{border:0;max-width:100%;padding:0}
+  .pkg .pastoral{background:#f5f2ec}
+  .pkg a{color:#7a5210!important}
+  .pkg li::marker{color:#7a5210}
+  .pkg .cite,.pkg .meta{color:#555!important}
+  .pkg .cite b{color:#333!important}
+  .pkg .disclaimer{color:#444!important;background:#f5f2ec}
+  .pkg .kv dt{color:#555}
+  main{padding:0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="hwrap">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+        <path d="M12 4c0-1.5 1.8-2.4 4-2.4s4 .9 4 2.4"/>
+        <path d="M11 6.5h10l1.6 4h-13.2l1.6-4z"/>
+        <rect x="10" y="10.5" width="12" height="12" rx="5"/>
+        <path d="M16 14.2c1.5 1.8 2.2 3 2.2 4.3a2.2 2.2 0 1 1-4.4 0c0-1.3.7-2.5 2.2-4.3z" fill="#e8a33d" stroke="none" opacity=".9"/>
+        <path d="M9 25.5h14"/>
+      </svg>
+      <div><span class="word">NURY</span><span class="sub">crisis-response agent for solo pastors</span></div>
+    </div>
+    <button class="iconbtn" id="auditBtn" aria-label="View run audit log" title="Run audit log">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <path d="M8 6h13M8 12h13M8 18h13"/><circle cx="3.5" cy="6" r="1.2"/><circle cx="3.5" cy="12" r="1.2"/><circle cx="3.5" cy="18" r="1.2"/>
+      </svg>
+    </button>
+    <div class="keydot" id="keyDot" title="API key status"><span class="dot"></span><span>demo mode</span></div>
+  </div>
+</header>
+
+<main>
+  <!-- PAGE 1: problem picker -->
+  <section class="view active" id="view-home">
+    <div class="narrow">
+      <div class="herolantern" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path d="M12 4c0-1.5 1.8-2.4 4-2.4s4 .9 4 2.4"/>
+          <path d="M11 6.5h10l1.6 4h-13.2l1.6-4z"/>
+          <rect x="10" y="10.5" width="12" height="12" rx="5"/>
+          <path d="M16 14.2c1.5 1.8 2.2 3 2.2 4.3a2.2 2.2 0 1 1-4.4 0c0-1.3.7-2.5 2.2-4.3z" fill="#e8a33d" stroke="none" opacity=".9"/>
+          <path d="M9 25.5h14"/>
+        </svg>
+      </div>
+      <div class="kicker">Nury grows with your ministry.</div>
+      <h1>What is the family facing?</h1>
+      <p class="lede">Choose the situation closest to what's happening. Each one opens a guided response built for it — new situations arrive as structured flows, without rebuilding the system.</p>
+      <div class="flows" id="flowList"></div>
+      <div class="ver">Nury prototype · v0.3 · English-first</div>
+    </div>
+  </section>
+
+  <!-- PAGE 2: the workflow — intake, running stages, and results on one page -->
+  <section class="view" id="view-run">
+    <div class="runcol">
+      <div class="runhead">
+        <div class="backrow"><button class="demolink" id="backHome">← All situations</button></div>
+        <div class="kicker" id="runKicker">Immigration crisis</div>
+        <h1 id="runTitle">Tell Nury what happened.</h1>
+        <p class="lede" id="runLede">Describe it in your own words. Nury works through it below in careful stages — you approve each one, and the finished package assembles at the end of this page.</p>
+      </div>
+    </div>
+    <div id="progressWrap"><div class="stepper" id="stepper" aria-label="Response stages"></div></div>
+    <div class="runcol">
+      <div class="stagecard" id="intakeCard" data-state="review">
+        <div class="schead"><h2>Intake</h2><span class="statuspill" id="intakePill">Needs your input</span></div>
+        <div id="intakeForm">
+          <div class="field">
+            <label for="intake">The family's situation</label>
+            <textarea id="intake" placeholder="e.g. Marta called crying — her husband was detained at work this afternoon…"></textarea>
+            <div style="margin-top:8px"><button class="demolink" id="demoFill">or load a demo intake</button></div>
+          </div>
+          <div class="field">
+            <label>What kind of situation is it?</label>
+            <div class="chips" id="sitChips">
+              <button class="chip" data-sit="detention" aria-pressed="false">Detention</button>
+              <button class="chip" data-sit="raid" aria-pressed="false">Raid / home visit</button>
+              <button class="chip" data-sit="court" aria-pressed="false">Court date</button>
+              <button class="chip" data-sit="other" aria-pressed="true">Something else</button>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label>The family's language</label>
+              <div class="seg" id="famLang" role="group" aria-label="Family language">
+                <button data-fl="es" aria-pressed="false">Español</button>
+                <button data-fl="en" aria-pressed="true">English</button>
+              </div>
+            </div>
+            <div class="field">
+              <label for="apikey">Gloo API key <span style="color:var(--faint);font-weight:400">(optional)</span></label>
+              <div class="keyrow">
+                <input type="password" id="apikey" placeholder="Paste once — stored only in this browser" autocomplete="off">
+              </div>
+            </div>
+          </div>
+          <div class="cta-row">
+            <button class="btn btn-primary" id="beginBtn">Begin response</button>
+          </div>
+          <p class="fineprint">Prototype: runs in demo mode with scripted data. The event build connects each stage to Gloo AI Studio. Nury gives legal information, never legal advice — every output urges the family to consult an attorney.</p>
+        </div>
+        <div id="intakeSummary" style="display:none"></div>
+      </div>
+
+      <div id="stageCol"></div>
+
+      <div id="packageSec">
+        <div class="pkg" id="pkgDoc"></div>
+        <div class="pkgactions">
+          <button class="btn btn-sm" id="printBtn">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Print / save PDF
+          </button>
+          <button class="btn btn-sm" id="newCaseBtn">Start a new case</button>
+        </div>
+      </div>
+    </div>
+    <div class="stopbar" id="stopbar">
+      <button class="btn btn-danger" id="stopBtn">Stop — I'll handle this manually</button>
+    </div>
+  </section>
+</main>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-label="Run audit log">
+  <header>
+    <h2>Run audit log</h2>
+    <button class="iconbtn" id="auditClose" aria-label="Close audit log">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </header>
+  <div class="body" id="auditBody"></div>
+</aside>
+
+<div class="toast" id="toast" role="status"></div>
+<script type="application/json" id="seed">
+{
+  "rights": [
+    {"id":"silencio","es":"Tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio.","en":"You have the right to remain silent. You do not have to answer questions about immigration status.","source":"ACLU — Know Your Rights"},
+    {"id":"puerta","es":"No abra la puerta a menos que los agentes muestren una orden judicial firmada por un juez.","en":"Do not open the door unless agents show a judicial warrant signed by a judge.","source":"ACLU — Know Your Rights"},
+    {"id":"firma","es":"No firme ningún documento sin hablar primero con un abogado.","en":"Do not sign any documents without speaking to an attorney first.","source":"ACLU — Know Your Rights"},
+    {"id":"llamada","es":"Si es detenido, tiene derecho a una llamada telefónica y a pedir contactar a su consulado.","en":"If detained, you have the right to a phone call and to ask to contact your consulate.","source":"ACLU — Know Your Rights"}
+  ],
+  "attorneys": {
+    "national": [
+      {"name":"ACLU — Know Your Rights","es":"Información sobre sus derechos en redadas y detenciones.","en":"Know-your-rights information for raids and detention.","url":"https://www.aclu.org/know-your-rights"},
+      {"name":"AILA Lawyer Search","es":"Buscador de abogados de inmigración colegiados.","en":"Search for licensed immigration attorneys.","url":"https://www.ailalawyer.com"},
+      {"name":"National Immigration Project","es":"Recursos y referencias legales.","en":"Legal resources and referrals.","url":"https://nipnlg.org"}
+    ],
+    "local": [
+      {"name":"Support Network — Iglesia Esperanza","area":"Greeley, CO","phone":"(555) 014-2288","es":"Añadido por la iglesia · verificado ene 2026","en":"Added by the church · verified Jan 2026"}
+    ]
+  },
+  "demoIntake": "Marta Rivera called me crying. Her husband Carlos was detained this afternoon at the packing plant in Greeley where he works. Their two children, ages 8 and 12, are home with her. She doesn't know where he was taken. She's afraid to open the door if anyone knocks."
+}
+</script>
+
+<script>
+"use strict";
+/* ============================================================
+   NURY v0.3 — two pages: problem picker + one continuous
+   workflow page (intake → running stages → results).
+   UI is English-only. Family-facing content follows the
+   family's language (English default, Spanish available).
+   Demo mode: Agent.runStage() is the seam for live Gloo calls.
+   ============================================================ */
+const SEED = JSON.parse(document.getElementById("seed").textContent);
+
+const ICONS = {
+  shield: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4.5-3 8.5-7 10-4-1.5-7-5.5-7-10V6l7-3z"/><path d="M9.5 12l2 2 3.5-4"/></svg>',
+  cross: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 8.5v7M8.5 12h7"/></svg>',
+  compass: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5 5-2z"/></svg>',
+  candle: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5c1.3 1.6 2 2.6 2 3.7a2 2 0 1 1-4 0c0-1.1.7-2.1 2-3.7z"/><path d="M12 9.5V11"/><path d="M9.5 13.5h5V21h-5z"/></svg>',
+  house: '<svg viewBox="0 0 24 24" fill="none" stroke="#e8a33d" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7"/><path d="M6 9.5V20h12V9.5"/></svg>'
+};
+const FLOWS = [
+  {id:"immigration", status:"ready", stages:["triage","rights","attorneys","checklist","message"], icon:"shield",
+   name:"Immigration crisis", tag:"Detention, raid, or sudden legal emergency."},
+  {id:"bereavement", status:"soon", stages:[], icon:"candle",
+   name:"Loss & bereavement", tag:"A death in the family — funeral and grief support."},
+  {id:"housing", status:"soon", stages:[], icon:"house",
+   name:"Rent & utilities", tag:"Eviction notice or shutoff — emergency assistance."},
+  {id:"healthcare", status:"soon", stages:[], icon:"cross",
+   name:"Healthcare crisis", tag:"A medical emergency with no coverage and no one to call."},
+  {id:"stranded", status:"soon", stages:[], icon:"compass",
+   name:"Stranded & displaced", tag:"Far from home, or home lost tonight."}
+];
+const STAGE_NAMES = {triage:"Triage", rights:"Rights brief", attorneys:"Attorney resources", checklist:"Family checklist", message:"Pastoral message"};
+const STAGE_STATES = {waiting:"waiting", working:"working", review:"needs your approval", approved:"approved", blocked:"escalated"};
+
+/* ---------- state ---------- */
+const S = { flow:null, famLang:"en", situation:"other", running:false, stopped:false,
+            stages:[], audit:[], corrections:0, gateResolve:null };
+const STAGES = () => (S.flow ? S.flow.stages : []);
+const $ = id => document.getElementById(id);
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const now = () => new Date().toLocaleTimeString([], {hour12:false});
+const esc = s => s.replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- toast ---------- */
+let toastTimer;
+function toast(msg, ms){
+  const el = $("toast"); el.textContent = msg; el.classList.add("show");
+  clearTimeout(toastTimer); toastTimer = setTimeout(()=>el.classList.remove("show"), ms || 3200);
+}
+
+/* ---------- audit ---------- */
+function audit(kind, msg){
+  S.audit.push({time: now(), kind, msg});
+  $("auditBody").innerHTML = S.audit.map(e =>
+    `<div class="act ${e.kind}"><time>${e.time}</time><span>${esc(e.msg)}</span></div>`).join("");
+  const b = $("auditBody"); b.scrollTop = b.scrollHeight;
+}
+
+/* ---------- views ---------- */
+function show(id){
+  document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+  $(id).classList.add("active");
+  window.scrollTo({top:0});
+}
+
+/* ---------- flow picker ---------- */
+function renderHome(){
+  $("flowList").innerHTML = FLOWS.map(f => `
+    <button class="flowcard" data-flow="${f.id}" ${f.status!=="ready"?'aria-disabled="true"':""}>
+      <span class="fic">${ICONS[f.icon]}</span>
+      <span class="fbody"><span class="fname">${f.name}</span><span class="ftag">${f.tag}</span></span>
+      <span class="fbadge ${f.status}">${f.status==="ready"?"Ready":"Soon"}</span>
+    </button>`).join("");
+}
+$("flowList").addEventListener("click", e => {
+  const b = e.target.closest("[data-flow]"); if(!b) return;
+  const f = FLOWS.find(x => x.id === b.dataset.flow);
+  if(f.status !== "ready"){ toast("This flow is in development — the immigration response is ready today.", 4200); return; }
+  S.flow = f;
+  audit("gate", "Flow selected: " + f.id);
+  $("runKicker").textContent = f.name;
+  resetRun();
+  show("view-run");
+});
+$("backHome").onclick = () => show("view-home");
+
+/* ---------- key ---------- */
+const keyInput = $("apikey"), keyDot = $("keyDot");
+function paintKey(){
+  const has = !!keyInput.value;
+  keyDot.classList.toggle("live", has);
+  keyDot.querySelector("span:last-child").textContent = has ? "key saved" : "demo mode";
+}
+keyInput.value = localStorage.getItem("refugio_key") || "";
+keyInput.addEventListener("input", () => { localStorage.setItem("refugio_key", keyInput.value); paintKey(); });
+
+/* ---------- intake controls ---------- */
+$("demoFill").onclick = () => { $("intake").value = SEED.demoIntake; $("intake").focus(); };
+$("intake").addEventListener("input", () => {
+  $("intake").classList.remove("error");
+  const h = $("intakeHint"); if(h) h.remove();
+});
+$("sitChips").addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if(!b) return;
+  document.querySelectorAll("#sitChips .chip").forEach(c => c.setAttribute("aria-pressed","false"));
+  b.setAttribute("aria-pressed","true"); S.situation = b.dataset.sit;
+});
+$("famLang").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#famLang button").forEach(x => x.setAttribute("aria-pressed","false"));
+  b.setAttribute("aria-pressed","true"); S.famLang = b.dataset.fl;
+});
+/* ---------- run state ---------- */
+function resetRun(){
+  S.running = false; S.stopped = false; S.stages = []; S.corrections = 0; S.gateResolve = null;
+  $("stageCol").innerHTML = "";
+  $("packageSec").style.display = "none";
+  $("progressWrap").classList.remove("show");
+  $("stopbar").classList.remove("show");
+  const ta = $("intake");
+  ta.value = ""; ta.classList.remove("error");
+  const h = $("intakeHint"); if(h) h.remove();
+  $("intakeForm").style.display = "";
+  const summ = $("intakeSummary"); summ.style.display = "none"; summ.innerHTML = "";
+  const pill = $("intakePill");
+  pill.textContent = "Needs your input"; pill.style.cssText = "";
+  $("intakeCard").dataset.state = "review";
+  buildStepper();
+}
+
+/* ---------- stepper ---------- */
+function buildStepper(){
+  const el = $("stepper"); if(!el) return;
+  el.innerHTML = STAGES().map((id,i) => {
+    const st = S.stages[i] || {state:"waiting"};
+    return `<div class="step" data-state="${st.state}"><div class="n">${st.state==="approved"?"✓":i+1}</div>
+      <div class="t">${STAGE_NAMES[id]}</div></div>`;
+  }).join("");
+}
+function paintStep(i, state){
+  S.stages[i].state = state;
+  const card = document.querySelector(`#stageCol .stagecard[data-i="${i}"]`);
+  if(card){
+    card.dataset.state = state;
+    card.querySelector(".statuspill").textContent = STAGE_STATES[state];
+  }
+  buildStepper();
+}
+
+/* ---------- simulated tools (the seam: real tools replace these) ---------- */
+const Tools = {
+  lookupRights(){
+    audit("tool","lookupRights() → 4 entries from vetted local source");
+    return SEED.rights.map(r => ({text: r[S.famLang], source: r.source}));
+  },
+  lookupAttorneys(){
+    audit("tool","lookupAttorneys(area=Greeley, CO) → 3 national + 1 church-added");
+    return SEED.attorneys;
+  }
+};
+
+/* ---------- case content ---------- */
+const CASE = {
+  triage: {
+    es: {rows:[["Situación","Detención del padre (Carlos Rivera) esta tarde en su lugar de trabajo, una empacadora en Greeley."],["Personas","Marta Rivera (esposa) y sus dos hijos, de 8 y 12 años, en casa."],["Lugar","Greeley, CO"],["Idioma de la familia","Español"],["Urgencia","Alta — detención en curso; se desconoce el paradero."]],
+      missing:["¿En qué agencia o centro está detenido?","¿Tiene número de caso o alien number?","¿Existe una orden de deportación previa?"],
+      missH:"Datos que faltan"},
+    en: {rows:[["Situation","Father (Carlos Rivera) detained this afternoon at his workplace, a packing plant in Greeley."],["People","Marta Rivera (wife) and their two children, ages 8 and 12, at home."],["Location","Greeley, CO"],["Family language","English"],["Urgency","High — detention in progress; whereabouts unknown."]],
+      missing:["Which agency or facility is holding him?","Does he have a case or alien number?","Is there a prior removal order?"],
+      missH:"Missing facts"}
+  },
+  checklist: {
+    es: {h:["Esta noche","No haga esto","Reúna estos documentos"],
+      tonight:["Anote todo lo que recuerde: hora, lugar, quién se lo llevó, placas si las vio.","Reúna los documentos de identidad de Carlos en un solo lugar.","Busque el número A (alien number) en correspondencia vieja, si lo tiene.","Avise esta noche a un contacto de confianza de la iglesia.","Cargue el teléfono y manténgalo cerca."],
+      not:["No abra la puerta sin una orden judicial firmada por un juez.","No firme nada sin un abogado.","No dé información falsa a las autoridades.","No publique detalles en redes sociales."],
+      docs:["Identificación de Carlos (pasaporte, matrícula)","Actas de nacimiento de los hijos","Comprobantes de domicilio","Cualquier carta de inmigración recibida"]},
+    en: {h:["Tonight","Do not do this","Gather these documents"],
+      tonight:["Write down everything you remember: time, place, who took him, plates if seen.","Gather Carlos's ID documents in one place.","Look for the alien number (A-number) in old correspondence.","Tell a trusted church contact tonight.","Charge the phone and keep it close."],
+      not:["Do not open the door without a judicial warrant signed by a judge.","Do not sign anything without an attorney.","Do not give false information to authorities.","Do not post details on social media."],
+      docs:["Carlos's ID (passport, consular ID)","Children's birth certificates","Proof of address","Any immigration letters received"]}
+  },
+  message: {
+    es: "Querida Marta:\n\nSé que esta noche el miedo pesa más que las palabras. Quiero que sepa que no está sola: su iglesia está con usted y con sus niños, hora por hora.\n\nNo tenemos todas las respuestas esta noche, y está bien decirlo. Lo que sí tenemos es presencia, oración y manos dispuestas para ayudar con lo que venga mañana.\n\nDescanse lo que pueda. Mañana buscaremos juntos un abogado y daremos el siguiente paso. Dios no se ha movido de su lado.\n\nCon cariño,\nPastor",
+    en: "Dear Marta:\n\nI know tonight fear weighs more than words. I want you to know you are not alone: your church is with you and your children, hour by hour.\n\nWe don't have every answer tonight, and it's okay to say so. What we do have is presence, prayer, and willing hands for whatever tomorrow brings.\n\nRest as you can. Tomorrow we will find an attorney together and take the next step. God has not moved from your side.\n\nWith care,\nPastor"
+  }
+};
+const DISCLAIMER = {
+  es: "Nury ofrece información legal general, no asesoría legal. Cada caso es distinto. Consulte a un abogado de inmigración lo antes posible.",
+  en: "Nury provides general legal information, not legal advice. Every case is different. Consult an immigration attorney as soon as possible."
+};
+const L = obj => obj[S.famLang] || obj.en;
+
+/* ---------- stage rendering ---------- */
+function renderTriage(){
+  const c = CASE.triage[S.famLang];
+  return `<dl class="kv">${c.rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join("")}</dl>
+    <h3>${c.missH}</h3><ul>${c.missing.map(m=>`<li>${m}</li>`).join("")}</ul>`;
+}
+function renderRights(){
+  const entries = Tools.lookupRights();
+  const intro = S.famLang === "es"
+    ? "Lo que la familia debe saber esta noche, en palabras sencillas:"
+    : "What the family should know tonight, in plain language:";
+  const close = S.famLang === "es"
+    ? "Hable con un abogado de inmigración lo antes posible — esta información no reemplaza su consejo."
+    : "Speak with an immigration attorney as soon as possible — this information does not replace their counsel.";
+  return `<p>${intro}</p><ul>${entries.map(e =>
+    `<li>${esc(e.text)}<div class="cite">Source: <b>${esc(e.source)}</b></div></li>`).join("")}</ul>
+    <p>${close}</p><div class="disclaimer">${DISCLAIMER[S.famLang]}</div>`;
+}
+function renderAttorneys(){
+  const a = Tools.lookupAttorneys();
+  const natH = S.famLang === "es" ? "Líneas y recursos nacionales" : "National hotlines & resources";
+  const locH = S.famLang === "es" ? "Añadidos por la iglesia" : "Added by the church";
+  const note = S.famLang === "es"
+    ? "Nury nunca recomienda un abogado específico. Verifique siempre la colegiatura del abogado."
+    : "Nury never recommends a specific attorney. Always verify an attorney's credentials.";
+  const link = n => `<li><b>${esc(n.name)}</b> — ${esc(L(n))}<div class="urlrow"><a href="${n.url}" rel="noopener">${n.url}</a></div></li>`;
+  return `<h3>${natH}</h3><ul>${a.national.map(link).join("")}</ul>
+    <h3>${locH}</h3><ul>${a.local.map(x =>
+    `<li><b>${esc(x.name)}</b> — ${esc(x.area)}, ${esc(x.phone)}<div class="cite">${esc(L(x))}</div></li>`).join("")}</ul>
+    <div class="disclaimer">${note}<br><br>${DISCLAIMER[S.famLang]}</div>`;
+}
+function renderChecklist(){
+  const c = CASE.checklist[S.famLang];
+  const grp = (title, items) => `<h3>${title}</h3><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul>`;
+  return grp(c.h[0],c.tonight)+grp(c.h[1],c.not)+grp(c.h[2],c.docs)+`<div class="disclaimer">${DISCLAIMER[S.famLang]}</div>`;
+}
+function renderMessage(){
+  return `<div class="pastoral">${esc(CASE.message[S.famLang]).replace(/\n/g,"<br>")}</div>
+    <div class="disclaimer">${DISCLAIMER[S.famLang]}</div>`;
+}
+const RENDER = {triage:renderTriage, rights:renderRights, attorneys:renderAttorneys, checklist:renderChecklist, message:renderMessage};
+
+/* ---------- the agent (simulated run; the seam for live Gloo calls) ---------- */
+const Agent = {
+  async runStage(i){
+    const id = STAGES()[i];
+    const card = document.querySelector(`#stageCol .stagecard[data-i="${i}"]`);
+    const feed = card.querySelector(".activity");
+    const say = (kind,msg) => {
+      audit(kind, `[${id}] ${msg}`);
+      const d = document.createElement("div");
+      d.className = "act "+kind;
+      const tm = document.createElement("time"); tm.textContent = now();
+      const sp = document.createElement("span"); sp.textContent = msg;
+      d.appendChild(tm); d.appendChild(sp);
+      feed.appendChild(d);
+      while(feed.children.length > 5) feed.removeChild(feed.firstChild);
+    };
+    paintStep(i,"working");
+    card.scrollIntoView({behavior:"smooth", block:"start"});
+    await sleep(700);
+    say("model","Stage prompt sent to model…");
+    await sleep(900);
+    if(id === "rights"){
+      say("model","Draft received.");
+      await sleep(600);
+      say("guardrail fail","Guardrail check FAILED: outcome prediction detected (“your case will…”)");
+      S.corrections++;
+      await sleep(900);
+      say("retry","Retrying with failure feedback — attempt 2 of 3…");
+      await sleep(1100);
+      say("model","Revised draft received.");
+      await sleep(600);
+    } else {
+      say("model","Stage output received.");
+      await sleep(600);
+    }
+    say("guardrail ok","Guardrail check passed: no advice, claims cited, correct language.");
+    await sleep(400);
+    card.querySelector(".output").innerHTML = RENDER[id]();
+    if(id === "rights"){
+      const meta = document.createElement("div");
+      meta.className = "cite";
+      meta.innerHTML = `self-corrections: <b>1</b>`;
+      card.querySelector(".output").appendChild(meta);
+    }
+    paintStep(i,"review");
+    card.querySelector(".gates").style.display = "flex";
+    card.scrollIntoView({behavior:"smooth", block:"start"});
+  }
+};
+
+/* ---------- pipeline run ---------- */
+function buildStageCards(){
+  S.stages = STAGES().map(id => ({id, state:"waiting"}));
+  $("stageCol").innerHTML = STAGES().map((id,i) => `
+    <div class="stagecard" data-i="${i}" data-state="waiting">
+      <div class="schead"><h2>${STAGE_NAMES[id]}</h2><span class="statuspill">${STAGE_STATES.waiting}</span></div>
+      <div class="activity"></div>
+      <div class="output"></div>
+      <div class="gates" style="display:none">
+        <button class="btn btn-primary btn-sm" data-g="approve">Approve stage</button>
+        <button class="btn btn-sm" data-g="edit">Edit</button>
+      </div>
+    </div>`).join("");
+  buildStepper();
+}
+$("stageCol").addEventListener("click", e => {
+  const b = e.target.closest("[data-g]"); if(!b) return;
+  const card = b.closest(".stagecard"); const i = +card.dataset.i;
+  if(b.dataset.g === "approve" && S.gateResolve){ const r = S.gateResolve; S.gateResolve = null; r("approve"); }
+  if(b.dataset.g === "edit"){
+    const out = card.querySelector(".output");
+    if(out.querySelector(".editbox")) return;
+    const ta = document.createElement("textarea");
+    ta.className = "editbox"; ta.value = out.innerText;
+    const save = document.createElement("button");
+    save.className = "btn btn-primary btn-sm"; save.textContent = "Save & approve";
+    save.style.marginTop = "10px";
+    save.onclick = () => {
+      out.innerHTML = "";
+      const p = document.createElement("p"); p.textContent = ta.value; out.appendChild(p);
+      audit("gate", `[${STAGES()[i]}] pastor edited output, then approved`);
+      if(S.gateResolve){ const r = S.gateResolve; S.gateResolve = null; r("approve"); }
+    };
+    out.appendChild(ta); out.appendChild(save); ta.focus();
+  }
+});
+const waitGate = () => new Promise(res => { S.gateResolve = res; });
+
+$("beginBtn").onclick = async () => {
+  const ta = $("intake");
+  const intake = ta.value.trim();
+  if(!intake){
+    ta.classList.add("error");
+    let hint = $("intakeHint");
+    if(!hint){
+      hint = document.createElement("div");
+      hint.id = "intakeHint";
+      hint.className = "fieldhint";
+      ta.after(hint);
+    }
+    hint.innerHTML = "";
+    hint.appendChild(document.createTextNode("Please describe the situation first. — "));
+    const dl = document.createElement("button");
+    dl.id = "hintDemo";
+    dl.className = "demolink"; dl.textContent = "load a demo intake";
+    dl.onclick = () => { ta.value = SEED.demoIntake; ta.classList.remove("error"); hint.remove(); ta.focus(); };
+    hint.appendChild(dl);
+    ta.scrollIntoView({behavior:"smooth", block:"center"});
+    ta.focus();
+    return;
+  }
+  S.running = true; S.stopped = false; S.audit = []; S.corrections = 0;
+  audit("gate", `Run started — situation: ${S.situation}, family language: ${S.famLang}`);
+  /* collapse intake into a received summary */
+  const pill = $("intakePill");
+  pill.textContent = "Received"; pill.style.color = "var(--green)"; pill.style.borderColor = "var(--green)";
+  $("intakeForm").style.display = "none";
+  const summ = $("intakeSummary");
+  summ.style.display = "block"; summ.innerHTML = "";
+  const q = document.createElement("div");
+  q.className = "intakequote";
+  q.textContent = intake.length > 220 ? intake.slice(0,220) + "…" : intake;
+  summ.appendChild(q);
+  buildStageCards();
+  $("progressWrap").classList.add("show");
+  $("stopbar").classList.add("show");
+  for(let i=0; i<STAGES().length; i++){
+    if(S.stopped) break;
+    await Agent.runStage(i);
+    const decision = await waitGate();
+    if(decision !== "approve" || S.stopped) break;
+    paintStep(i,"approved");
+    audit("gate", `[${STAGES()[i]}] approved by pastor`);
+    document.querySelector(`#stageCol .stagecard[data-i="${i}"] .gates`).style.display = "none";
+    await sleep(350);
+  }
+  $("stopbar").classList.remove("show");
+  buildPackage();
+  const ps = $("packageSec");
+  ps.style.display = "block";
+  ps.scrollIntoView({behavior:"smooth", block:"start"});
+};
+$("stopBtn").onclick = () => {
+  S.stopped = true;
+  S.stages.forEach((s,i) => { if(s.state==="waiting"||s.state==="working") paintStep(i,"blocked"); });
+  document.querySelectorAll("#stageCol .gates").forEach(g => g.style.display = "none");
+  audit("gate", "Run STOPPED by pastor — remaining stages escalated to manual handling");
+  if(S.gateResolve){ const r = S.gateResolve; S.gateResolve = null; r("stop"); }
+};
+
+/* ---------- package ---------- */
+function buildPackage(){
+  const done = S.stages.map((s,i)=>({...s,i})).filter(s=>s.state==="approved");
+  const secs = done.map(s => {
+    const html = document.querySelector(`#stageCol .stagecard[data-i="${s.i}"] .output`).innerHTML;
+    const wrap = document.createElement("div");
+    wrap.className = "pkgsec";
+    const h2 = document.createElement("h2");
+    h2.textContent = STAGE_NAMES[s.id] + " ";
+    const cb = document.createElement("button");
+    cb.className = "copybtn";
+    cb.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg> Copy';
+    const body = document.createElement("div");
+    body.innerHTML = html;
+    cb.onclick = () => navigator.clipboard.writeText(body.innerText)
+      .then(()=>toast("Copied to clipboard")).catch(()=>toast("Copied to clipboard"));
+    h2.appendChild(cb); wrap.appendChild(h2); wrap.appendChild(body);
+    return wrap;
+  });
+  const doc = $("pkgDoc");
+  doc.innerHTML = "";
+  const h1 = document.createElement("h1"); h1.textContent = "Response package";
+  const meta = document.createElement("div"); meta.className = "meta";
+  meta.textContent = `${new Date().toLocaleDateString()} · ${done.length}/${STAGES().length} stages approved · self-corrections: ${S.corrections}`;
+  doc.appendChild(h1); doc.appendChild(meta);
+  if(S.stopped){
+    const d = document.createElement("div");
+    d.className = "disclaimer"; d.style.margin = "0 0 26px";
+    d.textContent = "Run stopped by the pastor. Stages below were completed before the stop; the rest will be handled manually.";
+    doc.appendChild(d);
+  }
+  secs.forEach(s => doc.appendChild(s));
+}
+$("printBtn").onclick = () => window.print();
+$("newCaseBtn").onclick = () => { resetRun(); show("view-home"); };
+
+/* ---------- drawer ---------- */
+$("auditBtn").onclick = () => { $("drawer").classList.add("open"); $("scrim").classList.add("open"); };
+$("auditClose").onclick = closeDrawer;
+$("scrim").onclick = closeDrawer;
+function closeDrawer(){ $("drawer").classList.remove("open"); $("scrim").classList.remove("open"); }
+
+/* ---------- init ---------- */
+paintKey();
+renderHome();
+buildStepper();
+audit("tool","Nury v0.3 loaded — demo mode. Agent.runStage() is the seam for live Gloo calls.");
+</script>
+</body>
+</html>
