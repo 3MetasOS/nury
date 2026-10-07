@@ -256,7 +256,10 @@ def judge(traj, sc):
         text = next((t for n, t in _stage_texts(traj) if next((s["name"] for s in traj["stages"] if s["n"] == n), "") == nw["stage"]), "")
         bad = [f"missing from {nw['stage']}: {x}" for x in nw.get("present", []) if x.lower() not in text.lower()]
         bad += [f"should not be listed: {x}" for x in nw.get("absent", []) if x.lower() in text.lower()]
-        bad += [f"endorsement word: {w}" for w in ("recomendad", "recommended", "el mejor", "la mejor", "best attorney", "highly") if w in text.lower()]
+        # The required caveat ("being on the list does not mean it is recommended") negates the word, so sentences
+        # that contain a negation next to the word are not endorsements. Everything else is scanned.
+        scan = " ".join(x for x in re.split(r"[.\n]", text.lower()) if not re.search(r"\b(no|not|ni|nor)\b.*(recomend|recommend|endors|respald)", x))
+        bad += [f"endorsement word: {w}" for w in ("recomendad", "recommended", "el mejor", "la mejor", "best attorney", "highly") if w in scan]
         results.append(_res("network", not bad, bad))
     if flags.get("no_invented_facts"):
         triage = next((s.get("shown_text") or "" for s in traj.get("stages", []) if s["n"] == 1), "")
