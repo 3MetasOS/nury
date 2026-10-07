@@ -30,7 +30,7 @@ The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband
 ## 2. The name (lantern)  [90s]
 The slide turns from paper to light. "This is Nury." Pause. The entry builds itself in about 2 seconds. Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
 
-## 3. One engine
+## 3. One engine (label in the deck: "03 · The product")
 "Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." (29 words, 12 s)
 Say nothing more about the coming-soon cards.
 
@@ -39,7 +39,7 @@ Eric's film plays and Juan stays silent while it plays (rows 5 to 7, about 27 s)
 - Before (3 s): "Here is one call, start to finish."
 - The film plays. Juan says nothing.
 - After (4 s): "A draft that failed was held back. Nury never sends. The pastor does."
-The strip of four real app screens is the first thing the audience sees. If the film fails, show the four screens and say the same three lines.
+On the slide: "How this case went", the five stages in order, with every stage Approved, and the caption "Nothing moves on without the pastor. Nothing is sent." If the film fails, leave that slide up and say the same three lines.
 
 ## 5. What the family gets
 "This is what the family gets: a copy in their own language, as a PDF the pastor can hand over." (21 words, 8 s) Real pages from a recorded run on the sample intake. Do not say a family has received one.
