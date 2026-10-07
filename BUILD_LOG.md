@@ -494,3 +494,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 76. 2026-10-06 22:53 MDT — Immigration stays the flagship (Juan's decision)
 
 - Decision (Juan): the immigration case stays the flagship, whatever the risk. Families facing enforcement go to their churches for help, and a platform exists to be used for that. We keep the rules: pastoral care and legal information with an attorney referral, never advocacy; no agency names on screen; humanitarian framing; synthetic families only; tension from time and consequence, never from showing a family in distress. The hospital playbook stays as the second live track.
+
+## 77. 2026-10-06 22:55 MDT — Final script for treatment A (hack-ninja, commit 511f8d9) and Eric's lines approved
+
+- `presentation/FINALIST_SCRIPT.md`: two tables, each exactly 90 s. Table 1 (memorial option 3, 8 s, the video default): hook 0:00–0:03; persona 0:03–0:10; stakes 0:10–0:17; "This is Nury" 0:17–0:25 (dictionary card plus "Five stages. A gate after each. Nothing sent."); tool 0:25–0:35; rights 0:35–0:42; the turn 0:42–0:52; tech beat 0:52–1:04; stages 3–5 1:04–1:12; copy, no send 1:12–1:18; dawn end card 1:18–1:22; memorial 1:22–1:30 (text only, no voice). Table 2: memorial option 2 (16 s). `presentation/ERIC_LINES.md`: 11 lines, 8 words or fewer.
+- Decisions (hack-sensei): Nury in the normal spelling everywhere; Gloo AI Studio and Jev named out loud (L7 "Gloo AI Studio writes, seeing tokens, not names."; L8 "Tested with Jev. People review what is unsure."); the memorial is option 3 in the video and option 2 in the deck and the live pitch, unless Juan objects. The red team stays a caption and only if the panel is validated.
+- Deck follows the arc: night, lantern (dictionary entry), light, dawn, memorial; the deliberate dark night slide is the one exception to "dark only inside phone frames". Pitch 2:50 with the memorial, 2:34 without.
