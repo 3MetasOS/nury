@@ -3,12 +3,22 @@
 Needs GLOO_API_KEY in the environment or repo-root .env. Never prints or stores it.
 Cost shows only if NURY_PRICE_IN / NURY_PRICE_OUT (USD per 1M tokens) are set; else None.
 """
+import os
 import sys
 import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "code"))
-from nury.engine import run_scripted  # noqa: E402
+
+# Confirmed by hack-sensei from Gloo GET /platform/v2/models: gloo-anthropic-claude-sonnet-4.6,
+# input $3.00 and output $15.00 per 1M tokens. Cache pricing not used.
+MODEL = os.environ.get("GLOO_MODEL", "gloo-anthropic-claude-sonnet-4.6")
+if MODEL == "gloo-anthropic-claude-sonnet-4.6":
+    os.environ.setdefault("NURY_PRICE_IN", "3.00")
+    os.environ.setdefault("NURY_PRICE_OUT", "15.00")
+PRICES = {"model": MODEL, "usd_per_1m_in": os.environ.get("NURY_PRICE_IN"), "usd_per_1m_out": os.environ.get("NURY_PRICE_OUT")}
+
+from nury.engine import run_scripted  # noqa: E402  (after price defaults)
 
 STAGE_IDS = ["triage", "rights", "attorney", "checklist", "pastoral"]
 

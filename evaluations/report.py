@@ -33,7 +33,8 @@ def build(runs_path, out_dir):
     out = Path(out_dir)
     (out / "results.json").write_text(json.dumps({"aggregate": agg, "runs": slim}, indent=1, ensure_ascii=False))
     L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + ["# Nury Evaluation Scorecard", "",
-         f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.", "",
+         f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.",
+         (f"Model: `{d['pricing']['model']}`. Price: ${d['pricing']['usd_per_1m_in']} per 1M input tokens, ${d['pricing']['usd_per_1m_out']} per 1M output tokens (Gloo /platform/v2/models). Cache pricing not used." if d.get("pricing") and d["pricing"].get("usd_per_1m_in") else "Model and price: not recorded."), "",
          "## Summary", "",
          f"- Pass rate: **{agg['pass']}/{agg['scenarios']} ({agg['pass_rate']:.0%})**. Fail: {agg['fail']}. Human review: {agg['human_review']}.",
          f"- Corrections per run (mean): {agg['mean_corrections']}. Retries: {agg['total_retries']}. Escalations: {agg['escalations']}.",

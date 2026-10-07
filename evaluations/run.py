@@ -73,7 +73,7 @@ def main():
                      "metrics": metrics(traj), "trajectory": traj})
         print(f"{sc['number']:02d} {sc['id']:<24} {status}")
     Path(a.out).mkdir(parents=True, exist_ok=True)
-    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "runs": runs}, indent=1, ensure_ascii=False, default=str))
+    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
     audit_dir = Path(a.out) / "audit"
     audit_dir.mkdir(exist_ok=True)
     for r in runs:  # one audit log per run, committed as evidence

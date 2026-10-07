@@ -24,6 +24,7 @@ label{display:block;font-size:14px;color:var(--muted);margin:12px 0 6px}
 textarea,select{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
 textarea{min-height:170px;resize:vertical}
 .family{font-family:var(--serif);font-size:18px;line-height:1.6;white-space:pre-wrap}
+.plain{white-space:pre-wrap;line-height:1.6}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
 .btn.primary{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
 .btn.danger{color:var(--red)}
@@ -41,6 +42,9 @@ textarea{min-height:170px;resize:vertical}
 details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--muted);white-space:pre-wrap;word-break:break-word}
 .hidden{display:none}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.bar .row{margin-top:10px}
+.bar p{margin:0}
 .note{color:var(--muted);font-size:14px}
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);margin-left:8px;vertical-align:middle}
 </style>
@@ -92,8 +96,10 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 </section>
 
 <section id="v-pkg" class="hidden">
-  <div class="card"><h2>Package ready</h2>
-    <p class="note">Five stages, approved by you. Copy what you want to use. Nury never sends anything.</p></div>
+  <div class="bar">
+    <p class="note"><b>Package ready.</b> Nury never sends anything. You do.</p>
+    <div class="row two"><button class="btn primary" id="b-copyall">Copy all</button><button class="btn" id="b-download">Download</button></div>
+  </div>
   <div id="pkg"></div>
   <button class="btn" id="b-new2">New case</button>
   <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
@@ -143,11 +149,14 @@ async function poll(){
   if(s.done&&!s.halted&&!s.error){clearInterval(timer);
     $("pkg").replaceChildren(...s.stages.map(x=>{const c=document.createElement("div");c.className="card";
       const h=document.createElement("h2");h.textContent=x.title;
-      const p=document.createElement("div");p.className=x.id==="triage"?"":"family";p.textContent=x.final;
+      const p=document.createElement("div");p.className=x.id==="triage"?"plain":"family";p.textContent=x.final;
       const d=document.createElement("div");d.className="disc";d.textContent=x.disclaimer;
       const b=document.createElement("button");b.className="btn";b.textContent="Copy";b.style.marginTop="12px";
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
       c.append(h,p,d,b);return c}));
+    const whole=s.stages.map(x=>x.title+"\n\n"+x.final+"\n\n"+x.disclaimer).join("\n\n----------\n\n");
+    $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
+    $("b-download").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([whole],{type:"text/plain;charset=utf-8"}));a.download="nury-package.txt";a.click();URL.revokeObjectURL(a.href)};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
   $("halt").classList.toggle("hidden",!halted);
@@ -159,7 +168,7 @@ async function poll(){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
-      $("g-draft").className=g.id==="triage"?"":"family";
+      $("g-draft").className=g.id==="triage"?"plain":"family";
       const m=g.metrics;$("g-metrics").textContent=`Checked ${m.attempts} time${m.attempts>1?"s":""}`+(m.self_corrections?`, ${m.self_corrections} self-correction${m.self_corrections>1?"s":""}`:"")+`, ${m.latency_s} s`}
   }else if(!halted){
     const cur=s.stages.find(x=>x.status==="working")||s.stages.find(x=>x.status==="pending");
