@@ -828,3 +828,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 139. 2026-10-07 03:28 MDT — Commit dates: decision (Juan): no rewrite, disclose
 
 - Juan decided against rewriting history: the log is updated as we move. 93 commits (69 by hack-ninja, 24 by hack-video) carry author or committer dates typed by hand, some later than the real time; the commit order is real and the first commit (2026-10-06 19:36:59 -0600) and all others use the real clock. The list and the statement are in documents/product/COMMIT_DATES.md. The BUILD_LOG is written on the real clock and is the guide to when things happened. Root rule changed: never set commit dates.
+
+## 140. 2026-10-07 03:33 MDT — Deep review ordered (Juan)
+
+- Juan: features are done; time for a very careful code, performance, security (no authentication yet) and best-practices review by the architect; all findings into one document, then decide what to implement. hack-jedi writes documents/product/CODE_REVIEW.md (findings only, no code changes, offline, until about 08:00) with severity, file and line, concrete failure or exploit, proposed fix, effort, risk, and a recommended decision (do now, do after submission, document as limit, won't fix), plus strengths worth telling the judges, a clean-clone test of the README, and a quick honesty cross-check of the claims register.
