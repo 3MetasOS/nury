@@ -176,7 +176,8 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
     <Snd key="dawn" f="dawn" at={st('dawn')} v={0.16} />,
     ...(memorialOn ? [<Snd key="rt" f="room" at={st('memorial')} v={0.03} dur={dur('memorial')} />] : []),
   ];
-  const eric = (k: string, at: number) => <Snd key={k} f={k} at={at} v={1} dir="arc/" />;
+  const retake = (k: string) => (data.voice as any)?.retakes === true && (k === 'L3' || k === 'L9') ? k + '_retake' : k; // voice.json {retakes:true} = slower L3 and L9
+  const eric = (k: string, at: number) => <Snd key={k} f={retake(k)} at={at} v={1} dir="arc/" />;
   const voice = [eric('L1', st('persona')), eric('L2', st('stakes') + 0.3), eric('L3', st('nury') + 0.3), eric('L4', st('tool') + 0.5), eric('L5', st('rights') + 0.4),
     eric('L6', st('turn') + 1.0), ...(techOn ? [eric('L7', st('tech') + 0.2), eric('L8', st('tech') + 6.0)] : []), eric('L9', st('stages') + 0.5), eric('L10', st('copy') + 0.6), eric('L11', st('dawn') + 0.4)];
   const caps = ['Leak test: 90 checks per playbook, 0 found', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', 'A full package: 50 to 56 s, about 9 cents'];

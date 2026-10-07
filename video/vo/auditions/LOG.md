@@ -209,3 +209,5 @@ NOTE: the render command ran three times by mistake (180 calls, 11,016 character
 - ARC Eric L9: 28 characters
 - ARC Eric L10: 37 characters
 - ARC Eric L11: 43 characters
+- ARC retake Eric L3: 35 characters (speed 0.85, break tag)
+- ARC retake Eric L9: 51 characters (speed 0.85, break tag)
