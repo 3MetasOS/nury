@@ -926,3 +926,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 11:29: deck (Juan): a main slide 'The evaluation system' with two systems: before release (building the prompts: test cases, judges, comparison, a person decides) and while a pastor uses it (rules, Jev, retries, pastor); Jev is a decision API used in both; the word 'judges' renamed to 'evaluation system' in the deck.
 - 11:30: deck numbering confusion (Juan): gated slides are hidden by default so visible position 11 differs from the file's slide 11; ordered: a visible label with position and title, stable name anchors, an index overlay; everyone refers to slides by title.
 - 11:31: hack-ninja had five unread messages (three from hack-sensei in five minutes): my fault, I broke my own rule of one message per producer per hour; sent one consolidated deck queue that supersedes them.
+- 11:38: deck 'The name' slide too slow (Juan): the build-in compressed from about 6.4 s to about 2.4 s.
