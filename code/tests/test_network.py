@@ -205,6 +205,23 @@ class Stages(unittest.TestCase):
         self.assertNotIn("(720) 555-0177", body)
         self.assertNotIn("Maria", body)
 
+    def test_allow_playbook_keeps_official_and_network_details_but_not_the_family_phone(self):
+        seen = []
+
+        class Spy:
+            def ask(self, user_input, instructions=None, **kw):
+                seen.append(user_input)
+                return "ok", {}
+        pb = pbm.load_playbook("detention")
+        pc = PrivacyClient(Spy(), ["Maria"])
+        pc.allow_playbook(pb)
+        pc.ask("Llame a RMIAN (303) 433-2812 o al (303) 555-0101. El número de Maria es (720) 555-0177. immcenter@americanbar.org")
+        body = seen[0]
+        self.assertIn("(303) 433-2812", body)
+        self.assertIn("(303) 555-0101", body)
+        self.assertIn("immcenter@americanbar.org", body)
+        self.assertNotIn("(720) 555-0177", body)
+
     def test_full_run_case_file_marks_church_contacts(self):
         canned = dict(CANNED, triage=TRI_AURORA, attorney=ATTY + "\n" + CHURCH)
         st, rs, au = run_scripted("intake", client=FakeClient(canned))

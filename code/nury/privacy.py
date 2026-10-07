@@ -307,6 +307,22 @@ class PrivacyClient:
         from .network import literals
         self.ps.allow(literals(entries))
 
+    def allow_playbook(self, pb):
+        """One call per session: keep the vetted contact details of this run intact: the church network, the
+        official list, and every phone and link in the playbook's own sources. (Not the family's.)"""
+        import json as _json
+        from .network import literals, load_network
+        from .gloo_client import load_env  # noqa: F401
+        lits = literals(load_network().list())
+        f = pb.dir / "sources" / "official_list.json"
+        if f.is_file():
+            lits += literals(_json.loads(f.read_text(encoding="utf-8")).get("entries", []))
+            lits += [e.get("email", "") for e in _json.loads(f.read_text(encoding="utf-8")).get("entries", [])]
+        blob = _json.dumps(pb.sources, ensure_ascii=False)
+        from .guardrails import allowed_urls_in
+        lits += allowed_urls_in(blob) + re.findall(r"\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}", blob)
+        self.ps.allow(lits)
+
     def add_term(self, term, kind="person"):
         tk = self.ps.add_term(term, kind)
         if tk:
