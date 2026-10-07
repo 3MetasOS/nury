@@ -1,22 +1,9 @@
 """Plain-words data for the 'How this was built' page: the rules table and the playbook detail.
 Reads the live registry and the playbook files. Nothing here is a model call. Stdlib only."""
-import inspect
 import json
 import re
 
-from nury import checks
 from nury.playbook import PLAYBOOKS_DIR, list_playbooks
-
-# Named checks that carry no docstring of their own get a plain sentence here. A test fails if a registry check has neither.
-PLAIN = {
-    "required_labels": "The draft must carry every label the stage names (for example SITUATION, PEOPLE, LOCATION), so nothing is skipped.",
-    "numbered_after": "A list must follow a marker with the right number of items (triage ends with three numbered missing facts).",
-    "cited_bullets": "Every point in the brief ends with a citation to a vetted source. A point with no source is rejected.",
-    "ends_with_referral": "The brief must end by urging the family to speak with a qualified person (an attorney, or the care team).",
-    "vetted_links_present": "The links the stage must hand over (hotlines, official lists) are all present and match the vetted sources.",
-    "required_headings": "The checklist must carry its three headings, in order, so the family can find each part.",
-    "max_words": "The message stays under its word limit (120 words for the pastoral message).",
-}
 
 # The safety floor is code in guardrails and the engine. It is not a named check, and no playbook or skill can remove it.
 FLOOR = [
@@ -26,25 +13,6 @@ FLOOR = [
     ("vetted_contacts", "Every link, phone number, web address and email comes from the vetted sources or from text the pastor already approved."),
     ("no_send_path", "Nury has no way to email, text or post. Nothing reaches the family except through the pastor."),
 ]
-
-
-def _first_sentence(text):
-    """The docstring's first paragraph, as one line, capped. Short first sentences keep the next one so the meaning survives."""
-    para = (text or "").strip().split("\n\n")[0]
-    return " ".join(para.split())[:320]
-
-
-def _usage():
-    """check name -> ["Detention: 2. Rights brief", ...] read from every playbook's stages.json."""
-    use = {}
-    for p in list_playbooks():
-        f = PLAYBOOKS_DIR / p["id"] / "stages.json"
-        if not f.is_file():
-            continue
-        for st in json.loads(f.read_text(encoding="utf-8")):
-            for c in st.get("checks", []):
-                use.setdefault(c["name"], []).append(f'{p["title"]}: {st["title"]}')
-    return use
 
 
 def rules():

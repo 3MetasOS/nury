@@ -20,9 +20,9 @@ from pathlib import Path
 from nury.audit import AuditLog
 from nury import casefile as cf
 from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome, get_playbook, run_stage
-from nury.gloo_client import GlooClient
 from nury.privacy import PrivacyClient, make_client, privacy_enabled, propose_terms
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
+from nury import log
 
 STATIC = Path(__file__).parent / "static"
 # 'Our network' screen: hack-jedi's app/network_api.py. Mounted as its docstring says: every /api/network request goes to
@@ -186,7 +186,8 @@ def cases_overview():
     for c in cf.list_cases(CASES_ROOT):
         try:
             loaded = cf.load_case(c["id"], CASES_ROOT)
-        except Exception:
+        except Exception as e:
+            log.note("server.cases_overview", e)
             continue
         meta = loaded["meta"]
         m = re.search(r"^Situation:\s*(.+)$", loaded["pages"].get("index.md", ""), re.M)
@@ -252,14 +253,14 @@ class Session:
         try:   # every vetted phone, link and email of this run stays intact; the family's own numbers are still tokenized
             if hasattr(self.client, "allow_playbook"):
                 self.client.allow_playbook(self.pb)
-        except Exception:
-            pass
+        except Exception as e:
+            log.note("server.allow_playbook", e)
         try:   # church contacts keep their phones and links readable in the model context (INTERFACE.md, Church network)
             from nury import network as net
             if hasattr(self.client, "allow_network"):
                 self.client.allow_network(net.load_network(root=str(Path(CASES_ROOT).parent / "network")).list())
-        except Exception:
-            pass
+        except Exception as e:
+            log.note("server.allow_network", e)
         inner = getattr(self.client, "inner", self.client)
         if hasattr(inner, "max_calls"):           # the most Gloo HTTP calls this one run may make
             inner.max_calls = RUN_CALL_BUDGET
@@ -308,8 +309,8 @@ class Session:
             label = (self.revision or {}).get("result")
             feedback.record_gate(result.stage_id, d.action, result.shown_text, final, self.client, self.audit.events, outcome_label=label,
                                  playbook=self.pb.id, language=self.language, run_id=getattr(self.rec, "run_id", None))
-        except Exception:
-            pass
+        except Exception as e:
+            log.note("server.feedback_gate", e)
 
     def work(self):
         try:
@@ -334,8 +335,8 @@ class Session:
         try:
             if self.rec:
                 self.rec.finish(compute_outcome(self.pb.id, self.state, self.results))
-        except Exception:
-            pass
+        except Exception as e:
+            log.note("server.ledger_finish", e)
         self.current, self.done = None, True
 
     def save(self):
@@ -349,7 +350,7 @@ class Session:
             (d / "intake.md").write_text("# Intake\n\n" + self.intake.strip() + "\n", encoding="utf-8")
         if self.revision:
             self._write_changes(d, r["id"])
-        return {"id": r["id"], "version": r["id"] if not self.revision else r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
+        return {"id": r["id"], "version": r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
 
     def _write_changes(self, d, new_id):
         write_changes(d, new_id, self.revision, [s.id for s in self.pb.stages])
@@ -586,14 +587,14 @@ class H(BaseHTTPRequestHandler):
             try:
                 from nury import feedback
                 fb, sentence = feedback.mode() != "off", feedback.CONSENT_SENTENCE
-            except Exception:
-                pass
+            except Exception as e:
+                log.note("server.features_feedback", e)
             chips = []
             try:
                 from nury import feedback as _f
                 chips = [{"slug": c, "label": _f.CHIP_LABELS[c]} for c in _f.CHIPS] if fb else []
-            except Exception:
-                pass
+            except Exception as e:
+                log.note("server.features_chips", e)
             try:
                 from nury import checks as _checks
                 n_checks = len(_checks.REGISTRY)
@@ -730,8 +731,8 @@ class H(BaseHTTPRequestHandler):
                 try:   # the 'Something changed' outcome, counted without the pastor's note
                     from nury import feedback
                     feedback.record_outcome(pid, str(rev.get("result")), language=b.get("language", "es"))
-                except Exception:
-                    pass
+                except Exception as e:
+                    log.note("server.record_outcome", e)
             self._json({"id": s.id})
         elif p == "/api/feedback":
             try:

@@ -1,11 +1,11 @@
 """GET /api/improvement: the reviewer's view of the learning loop. Reads the latest learning report and the candidate review files.
 Nothing here changes Nury. It returns no feedback line, no draft and no name: only the report's aggregate tables and the candidates' metadata.
 Until a real report exists it shows the SYNTHETIC example and says so."""
-import json
 import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
+from nury import log
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "code" / "tools"))
@@ -64,8 +64,8 @@ def view():
     try:
         from nury import feedback
         d["feedback_mode"] = feedback.mode()
-    except Exception:
-        pass
+    except Exception as e:
+        log.note("improvement_api.feedback_mode", e)
     if report_path.is_file():
         md = report_path.read_text(encoding="utf-8")
         tb = _tables(md)
@@ -73,7 +73,8 @@ def view():
     for f in sorted(cand_dir.glob("c-*.md")):
         try:
             meta, body, _changes, _w = C.load(f)
-        except Exception:
+        except Exception as e:
+            log.note("improvement_api.candidate_load", e)
             continue
         title = next((l[2:].strip() for l in body.splitlines() if l.startswith("# ")), meta.get("id"))
         why = ""

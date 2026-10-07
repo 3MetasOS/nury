@@ -16,6 +16,7 @@ import json
 import threading
 import time
 from datetime import datetime, timezone
+from . import log
 
 
 class AuditLog:
@@ -50,8 +51,8 @@ class AuditLog:
         for fn in subs:                      # outside the lock: a slow subscriber must not block the log
             try:
                 fn(event)
-            except Exception:
-                pass
+            except Exception as e:
+                log.note("audit.subscriber", e)
         return event
 
     def of_kind(self, kind):

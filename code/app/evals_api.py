@@ -12,6 +12,7 @@ import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
+from nury import log
 
 ROOT = Path(__file__).resolve().parents[2]
 EVAL = ROOT / "evaluations"
@@ -91,8 +92,8 @@ def ops():
         d = json.loads(body)
         if status == 200 and (d.get("headline") or {}).get("packages"):
             return d
-    except Exception:
-        pass
+    except Exception as e:
+        log.note("evals_api.ops_view", e)
     return _stub()
 
 
