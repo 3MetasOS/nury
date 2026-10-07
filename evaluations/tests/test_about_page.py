@@ -50,3 +50,36 @@ def test_the_saved_cases_notice_lives_only_in_the_app_page_and_not_on_document_p
         if f.name == "index.html":
             continue
         assert "data-consent" not in f.read_text(encoding="utf-8"), f.name
+
+
+DOC_PAGES = {"how-it-was-built.html", "build-log.html", "standards.html", "economics.html", "pattern.html", "what-did-not-work.html",
+             "run-your-own.html", "self-improvement.html", "improve.html"}
+
+
+def _visible_html(s):
+    import re
+    s = re.sub(r"(?s)<(script|style|code|pre)\b.*?</\1>|<!--.*?-->", " ", s)
+    return re.sub(r"<[^>]+>", " ", s)
+
+
+def test_no_page_says_package_in_visible_text():
+    """'Package' is an internal word: the app says 'case'. App pages and the text inside their scripts are scanned; document pages that quote code are not."""
+    import re
+    word = re.compile(r"\b[Pp]ackages?\b")
+    bad = []
+    for f in sorted(STATIC.glob("*.html")):
+        s = f.read_text(encoding="utf-8")
+        if f.name not in DOC_PAGES and word.search(_visible_html(s)):
+            bad.append(f.name)
+        scripts = re.findall(r"(?s)<script\b[^>]*>(.*?)</script>", s) if f.name not in DOC_PAGES else []
+        for js in scripts:
+            for lit in re.findall(r'"((?:[^"\\\n]|\\.)*)"|`((?:[^`\\]|\\.)*)`', re.sub(r"(?m)^\s*//.*$|/\*.*?\*/", "", js, flags=re.S)):
+                if word.search(lit[0] or lit[1]):
+                    bad.append(f"{f.name}: {(lit[0] or lit[1])[:50]}")
+    for n in ("diagrams.js", "shell.js", "final.js", "case-print.js"):
+        js = re.sub(r"(?m)^\s*//.*$|/\*.*?\*/", "", (STATIC / n).read_text(encoding="utf-8"), flags=re.S)
+        js = re.sub(r"(?m)\s//.*$", "", js)
+        for lit in re.findall(r'"((?:[^"\\\n]|\\.)*)"|`((?:[^`\\]|\\.)*)`', js):
+            if word.search(lit[0] or lit[1]):
+                bad.append(f"{n}: {(lit[0] or lit[1])[:50]}")
+    assert not bad, bad

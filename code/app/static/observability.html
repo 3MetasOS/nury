@@ -6,7 +6,7 @@
 <script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <title>Observability, Nury</title>
-<meta name="description" content="Nury is an AI crisis response agent. Cost, speed, rejections and checks across the packages it has run. Numbers only: no drafts, no names.">
+<meta name="description" content="Nury is an AI crisis response agent. Cost, speed, rejections and checks across the cases it has run. Numbers only: no drafts, no names.">
 <link rel="stylesheet" href="/shell.css">
 <style>
 main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
@@ -53,7 +53,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
 <script src="/shell.js"></script>
 <main id="main" class="nv">
   <h1 id="h-ops" tabindex="-1">Observability</h1>
-  <p class="lede">How the packages Nury has run are doing: cost, speed, rejections and checks. Numbers and labels only. A draft or a name never appears on this page or in its exports.</p>
+  <p class="lede">How the cases Nury has run are doing: cost, speed, rejections and checks. One case is one run through the five stages. Numbers and labels only. A draft or a name never appears on this page or in its exports.</p>
   <p class="honest" id="honest">No alerts, no retention policy, no per-church separation yet.</p>
   <p><span class="src" id="src">Loading…</span></p>
   <p class="out bad" id="load-err" role="alert" hidden></p>
@@ -65,7 +65,7 @@ td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
   <div class="charts" id="charts"></div>
 
   <h2 id="s-runs">The last 50 runs</h2>
-  <p class="lede">One row per package. Time, crisis, how many stages and attempts, cost, time taken and how it ended. No text.</p>
+  <p class="lede">One row per case. Time, crisis, how many stages and attempts, cost, time taken and how it ended. No text.</p>
   <div class="tw" tabindex="0" role="region" aria-label="The last 50 runs, scrolls sideways if needed"><table id="runs"><thead><tr><th>Time</th><th>Crisis</th><th class="n">Stages</th><th class="n">Attempts</th><th class="n">Cost</th><th class="n">Seconds</th><th>Outcome</th></tr></thead><tbody></tbody></table></div>
   <div class="row"><button class="btn" id="x-json" type="button">Export JSON</button><button class="btn" id="x-csv" type="button">Export CSV of the runs</button><span class="out" id="x-msg" role="status"></span></div>
 
@@ -121,20 +121,20 @@ function hbars(c,rows,label,fmt){      // rows: [[name,value]]
 function render(d){
   const s=$("src");s.textContent="Source: "+d.source;s.classList.toggle("stub",!/^ledger/.test(d.source));
   const h=d.headline||{},C=$("cards");C.replaceChildren();
-  card(C,h.packages??"0","Packages run","How many packages are in the record below.");
-  card(C,usd(h.cost_avg),"Average cost per package","Gloo cost of all five stages, averaged. Jev is billed on its own key and is not included.");
-  card(C,usd(h.cost_p95),"Cost, 95th percentile","19 of 20 packages cost this much or less.");
-  card(C,sec(h.latency_p50_s),"Time per package, median","Half of the packages finished in this time or less.");
-  card(C,sec(h.latency_p95_s),"Time per package, 95th percentile","19 of 20 packages finished in this time or less.");
-  card(C,pct(h.escalation_rate),"Escalation rate","Packages where three tries failed and the work went to the pastor.");
+  card(C,h.packages??"0","Cases run","How many cases are in the record below. One case is one run through the five stages.");
+  card(C,usd(h.cost_avg),"Average cost per case","Gloo cost of all five stages, averaged. Jev is billed on its own key and is not included.");
+  card(C,usd(h.cost_p95),"Cost, 95th percentile","19 of 20 cases cost this much or less.");
+  card(C,sec(h.latency_p50_s),"Time per case, median","Half of the cases finished in this time or less.");
+  card(C,sec(h.latency_p95_s),"Time per case, 95th percentile","19 of 20 cases finished in this time or less.");
+  card(C,pct(h.escalation_rate),"Escalation rate","Cases where three tries failed and the work went to the pastor.");
   card(C,pct(h.rejection_rate),"Rejection rate","Drafts rejected by a rule or by Jev, out of all drafts written. The pastor never sees them.");
   const CH=$("charts");CH.replaceChildren();
   // 1 cost over time
-  let c=chart("c-cost","Cost per package over time","One bar per package, oldest on the left. Taller means it cost more.",true);
+  let c=chart("c-cost","Cost per case over time","One bar per case, oldest on the left. Taller means it cost more.",true);
   const cs=d.cost_series||[];
   if(!cs.length)c.append(el("p","empty","Nothing recorded yet."));else{
     const W=600,H=170,bw=Math.max(3,Math.min(24,(W-40)/cs.length-2)),max=Math.max(...cs.map(x=>x.cost),1e-9);
-    const svg=se("svg",{viewBox:`0 0 ${W} ${H+34}`,role:"img","aria-label":`Cost per package, ${cs.length} packages, from ${usd(Math.min(...cs.map(x=>x.cost)))} to ${usd(max)}`});
+    const svg=se("svg",{viewBox:`0 0 ${W} ${H+34}`,role:"img","aria-label":`Cost per case, ${cs.length} cases, from ${usd(Math.min(...cs.map(x=>x.cost)))} to ${usd(max)}`});
     const tmax=se("text",{x:0,y:12,class:"mu"},usd(max));svg.append(tmax,se("text",{x:0,y:H+2,class:"mu"},"$0"));
     cs.forEach((x,i)=>{const bh=Math.max(1,(H-18)*x.cost/max),r=se("rect",{x:40+i*(bw+2),y:H-bh,width:bw,height:bh,rx:2,class:"b-amber"});r.append(se("title",{},usd(x.cost)));svg.append(r);
       reg(c,e=>{r.setAttribute("height",bh*e);r.setAttribute("y",H-bh*e);if(i===0)tmax.textContent=usd(max*e)})});

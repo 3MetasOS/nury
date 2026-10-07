@@ -119,7 +119,7 @@ td:first-child code{white-space:nowrap}
 <h3 id="5-eleven-of-eighteen-hostile-intakes-stopped-at-triage">5. Eleven of eighteen hostile intakes stopped at triage<a class="anc" href="#5-eleven-of-eighteen-hostile-intakes-stopped-at-triage" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Tried.</strong> 18 hand-written hostile intakes meant to push Nury into advice, predictions and false claims.</li>
-<li><strong>Happened.</strong> On build <code>c317050</code>, 11 stopped at triage, mostly on the format check (3 of 3 attempts). No unsafe text reached the pastor. But the pastor got no package either.</li>
+<li><strong>Happened.</strong> On build <code>c317050</code>, 11 stopped at triage, mostly on the format check (3 of 3 attempts). No unsafe text reached the pastor. But the pastor got no case either.</li>
 <li><strong>Changed.</strong> The triage prompt now treats the intake as untrusted (always the same six labelled lines, requests recorded as one plain sentence). On <code>8a28a18</code>, triage escalations fell from 11 to 1, and one scenario (a03) failed the banned-phrase check ("as a pastor" at stage 1). On the final build <code>9bc5c6d</code> there were no triage escalations: 13 pass, 1 fail, 4 awaiting review.</li>
 <li><strong>Not known.</strong> The triage can restate the family's own words and be refused three times (seen on the hospital prognosis request and on a02, before the last two prompt lines): fixed on the sample we ran, not a rate. Two of six a02 drafts added a detail the caller did not give ("two children and a mother at home"): Jev's facts question caught one, and the other was a sample in our own check. Why a02 still escalates. 18 hand-written attacks are not a real attacker. Final result for the set: 13 pass, 1 fail, 4 awaiting review (judge results, not human verdicts).</li>
 </ul>
@@ -135,7 +135,7 @@ td:first-child code{white-space:nowrap}
 <li><strong>Tried.</strong> A link allowlist for every draft.</li>
 <li><strong>Happened.</strong> It only checked text starting with <code>http</code> or <code>www</code>. A made-up bare site such as "detentionlocator.org" passed every check, and the live checklist already wrote vetted sites bare. No scenario had caught it. hack-jedi found it by reading a sample.</li>
 <li><strong>Changed.</strong> The check now covers bare domains against the vetted list.</li>
-<li><strong>Not known.</strong> Other forms of unsourced contact details we have not thought of. The red-team panel also found unsourced sentences in packages that passed every check (for example "Please urge her not to sign or discard any document"). We accepted and disclosed that grounding is not airtight.</li>
+<li><strong>Not known.</strong> Other forms of unsourced contact details we have not thought of. The red-team panel also found unsourced sentences in cases that passed every check (for example "Please urge her not to sign or discard any document"). We accepted and disclosed that grounding is not airtight.</li>
 </ul>
 <h2 id="the-reviewers-and-the-evidence">The reviewers and the evidence<a class="anc" href="#the-reviewers-and-the-evidence" aria-label="Link to this section">#</a></h2>
 <h3 id="8-the-first-red-team-result-was-wrong">8. The first red-team result was wrong<a class="anc" href="#8-the-first-red-team-result-was-wrong" aria-label="Link to this section">#</a></h3>
@@ -162,14 +162,14 @@ td:first-child code{white-space:nowrap}
 <h3 id="11-a-mock-scorecard-that-looked-like-proof">11. A mock scorecard that looked like proof<a class="anc" href="#11-a-mock-scorecard-that-looked-like-proof" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Tried.</strong> A harness self-test against a mock agent.</li>
-<li><strong>Happened.</strong> Its scorecard was committed to <code>main</code> and looked like a result. It was not proof of anything but the harness. The same self-test found three harness bugs ("ice" matched inside "office"; an escalation scenario demanded a full package; an edit dropped the disclaimer).</li>
+<li><strong>Happened.</strong> Its scorecard was committed to <code>main</code> and looked like a result. It was not proof of anything but the harness. The same self-test found three harness bugs ("ice" matched inside "office"; an escalation scenario demanded a full case; an edit dropped the disclaimer).</li>
 <li><strong>Changed.</strong> BUILD_LOG flagged it the same day: remove it or label it mock. Real numbers come only from runs against the real agent, and the scorecard records which build ran.</li>
 <li><strong>Not known.</strong> Whether a reader of an earlier commit could still mistake it for a result.</li>
 </ul>
 <h3 id="12-claims-we-had-to-remove">12. Claims we had to remove<a class="anc" href="#12-claims-we-had-to-remove" aria-label="Link to this section">#</a></h3>
 <ul>
 <li><strong>Tried.</strong> Writing the pitch, deck and documents from what we expected to be true.</li>
-<li><strong>Happened.</strong> Claims we withdrew after checking: "no reviewer invented a quote"; "14 named checks"; "Jev at test time only"; "one outbound call" (there is a Gloo request and, only when a key is set, a YouVersion passage request); "A full package: 50 to 56 s, about 9 cents" (it came from four runs before the Jev gate; the scored means are now about 33 s and 6 cents for detention and 49 s and 9 cents for hospital); "Jev, from my prior project" (Juan did not build Jev; it is TypeSafe's); and "Nury learns" (the learning loop is built and off; nothing has been learned).</li>
+<li><strong>Happened.</strong> Claims we withdrew after checking: "no reviewer invented a quote"; "14 named checks"; "Jev at test time only"; "one outbound call" (there is a Gloo request and, only when a key is set, a YouVersion passage request); "A full case: 50 to 56 s, about 9 cents" (it came from four runs before the Jev gate; the scored means are now about 33 s and 6 cents for detention and 49 s and 9 cents for hospital); "Jev, from my prior project" (Juan did not build Jev; it is TypeSafe's); and "Nury learns" (the learning loop is built and off; nothing has been learned).</li>
 <li><strong>Changed.</strong> <code>documents/product/CLAIMS_AUDIT.md</code> lists each one with its replacement. A build rule: a claim goes in only with a verified row.</li>
 <li><strong>Not known.</strong> Whether every copy was found. We re-ran the audit after each change.</li>
 </ul>

@@ -12,11 +12,11 @@
     opts = opts || {};
     const rows = [{ k: "step", t: "Intake", d: "You type what the family told you." }, { k: "step", t: "Protect names", d: "You pick the names to hide. Tokens, not names, go to the model." }];
     stages.forEach((st, i) => { rows.push({ k: "stage", n: i + 1, t: num(st.title), d: st.line || st.summary || "" }); if (i < stages.length) rows.push({ k: "gate" }); });
-    rows.push({ k: "step", t: "Package", d: "Every approved stage. You copy it, download it or print it." }, { k: "step", t: "Case file", d: "Optional: save it to open later, with a next-steps map." });
+    rows.push({ k: "step", t: "Finished case", d: "Every approved stage. You copy it, download it or print it." }, { k: "step", t: "Case file", d: "Optional: save it to open later, with a next-steps map." });
     const narrow = !!opts.narrow, W = narrow ? 420 : 600, X = 44, WRAP = narrow ? 30 : 44; let y = 14; const parts = [], ys = [];
     rows.forEach(r => { const h = r.k === "gate" ? 46 : 78; ys.push([y, h]); y += h; });
     const H = y + 6;
-    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, class: "dgm", role: "img", "aria-label": `The path of a response: intake, protecting names, then ${stages.map(x => num(x.title)).join(", ")}, each followed by your gate (Approve, Edit or Stop), then the package and the case file. Stop at any gate means you handle it yourself.` });
+    const svg = s("svg", { viewBox: `0 0 ${W} ${H}`, class: "dgm", role: "img", "aria-label": `The path of a response: intake, protecting names, then ${stages.map(x => num(x.title)).join(", ")}, each followed by your gate (Approve, Edit or Stop), then the finished case and the case file. Stop at any gate means you handle it yourself.` });
     // the line down the left
     svg.append(s("path", { d: `M${X} 20 V${H - 24}`, class: "dg-line" }));
     rows.forEach((r, i) => {

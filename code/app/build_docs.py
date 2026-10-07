@@ -22,7 +22,7 @@ STATUS = {"BUILT, live": "built-live", "BUILT, offline": "built-off", "IN PROGRE
 FLOW = [("Intake", "The pastor types what the family said."), ("Protect names", "The pastor picks which names to hide. Names become tokens."),
         ("Write", "Claude Sonnet 4.6, through Gloo AI Studio's guarded endpoint."), ("Named checks", "Plain code: the stage's rules and the safety floor."),
         ("Jev gate", "Jev classifies the draft with yes or no questions. IN PROGRESS."), ("Try again", "A failure sends back the reasons, never the draft. Up to 3 tries, then the work goes to the pastor."),
-        ("Approval gate", "The pastor sees only a draft that passed. Approve, Edit or Stop."), ("Package", "Every approved stage. The pastor shares it by hand."), ("Save a case", "Optional. Linked pages, a next-steps map, versions.")]
+        ("Approval gate", "The pastor sees only a draft that passed. Approve, Edit or Stop."), ("Finished case", "Every approved stage. The pastor shares it by hand."), ("Save a case", "Optional. Linked pages, a next-steps map, versions.")]
 
 
 def slug(value, sep="-"):
@@ -234,7 +234,7 @@ def build_standards():
 
 
 SIMPLE_DOCS = [("WHAT_DID_NOT_WORK.md", "what-did-not-work.html", "What did not work", "What we tried that did not work, what happened, what we changed, and what we do not know."),
-               ("ECONOMICS.md", "economics.html", "Economics", "What a Nury package costs, where the time goes, and what could break the economics."),
+               ("ECONOMICS.md", "economics.html", "Economics", "What a Nury case costs, where the time goes, and what could break the economics."),
                ("PATTERN.md", "pattern.html", "The pattern", "The approve-gated stage pipeline for high-stakes drafting, and when to reuse it.")]
 
 

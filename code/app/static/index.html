@@ -347,7 +347,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <ul class="cardlist" id="cont-list"></ul>
         <div class="nvcard first" id="first-run" hidden>
           <h2>No cases yet.</h2>
-          <p class="muted">When a family calls, respond to the crisis here. Save the finished package and it waits here, so you can open it later.</p>
+          <p class="muted">When a family calls, respond to the crisis here. Save the finished case and it waits here, so you can open it later.</p>
           <ol class="steps3"><li>Choose the crisis and see how it works.</li><li>Tell Nury what the family said.</li><li>Approve each stage, then save.</li></ol>
         </div>
       </section>
@@ -484,7 +484,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
 </section>
 <section id="v-pkg" class="hidden pkgpage">
-  <article id="final" class="final" aria-label="The package for the family">
+  <article id="final" class="final" aria-label="The finished case for the family">
     <div id="final-head"></div>
     <div class="fp-actions" id="fp-actions">
       <button class="btn primary tbtn" id="b-save" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-check"/></svg><span class="tl">Save to case file</span></button>
@@ -720,11 +720,11 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
     flow.append(h("li",{class:"st",id:"s"+(i+1)},h("span",{class:"node"},ic(icon)),h("div",{class:"nvcard"},h("p",{class:"step2"},`Stage ${i+1} of ${n}`),h("h3",null,title),
       h("div",{class:"two"},h("div",null,h("h4",null,"Nury produces"),h("p",null,x.makes||s.line)),h("div",null,h("h4",null,"You decide"),h("p",null,x.decide||"You read it, then approve, edit or stop."))),
       h("p",{class:"gatel"},ic("i-gate"),"Your gate: Approve, Edit or Stop"))))});
-  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-save")),h("div",{class:"capcard"},h("h3",null,"Then the package is yours"),
+  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-save")),h("div",{class:"capcard"},h("h3",null,"Then the case is yours"),
     h("p",null,"Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again with what changed and keeps the first draft."))));
   const blk=(id,title,...kids)=>h("section",{class:"blk","aria-labelledby":id},h("h2",{id},title),...kids);
   const gives=(d.gives||st.map(s=>s.title)).map((g,i)=>h("li",null,h("span",{class:"tile"},ic((ds[i]||{}).icon||"i-triage")),h("span",null,h("b",null,g))));
-  gives.push(h("li",null,h("span",{class:"tile"},ic("i-save")),h("span",null,h("b",null,"A package you copy or download"),h("span",{class:"d"},"Save it to a case file and open it later."))),
+  gives.push(h("li",null,h("span",{class:"tile"},ic("i-save")),h("span",null,h("b",null,"A case you copy or download"),h("span",{class:"d"},"Save it to a case file and open it later."))),
              h("li",null,h("span",{class:"tile"},ic("i-audit")),h("span",null,h("b",null,"An audit log"),h("span",{class:"d"},"Every check and every gate, with reasons only. Open it when you want."))));
   const left=h("div",null,
     d.covers&&blk("h-cov","What this covers",h("ul",{class:"dots"},d.covers.map(t=>h("li",null,t))),h("p",{class:"callout"},"If anyone is in immediate danger, call 911 first.")),
@@ -867,7 +867,7 @@ function renderOverview(){const root=$("case-page");root.replaceChildren();const
     stg.forEach((s,i)=>{if(i)ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")));
       ol.append(h("li",null,h("a",{href:"#/case/"+cid+"/"+slugOf(s.k),class:"stn "+s.state,"aria-label":`${s.title}, ${word[s.state]}. Open it.`},
         h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},word[s.state]))))});
-    ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd glow","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
+    ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd glow","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Case complete":"Case "+c.meta.status))));
     seq.append(ol)}
   const vs=c.versions||[c.meta.id];
   if(vs.length>1){const row=h("div",{class:"dseq"});vs.forEach((v,i)=>{if(i)row.append(arrowSvg("done"));row.append(h("a",{href:"#/case/"+encodeURIComponent(v),class:"dchip"+(v===c.meta.id?" on":"")},i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft")))});seq.append(row)}
