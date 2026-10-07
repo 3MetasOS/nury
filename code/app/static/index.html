@@ -191,7 +191,8 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 /* area bands */
 .band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
 .band .kicker{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
-.band p{color:var(--muted);max-width:52ch}.band .scene{max-width:260px;margin-top:4px}
+.band p{color:var(--muted);max-width:52ch}
+.band .hnote{margin-top:8px;width:auto;max-width:100%}.band .hnote .hn-t{white-space:normal}.band .scene{max-width:260px;margin-top:4px}
 .band.cases{background:var(--surface)}
 .band.network{background:var(--surface)}.band.network .scene,.netcard .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
 /* cases */
@@ -331,8 +332,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 <section class="nv" id="v-cases" hidden>
   <div class="band cases">
     <div>
-      <h1 id="h-cases" tabindex="-1">Your cases</h1>
-      <p>Everything you saved. Open one to read it, or to record what changed.</p>
+      <h1 id="h-cases" tabindex="-1" data-note="something changed? open it and tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5">Your cases</h1>
     </div>
     <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
   </div>
