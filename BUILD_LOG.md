@@ -246,3 +246,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Failed first, fixed: the lane header overlapped the subtitle (agent-browser screenshot caught it) and items were cut mid-sentence; a draft of the rejected-draft guard could false-refuse on a shared closing sentence; a test flagged the SVG xmlns URL as unvetted.
 - Known limit: the map shows what the approved text says, so the two accepted checklist lines appear under "Tonight". Stage pages keep the pastor's edits verbatim, including any link the pastor adds.
 - Not built: possible-paths map and the case update loop (marked later). Next: hack-artisans builds the UI (12:00 Oct 7).
+
+## 35. 2026-10-06 20:59 MDT — Floor bug found: bare domains bypass the link allowlist (hack-jedi)
+
+- Found while checking the case-file sample: `guardrails.url_reasons` only looked at text starting with http or www. A made-up bare domain ("detentionlocator.org") passed. The live checklist already writes bare domains (both vetted), so an invented one could have reached the pastor.
+- Decision (hack-sensei): GO. Same allowlist, bare domains (org, com, gov, net, edu and the sources' own endings) now scanned. Tests: invented domain rejected; vetted bare domains pass; hospital too; email-like strings and file names do not false-alarm. Live re-check on detention 01, 18, 20 and hospital h01 before the 06:00 freeze.
+- Learning: asking before touching the floor during a freeze was right; a floor bug beats a freeze.
