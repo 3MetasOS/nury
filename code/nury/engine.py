@@ -89,13 +89,14 @@ def dynamic_source(spec, pb, state, fields, lang):
     if kind == "network":
         return network.source_for(spec, state, fields, lang)
     if kind == "official_list":
+        from . import officiallist
         f = pb.dir / "sources" / spec.get("file", "official_list.json")
         if not f.is_file():
-            return {"entries": []}
+            return {"entries": [], "held_names": []}
         city, st = network.parse_location(fields.get("location", ""))
-        items = [x for x in json.loads(f.read_text(encoding="utf-8")).get("entries", []) if x.get("approved", True)]
-        got = [x for x in items if network.state_abbr(x.get("state", "")) == st or x.get("nationwide")]
-        return {"entries": got[: spec.get("limit", 5)]}
+        if not st:
+            st = network.load_network().home[1]            # same fallback as the church network
+        return officiallist.select(json.loads(f.read_text(encoding="utf-8")), st, spec.get("limit", 5))
     raise ValueError(f"unknown dynamic source {kind!r}")
 
 
@@ -181,13 +182,15 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     active = stage.skills if skills_enabled(skills) else []     # skills off: no text, no checks, no events
     base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields, active, dynamic)
     user_input = pbm.build_input(stage, state)
+    contact_names = [x["name"] for d in data.values() if isinstance(d, dict) for k in ("entries", "national", "local")
+                     for x in d.get(k, []) if isinstance(x, dict) and x.get("name")]
     sources_blob = json.dumps(data, ensure_ascii=False)
     vetted_blob = sources_blob + "\n" + "\n".join(ctx.values())
     ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
 
     def all_violations(txt):
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
-        v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang)
+        v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang, contact_names)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
         v += g.email_reasons(txt, sources_blob, vetted_blob, state.intake)
         for c in stage.checks + [c for sk in active for c in sk.checks]:

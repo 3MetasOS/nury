@@ -1,0 +1,346 @@
+{
+  "label": "Listed by the U.S. Department of Justice. Listed does not mean recommended.",
+  "as_of": "pro bono list Updated October 2026; recognized organizations roster 10/04/26",
+  "state": "CO",
+  "approved_by": "Juan Pelaez",
+  "held_names": [
+    "Catholic Charities of Central Colorado",
+    "Immigrant Hope - Atlanta",
+    "Integrated Community",
+    "ECDC African Community Center",
+    "Immigrant Hope - Greeley",
+    "Alianza NORCO",
+    "Littleton Immigrant Resources Center"
+  ],
+  "entries": [
+    {
+      "id": "rmian",
+      "name": "Rocky Mountain Immigrant Advocacy Network (RMIAN)",
+      "state": "CO",
+      "phone": "(303) 433-2812 / (303) 866-9308 / (720) 543-8898",
+      "phones": [
+        "(303) 433-2812",
+        "(303) 866-9308",
+        "(720) 543-8898"
+      ],
+      "email": "",
+      "url": "https://www.rmian.org",
+      "details": "on the DOJ pro bono list (Aurora, Denver courts); on the DOJ recognized organizations roster; Roster recognition expires 12/04/26 (about two months from the report date)",
+      "on_lists": [
+        "pro_bono_list",
+        "roster"
+      ],
+      "detention": true,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "connect-immigration",
+      "name": "Connect Immigration",
+      "state": "CO",
+      "phone": "(720) 674-1919 / (970) 393-6479 / (720) 940-5333",
+      "phones": [
+        "(720) 674-1919",
+        "(970) 393-6479",
+        "(720) 940-5333"
+      ],
+      "email": "",
+      "url": "https://www.connectchurchcolorado.com/immigration",
+      "details": "on the DOJ pro bono list (Aurora, Denver courts); on the DOJ recognized organizations roster; languages: Spanish and English; Gypsum and Eagle are in the mountains. Lakewood is the Denver-area office",
+      "on_lists": [
+        "pro_bono_list",
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "colorado-asylum-center",
+      "name": "Colorado Asylum Center",
+      "state": "CO",
+      "phone": "(303) 376-9907",
+      "phones": [
+        "(303) 376-9907"
+      ],
+      "email": "",
+      "url": "https://www.coasylum.org",
+      "details": "on the DOJ pro bono list (Denver courts); Narrow scope: asylum applications and Notices of Appeals only. Probably not useful for a detention call. Text only",
+      "on_lists": [
+        "pro_bono_list"
+      ],
+      "detention": false,
+      "not_for_detention": true,
+      "approved": true
+    },
+    {
+      "id": "aba-detention-hotline",
+      "name": "ABA Commission on Immigration Detention Information Hotline",
+      "state": "CO",
+      "phone": "",
+      "phones": [],
+      "email": "immcenter@americanbar.org",
+      "url": "https://www.americanbar.org/groups/public_interest/immigration/",
+      "details": "on the DOJ pro bono list (Aurora, Denver courts); Pro se help only, for detained people. The speed dial '2150#' works only from inside a detention facility. Email is the route for a family member",
+      "on_lists": [
+        "pro_bono_list"
+      ],
+      "detention": true,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-slvirc",
+      "name": "San Luis Valley Immigrant Resource Center",
+      "state": "CO",
+      "phone": "(719) 587-3225",
+      "phones": [
+        "(719) 587-3225"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-ilc-boulder",
+      "name": "Immigrant Legal Center of Boulder County",
+      "state": "CO",
+      "phone": "(303) 444-1522",
+      "phones": [
+        "(303) 444-1522"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-hope-immigration",
+      "name": "Hope Immigration Inc.",
+      "state": "CO",
+      "phone": "(719) 602-5066",
+      "phones": [
+        "(719) 602-5066"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-lfs-rocky-mountains",
+      "name": "Lutheran Family Services Rocky Mountains",
+      "state": "CO",
+      "phone": "(303) 980-5400 / (719) 314-0212",
+      "phones": [
+        "(303) 980-5400",
+        "(719) 314-0212"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-cccs-denver",
+      "name": "Catholic Charities and Community Services of the Archdiocese of Denver, Inc.",
+      "state": "CO",
+      "phone": "(303) 742-4971",
+      "phones": [
+        "(303) 742-4971"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-irc-denver",
+      "name": "International Rescue Committee, Inc. (Denver Extension Office)",
+      "state": "CO",
+      "phone": "(720) 328-6655",
+      "phones": [
+        "(720) 328-6655"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-justice-and-mercy",
+      "name": "Justice and Mercy Legal Aid Center",
+      "state": "CO",
+      "phone": "(303) 839-1008",
+      "phones": [
+        "(303) 839-1008"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-ctr-trauma-resilience",
+      "name": "The Center for Trauma & Resilience",
+      "state": "CO",
+      "phone": "(303) 860-0660",
+      "phones": [
+        "(303) 860-0660"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-companeros",
+      "name": "Companeros: Four Corners Immigrant Resource Center",
+      "state": "CO",
+      "phone": "(970) 375-9406",
+      "phones": [
+        "(970) 375-9406"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-bethany-immigration",
+      "name": "Bethany Immigration Services",
+      "state": "CO",
+      "phone": "(970) 389-1480",
+      "phones": [
+        "(970) 389-1480"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-mountain-dreamers",
+      "name": "Mountain Dreamers",
+      "state": "CO",
+      "phone": "(970) 368-6354",
+      "phones": [
+        "(970) 368-6354"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-chan",
+      "name": "Colorado Hosting Asylum Network",
+      "state": "CO",
+      "phone": "(303) 408-5418",
+      "phones": [
+        "(303) 408-5418"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-cc-southern-co",
+      "name": "Catholic Charities of the Diocese of Pueblo, Inc. dba Catholic Charities of Southern Colorado",
+      "state": "CO",
+      "phone": "(719) 544-4233",
+      "phones": [
+        "(719) 544-4233"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    },
+    {
+      "id": "roster-tri-county-health",
+      "name": "Tri-County Health Network",
+      "state": "CO",
+      "phone": "(970) 708-7096",
+      "phones": [
+        "(970) 708-7096"
+      ],
+      "email": "",
+      "url": "",
+      "details": "on the DOJ recognized organizations roster",
+      "on_lists": [
+        "roster"
+      ],
+      "detention": false,
+      "not_for_detention": false,
+      "approved": true
+    }
+  ]
+}

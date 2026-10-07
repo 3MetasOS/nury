@@ -100,11 +100,15 @@ _EN_WORDS = set("the and is are of you your our with for that this not will from
 _LANG_STRIP = re.compile(r"https?://\S+|www\.\S+|\b[A-Z][A-Za-z]*(?: [A-Z][A-Za-z]*)+\b|\bDO TONIGHT\b|\bDO NOT DO\b|\bGATHER THESE DOCUMENTS\b")
 
 
-def language_reasons(text, lang):
-    """Flag English mixed into Spanish. Proper names, links and the fixed headings are ignored."""
+def language_reasons(text, lang, ignore=()):
+    """Flag English mixed into Spanish. Proper names, links and the fixed headings are ignored,
+    and so are the names of vetted contacts (`ignore`): they are copied exactly, in whatever language they are in."""
     if lang != "es":
         return []
-    body = _LANG_STRIP.sub(" ", text)
+    body = text
+    for nm in sorted(set(ignore), key=len, reverse=True):
+        body = re.sub(re.escape(nm), " ", body, flags=re.I)
+    body = _LANG_STRIP.sub(" ", body)
     words = re.findall(r"[A-Za-z']+", body.lower())
     hits = sorted({w for w in words if w in _EN_WORDS})
     n = sum(1 for w in words if w in _EN_WORDS)

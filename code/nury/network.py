@@ -254,4 +254,5 @@ def literals(entries):
     out = []
     for e in entries:
         out += [x for x in (e.get("phone"), e.get("url")) if x]
+        out += [x for x in e.get("phones", []) if x]
     return out

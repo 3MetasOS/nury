@@ -2,10 +2,14 @@ Task: format the lists below as a clean, scannable list in {{lang_name}}.
 If CHURCH CONTACTS has entries, put them first under the heading "People our church has worked with" (write the heading in {{lang_name}}). Under it add one line saying these are the church's own contacts and not endorsements by Nury. Then list the national hotlines and directories.
 If CHURCH CONTACTS says (none), leave out that heading and do not mention church contacts at all.
 Copy every name, phone number, and link exactly. Do not change the name, phone number, or link of any entry. You may translate its short description into {{lang_name}}. Do not merge, shorten, or add entries. Do not call any contact best, top, or recommended. Do not say one contact is better than another. Do not name any person who is not in the lists.
+If OFFICIAL LIST has entries, put them after the church contacts under the heading "Listed by the U.S. Department of Justice" (write it in {{lang_name}}), with this line once: "Listed by the U.S. Department of Justice. Listed does not mean recommended." (translate it into {{lang_name}}). Never write that any of these providers is free or low cost, even if you think so. If OFFICIAL LIST says (none), leave that heading out.
 Add one line on what to have ready before calling (names, dates, paperwork).
 
 CHURCH CONTACTS (the pastor's own; may be empty):
 {{church_list}}
+
+OFFICIAL LIST (U.S. Department of Justice; may be empty):
+{{official_list_text}}
 
 NATIONAL LIST:
 {{vetted_list}}

@@ -111,6 +111,19 @@
             "empty": "(none)"
           }
         ]
+      },
+      {
+        "name": "official_list",
+        "dynamic": "official_list",
+        "var": "official_list_text",
+        "limit": 5,
+        "groups": [
+          {
+            "list": "entries",
+            "line": "- {name} ({details}): {phone} {email} {url}",
+            "empty": "(none)"
+          }
+        ]
       }
     ],
     "checks": [
@@ -137,6 +150,10 @@
       },
       {
         "name": "no_endorsement_words"
+      },
+      {
+        "name": "official_list_rules",
+        "source": "official_list"
       }
     ],
     "skills": [

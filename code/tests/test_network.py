@@ -223,17 +223,12 @@ class Stages(unittest.TestCase):
         tmp = Path(tempfile.mkdtemp())
         try:
             shutil.copytree(pbm.PLAYBOOKS_DIR, tmp, dirs_exist_ok=True)
+            (tmp / "detention" / "sources" / "official_list.json").unlink()
             from nury.engine import dynamic_source
             pb = pbm.load_playbook("detention", tmp)
             spec = {"name": "official_list", "dynamic": "official_list", "limit": 5}
             fields = {"location": "Aurora, Colorado"}
-            self.assertEqual(dynamic_source(spec, pb, CaseState("x"), fields, "es"), {"entries": []})
-            (tmp / "detention" / "sources" / "official_list.json").write_text(json.dumps({"entries": [
-                {"name": "Fictional DOJ-listed Org CO", "state": "CO", "phone": "(303) 555-0150", "approved": True},
-                {"name": "Fictional Org AZ", "state": "AZ", "phone": "(480) 555-0150", "approved": True},
-                {"name": "Unapproved Org CO", "state": "CO", "phone": "(303) 555-0199", "approved": False}]}))
-            got = dynamic_source(spec, pb, CaseState("x"), fields, "es")["entries"]
-            self.assertEqual([e["name"] for e in got], ["Fictional DOJ-listed Org CO"])
+            self.assertEqual(dynamic_source(spec, pb, CaseState("x"), fields, "es")["entries"], [])
         finally:
             shutil.rmtree(tmp)
 

@@ -91,10 +91,49 @@ _ENDORSE = re.compile(
 _TITLED = re.compile(r"\b(?:Lic\.|Licenciad[oa]|Abogad[oa]|Attorney|Atty\.|Esq\.|Dr\.|Dra\.)\s+[A-ZÁÉÍÓÚÑ][\w'’]+(?:\s+[A-ZÁÉÍÓÚÑ][\w'’]+)?")
 
 
+_NEGATED = re.compile(r"(?:does not mean|doesn't mean|is not|not|no significa|no quiere decir|no implica|no es|no son|ni)\W+(?:\w+\W+){0,3}$", re.I)
+
+
 def no_endorsement_words(p, text, ctx):
-    """Nury lists contacts. It never ranks or endorses one."""
-    hits = sorted({m.group(0).lower() for m in _ENDORSE.finditer(text)})
+    """Nury lists contacts. It never ranks or endorses one. 'Listed does not mean recommended' is allowed."""
+    hits = sorted({m.group(0).lower() for m in _ENDORSE.finditer(text)
+                   if not _NEGATED.search(text[max(0, m.start() - 45):m.start()])})
     return [g.R("endorsement", f"endorsing or ranking words: {hits[:3]}")] if hits else []
+
+
+_FREE = re.compile(r"\b(?:free|gratis|gratuit[oa]s?|sin costo|sin cargo|no cost|at no charge)\b", re.I)
+_CAVEAT = re.compile(r"does not mean|doesn't mean|no significa|no quiere decir|no implica|no es una recomendaci|no son recomendaci", re.I)
+
+
+def official_list_rules(p, text, ctx):
+    """The DOJ official list, as Juan approved it. A held entry is never named. A listed entry keeps its exact
+    name with its own phone or link. Nothing from the list is called free. The 'listed does not mean
+    recommended' caveat is present when any entry is listed."""
+    d = ctx.data.get(p["source"]) or {}
+    out, low = [], _fold(text)
+    for held in d.get("held_names", []):
+        if _fold(held) in low:
+            out.append(g.R("ungrounded_claim", f"names an official-list entry that is on hold: {held[:40]}"))
+    entries = d.get("entries", [])
+    lines = text.splitlines()
+    for e in entries:
+        nm = _fold(e["name"].split(" (")[0])
+        digits = [re.sub(r"\D", "", ph) for ph in e.get("phones", []) if ph]
+        for i, ln in enumerate(lines):
+            lnd = re.sub(r"\D", "", ln)
+            if nm in _fold(ln) or any(ph and ph in lnd for ph in digits):
+                window = " ".join(lines[i:i + 2])
+                if _FREE.search(window):
+                    out.append(g.R("ungrounded_claim", f"calls an official-list provider free: {e['name'][:40]}"))
+                    break
+        alltext = re.sub(r"\D", "", text)
+        present = (nm in low or any(ph and ph in alltext for ph in digits) or (e.get("url") and g._norm_url(e["url"]) in g._norm_url(text))
+                   or (e.get("email") and e["email"].lower() in text.lower()))
+        if not present:
+            out.append(g.R("missing_vetted_entry", f"official-list entry left out: {e['name'][:40]}"))
+    if entries and not _CAVEAT.search(text):
+        out.append(g.R("missing_vetted_entry", "official list is missing the 'listed does not mean recommended' line"))
+    return out
 
 
 def _entries(ctx, names):
@@ -156,4 +195,4 @@ def network_entries_present(p, text, ctx):
 
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
                                     vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases, no_endorsement_words,
-                                    listed_contacts_known, network_entries_present)}
+                                    listed_contacts_known, network_entries_present, official_list_rules)}

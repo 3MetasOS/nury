@@ -155,6 +155,10 @@ Entry fields: `id, name, kind, services, languages (es, en), city, state, phone,
 - **Run record.** `state.sources_used[stage_id]["church_network"]["entries"]` and the audit event `dynamic_source {stage, entries: {name: [ids]}}`. The case file's "Who to call" lane shows them first, marked "Church:".
 - **Privacy.** `client.allow_network(entries)` (PrivacyClient) keeps those phones and links from being tokenized in the context sent to the model; the family's own numbers are still tokenized. Call it once per session with `n.list()`.
 
+## Official list (`nury/officiallist.py`)
+
+The U.S. Department of Justice list of recognized legal service providers (Colorado), as Juan approved it (21 of 28: 18 providers and 3 official pages; 7 held for Pending Renewal). `python3 -m nury.officiallist` builds `playbooks/detention/sources/official_list.json` from `OFFICIAL_LIST_DRAFT.json` and `approvals.json`: approved providers only, with their verbatim phones. Held entries are kept only as names (`held_names`), with no detail, so a check can reject a draft that names one. The detention attorney stage has a dynamic source `{"dynamic": "official_list"}`: entries for the case's state (the church's home state if the case has none), detention-related first, at most 5; an entry the draft says is "probably not useful for a detention call" (the asylum-only center) is skipped. Rules in the check `official_list_rules`: a held entry is never named; a listed entry keeps its exact name and its own phone, email or link and is never called free (the roster does not say whether services are free); the caveat "Listed by the U.S. Department of Justice. Listed does not mean recommended." is present; as-of dates are kept (pro bono list Updated October 2026, roster 10/04/26). The ABA detention entry lists the email route for a family member; the toll-free number on that page is for people held at military facilities and is not listed. Other states have no official section until their list is read and approved.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

@@ -1,5 +1,6 @@
 """Core tests. No network: a fake client stands in for Gloo.   Run: cd code && python3 -m unittest -v"""
 import json
+import re
 import shutil
 import sys
 import tempfile
@@ -36,7 +37,24 @@ class FakeClient:
         key = ("triage" if "structured case" in instructions else "rights" if "rights brief" in instructions
                else "attorney" if "scannable list" in instructions
                else "pastoral" if "pastoral message" in instructions else "checklist")
-        return self.canned[key], {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
+        text = self.canned[key]
+        if key == "attorney":
+            text += official_lines(instructions)
+        return text, {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
+
+
+def official_lines(instructions):
+    """What a faithful model would add: the OFFICIAL LIST entries it was given (name, phone, link, no details),
+    plus the caveat line. Nothing when the list is (none)."""
+    m = re.search(r"OFFICIAL LIST \(U\.S\. Department of Justice; may be empty\):\n(.*?)\n\nNATIONAL LIST:", instructions or "", re.S)
+    body = (m.group(1) if m else "").strip()
+    if not body or body == "(none)":
+        return ""
+    lines = ["\nListados por el Departamento de Justicia de EE. UU. Estar en la lista no significa que sea recomendado."]
+    for ln in body.splitlines():
+        mm = re.match(r"- (.*?) \(.*?\): (.*)$", ln)
+        lines.append(f"- {mm.group(1)}: {mm.group(2)}" if mm else ln)
+    return "\n".join(lines)
 
 
 class Core(unittest.TestCase):
