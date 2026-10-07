@@ -76,7 +76,7 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 .fnav a{display:inline-flex;align-items:center;min-height:28px;color:var(--text);font:600 14px var(--sans);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
 .fnav a:hover{border-bottom-color:var(--amber-text)}
 .fnav a[aria-current="page"]{color:var(--amber-text);border-bottom-color:var(--amber-text)}
-.sitefoot .fm .fl{margin:0 0 6px;min-height:26px;display:flex;align-items:center}.fmlist{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:14px;line-height:1.45;color:var(--muted)}.fmlist b{color:var(--text);font-weight:600}
+.sitefoot .fm .fl{margin:0 0 6px;min-height:26px;display:flex;align-items:center}.sitefoot .fm{display:grid;gap:10px;align-content:start}.sitefoot .fm .fl{margin:0;min-height:0}.sitefoot .fm .ft{color:var(--text);margin-bottom:2px}.fb p:not(.fl){margin:2px 0 0;font-size:14px;line-height:1.45;color:var(--muted)}.fb a{color:var(--amber-text);white-space:nowrap}
 .sitefoot .fine{margin:0;max-width:62ch;font-size:13px;line-height:1.5;color:var(--muted)}
 .linkbtn{background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 @media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:minmax(0,1fr) minmax(0,1fr) minmax(0,1.3fr);grid-template-areas:"logo judges made" "prov prov prov" "fine fine fine";align-items:start}}

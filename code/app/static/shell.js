@@ -35,15 +35,11 @@
     </nav>
   </div>
   <div class="fm">
-    <p class="fl mono">How it was made</p>
-    <ul class="fmlist">
-      <li><b>Writer:</b> Claude Sonnet 4.6 via Gloo AI Studio</li>
-      <li><b>Checks:</b> <span id="fm-checks"></span>named checks plus a safety floor</li>
-      <li><b>Jev</b> (from TypeSafe) checks every draft when it is reachable</li>
-      <li>A red team advises before release</li>
-      <li id="fm-build" hidden><b>Build:</b> <span></span></li>
-      <li id="fm-tests" hidden><b>Tests:</b> <span></span></li>
-    </ul>
+    <p class="fl mono ft">How it was made</p>
+    <div class="fb"><p class="fl mono">Writer</p><p>Claude Sonnet 4.6, through Gloo AI Studio.</p></div>
+    <div class="fb"><p class="fl mono">Checks</p><p><span id="fm-checks"></span>named rules and a safety floor on every draft, plus a second check by Jev, from TypeSafe. <a href="/how-it-was-built#honest-limits-in-one-place">See the limits</a></p></div>
+    <div class="fb"><p class="fl mono">Outside review</p><p>Before release, AI models from other makers tried to break it. They advise. People decide.</p></div>
+    <div class="fb" id="fm-build" hidden><p class="fl mono">Build</p><p><span></span></p></div>
   </div>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
@@ -114,8 +110,11 @@
     revealFooter();
     // The build line and the test counts come from the server (read once at its start). A line with no data stays hidden.
     fetch("/api/build").then(r => r.json()).then(b => {
-      if (b && b.commit) { const li = document.getElementById("fm-build"); li.querySelector("span").textContent = b.commit + (b.date ? ", " + b.date : ""); li.hidden = false; }
-      if (b && b.tests) { const li = document.getElementById("fm-tests"); li.querySelector("span").textContent = b.tests.product + " product, " + b.tests.evaluation + " evaluation" + (b.tests.recorded ? " (recorded " + b.tests.recorded + ")" : ""); li.hidden = false; }
+      const parts = [];
+      if (b && b.commit) parts.push(b.commit);
+      if (b && b.date) parts.push(b.date);
+      if (b && b.tests) parts.push(b.tests.product + " product tests, " + b.tests.evaluation + " evaluation tests.");
+      if (parts.length) { const li = document.getElementById("fm-build"); li.querySelector("span").textContent = parts.join(" \u00b7 "); li.hidden = false; }
     }).catch(() => {});
   });
 
