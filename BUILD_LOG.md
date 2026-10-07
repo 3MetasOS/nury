@@ -898,3 +898,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 08:14: Juan: Home, Cases and Network pages are LOCKED (no more changes unless he asks).
 - 08:20: case detail page (Juan): same width as the other pages; the eleven sections become tabs that do not jump to the top; the three action buttons small, one row; the saved-cases notice moves to the bottom before the footer.
 - 08:25: case detail Overview (Juan): cards use the whole page, Next steps first with the map large and readable, a large stage strip, Something changed as a primary button in the header; the right rail removed.
+- 08:30: case detail v3 (Juan): a banner like the other pages with the basic case information and quick actions aligned right; then a sequence diagram with real arrows for the five stages; then the next steps.
