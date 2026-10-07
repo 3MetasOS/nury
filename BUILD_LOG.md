@@ -376,3 +376,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 55. 2026-10-06 21:53 MDT — Light video; Day mode in the app (Juan: yes and yes)
 
 - The video moves to the paper palette; the app footage stays the dark app in a phone frame on the light background. The app gets an optional Day/Night toggle (Night stays the default); CSS variables only, no core change; lowest priority, cut if the final runs need the time.
+
+## 56. 2026-10-06 21:55 MDT — Slot C passed; core freeze declared (hack-sensei)
+
+- Slot C (hack-artisans, about $1.15): case file and revision 5 of 5 PASS (v1 files byte-identical after v2 saved; v2 beside v1 with `changes.md`; no rejected text, no key, only vetted links); the whole app in a real browser with privacy on (protect step, 5 gates, Save, Open case, Something changed, Draft again, Save as v2, Compare); network scenarios n01 PASS, n02 REVIEW (Jev gives_legal_advice 0.26, the usual band), n03 PASS; privacy edit path (a pastor edit adds a new name): 0 protected values in the 5 captured request strings, the pastor still sees the name; forced rejection through privacy PASS, 0 leaks in 7 captured strings.
+- Read by hack-sensei: in n02 (Mesa) the church contact is listed first, then national directories, no Colorado official list; in n01 (Aurora) church contact first, then the Department of Justice section with the caveat, then national directories.
+- New evidence: the adapter captures every string sent to the model below the privacy layer; a deterministic `privacy_no_leak` check fails any run where a protected value appears (counts recorded, never values). It runs on the final scored runs.
+- Harness bugs found by hack-artisans and fixed (no core or prompt change): the network check flagged the required caveat as an endorsement; the revision privacy step proposed "Esto", "Llame", "Result", "Step" as people.
+- Observation: the attorney stage prints the disclaimer near the top as well as at the end; accepted as harmless.
+- DECISION: the core is FROZEN from now (bug fixes only, announced and approved first). The final scored runs start now: detention 20 and hospital 8, privacy on, with Jev.
