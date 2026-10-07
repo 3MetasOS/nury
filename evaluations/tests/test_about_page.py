@@ -43,3 +43,10 @@ def test_sections_come_from_the_source_and_the_blocks_are_label_plus_text():
 def test_the_footer_links_to_about_twice():
     js = (STATIC / "shell.js").read_text(encoding="utf-8")
     assert '<a class="fabout" href="/about"' in js and ">About</a>" in js and "More about how it was made" in js and 'href="/about"' in js
+
+
+def test_the_saved_cases_notice_lives_only_in_the_app_page_and_not_on_document_pages():
+    for f in list(STATIC.glob("*.html")) + [ROOT / "app" / n for n in ("docs_template.html", "log_template.html", "standards_template.html", "about_template.html")]:
+        if f.name == "index.html":
+            continue
+        assert "data-consent" not in f.read_text(encoding="utf-8"), f.name
