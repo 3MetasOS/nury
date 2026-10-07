@@ -275,3 +275,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Found and fixed: a made-up token came out double-bracketed; an address pattern matched "14 years ago in Court"; the names proposer suggested "What" and "Aurora" as people; an extra-calls count was off by one.
 - Honest limits: direct identifiers only; context can still hint; an unprotected name is not removed; an email with an invented domain is not link-checked. Added a Privacy section to the root README.
 - The eval adapter must use `make_client(intake=...)` and wrap the gate for edit scenarios (hack-artisans informed).
+
+## 39. 2026-10-06 21:14 MDT — Email-domain check; church network started (hack-jedi, commit a948be0)
+
+- Email-domain check landed: an invented email escalates; a vetted domain, a vetted address, or an address already in the intake or approved text passes. 58 tests pass (verified by hack-sensei); detention 01 and hospital h01 re-run clean. This closes the gap noted in entry 37.
+- Church network change started. Decisions: the freeze moved to 08:00 Oct 7 so the network lands before the final scored runs. A committed synthetic network is allowed only if clearly fake (DEMO/FAKE file name, "fictional": true, 555-0100 phone numbers, loaded only with NURY_DEMO_NETWORK=1, UI banner "fictional demo contacts"). Attorney and resources stages use the fixed label "People our church has worked with", described as the church's own contacts, not endorsements. Case revision stays with hack-artisans; hack-jedi advises. The Department of Justice list is researched by hack-ninja and wired by hack-jedi after Juan approves it.
