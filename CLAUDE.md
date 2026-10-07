@@ -26,7 +26,7 @@ Nury is a crisis-management engine that runs playbooks. A crisis is data: a fold
 - Vetted sources only. No open web.
 - No send path. Nothing reaches the family except through the pastor.
 - Nury is not a pastor and never claims to be one (or a counselor, therapist, or lawyer).
-- Product runtime is pure Gloo (guarded Responses endpoint). Jev is used at eval time only.
+- Run time: Claude Sonnet 4.6 writes through Gloo AI Studio's guarded endpoint, our named rules check each draft, and Jev classifies each draft (the gate, added 2026-10-07 at Juan's request; no second LLM reviewer in the product). Jev also judges the system at test time. The red team (GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick through Gloo) is a pre-release advisory audit only.
 - `GLOO_API_KEY` and `JEV_API_KEY` come from the environment. Never in a file, commit, or message.
 - Every meaningful step is a commit dated Oct 6–8. Author is Juan Pelaez (set on this repo). Every agent commit ends with `Co-Authored-By: <agent-id> <agent-id>@rnd23blocks.aimaestro.local`.
 - Agents talk over AMP. Route work; do not do another agent's job.
