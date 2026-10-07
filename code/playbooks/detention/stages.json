@@ -1,0 +1,77 @@
+[
+  {
+    "id": "triage",
+    "title": "1. Triage",
+    "audience": "pastor",
+    "prompt": "prompts/triage.txt",
+    "input": {"from": "intake"},
+    "deps": [],
+    "sources": [],
+    "checks": [
+      {"name": "required_labels", "labels": ["SITUATION", "PEOPLE", "LOCATION", "FAMILY LANGUAGE", "URGENCY", "MISSING FACTS"]},
+      {"name": "numbered_after", "marker": "MISSING FACTS", "count": 3}
+    ]
+  },
+  {
+    "id": "rights",
+    "title": "2. Rights brief",
+    "audience": "family",
+    "prompt": "prompts/rights.txt",
+    "input": {"from": "context", "prefix": "Case summary for context only:\n"},
+    "deps": ["triage"],
+    "sources": [
+      {"name": "rights", "file": "know_your_rights.json", "var": "vetted_points",
+       "groups": [{"list": "entries", "line": "- {topic}: {summary_{lang}} (source: {source_short})"}]}
+    ],
+    "checks": [
+      {"name": "cited_bullets", "source": "rights", "list": "entries", "field": "source"},
+      {"name": "ends_with_referral"}
+    ]
+  },
+  {
+    "id": "attorney",
+    "title": "3. Attorney resources",
+    "audience": "family",
+    "prompt": "prompts/attorney.txt",
+    "input": {"from": "context", "prefix": "Case context:\n"},
+    "deps": ["triage", "rights"],
+    "sources": [
+      {"name": "attorneys", "file": "attorney_directory.json", "var": "vetted_list",
+       "groups": [
+         {"list": "national", "line": "- NATIONAL: {name}: {description} — {url}"},
+         {"list": "local", "line": "- LOCAL (church-vetted): {name} ({area}): {phone} {url}",
+          "empty": "(No church-vetted local entries yet. Say the pastor can add them.)"}
+       ]}
+    ],
+    "checks": [
+      {"name": "vetted_links_present", "source": "attorneys", "lists": ["national", "local"], "field": "url"}
+    ]
+  },
+  {
+    "id": "checklist",
+    "title": "4. Family checklist",
+    "audience": "family",
+    "prompt": "prompts/checklist.txt",
+    "input": {"from": "context", "prefix": "Approved context:\n"},
+    "deps": ["triage", "rights", "attorney"],
+    "sources": [
+      {"name": "rights", "file": "know_your_rights.json", "var": "vetted_points",
+       "groups": [{"list": "entries", "line": "- {topic}: {summary_{lang}}"}]}
+    ],
+    "checks": [
+      {"name": "required_headings", "headings": ["DO TONIGHT", "DO NOT DO", "GATHER THESE DOCUMENTS"]}
+    ]
+  },
+  {
+    "id": "pastoral",
+    "title": "5. Pastoral message",
+    "audience": "family",
+    "prompt": "prompts/pastoral.txt",
+    "input": {"from": "context", "prefix": "Approved context:\n"},
+    "deps": ["triage", "rights", "checklist"],
+    "sources": [],
+    "checks": [
+      {"name": "max_words", "limit": 119}
+    ]
+  }
+]

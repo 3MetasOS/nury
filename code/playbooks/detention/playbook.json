@@ -1,0 +1,15 @@
+{
+  "id": "detention",
+  "title": "Immigration detention or raid",
+  "description": "A family member was detained or taken in an immigration raid. The pastor takes the call and needs a case summary, a rights brief, attorney resources, a checklist, and a pastoral message.",
+  "languages": ["en", "es"],
+  "default_family_language": "es",
+  "disclaimer": {
+    "en": "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice. Please review it with a qualified immigration attorney as soon as possible.",
+    "es": "Nury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. Esto es información legal general, no asesoramiento legal. Por favor revísela con un abogado de inmigración calificado lo antes posible."
+  },
+  "draft_label": {
+    "en": "Nury draft for pastor review",
+    "es": "Borrador de Nury para revisión del pastor"
+  }
+}

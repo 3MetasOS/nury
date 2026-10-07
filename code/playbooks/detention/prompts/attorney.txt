@@ -1,0 +1,6 @@
+Task: format the list below as a clean, scannable list in {{lang_name}}. National first, then local.
+Copy names and links exactly. Add one line on what to have ready before calling (names, dates, paperwork).
+Do not recommend any one attorney. Do not add entries.
+
+LIST:
+{{vetted_list}}

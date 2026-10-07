@@ -3,22 +3,25 @@
 There is no send path here. Output goes to the pastor's gate and nowhere else.
 """
 
+import json
 import os
+from types import SimpleNamespace
 from dataclasses import dataclass, field, replace
 from typing import Callable, Optional
 
 from . import guardrails as g
 from .audit import AuditLog
 from .gloo_client import GlooClient, GuardrailBlock
-from .stages import REGISTRY, SOURCE_FILES, STAGES, load_source
+from . import playbook as pbm
+from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
 MAX_TRIES = MAX_ATTEMPTS  # old name
 STOP_MESSAGE = "I'll handle this manually."
-DRAFT_LABEL = {"en": "Nury draft for pastor review", "es": "Borrador de Nury para revisión del pastor"}
+DEFAULT_PLAYBOOK = "detention"
 
-# Forced unsafe text for fault injection. It trips the banned_phrase check.
-UNSAFE_SUFFIX = " Your case will be won, and we guarantee you will not be deported."
+# Forced unsafe text for fault injection. It trips banned_phrase (not language) in Spanish stages.
+UNSAFE_SUFFIX = " Su caso va a ser ganado. Garantizamos que no serán deportados."
 
 
 @dataclass
@@ -28,6 +31,7 @@ class CaseState:
     language: str = "es"                          # family language
     approved: dict = field(default_factory=dict)  # stage_id -> approved OR edited text (with disclaimer)
     results: dict = field(default_factory=dict)   # stage_id -> StageResult (full, eval only)
+    outcome: Optional[dict] = None                # set by run_pipeline: see compute_outcome
 
     def set_manual(self, stage_id, text):
         """Pastor wrote this stage by hand (e.g. after an escalation)."""
@@ -61,6 +65,19 @@ class StageResult:
 
 def approve_all(result):
     return GateDecision("approve")
+
+
+_PB_CACHE = {}
+
+
+def get_playbook(playbook=None):
+    """A Playbook, from an object, an id, or the default (detention)."""
+    if isinstance(playbook, pbm.Playbook):
+        return playbook
+    pid = playbook or DEFAULT_PLAYBOOK
+    if pid not in _PB_CACHE:
+        _PB_CACHE[pid] = pbm.load_playbook(pid)
+    return _PB_CACHE[pid]
 
 
 def with_disclaimer(text, disclaimer):
@@ -101,7 +118,7 @@ def _fault_for(stage_id, fault_injection):
 
 def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
               audit: Optional[AuditLog] = None, provoke: Optional[dict] = None,
-              fault_injection: Optional[dict] = None) -> StageResult:
+              fault_injection: Optional[dict] = None, playbook=None) -> StageResult:
     """Draft one stage, check it, correct it (max 3 attempts), then ask the gate.
 
     gate(result) -> GateDecision. The gate only sees safe drafts and no `attempts`.
@@ -110,16 +127,34 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         reject -> regenerate -> pass. times>=3 gives escalation. Also: env NURY_FORCE_REJECTION=1.
     provoke: {stage_id: extra instruction} added to the FIRST try's prompt (model-side, not deterministic).
     """
-    stage = REGISTRY[stage_id]
-    client = client or GlooClient()
+    pb = get_playbook(playbook)
+    stage = pb.registry[stage_id]
     audit = audit or AuditLog()
-    data = {k: load_source(SOURCE_FILES[k]) for k in stage.sources}
+    fields = pbm.parse_fields(state.approved.get("triage", ""))
     lang = "en" if stage.audience == "pastor" else state.language
-    disclaimer = g.DISCLAIMER[lang]
+    disclaimer = pb.disclaimer[lang]
+    if not pbm.when_matches(stage.when, fields):
+        audit.log("stage_skipped", stage=stage_id, when=stage.when, fields=fields)
+        rec = StageResult(stage_id, stage.title, "skipped", None, None, disclaimer, _new_metrics())
+        state.results[stage_id] = rec
+        return rec
+    client = client or GlooClient()
+    data = {n: pb.sources[n] for n in stage.sources}
     fault = _fault_for(stage_id, fault_injection)
     m = _new_metrics()
     ctx = {d: state.approved[d] for d in stage.deps if d in state.approved}
-    base_ins, user_input = stage.build(state, data)
+    base_ins = g.SYSTEM_BOUNDARY + "\n" + pbm.render_prompt(stage, pb, lang, state, fields)
+    user_input = pbm.build_input(stage, state)
+    vetted_blob = json.dumps(data, ensure_ascii=False) + "\n" + "\n".join(ctx.values())
+    ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
+
+    def all_violations(txt):
+        """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
+        v = g.unsafe_reasons(txt) + g.language_reasons(txt, lang)
+        v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
+        for c in stage.checks:
+            v += CHECKS[c["name"]](c, txt, ctx_ns)
+        return v
     audit.log("stage_start", stage=stage_id, deps_used=list(ctx))
 
     rec = StageResult(stage_id, stage.title, "error", None, None, disclaimer, m, input_context=ctx)
@@ -155,8 +190,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         if fault and attempt <= fault.get("times", 1):
             text += fault.get("draft_suffix", UNSAFE_SUFFIX)
             audit.log("fault_injected", stage=stage_id, attempt=attempt)
-        violations = (g.unsafe_reasons(text) + stage.checks(text, state, data)
-                      + g.language_reasons(text, lang))
+        violations = all_violations(text)
         cats = sorted({v["category"] for v in violations})
         audit.log("check", stage=stage_id, attempt=attempt, passed=not violations, violations=violations,
                   reason_categories=cats, tokens_in=meta["input_tokens"], tokens_out=meta["output_tokens"],
@@ -180,7 +214,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         return rec
 
     rec.status, rec.draft = "approved", draft
-    rec.shown_text = f"{DRAFT_LABEL[lang]}\n\n" + with_disclaimer(draft, disclaimer)
+    rec.shown_text = f"{pb.draft_label[lang]}\n\n" + with_disclaimer(draft, disclaimer)
     decision = gate(replace(rec, attempts=[]))      # the gate never gets rejected attempts
     audit.log("gate", stage=stage_id, action=decision.action)
     rec.gate = {"action": decision.action, "edited_text": None}
@@ -193,8 +227,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         rec.gate["edited_text"] = decision.text.strip()
         rec.final = with_disclaimer(decision.text, disclaimer)   # disclaimer re-appended after edit
         # The pastor owns edits. We flag, we do not block.
-        warn = (g.unsafe_reasons(decision.text) + stage.checks(decision.text, state, data)
-                + g.language_reasons(decision.text, lang))
+        warn = all_violations(decision.text)
         audit.log("edit_check", stage=stage_id, warnings=warn)
     elif decision.action == "approve":
         rec.final = with_disclaimer(draft, disclaimer)
@@ -207,19 +240,69 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     return rec
 
 
-def run_pipeline(state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
-                 audit: Optional[AuditLog] = None, provoke: Optional[dict] = None, stages=None,
-                 fault_injection: Optional[dict] = None):
-    """Run stages in order. Stop at the first stop, escalation, or error."""
+def _sources_list(pb, stage_id):
+    """Vetted sources behind a stage: names and links the pastor can use by hand."""
+    out = []
+    for spec in pb.registry[stage_id].source_specs:
+        data = pb.sources[spec["name"]]
+        for grp in spec["groups"]:
+            for ent in data.get(grp["list"], []):
+                out.append(ent.get("source") or " — ".join(x for x in (ent.get("name"), ent.get("url")) if x))
+    return sorted(set(out))
+
+
+def compute_outcome(playbook, state: CaseState, results) -> dict:
+    """One of package_complete | stopped_by_pastor | escalated | blocked, plus what the pastor gets."""
+    pb = get_playbook(playbook)
+    bad = next((r for r in results if r.status in ("stopped", "escalated", "error")), None)
+    if bad is None:
+        oid = "package_complete"
+    elif bad.status == "stopped":
+        oid = "stopped_by_pastor"
+    elif bad.status == "error" or (bad.reason_categories and set(bad.reason_categories) == {"gloo_block"}):
+        oid = "blocked"
+    else:
+        oid = "escalated"
+    spec = dict(pb.outcomes[oid])
+    if bad is not None and bad.stage_id in spec.get("by_stage", {}):
+        spec.update(spec["by_stage"][bad.stage_id])
+    pkg = {}
+    for item in spec.get("package", []):
+        if item == "approved_stages":
+            pkg.update({k: v for k, v in state.approved.items()})
+        elif item == "sources_list":
+            if bad is not None:
+                pkg["sources_list"] = _sources_list(pb, bad.stage_id)
+        elif item in state.approved:
+            pkg[item] = state.approved[item]
+    return {"outcome": oid, "message": spec["message"], "package": pkg,
+            "failed_stage": bad.stage_id if bad else None}
+
+
+def _run_pipeline(playbook, state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
+                  audit: Optional[AuditLog] = None, provoke: Optional[dict] = None, stages=None,
+                  fault_injection: Optional[dict] = None):
+    pb = get_playbook(playbook)
     client = client or GlooClient()
     audit = audit or AuditLog()
     out = []
-    for s in (stages or [s.id for s in STAGES]):
-        r = run_stage(s, state, gate, client, audit, provoke, fault_injection)
+    for s in (stages or [s.id for s in pb.stages]):
+        r = run_stage(s, state, gate, client, audit, provoke, fault_injection, pb)
         out.append(r)
-        if r.status not in ("approved", "edited"):
+        if r.status not in ("approved", "edited", "skipped"):
             break
+    state.outcome = compute_outcome(pb, state, out)
+    audit.log("outcome", outcome=state.outcome["outcome"], failed_stage=state.outcome["failed_stage"])
     return out
+
+
+def run_pipeline(*args, **kw):
+    """run_pipeline(playbook, state, gate=approve_all, client=None, audit=None, provoke=None,
+    stages=None, fault_injection=None). `playbook` is an id or a Playbook. The old call
+    run_pipeline(state, gate, ...) still works and uses the detention playbook."""
+    if args and isinstance(args[0], CaseState):
+        args = (None,) + args
+    return _run_pipeline(*args, **kw)
 
 
 def scripted_gate(decisions: dict):
@@ -235,7 +318,7 @@ def scripted_gate(decisions: dict):
 
 
 def run_scripted(intake, language="es", decisions=None, fault_injection=None, client=None,
-                 audit: Optional[AuditLog] = None, stages=None):
+                 audit: Optional[AuditLog] = None, stages=None, playbook=None):
     """Entrypoint for the eval harness. Returns (state, results, audit).
 
     results[i].attempts / .reason_categories / .shown_text / .gate / .input_context / .metrics
@@ -243,7 +326,7 @@ def run_scripted(intake, language="es", decisions=None, fault_injection=None, cl
     """
     state = CaseState(intake, language)
     audit = audit or AuditLog()
-    results = run_pipeline(state, scripted_gate(decisions or {}), client, audit,
+    results = run_pipeline(playbook, state, scripted_gate(decisions or {}), client, audit,
                            stages=stages, fault_injection=fault_injection)
     return state, results, audit
 

@@ -6,7 +6,9 @@ Python 3.12. Needs `requests`. `GLOO_API_KEY` comes from the environment or the 
 from nury.engine import (CaseState, GateDecision, StageResult, run_stage, run_pipeline,
                          approve_all, DEMO_PROVOKE, STOP_MESSAGE)
 from nury.audit import AuditLog
-from nury.stages import STAGES, REGISTRY      # ids: triage, rights, attorney, checklist, pastoral
+from nury.engine import get_playbook, compute_outcome   # get_playbook("detention") -> Playbook
+from nury.playbook import list_playbooks, load_playbook   # list_playbooks() -> [{id, title, description}] for the crisis picker
+from nury.stages import STAGES, REGISTRY      # shim: the detention playbook's stages (ids: triage, rights, attorney, checklist, pastoral)
 from nury.gloo_client import GlooClient, GuardrailBlock
 ```
 
@@ -19,9 +21,10 @@ CaseState(intake: str, language: str = "es")   # .approved {stage_id: approved-o
 
 GateDecision(action: "approve" | "edit" | "stop", text: str | None)   # text required for "edit"
 
-run_stage(stage_id, state, gate=approve_all, client=None, audit=None, provoke=None, fault_injection=None) -> StageResult
-run_pipeline(state, gate=approve_all, client=None, audit=None, provoke=None, stages=None, fault_injection=None) -> list[StageResult]
-run_scripted(intake, language="es", decisions=None, fault_injection=None, client=None, audit=None, stages=None) -> (state, results, audit)
+run_stage(stage_id, state, gate=approve_all, client=None, audit=None, provoke=None, fault_injection=None, playbook=None) -> StageResult
+run_pipeline(playbook, state, gate=approve_all, client=None, audit=None, provoke=None, stages=None, fault_injection=None) -> list[StageResult]
+                                  # playbook = id string or Playbook. The old run_pipeline(state, gate, ...) still works (detention).
+run_scripted(intake, language="es", decisions=None, fault_injection=None, client=None, audit=None, stages=None, playbook=None) -> (state, results, audit)
                                   # decisions: {stage_id: "approve" | "stop" | ("edit", text)}; default approve
 scripted_gate(decisions) -> gate
 ```
@@ -45,14 +48,26 @@ StageResult(stage_id, title,
   input_context)      # {dep_stage_id: approved/edited text this stage consumed}
 ```
 
+## Playbooks (a crisis is a folder)
+
+`code/playbooks/<id>/` holds `playbook.json`, `stages.json`, `prompts/`, `sources/`, `outcomes.json`. The engine never names a crisis. Detention is `playbooks/detention/`. To add a crisis, add a folder. See `documents/ARCHITECTURE.md`.
+
+- `stages.json` per stage: `id, title, audience ("pastor"|"family"), prompt, input, deps, sources, checks, when, variants`.
+- `sources[]`: `{name, file, var, groups:[{list, line, empty?}]}`. The engine renders the vetted JSON into the prompt variable `{{var}}`. `{{lang_name}}` is also available.
+- `checks[]`: named checks from `nury/checks.py`: `required_labels, numbered_after, cited_bullets, ends_with_referral, vetted_links_present, required_headings, max_words`. They add to the safety floor.
+- **Paths.** `when` is a plain field match on triage output (`"LABEL: value"` lines become fields, e.g. `urgency`). `{"field": "triage.urgency", "in": ["high"]}`, or `equals`, `matches` (regex), `all`, `any`. A stage whose `when` fails gets `status="skipped"` and the run goes on. `variants: [{when, prompt}]` swaps the prompt for the first match. The detention playbook ships no variants yet, because a variant needs its own vetted source facts.
+- **Outcomes.** After `run_pipeline`, `state.outcome = {outcome, message, package, failed_stage}`. `outcome` is `package_complete`, `stopped_by_pastor`, `escalated`, or `blocked` (Gloo blocked every attempt, or the call failed). `outcomes.json` says what each hands the pastor. `by_stage` overrides one failing stage (rights escalation hands over `sources_list`).
+- **Safety floor (engine, not data).** Boundary prompt, banned-pattern checks, language check, link and phone allowlist from the stage's sources and approved earlier text, disclaimer on every output, 3-attempt cap, no send path. The loader refuses a playbook whose disclaimer drops "AI assistant / not a lawyer / pastor / not legal advice", and refuses a playbook whose stage 1 is not `triage`.
+- Prompt history: `playbooks/detention/PROMPT_NOTES.md`. Tests: `cd code && python3 -m unittest discover -s tests`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.
 - **Correction loop.** Draft, check, on fail feed the reasons back and regenerate. `MAX_ATTEMPTS = 3` attempts total (first draft + 2 regenerations), so `retries <= 2`. Then `status="escalated"` with `draft=None`. An unsafe draft never reaches the gate. A Gloo 403 (`GuardrailBlock`) counts as a failed try.
 - **Stop.** `stop` returns `status="stopped"`. `run_pipeline` halts on stopped, escalated, or error. Continue by hand with `state.set_manual(stage_id, text)` and `run_stage(next_id, state)`.
 - **Edits.** The pastor owns them. They are checked and any warnings go to the audit log. They are not blocked. The engine re-appends the disclaimer after an edit. `final` and `state.approved[stage]` always end with the disclaimer, once.
-- **Reason categories.** `banned_phrase` (prediction, advice, identity claim, specific-attorney recommendation), `ungrounded_claim` (link or bullet not in vetted sources), `missing_vetted_entry`, `missing_attorney_referral`, `format`, `length`, `gloo_block`. They appear in each `check` / `draft_rejected` audit event and in `StageResult`.
-- **Fault injection** (`fault_injection={"stage": "rights", "times": 1, "draft_suffix": "..."}`). The engine appends `draft_suffix` to the first `times` drafts of that stage, after generation and before the checks. `times=1` gives reject, regenerate, pass. `times=3` gives escalation. Use `UNSAFE_SUFFIX` for a suffix that trips `banned_phrase`. The rejected text goes to the audit log and `attempts` only. The gate and the pastor never get it.
+- **Reason categories.** `banned_phrase` (prediction, advice, identity claim, specific-attorney recommendation), `ungrounded_claim` (link or bullet not in vetted sources), `missing_vetted_entry`, `missing_attorney_referral`, `format`, `length`, `language`, `gloo_block`. They appear in each `check` / `draft_rejected` audit event and in `StageResult`.
+- **Fault injection** (`fault_injection={"stage": "rights", "times": 1, "draft_suffix": "..."}`). The engine appends `draft_suffix` to the first `times` drafts of that stage, after generation and before the checks. `times=1` gives reject, regenerate, pass. `times=3` gives escalation. Use `UNSAFE_SUFFIX` (Spanish) for a suffix that trips `banned_phrase` only. The rejected text goes to the audit log and `attempts` only. The gate and the pastor never get it.
 - **Demo switch.** `NURY_FORCE_REJECTION=1` forces exactly one rejection on stage 2 (rights): reject, regenerate, pass.
 - **Cost.** `cost_usd` is `None` unless you set `NURY_PRICE_IN` and `NURY_PRICE_OUT` (USD per 1M tokens).
 - **Audit.** `AuditLog(path=None)`. Pass a JSONL path to persist. Event kinds: `stage_start`, `gloo_call`, `gloo_block`, `check`, `draft_rejected` (holds the rejected text, `visible_to_pastor=False`), `escalated`, `gate`, `edit_check`, `error`. Each has a UTC `ts`. Never show `draft_rejected` in the pastor UI.
@@ -87,6 +102,7 @@ state, results, audit = run_scripted(intake, "es", decisions={"triage": ("edit",
 
 ## Known notes
 
-- Stage text comes from `code/nury/data/*.json` (vetted files, copied from prework). Add church-vetted local attorneys to `attorney_directory.json` under `"local"`.
-- Checks are deterministic (`nury/guardrails.py`, `nury/stages.py`). Add a rule there and every run uses it.
+- Stage text comes from `code/playbooks/detention/sources/*.json` (vetted). Add church-vetted local attorneys to `attorney_directory.json` under `"local"`.
+- Floor checks: `nury/guardrails.py`. Named playbook checks: `nury/checks.py`.
+- `draft` shown at the gate: `shown_text` starts with a label line ("Borrador de Nury para revisión del pastor") from `playbook.json`. `final` does not carry it.
 - A call takes 4-20 s per stage. Run stages in a worker thread if the UI must stay responsive.

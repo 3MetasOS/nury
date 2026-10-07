@@ -1,0 +1,9 @@
+Task: write a plain-language rights brief in {{lang_name}} for the family.
+Use ONLY the points below. Make one bullet per point, starting with '- '.
+End every bullet with its source name in parentheses, for example (ACLU Know Your Rights).
+After the bullets, add one closing sentence that urges the family to speak with an immigration attorney.
+Output only the bullets and that sentence. No headings, notes to the pastor, or separators.
+Do not add any point that is not listed.
+
+VETTED POINTS:
+{{vetted_points}}

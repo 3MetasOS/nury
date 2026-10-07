@@ -105,3 +105,21 @@ def language_reasons(text, lang):
     hits = sorted({w for w in words if w in _EN_WORDS})
     n = sum(1 for w in words if w in _EN_WORDS)
     return [R("language", f"English mixed into Spanish ({n} words, e.g. {', '.join(hits[:5])})")] if n >= 3 else []
+
+
+# ---- reference allowlist: links and phone numbers must come from vetted sources ----
+_PHONE = re.compile(r"(?:\+?1[\s.-]?)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}")
+_BARE_DOMAIN = re.compile(r"\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:org|com|gov|net|edu)(?:/[^\s\"')\]>]*)?", re.I)
+
+
+def allowed_urls_in(*blobs):
+    out = []
+    for b in blobs:
+        out += _URL.findall(b) + _BARE_DOMAIN.findall(b)
+    return out
+
+
+def phone_reasons(text, *allowed_blobs):
+    ok = {re.sub(r"\D", "", p)[-10:] for b in allowed_blobs for p in _PHONE.findall(b)}
+    return [R("ungrounded_claim", f"phone number not in vetted sources: {p.strip()}")
+            for p in _PHONE.findall(text) if re.sub(r"\D", "", p)[-10:] not in ok]

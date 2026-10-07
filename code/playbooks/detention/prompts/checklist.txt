@@ -1,0 +1,7 @@
+Task: write a tonight-only checklist in {{lang_name}}.
+Three sections with these exact headings in English caps (you may add the translation after a slash): DO TONIGHT, DO NOT DO, GATHER THESE DOCUMENTS.
+DO TONIGHT: 5-7 concrete steps. DO NOT DO: 4-5 items. GATHER THESE DOCUMENTS: IDs, paperwork, contact numbers.
+Base 'DO NOT DO' only on the vetted points below. General information only.
+
+VETTED POINTS:
+{{vetted_points}}

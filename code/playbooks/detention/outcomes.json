@@ -1,0 +1,28 @@
+{
+  "package_complete": {
+    "description": "All stages approved or edited.",
+    "package": ["triage", "rights", "attorney", "checklist", "pastoral"],
+    "message": "Package ready for the pastor. Nothing is sent. The pastor shares it."
+  },
+  "stopped_by_pastor": {
+    "description": "The pastor chose Stop at a gate.",
+    "package": ["approved_stages"],
+    "message": "I'll handle this manually."
+  },
+  "escalated": {
+    "description": "Three attempts failed the safety checks. The pastor never saw an unsafe draft.",
+    "package": ["approved_stages", "sources_list"],
+    "message": "I'll handle this manually.",
+    "by_stage": {
+      "rights": {
+        "package": ["approved_stages", "sources_list"],
+        "message": "Nury could not write a safe rights brief. Here are the vetted sources. I'll handle this manually."
+      }
+    }
+  },
+  "blocked": {
+    "description": "Gloo guardrails blocked every attempt, or the model call failed.",
+    "package": ["approved_stages", "sources_list"],
+    "message": "I'll handle this manually."
+  }
+}
