@@ -94,7 +94,7 @@ Small versioned instruction modules in `code/skills/<name>/SKILL.md` (header: na
 
 ```python
 from nury import casefile as cf
-cf.save_case(state, audit, playbook=None, root="cases", case_id=None) -> {"id", "path", "files"}
+cf.save_case(state, audit, playbook=None, root="cases", case_id=None, privacy=None) -> {"id", "path", "files"}
 cf.list_cases(root="cases")  -> [{"id", "playbook", "title", "created", "status", "path"}]   # newest first
 cf.load_case(case_id, root="cases") -> {"meta": {...}, "pages": {"index.md": text, ...}, "svg": "<svg ...>"}
 cf.export_zip(case_id, root="cases", dest=None) -> "<path to .zip>"       # default <root>/<id>.zip
@@ -102,7 +102,7 @@ cf.nextsteps_svg(pb, state, title) -> svg string                          # the 
 cf.CaseError                                                             # raised on any refusal
 ```
 
-Layout: `cases/<id>/` holds `index.md`, one page per stage (`01-<stage id>.md` ... in playbook order; skipped stages have no page), `people.md`, `documents.md`, `timeline.md`, `log.md`, `nextsteps.svg`, `case.json`. Pages link with relative markdown links, and `index.md` embeds the map. `cases/` is gitignored. The case id is `<playbook>-<yyyymmdd>-<hhmmss>-<4 hex>` unless you pass one. It never overwrites a case.
+Layout: `cases/<id>/` holds `index.md`, `intake.md` (the pastor's words, exactly; a revision appends below it), one page per stage (`01-<stage id>.md` ... in playbook order; skipped stages have no page), `people.md`, `documents.md`, `timeline.md`, `log.md`, `nextsteps.svg`, `case.json`. Pages link with relative markdown links, and `index.md` embeds the map. `cases/` is gitignored. The case id is `<playbook>-<yyyymmdd>-<hhmmss>-<4 hex>` unless you pass one. It never overwrites a case.
 
 - **Call it after the run.** Pass the same `state` and `audit` the pipeline used (`run_scripted` returns both; the app already holds them). Refuses (`CaseError`) unless every stage is `approved` or `edited` (`skipped` is fine). Nothing is written on a refusal.
 - **Approved content only.** Stage pages hold `state.approved[stage]` exactly (the pastor's edit if edited, disclaimer included). The log records each gate, edits (flagged), skills applied, and rejected drafts as categories only. A guard refuses the save if a rejected draft or a key value would be written.
