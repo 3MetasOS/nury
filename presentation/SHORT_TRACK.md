@@ -1,5 +1,7 @@
 # Short track: a deck and a silent video
 
+**This is tonight's 3-minute pitch (deck plus a silent app video; Juan speaks live).** An earlier version of this file budgeted 90 seconds. That timing was wrong for this deck and is removed. A 90-second cut is an idea for the finalist video only, and nothing in this file sets any timing.
+
 Written 2026-10-07 by hack-ninja for hack-sensei (Juan's request, corrected the same day). Just the hook, the why, the video and the "so what?". No architecture, no evaluation, no numbers tables. The short presentation is a deck plus a SILENT video. There is no voice-over, no word budget and no timing script. Juan presents live, in his own words. The talking points below are suggestions, not a script. The deck file is not edited here.
 
 ## The slides
