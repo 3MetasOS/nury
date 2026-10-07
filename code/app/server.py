@@ -31,7 +31,7 @@ except Exception:
     network_api = None
 STATIC_OK = re.compile(r"^/[A-Za-z0-9_-]+\.(html|css|js|svg)$")
 MIME = {"html": "text/html; charset=utf-8", "css": "text/css; charset=utf-8", "js": "text/javascript; charset=utf-8", "svg": "image/svg+xml"}
-CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # local only, gitignored
+CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # saved by the app on the server's disk, gitignored
 CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
 GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."

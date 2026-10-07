@@ -51,7 +51,7 @@ def p2():
     sent = ps.pseudonymize(typed)
     print("pastor typed :", typed)
     print("Gloo receives:", sent)
-    print("token map (stays on this computer):")
+    print("token map (kept by the app, never sent to the model):")
     for k, v in sorted(ps.map().items(), key=lambda kv: -len(kv[1]))[:3]:
         print(f"   {k} -> {v}")
 

@@ -70,18 +70,18 @@ stages.json                     "skills": ["voice", "grounding"] on a stage
 - No extra model call. Skills change the prompt, not the number of calls.
 
 ## Case file and next-steps map (decided by Juan 2026-10-06)
-After the pastor approves a package, Nury can save it as a **case file**: a local folder of linked markdown pages (index, one page per stage, people, documents, timeline, log) the pastor can reopen, read, print and export. Style: a small personal wiki, compiled once from approved text.
-- **Local only.** Case files live on the pastor's machine in `cases/` (gitignored). Nothing is uploaded. Demo and evals use synthetic families only.
+After the pastor approves a package, Nury can save it as a **case file**: a folder of linked markdown pages (index, one page per stage, people, documents, timeline, log) the pastor can reopen, read, print and export. Style: a small personal wiki, compiled once from approved text.
+- **Saved by the app, not uploaded.** The app saves case files in `cases/` on the server that runs it (gitignored). Nothing is uploaded to anyone; the only thing that leaves is the model request, which carries tokens, not names. There is no sign-in, no per-church separation and no encryption at rest yet (see FEATURES.md). Demo and evals use synthetic families only.
 - **Approved content only.** Pages hold what the pastor approved or edited. A rejected draft never enters a case file. `log.md` records each gate with a timestamp.
 - **Built without a model call.** Pages and the map are produced deterministically from the approved stage outputs and the audit log.
 - **Next-steps map.** One SVG per case: lanes for tonight, this week, questions still open, and who to call. It shows steps and questions, never outcomes. No future-tense claims about the case.
 - **Later (not before submission):** a possible-paths map from vetted process sources (`pathways.json` per playbook), and a case update loop where Nury proposes page edits and the pastor approves each one.
 
-## Privacy layer: pseudonymize before anything leaves the device (decided by Juan 2026-10-07)
+## Privacy layer: pseudonymize before anything goes to a model (decided by Juan 2026-10-07)
 Nury sends no direct identifiers to any model. A **PrivacyClient** wraps the Gloo client (the engine already takes `client=`, so the core does not change).
 - **Outbound:** names, phone numbers, emails, street addresses, dates of birth, A-numbers and case numbers are replaced with tokens (`[PERSON_1]`, `[PHONE_1]`, `[PLACE_1]`...) before the request is sent. Places are generalized to the city or state level when a token would break the meaning.
-- **Mapping stays local.** The token map lives in memory for the run and in the case file on the pastor's machine. It is never sent anywhere.
-- **Inbound:** the response is detokenized locally, so the pastor sees real names. The family-facing message reads naturally.
+- **The mapping is never sent to the model.** The token map lives in memory for the run and in the saved case file (`privacy-map.json`) on the server that runs the app.
+- **Inbound:** the response is detokenized by the app, so the pastor sees real names. The family-facing message reads naturally.
 - **Detection:** deterministic rules for phones, emails, IDs, dates and addresses; for names, the pastor confirms a **protected terms** list on the intake screen (Nury proposes capitalized words it found; the pastor adds or removes). The pastor stays in charge of what counts as protected.
 - **Honest limit:** this removes direct identifiers. Context ("14 years", "his workplace") can still hint at who a person is. We say that plainly.
 - **Proof:** a leak test sends a synthetic intake full of canary names and numbers and checks the captured outbound request: none of them may appear. The same wrapper covers the eval harness's calls to Gloo; Jev only ever sees synthetic families.
@@ -95,7 +95,7 @@ A pastor reopens a saved case, records **what happened** (a step, and whether it
 
 ## Church network and official lists (decided by Juan 2026-10-07)
 Rule change (Juan): "Nury never recommends a specific attorney" becomes "Nury lists only contacts the pastor has vetted, labeled as the church's own, plus official vetted lists. It never endorses anyone."
-- **Church network:** a local directory the pastor keeps (`network/`, gitignored, like `cases/`): name, kind (pro bono immigration lawyer, Medicare/Medicaid helper...), languages, city and state, phone or link, the pastor's note, last-used date. The attorney and resources stages match the case (place, language, need) and list these first under "People our church has worked with". The vetted link and phone allowlist includes them. A small "Our network" screen adds, edits and tags entries.
+- **Church network:** a directory the app saves for the pastor (`network/`, gitignored, like `cases/`): name, kind (pro bono immigration lawyer, Medicare/Medicaid helper...), languages, city and state, phone or link, the pastor's note, last-used date. The attorney and resources stages match the case (place, language, need) and list these first under "People our church has worked with". The vetted link and phone allowlist includes them. A small "Our network" screen adds, edits and tags entries.
 - **Official list:** the U.S. Department of Justice list of recognized free legal service providers by state, ingested at build time as a vetted source (Juan approves it on a canvas first). Same pattern for other crises where an official list exists.
 - **No open web at runtime.** A later pastor-triggered "find more" panel (unverified candidates, never in a family message, one-click "add to our network" after the pastor checks them) is after submission. Reason: fake "notario" services target these families; search results can include them.
 

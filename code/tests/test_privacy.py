@@ -95,7 +95,7 @@ class Leak(unittest.TestCase):
         # detokenized: the pastor sees real names
         self.assertIn("Zorana Quimbley", st.approved["triage"])
         self.assertIn("Zorana Quimbley", rs[4].shown_text)
-        self.assertIn("Brunhilda Vandersloot", st.approved["rights"])        # the edit is kept locally
+        self.assertIn("Brunhilda Vandersloot", st.approved["rights"])        # the edit is kept in the saved case
         self.assertTrue(any(e["event"] == "edit_name_protected" for e in pc.events))
         self.assertIn("Brunhilda Vandersloot", pc.map().values())
 
@@ -107,7 +107,7 @@ class Leak(unittest.TestCase):
         self._assert_no_leak(http)
         self.assertIn("Zorana Quimbley", rs[4].shown_text)
 
-    def test_case_file_keeps_real_names_and_the_map_locally(self):
+    def test_case_file_keeps_real_names_and_the_map_with_the_case(self):
         http = FakeHTTP()
         st, rs, au, pc = run("detention", INTAKE, http)
         root = Path(tempfile.mkdtemp())

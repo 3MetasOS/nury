@@ -1,4 +1,4 @@
-"""The church network: contacts the PASTOR has vetted. Local only (network/, gitignored like cases/).
+"""The church network: contacts the PASTOR has vetted. Saved by the app in network/ on the server that runs it (gitignored like cases/). There is no sign-in yet, so everyone who can reach the app shares one network.
 
 Nury lists these first, under "People our church has worked with", labeled as the church's own.
 It never endorses, ranks, or invents a contact. It never alters an entry: names, phones and links
@@ -237,7 +237,7 @@ def _neg(s):
 
 def source_for(spec, state, fields, lang, root=DEFAULT_ROOT):
     """The dynamic 'church_network' source for one stage: {'entries': [...], 'fictional': bool}.
-    Only the fields that reach a prompt (name, services, phone, url). The pastor's note stays local."""
+    Only the fields that reach a prompt (name, services, phone, url). The pastor's note stays in the app and is never put in a prompt."""
     net = load_network(root)
     city, st = parse_location(fields.get("location", ""))
     hc, hs = net.home

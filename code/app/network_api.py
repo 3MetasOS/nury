@@ -1,4 +1,4 @@
-"""'Our network' API: the pastor's own vetted contacts. Local only.
+"""'Our network' API: the pastor's own vetted contacts, saved by the app on the server (no sign-in yet).
 
 Separate from server.py so the two never collide. To mount it, server.py needs these lines:
 

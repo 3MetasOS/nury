@@ -7,11 +7,11 @@ Status words:
 - **BUILT, offline tested**: it is built and a test or a browser check without a model call proves it. It has not been part of a live run, or it does not need one.
 - **BUILT, not yet checked live**: the code or script exists and was never run against the real endpoint.
 - **PLANNED**: written in the architecture notes, no code.
-- **NOT BUILT**: nothing exists, or we deliberately left it out.
+- **NOT BUILT** (or **NOT BUILT, next**): nothing exists, or we deliberately left it out. "Next" marks what must exist before real churches use Nury on a server.
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 planned, 15 not built.
+Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 planned, 16 not built.
 
 ## 1. Pastor experience
 
@@ -30,7 +30,7 @@ Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 
 | Package view | The finished package shows every stage with Copy all and Download, and the line "Nury never sends anything. You do." | BUILT, live verified | `index.html` (#v-pkg); BUILD_LOG 56 | pastor |
 | Audit view | A collapsible log of each call, check and gate, with reason categories only, never a rejected draft. | BUILT, live verified | `server.safe_event`; `index.html` (#log2); BUILD_LOG 22 | pastor, judge |
 | Rejection strip | When a draft is rejected the screen reads "Draft rejected by guardrail. Regenerating (2 of 3)." and then "Passed". The rejected text is never shown. | BUILT, live verified | `index.html` (#strip); slot B check f; BUILD_LOG 22 | pastor, judge |
-| Save as a case | One tap saves the approved package as a local case folder of linked pages. | BUILT, live verified | `nury/casefile.save_case`; `index.html` (#b-save); BUILD_LOG 56 (case file 5 of 5) | pastor |
+| Save as a case | One tap saves the approved package as a case folder of linked pages, kept by the app. | BUILT, live verified | `nury/casefile.save_case`; `index.html` (#b-save); BUILD_LOG 56 (case file 5 of 5) | pastor |
 | Open cases and read them | Saved cases list on the first screen. The pastor reads the pages, sees the map, and exports a zip. | BUILT, live verified | `index.html` (#v-case); `list_cases`, `load_case`, `export_zip`; BUILD_LOG 56 | pastor |
 | Revision, v1 to v2, and Compare | "Something changed": the pastor records what happened, Nury drafts again from triage with the same gates, v2 is saved beside v1, and a red and green view compares them. | BUILT, live verified | `code/app/server.py` (revision); `evaluations/casefile_check.py`; BUILD_LOG 56 (v1 files byte-identical after v2) | pastor, judge |
 | Next-steps map | One picture with four lanes: tonight, this week, questions still open, who to call. Steps and questions only, no outcomes. | BUILT, live verified | `nury/casefile.nextsteps_svg`; `tests/test_casefile.py`; BUILD_LOG 34, 56 | pastor, judge |
@@ -57,10 +57,10 @@ Count: 43 live verified, 17 offline tested, 3 built but not yet checked live, 4 
 
 | Feature | What it does | Status | Evidence | For |
 |---|---|---|---|---|
-| Tokens instead of identifiers | Names the pastor protected, phones, emails, street addresses, dates, A-numbers, case numbers and ID numbers become tokens before a request leaves the computer, and become real again in the reply. | BUILT, live verified | `nury/privacy.py`; live A/B on three scenarios (PROMPT_NOTES, Privacy); BUILD_LOG 38 | pastor, judge |
+| Tokens instead of identifiers | Names the pastor protected, phones, emails, street addresses, dates, A-numbers, case numbers and ID numbers become tokens before a request goes to the model, and become real again in the reply. | BUILT, live verified | `nury/privacy.py`; live A/B on three scenarios (PROMPT_NOTES, Privacy); BUILD_LOG 38 | pastor, judge |
 | Leak test | Captured request bodies are searched for canary names and numbers: 90 checks per playbook, none found. The scored runs also check every string sent to the model. | BUILT, live verified | `tests/test_privacy.py`; `tools/show_proofs.py 3`; `privacy_no_leak` on all 20 scored runs (BUILD_LOG 66) | judge |
 | Token repair | A mangled token is repaired. An unknown token makes Nury ask again (twice at most) and then shows a visible gap. | BUILT, offline tested | `PrivacyClient.ask`; `tests/test_privacy.py` | developer |
-| Local files only | Cases, the church network and the token map stay on the pastor's computer and are not in git. | BUILT, offline tested | `.gitignore` (cases/, network/); `casefile` guards; `tests/test_casefile.py` | pastor, judge |
+| Saved by the app, not uploaded | Cases, the church network and the token map are saved as files by the app on the server that runs it. They are not committed to git and are uploaded to no one. Only the model request leaves, with tokens instead of names. | BUILT, offline tested | `.gitignore` (cases/, network/); `casefile` guards; `tests/test_casefile.py` | pastor, judge |
 | Privacy on and off | On by default. One switch turns it off for a before and after comparison. | BUILT, live verified | `privacy.make_client`; `NURY_PRIVACY`; live A/B (BUILD_LOG 38) | developer, judge |
 
 ## 4. Playbooks
@@ -122,10 +122,11 @@ Nothing in this section may be claimed in the film, the deck or the description.
 
 | Feature | What it does | Status | Evidence | For |
 |---|---|---|---|---|
-| Teams and roles | Several pastors or staff sharing a church account with different permissions. | NOT BUILT | not designed; the app is single user and local | pastor |
-| Shared cases | A case opened by more than one person or on more than one device. | NOT BUILT | cases live in one folder on one computer | pastor |
-| Encryption at rest | Case files, the church network and the token map are stored as plain files. Disk encryption is the computer's, not Nury's. | NOT BUILT | `nury/casefile.py` writes plain files | pastor, judge |
-| Accounts and sign-in | No login. Anyone at the computer can open the app. | NOT BUILT | `code/app/server.py` has no authentication | pastor |
+| **Hosting on a server** | Running Nury for real churches on a server needs sign-in, per-church separation of cases and the church network, and encryption at rest. None of the three exists. | NOT BUILT, next | `code/app/server.py` (no authentication), `nury/casefile.py` (plain files), `nury/network.py` (one shared network) | pastor, judge |
+| Teams and roles | Several pastors or staff sharing a church account with different permissions. | NOT BUILT | not designed; there are no accounts, so everyone who can reach the app sees the same cases and the same church network | pastor |
+| Shared cases | A case owned by a person or a church and opened by the right people. Today there is one shared pool of cases on the server. | NOT BUILT | cases live in one folder on the server; no owner field | pastor |
+| Encryption at rest | Case files, the church network and the token map are saved as plain files on the server's disk. Nury adds no encryption. | NOT BUILT | `nury/casefile.py` writes plain files | pastor, judge |
+| Accounts and sign-in | No login. Anyone who can reach the app can open every case and the church network. | NOT BUILT | `code/app/server.py` has no authentication | pastor |
 | Offline mobile app | A phone app that works without a connection. Nury is a web page and needs the Gloo connection to draft. | NOT BUILT | no mobile or offline code | pastor |
 | Backups and sync | Automatic copies of cases and the network. | NOT BUILT | export zip only | pastor |
 | Case update loop | Nury proposing edits to case pages, with the pastor approving each one. Revision v1 to v2 exists; this does not. | PLANNED | `documents/ARCHITECTURE.md` (marked later) | pastor |

@@ -1,11 +1,11 @@
-"""Privacy layer: pseudonymize before anything leaves the device.
+"""Privacy layer: pseudonymize before anything goes to a model.
 
 PrivacyClient wraps the Gloo client (the engine already takes `client=`, so the core does not change).
 
   Outbound  names the pastor protected, phones, emails, street addresses, dates, A-numbers, case
             numbers and ID numbers become stable tokens: [PERSON_1], [PHONE_1], [ADDRESS_1] ...
-  Mapping   stays local, in memory (and in the case file on the pastor's machine). Never sent.
-  Inbound   the reply is detokenized locally. Mangled tokens ([PERSON 1], PERSON_1) are repaired.
+  Mapping   kept by the app, in memory (and in the saved case file). Never sent to the model.
+  Inbound   the reply is detokenized by the app. Mangled tokens ([PERSON 1], PERSON_1) are repaired.
             A token the map does not know makes the client ask again (max 2 more calls); if it still
             fails the token becomes [?] so the pastor sees a gap at the gate, never a stray token.
 
@@ -364,7 +364,7 @@ class PrivacyClient:
         return tk
 
     def map(self):
-        """token -> real value. Local only. Saved in the case file by casefile.save_case(privacy=...)."""
+        """token -> real value. Kept by the app, never sent to the model. Saved in the case file by casefile.save_case(privacy=...)."""
         return self.ps.map()
 
     def wrap_gate(self, gate):

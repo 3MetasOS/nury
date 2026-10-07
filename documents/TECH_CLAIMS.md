@@ -57,7 +57,7 @@ Status words:
 |---|---|---|---|---|
 | 20 | Two versioned skills (voice, grounding) are added to stage prompts by name, with no extra model call, recorded in the audit log, and can be switched off to compare. | `code/skills/`, `code/nury/skills.py`; tests `test_skill_applied_is_audited_and_in_metrics`, `test_skills_switch_off_per_call_and_env`; live runs on 2026-10-06 and 07. | VERIFIED offline test; VERIFIED live | 2 skills, 0 extra model calls |
 | 21 | Skills improve the wording. | The before and after run (`evaluations/skills_ab.py`) has not been run. | PENDING final scorecard | not quoted yet |
-| 22 | After approval, a case is saved as a local folder of linked pages and a next-steps map, built without a model call from approved text only. It refuses to save if any stage is not approved, if a rejected draft or a key would be written. | `code/nury/casefile.py`; `code/tests/test_casefile.py` (9 tests); two real runs saved on 2026-10-07. | VERIFIED offline test; VERIFIED live | 14 files per case with privacy; 0 rejected-draft strings in the folder or its zip |
+| 22 | After approval, a case is saved by the app as a folder of linked pages and a next-steps map, built without a model call from approved text only. It refuses to save if any stage is not approved, if a rejected draft or a key would be written. | `code/nury/casefile.py`; `code/tests/test_casefile.py` (9 tests); two real runs saved on 2026-10-07. | VERIFIED offline test; VERIFIED live | 14 files per case with privacy; 0 rejected-draft strings in the folder or its zip |
 | 23 | The next-steps map shows steps and questions only: four lanes (tonight, this week, questions still open, who to call), no outcomes, readable at 390 px. | `nextsteps_svg` in `casefile.py`; tests `test_map_is_svg_390_*`; agent-browser check at 390 and 1280 px. | VERIFIED offline test | 4 lanes |
 | 24 | A saved case can be revised: v2 sits beside v1, which is never touched, with a change log and a compare view. | `code/app/server.py` (revision); `evaluations/casefile_check.py`; BUILD_LOG 56: revision scenarios 5 of 5 PASS live, v1 files byte-identical after v2 was saved, and the whole app run once in a real browser with privacy on (protect step, 5 gates, Save, Open case, Something changed, Draft again, Save as v2, Compare). | VERIFIED live | 5 of 5 case-file and revision scenarios; v1 unchanged byte for byte |
 
@@ -104,6 +104,7 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 - That the model refuses to give advice on its own. In our tests it mostly did, so we force failures with fault injection to prove the loop; say that plainly.
 - Anything about states other than Colorado for the official list, or about sudden death and house fire (cards only).
 - That privacy is anonymization. It removes direct identifiers.
+- That Nury is ready to host many churches. There is no sign-in, no accounts, no per-church separation and no encryption at rest. Cases and the church network are saved by the app on the server that runs it, are not uploaded to anyone, and are visible to everyone who can reach the app. The privacy claims hold for the request to the model, which carries tokens, not names.
 - That the live network and official-list checks are a rate. They were one pipeline each, with coarse checks.
 
 ## Five proofs to show on screen (3 seconds each)
@@ -111,7 +112,7 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 Run `cd code && python3 tools/show_proofs.py` (offline, no key, about 2 seconds) or one at a time with `python3 tools/show_proofs.py 3`. Each prints a heading and a few short lines computed from the real code.
 
 1. **A rejected draft never reaches the pastor.** Shows the check failing with `banned_phrase`, the audit line `draft_rejected ... visible_to_pastor=False`, the second try passing, and what the pastor sees. Backs claims 4 and 6.
-2. **Gloo sees tokens, not names.** Shows the typed sentence, the same sentence as Gloo receives it (`[PERSON_3] called from [PHONE_1] ...`), and the local token map. Backs claim 16.
+2. **Gloo sees tokens, not names.** Shows the typed sentence, the same sentence as Gloo receives it (`[PERSON_3] called from [PHONE_1] ...`), and the token map the app keeps. Backs claim 16.
 3. **Leak test.** `6 request bodies captured x 15 canary values = 90 checks, found: 0`, for detention and for hospital. Backs claim 16.
 4. **The loader refuses.** A skill that says "ignore the disclaimer" is refused with its reason; a playbook with a stripped disclaimer is refused. Backs claim 7.
 5. **A held entry is never named.** A draft that names a held DOJ entry is rejected three times and never reaches the pastor. Backs claims 13 and 6.

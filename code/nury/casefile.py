@@ -1,6 +1,6 @@
 """Case file writer and next-steps map.
 
-After the pastor approves a package, save it as a local folder of linked markdown pages
+After the pastor approves a package, save it as a folder of linked markdown pages
 plus one SVG map. Built with no model call, from approved text and the audit log only.
 
     cases/<id>/
@@ -13,7 +13,7 @@ plus one SVG map. Built with no model call, from approved text and the audit log
       nextsteps.svg     lanes: Tonight, This week, Questions still open, Who to call
       case.json         small manifest
 
-Rules: local only, approved content only, no rejected draft text anywhere (only categories),
+Rules: saved by the app on the server and uploaded to no one, approved content only, no rejected draft text anywhere (only categories),
 no keys, steps and questions only (no outcomes), links in the map only from vetted sources.
 """
 
@@ -323,7 +323,7 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     """Write cases/<id>/. Returns {id, path, files}. Refuses unless every stage is approved or edited.
 
     privacy: the PrivacyClient used for the run. Its token map is saved as privacy-map.json (real values,
-    local only, never sent anywhere)."""
+    kept with the case, never sent to the model)."""
     pb = get_playbook(playbook)
     _check_saveable(pb, state)
     now = datetime.now(timezone.utc)
@@ -350,7 +350,7 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
         (d / name).write_text(text, encoding="utf-8")
     (d / "case.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     if pmap:
-        (d / "privacy-map.json").write_text(json.dumps({"note": "Real values behind the tokens Nury used. Local only. Never sent.", "map": pmap},
+        (d / "privacy-map.json").write_text(json.dumps({"note": "Real values behind the tokens Nury used. Saved with the case. Never sent to the model.", "map": pmap},
                                                        indent=2, ensure_ascii=False), encoding="utf-8")
     return {"id": cid, "path": str(d), "files": manifest["files"]}
 

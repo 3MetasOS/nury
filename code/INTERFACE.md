@@ -120,9 +120,9 @@ client = make_client(protected=[{"term": "Maria", "kind": "person"}, "Jose"])   
 client = make_client(intake=intake_text)                                          # evals: protect every suggested person
 gate = client.wrap_gate(gate)        # a name the pastor ADDS in an edit is protected before the next stage
 run_pipeline("detention", state, gate, client, audit)
-client.map()                         # {"[PERSON_1]": "Maria", ...}   local only
+client.map()                         # {"[PERSON_1]": "Maria", ...}   kept by the app, never sent to the model
 client.add_term("Saint Luke's", "place")                                          # the pastor can add terms any time
-cf.save_case(state, audit, "detention", root, privacy=client)                    # writes privacy-map.json, real values, local
+cf.save_case(state, audit, "detention", root, privacy=client)                    # writes privacy-map.json: real values, saved with the case, never sent to the model
 ```
 
 - **On by default.** `make_client(...)` returns the plain Gloo client only when `NURY_PRIVACY=off` or `enabled=False` (for A/B).
@@ -133,7 +133,7 @@ cf.save_case(state, audit, "detention", root, privacy=client)                   
 
 ## Church network (`nury/network.py`)
 
-The pastor's own vetted contacts, local only (`network/network.json`, gitignored like `cases/`). Nury lists them first, under "People our church has worked with", labeled as the church's own contacts and not endorsements. It never invents, alters, ranks or endorses a contact.
+The pastor's own vetted contacts, saved by the app on the server that runs it (`network/network.json`, gitignored like `cases/`; there is no sign-in or encryption at rest yet). Nury lists them first, under "People our church has worked with", labeled as the church's own contacts and not endorsements. It never invents, alters, ranks or endorses a contact.
 
 ```python
 from nury import network as net
