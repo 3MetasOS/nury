@@ -229,7 +229,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         m["attempts"] = attempt
         audit.log("gloo_call", stage=stage_id, attempt=attempt)
         try:
-            text, meta = client.ask(user_input, instructions=ins)
+            text, meta = client.ask(user_input, instructions=ins, **({"max_output_tokens": stage.max_output_tokens} if stage.max_output_tokens else {}))
         except GuardrailBlock as e:
             audit.log("gloo_block", stage=stage_id, attempt=attempt, detail=e.detail,
                       reason_category="gloo_block")

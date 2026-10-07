@@ -4,6 +4,7 @@
     "title": "1. Triage",
     "summary": "Turns the call into a clear case: people, place, language, what is still unknown.",
     "audience": "pastor",
+    "max_output_tokens": 1500,
     "prompt": "prompts/triage.txt",
     "input": {
       "from": "intake"
@@ -44,6 +45,7 @@
     "title": "2. Rights brief",
     "summary": "Rights information in the family's language, every point cited to a vetted source.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/rights.txt",
     "input": {
       "from": "context",
@@ -89,6 +91,7 @@
     "title": "3. Attorney resources",
     "summary": "Who to call: the church's own contacts first, then official lists.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/attorney.txt",
     "input": {
       "from": "context",
@@ -236,6 +239,7 @@
     "title": "5. Pastoral message",
     "summary": "A short message you can edit. It only invites; it promises nothing.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/pastoral.txt",
     "input": {
       "from": "context",

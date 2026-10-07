@@ -42,6 +42,7 @@ class Stage:
     skills: list = field(default_factory=list)     # Skill objects, loaded from code/skills/
     jev: list = field(default_factory=list)        # Jev classifier questions for this stage's draft (see nury/jev_gate.py)
     scripture: bool = False                        # pastoral stage: the model picks a verse id, the engine inserts the text
+    max_output_tokens: Optional[int] = None        # cap on the model's reply for this stage (None: no cap). Set on every stage whose longest measured reply is under 1,000 tokens
     summary: str = ""                              # one plain line for the pastor's screen. Display only: never in a prompt, check or audit
 
 
@@ -156,7 +157,7 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
             source_specs=specs, checks=sj.get("checks", []), input=sj.get("input", {"from": "intake"}),
             when=sj.get("when"),
             skills=_load_skills(sj, skills_root),
-            summary=_summary(sj), scripture=bool(sj.get("scripture", False)), jev=_jev(sj),
+            summary=_summary(sj), scripture=bool(sj.get("scripture", False)), jev=_jev(sj), max_output_tokens=_cap(sj),
             variants=[{"when": v["when"], "prompt": (d / v["prompt"]).read_text(encoding="utf-8").strip()}
                       for v in sj.get("variants", [])]))
     for s in stages:
@@ -186,6 +187,15 @@ def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optiona
                     stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
     pb.pending_sources = pending
     return pb
+
+
+def _cap(sj):
+    v = sj.get("max_output_tokens")
+    if v is None:
+        return None
+    if not isinstance(v, int) or isinstance(v, bool) or not 200 <= v <= 8000:
+        raise PlaybookError(f"stage {sj['id']}: max_output_tokens must be a whole number from 200 to 8000")
+    return v
 
 
 def _jev(sj):

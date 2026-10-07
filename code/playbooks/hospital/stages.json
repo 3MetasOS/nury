@@ -4,6 +4,7 @@
     "title": "1. Triage",
     "summary": "Turns the call into a clear case: people, hospital, language, what is still unknown.",
     "audience": "pastor",
+    "max_output_tokens": 1500,
     "prompt": "prompts/triage.txt",
     "input": {
       "from": "intake"
@@ -41,6 +42,7 @@
     "title": "2. Family information brief",
     "summary": "What the hospital may share, visiting, interpreters and complaints, every point cited.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/info.txt",
     "input": {
       "from": "context",
@@ -86,6 +88,7 @@
     "title": "3. Hospital resources",
     "summary": "Who to ask for: the church's own contacts first, then hospital and national resources.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/resources.txt",
     "input": {
       "from": "context",
@@ -223,6 +226,7 @@
     "title": "5. Pastoral message",
     "summary": "A short message you can edit. It only invites; it promises nothing.",
     "audience": "family",
+    "max_output_tokens": 1500,
     "prompt": "prompts/pastoral.txt",
     "input": {
       "from": "context",
