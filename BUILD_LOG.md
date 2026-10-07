@@ -784,3 +784,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan: the memorial name needs its accent (Peláez); some video screenshots still say "for solo pastors" (the old rehearsal capture of the old app); the main issue is too much silence between the voices (about 25 seconds of voice in 90): "lets review the script very carefully while i review the app."
 - Actions: hack-video prints a timeline of voice lines and gaps, tightens the cut, recaptures the non-live screens from the current app, adds the accent; hack-ninja reviews all three scripts against the cut and proposes added short lines (approved by hack-sensei before any is recorded) and cuts; hack-sensei reviews the proposal before Juan.
+
+## 128. 2026-10-07 02:40 MDT — Design direction from Juan: one header, hand-written notes, taste
+
+- Juan: the app must have one header on every page (not a different header per page); Observability, Self-improvement (renamed from Improvement) and How this was built leave the header for a footer or a second level for judges; the developer focuses fully on user experience and design; hand-written notes explain what the buttons are, like the notes on 3Metas.com (Gochi Hand, highlighter underline, hand-drawn arrows; reference screenshots saved in documents/design/reference); better taste across the app, the presentation, the documents and the videos.
+- This is design and consistency work, not a new feature. hack-artisans: shared header and footer with a test, the notes on six screens, a taste pass at 390 and 1280 px in both modes. hack-ninja: a taste pass on the deck and documents. hack-video: the same bar for the film, one hand-lettered aside on three beats.
