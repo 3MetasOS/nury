@@ -231,3 +231,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Review canvas v2: grouped by Jev question, only what the pastor saw, bulk "all undecided in this group pass" with a confirm step. Interim data is labeled `interim-review.html` with a red INTERIM banner; the final page comes after the post-freeze run. Real-dashboard click test pending (Juan).
 - App polish done: "Spanish" not "es", one-line disclaimer under every gate title, amber caps labels, real bullets. Hospital escalation now shows the vetted sources list. `NURY_TEST_ESCALATE` documented as test-only.
 - hack-video re-captured at e92104e: all four polish items verified in frames; 75 s run, no problems. Decision: shot 1b crops to the Detention card until hospital has a final scorecard.
+
+## 33. 2026-10-06 20:57 MDT — Remotion installed for evaluation (Juan)
+
+- Decision (Juan): hack-video evaluates Remotion for the 90 s video. Latest version is 4.0.533 (`npm view remotion version`); installed in `video/remotion/` as remotion and @remotion/cli 4.0.533 (exact pin) with react 19. Node 20.19, npm 11. `npx remotion versions` clean. `node_modules` is gitignored.
+- Timebox: 2 hours. Decision rule: use Remotion for the final video and the overnight re-cut only if it is clearly better and a full render works by Oct 7 12:00 MDT; otherwise ffmpeg stays. The ffmpeg script stays working either way.
+- Note for Juan: Remotion's license is free for individuals and small companies; check it covers 3Metas before relying on it commercially. It is fine for the hackathon entry.
