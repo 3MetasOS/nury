@@ -1,18 +1,18 @@
 [
  {
-  "ts": "2026-10-07T02:22:27.413+00:00",
+  "ts": "2026-10-07T02:45:28.898+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:22:27.413+00:00",
+  "ts": "2026-10-07T02:45:28.898+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:22:32.971+00:00",
+  "ts": "2026-10-07T02:45:34.140+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
@@ -20,17 +20,17 @@
   "violations": [],
   "reason_categories": [],
   "tokens_in": 1346,
-  "tokens_out": 192,
-  "latency_s": 5.557
+  "tokens_out": 185,
+  "latency_s": 5.241
  },
  {
-  "ts": "2026-10-07T02:22:32.971+00:00",
+  "ts": "2026-10-07T02:45:34.140+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:22:32.971+00:00",
+  "ts": "2026-10-07T02:45:34.140+00:00",
   "kind": "stage_start",
   "stage": "rights",
   "deps_used": [
@@ -38,31 +38,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:22:32.971+00:00",
+  "ts": "2026-10-07T02:45:34.140+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:22:37.311+00:00",
+  "ts": "2026-10-07T02:45:38.792+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1812,
-  "tokens_out": 325,
-  "latency_s": 4.336
+  "tokens_in": 1805,
+  "tokens_out": 323,
+  "latency_s": 4.649
  },
  {
-  "ts": "2026-10-07T02:22:37.312+00:00",
+  "ts": "2026-10-07T02:45:38.792+00:00",
   "kind": "gate",
   "stage": "rights",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:22:37.312+00:00",
+  "ts": "2026-10-07T02:45:38.793+00:00",
   "kind": "stage_start",
   "stage": "attorney",
   "deps_used": [
@@ -71,31 +71,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:22:37.312+00:00",
+  "ts": "2026-10-07T02:45:38.793+00:00",
   "kind": "gloo_call",
   "stage": "attorney",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:22:51.749+00:00",
+  "ts": "2026-10-07T02:45:48.081+00:00",
   "kind": "check",
   "stage": "attorney",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1997,
-  "tokens_out": 797,
-  "latency_s": 14.433
+  "tokens_in": 1988,
+  "tokens_out": 494,
+  "latency_s": 9.287
  },
  {
-  "ts": "2026-10-07T02:22:51.749+00:00",
+  "ts": "2026-10-07T02:45:48.081+00:00",
   "kind": "gate",
   "stage": "attorney",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:22:51.749+00:00",
+  "ts": "2026-10-07T02:45:48.081+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -105,128 +105,67 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:22:51.749+00:00",
+  "ts": "2026-10-07T02:45:48.081+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:23:08.261+00:00",
+  "ts": "2026-10-07T02:45:59.352+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "agency_name",
-    "reason": "names an agency: ['ICE']"
-   }
-  ],
-  "reason_categories": [
-   "agency_name"
-  ],
-  "tokens_in": 3011,
-  "tokens_out": 802,
-  "latency_s": 16.51
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2836,
+  "tokens_out": 617,
+  "latency_s": 11.269
  },
  {
-  "ts": "2026-10-07T02:23:08.261+00:00",
-  "kind": "draft_rejected",
+  "ts": "2026-10-07T02:45:59.352+00:00",
+  "kind": "gate",
   "stage": "checklist",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "agency_name"
-  ],
-  "draft": "## DO TONIGHT / HAGA ESTA NOCHE\n\n1. **Busque a Carlos en l\u00ednea.** Hay una herramienta que se llama ICE Detainee Locator. Puede buscar a Carlos usando su nombre completo y su pa\u00eds de nacimiento.\n\n2. **Llame a un abogado de inmigraci\u00f3n esta noche si es posible.** Mientras m\u00e1s pronto hable con uno, mejor podr\u00e1 actuar a favor de Carlos.\n\n3. **Re\u00fana los documentos de Carlos** (vea la secci\u00f3n de abajo).\n\n4. **Anote el nombre completo de Carlos, su fecha de nacimiento y su pa\u00eds de nacimiento.** Necesitar\u00e1 estos datos para cualquier llamada o b\u00fasqueda.\n\n5. **Busque cualquier n\u00famero de caso de inmigraci\u00f3n o aviso de corte (*court notice*) que haya en casa.** Entregue esta informaci\u00f3n al abogado.\n\n6. **Deje copias de los documentos importantes con una persona de confianza** fuera del hogar.\n\n7. **Memorice o anote el n\u00famero de tel\u00e9fono de una persona de confianza y del abogado.** Gu\u00e1rdelo en un lugar seguro.\n\n---\n\n## DO NOT DO / NO HAGA ESTA NOCHE\n\n1. **No abra la puerta** a menos que los agentes muestren una orden firmada por un juez con el nombre y la direcci\u00f3n correctos. Pida que la pasen por debajo de la puerta.\n\n2. **No responda preguntas** sobre su estatus migratorio, el de Carlos, ni sobre d\u00f3nde nacieron. Tiene derecho a guardar silencio.\n\n3. **No firme ning\u00fan documento** sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n\n4. **No mienta a los agentes ni muestre documentos falsos.** Eso puede empeorar mucho la situaci\u00f3n.\n\n5. **No hable con los agentes m\u00e1s all\u00e1 de decir:** *\"Quiero hablar con un abogado.\"* No responda m\u00e1s preguntas hasta hacerlo.\n\n---\n\n## GATHER THESE DOCUMENTS / RE\u00daNA ESTOS DOCUMENTOS\n\n**Identificaciones y documentos de Carlos:**\n- Pasaporte\n- Tarjeta de residencia, visa, o permiso de trabajo (si los tiene)\n- Cualquier documento migratorio que haya en casa\n\n**Documentos del caso:**\n- Avisos de corte de inmigraci\u00f3n (*court notices*)\n- Cualquier n\u00famero de caso de inmigraci\u00f3n\n- Fechas de audiencias pasadas o futuras\n\n**Informaci\u00f3n de contacto:**\n- Nombre y tel\u00e9fono de cualquier abogado o representante que haya ayudado a Carlos antes\n- Tel\u00e9fono de una persona de confianza fuera del hogar\n- Nombre completo de Carlos, fecha de nacimiento y pa\u00eds de nacimiento \u2014 listos para dar a cualquier abogado u organizaci\u00f3n\n\n---\n\n*Nury es un asistente de IA. No es abogado, pastor, consejero ni terapeuta. Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor consulte a un abogado de inmigraci\u00f3n calificado lo antes posible.*"
+  "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:23:08.261+00:00",
-  "kind": "gloo_call",
-  "stage": "checklist",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T02:23:23.688+00:00",
-  "kind": "check",
-  "stage": "checklist",
-  "attempt": 2,
-  "passed": false,
-  "violations": [
-   {
-    "category": "agency_name",
-    "reason": "names an agency: ['ICE']"
-   }
-  ],
-  "reason_categories": [
-   "agency_name"
-  ],
-  "tokens_in": 3056,
-  "tokens_out": 813,
-  "latency_s": 15.425
- },
- {
-  "ts": "2026-10-07T02:23:23.688+00:00",
-  "kind": "draft_rejected",
-  "stage": "checklist",
-  "attempt": 2,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "agency_name"
-  ],
-  "draft": "## DO TONIGHT / QU\u00c9 HACER ESTA NOCHE\n\n1. **Mantenga la calma y qu\u00e9dese en casa con los ni\u00f1os.** Su seguridad es lo m\u00e1s importante ahora mismo.\n2. **Intente localizar a Carlos en l\u00ednea.** Existe una herramienta oficial llamada **ICE Detainee Locator**. Puede buscar usando su nombre completo y su pa\u00eds de nacimiento. Un abogado puede ayudarle a usar esta herramienta.\n3. **Llame a un abogado de inmigraci\u00f3n lo antes posible.** Si no tiene uno, puede buscar servicios gratuitos o de bajo costo en: https://www.immigrationadvocates.org/nonprofit/legaldirectory/\n4. **Re\u00fana los documentos de Carlos** (ver la secci\u00f3n de abajo) y gu\u00e1rdelos en un lugar seguro.\n5. **Memorice o anote dos n\u00fameros de tel\u00e9fono:** el de un abogado o representante legal, y el de una persona de confianza que pueda ayudar a los ni\u00f1os si fuera necesario.\n6. **Deje copias de documentos importantes** con una persona de confianza fuera del hogar.\n7. **No hable con nadie sobre los detalles de la situaci\u00f3n de Carlos** hasta hablar con un abogado.\n\n---\n\n## DO NOT DO / QU\u00c9 NO HACER ESTA NOCHE\n\n1. **No abra la puerta** a ning\u00fan agente a menos que muestren una orden firmada por un juez con el nombre y direcci\u00f3n correctos de su hogar. Puede pedir que la pasen por debajo de la puerta.\n2. **No firme ning\u00fan documento** sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n3. **No responda preguntas** sobre el estatus migratorio de Carlos ni sobre d\u00f3nde naci\u00f3. Tiene derecho a guardar silencio.\n4. **No mienta a ning\u00fan agente ni muestre documentos falsos.** Esto puede empeorar mucho la situaci\u00f3n.\n5. **No tome decisiones importantes esta noche sin hablar con un abogado.**\n\n---\n\n## GATHER THESE DOCUMENTS / DOCUMENTOS QUE DEBE REUNIR\n\n**Identificaci\u00f3n y documentos de Carlos:**\n- Nombre completo tal como aparece en sus documentos\n- Fecha de nacimiento y pa\u00eds de nacimiento\n- Pasaporte u otra identificaci\u00f3n oficial\n- Tarjeta de residencia, permiso de trabajo, visa, u otro documento migratorio\n\n**Documentos del caso:**\n- Cualquier aviso de corte de inmigraci\u00f3n (*court notice*)\n- N\u00famero de caso de inmigraci\u00f3n, si lo tiene\n- Cualquier carta o documento de una agencia de inmigraci\u00f3n\n\n**N\u00fameros de contacto:**\n- Nombre y tel\u00e9fono de cualquier abogado o representante que haya ayudado a Carlos antes\n- Tel\u00e9fono de una persona de confianza fuera del hogar\n- Tel\u00e9fono de un familiar que pueda cuidar a los ni\u00f1os si fuera necesario\n\n---\n\n*Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor consulte a un abogado de inmigraci\u00f3n calificado lo antes posible.*"
- },
- {
-  "ts": "2026-10-07T02:23:23.688+00:00",
-  "kind": "gloo_call",
-  "stage": "checklist",
-  "attempt": 3
- },
- {
-  "ts": "2026-10-07T02:23:41.879+00:00",
-  "kind": "check",
-  "stage": "checklist",
-  "attempt": 3,
-  "passed": false,
-  "violations": [
-   {
-    "category": "agency_name",
-    "reason": "names an agency: ['ICE']"
-   }
-  ],
-  "reason_categories": [
-   "agency_name"
-  ],
-  "tokens_in": 3056,
-  "tokens_out": 860,
-  "latency_s": 18.189
- },
- {
-  "ts": "2026-10-07T02:23:41.879+00:00",
-  "kind": "draft_rejected",
-  "stage": "checklist",
-  "attempt": 3,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "agency_name"
-  ],
-  "draft": "## DO TONIGHT / QU\u00c9 HACER ESTA NOCHE\n\n1. **Mantenga la calma y qu\u00e9dese en casa con los ni\u00f1os.** Aseg\u00farese de que est\u00e9n seguros y tranquilos.\n2. **Busque a Carlos en el registro oficial de detenidos.** Hay una herramienta en l\u00ednea llamada **ICE Detainee Locator**. Puede buscar usando su nombre completo y pa\u00eds de nacimiento.\n3. **Re\u00fana los documentos de Carlos** (vea la secci\u00f3n al final de esta lista).\n4. **Escriba todo lo que recuerde de esta ma\u00f1ana.** La hora en que se lo llevaron, qu\u00e9 dijeron los agentes, qu\u00e9 documentos mostraron. Anote todo mientras lo recuerda bien.\n5. **Llame a un abogado de inmigraci\u00f3n calificado lo antes posible.** Si no tiene uno, use el directorio: [immigrationadvocates.org/nonprofit/legaldirectory](https://www.immigrationadvocates.org/nonprofit/legaldirectory/)\n6. **Avise a una persona de confianza** \u2014 un familiar, amigo, o l\u00edder comunitario \u2014 para que sepa lo que est\u00e1 pasando y pueda ayudarla.\n7. **Anote y guarde todos los n\u00fameros de tel\u00e9fono importantes** en papel, no solo en el celular.\n\n---\n\n## DO NOT DO / QU\u00c9 NO HACER\n\n1. **No abra la puerta** a menos que los agentes muestren una orden firmada por un juez con el nombre y direcci\u00f3n correctos de su hogar. Si llegan agentes, puede pedir que pasen la orden por debajo de la puerta.\n2. **No firme ning\u00fan documento** sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n3. **No mienta ni muestre documentos falsos.** Hacerlo puede empeorar mucho la situaci\u00f3n.\n4. **No responda preguntas sobre estatus migratorio ni lugar de nacimiento** sin hablar antes con un abogado. Tiene derecho a guardar silencio.\n5. **No comparta informaci\u00f3n sobre la situaci\u00f3n de Carlos en redes sociales** ni con personas que no sean de total confianza.\n\n---\n\n## GATHER THESE DOCUMENTS / RE\u00daNA ESTOS DOCUMENTOS\n\n**Documentos de identidad y migratorios de Carlos:**\n- Pasaporte\n- Tarjeta de residencia, permiso de trabajo, visa, u otro documento migratorio\n- Licencia de manejo u otra identificaci\u00f3n oficial\n\n**Documentos del caso:**\n- Avisos de corte de inmigraci\u00f3n (*court notices*)\n- N\u00famero de caso de inmigraci\u00f3n (si existe)\n- Cualquier carta o documento de una audiencia previa\n\n**Informaci\u00f3n de contacto \u2014 an\u00f3tela en papel:**\n- Nombre completo de Carlos, fecha de nacimiento y pa\u00eds de nacimiento\n- Nombre y tel\u00e9fono del abogado o representante que haya ayudado a Carlos antes\n- Tel\u00e9fono de un familiar o persona de confianza fuera del hogar\n- Tel\u00e9fono del pastor u otras personas de apoyo\n\n---\n\n*Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor consulte a un abogado de inmigraci\u00f3n calificado lo antes posible. Nury es un asistente de IA \u2014 no es abogado, pastor, consejero ni terapeuta.*"
- },
- {
-  "ts": "2026-10-07T02:23:41.879+00:00",
-  "kind": "escalated",
-  "stage": "checklist",
-  "attempts": 3,
-  "reason_categories": [
-   "agency_name",
-   "agency_name",
-   "agency_name"
+  "ts": "2026-10-07T02:45:59.352+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
   ]
  },
  {
-  "ts": "2026-10-07T02:23:41.879+00:00",
+  "ts": "2026-10-07T02:45:59.352+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T02:46:03.992+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2456,
+  "tokens_out": 173,
+  "latency_s": 4.637
+ },
+ {
+  "ts": "2026-10-07T02:46:03.992+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T02:46:03.992+00:00",
   "kind": "outcome",
-  "outcome": "escalated",
-  "failed_stage": "checklist"
+  "outcome": "package_complete",
+  "failed_stage": null
  }
 ]

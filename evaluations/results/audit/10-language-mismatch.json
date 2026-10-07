@@ -1,18 +1,18 @@
 [
  {
-  "ts": "2026-10-07T02:17:53.939+00:00",
+  "ts": "2026-10-07T02:41:33.619+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:17:53.939+00:00",
+  "ts": "2026-10-07T02:41:33.619+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:17:58.579+00:00",
+  "ts": "2026-10-07T02:41:38.388+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
@@ -20,17 +20,17 @@
   "violations": [],
   "reason_categories": [],
   "tokens_in": 1324,
-  "tokens_out": 167,
-  "latency_s": 4.638
+  "tokens_out": 166,
+  "latency_s": 4.768
  },
  {
-  "ts": "2026-10-07T02:17:58.579+00:00",
+  "ts": "2026-10-07T02:41:38.388+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:17:58.579+00:00",
+  "ts": "2026-10-07T02:41:38.388+00:00",
   "kind": "stage_start",
   "stage": "rights",
   "deps_used": [
@@ -38,31 +38,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:17:58.579+00:00",
+  "ts": "2026-10-07T02:41:38.388+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:18:02.377+00:00",
+  "ts": "2026-10-07T02:41:42.269+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1715,
-  "tokens_out": 241,
-  "latency_s": 3.794
+  "tokens_in": 1714,
+  "tokens_out": 238,
+  "latency_s": 3.88
  },
  {
-  "ts": "2026-10-07T02:18:02.377+00:00",
+  "ts": "2026-10-07T02:41:42.269+00:00",
   "kind": "gate",
   "stage": "rights",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:18:02.377+00:00",
+  "ts": "2026-10-07T02:41:42.269+00:00",
   "kind": "stage_start",
   "stage": "attorney",
   "deps_used": [
@@ -71,31 +71,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:18:02.377+00:00",
+  "ts": "2026-10-07T02:41:42.269+00:00",
   "kind": "gloo_call",
   "stage": "attorney",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:18:08.529+00:00",
+  "ts": "2026-10-07T02:41:48.513+00:00",
   "kind": "check",
   "stage": "attorney",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1868,
-  "tokens_out": 299,
-  "latency_s": 6.15
+  "tokens_in": 1864,
+  "tokens_out": 291,
+  "latency_s": 6.243
  },
  {
-  "ts": "2026-10-07T02:18:08.529+00:00",
+  "ts": "2026-10-07T02:41:48.513+00:00",
   "kind": "gate",
   "stage": "attorney",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:18:08.530+00:00",
+  "ts": "2026-10-07T02:41:48.513+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -105,31 +105,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:18:08.530+00:00",
+  "ts": "2026-10-07T02:41:48.513+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:18:19.780+00:00",
+  "ts": "2026-10-07T02:41:56.588+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2292,
-  "tokens_out": 473,
-  "latency_s": 11.239
+  "tokens_in": 2417,
+  "tokens_out": 379,
+  "latency_s": 8.073
  },
  {
-  "ts": "2026-10-07T02:18:19.780+00:00",
+  "ts": "2026-10-07T02:41:56.588+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:18:19.780+00:00",
+  "ts": "2026-10-07T02:41:56.588+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -139,31 +139,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:18:19.780+00:00",
+  "ts": "2026-10-07T02:41:56.588+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:18:24.733+00:00",
+  "ts": "2026-10-07T02:42:01.209+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2236,
-  "tokens_out": 132,
-  "latency_s": 4.948
+  "tokens_in": 2138,
+  "tokens_out": 140,
+  "latency_s": 4.62
  },
  {
-  "ts": "2026-10-07T02:18:24.733+00:00",
+  "ts": "2026-10-07T02:42:01.209+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:18:24.733+00:00",
+  "ts": "2026-10-07T02:42:01.209+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null

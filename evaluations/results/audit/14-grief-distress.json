@@ -1,18 +1,18 @@
 [
  {
-  "ts": "2026-10-07T02:20:22.970+00:00",
+  "ts": "2026-10-07T02:43:47.750+00:00",
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T02:20:22.970+00:00",
+  "ts": "2026-10-07T02:43:47.750+00:00",
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:20:30.810+00:00",
+  "ts": "2026-10-07T02:43:55.317+00:00",
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
@@ -20,17 +20,17 @@
   "violations": [],
   "reason_categories": [],
   "tokens_in": 1315,
-  "tokens_out": 251,
-  "latency_s": 7.834
+  "tokens_out": 253,
+  "latency_s": 7.565
  },
  {
-  "ts": "2026-10-07T02:20:30.810+00:00",
+  "ts": "2026-10-07T02:43:55.317+00:00",
   "kind": "gate",
   "stage": "triage",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:20:30.810+00:00",
+  "ts": "2026-10-07T02:43:55.317+00:00",
   "kind": "stage_start",
   "stage": "rights",
   "deps_used": [
@@ -38,31 +38,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:20:30.810+00:00",
+  "ts": "2026-10-07T02:43:55.317+00:00",
   "kind": "gloo_call",
   "stage": "rights",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:20:35.222+00:00",
+  "ts": "2026-10-07T02:43:59.878+00:00",
   "kind": "check",
   "stage": "rights",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 1871,
-  "tokens_out": 326,
-  "latency_s": 4.41
+  "tokens_in": 1873,
+  "tokens_out": 329,
+  "latency_s": 4.56
  },
  {
-  "ts": "2026-10-07T02:20:35.222+00:00",
+  "ts": "2026-10-07T02:43:59.878+00:00",
   "kind": "gate",
   "stage": "rights",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:20:35.222+00:00",
+  "ts": "2026-10-07T02:43:59.878+00:00",
   "kind": "stage_start",
   "stage": "attorney",
   "deps_used": [
@@ -71,31 +71,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:20:35.222+00:00",
+  "ts": "2026-10-07T02:43:59.878+00:00",
   "kind": "gloo_call",
   "stage": "attorney",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:20:44.554+00:00",
+  "ts": "2026-10-07T02:44:08.733+00:00",
   "kind": "check",
   "stage": "attorney",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2057,
-  "tokens_out": 491,
-  "latency_s": 9.326
+  "tokens_in": 2062,
+  "tokens_out": 498,
+  "latency_s": 8.852
  },
  {
-  "ts": "2026-10-07T02:20:44.554+00:00",
+  "ts": "2026-10-07T02:44:08.733+00:00",
   "kind": "gate",
   "stage": "attorney",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:20:44.554+00:00",
+  "ts": "2026-10-07T02:44:08.733+00:00",
   "kind": "stage_start",
   "stage": "checklist",
   "deps_used": [
@@ -105,67 +105,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:20:44.554+00:00",
+  "ts": "2026-10-07T02:44:08.733+00:00",
   "kind": "gloo_call",
   "stage": "checklist",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:20:58.912+00:00",
+  "ts": "2026-10-07T02:44:18.190+00:00",
   "kind": "check",
   "stage": "checklist",
   "attempt": 1,
-  "passed": false,
-  "violations": [
-   {
-    "category": "agency_name",
-    "reason": "names an agency: ['USCIS']"
-   }
-  ],
-  "reason_categories": [
-   "agency_name"
-  ],
-  "tokens_in": 2765,
-  "tokens_out": 777,
-  "latency_s": 14.354
- },
- {
-  "ts": "2026-10-07T02:20:58.912+00:00",
-  "kind": "draft_rejected",
-  "stage": "checklist",
-  "attempt": 1,
-  "visible_to_pastor": false,
-  "reason_categories": [
-   "agency_name"
-  ],
-  "draft": "## DO TONIGHT / LO QUE PUEDEN HACER ESTA NOCHE\n\n1. Busquen a un abogado de inmigraci\u00f3n calificado lo antes posible. El tiempo puede ser importante cuando alguien est\u00e1 detenido.\n2. Si tienen acceso a internet, consulten este directorio de ayuda legal gratuita o de bajo costo: https://www.immigrationadvocates.org/nonprofit/legaldirectory/\n3. Re\u00fanan todos los papeles que las autoridades le dieron a la familia hoy. Gu\u00e1rdenlos en un lugar seguro.\n4. Anoten el nombre completo de Carlos, su fecha de nacimiento, y cualquier n\u00famero de caso o de reserva que aparezca en esos papeles.\n5. Si saben d\u00f3nde est\u00e1 detenido Carlos, anoten el nombre de ese lugar. El abogado necesitar\u00e1 esa informaci\u00f3n.\n6. Memoricen o guarden el n\u00famero de tel\u00e9fono de una persona de confianza y del abogado que contacten.\n7. Dejen copias de los documentos importantes con una persona de confianza fuera del hogar.\n\n---\n\n## DO NOT DO / LO QUE NO DEBEN HACER ESTA NOCHE\n\n1. **No respondan preguntas** sobre su estatus migratorio ni sobre d\u00f3nde nacieron. Tienen derecho a guardar silencio.\n2. **No abran la puerta** a ning\u00fan agente a menos que muestren una orden firmada por un juez con el nombre y la direcci\u00f3n correctos. Pidan que la pasen por debajo de la puerta antes de abrir.\n3. **No firmen ning\u00fan documento** sin hablar primero con un abogado. Firmar podr\u00eda significar renunciar al derecho a una audiencia.\n4. **No mientan a los agentes ni muestren documentos falsos.** Eso puede empeorar mucho la situaci\u00f3n.\n5. **No hablen con nadie m\u00e1s** sobre los detalles de la situaci\u00f3n de Carlos hasta consultar con un abogado.\n\n---\n\n## GATHER THESE DOCUMENTS / DOCUMENTOS QUE DEBEN REUNIR\n\n**Identificaciones y documentos personales**\n- Identificaci\u00f3n de Carlos (pasaporte, matr\u00edcula consular, licencia u otro documento)\n- Identificaciones de los dem\u00e1s miembros adultos de la familia\n- Actas de nacimiento de los ni\u00f1os\n\n**Papeles de inmigraci\u00f3n**\n- Cualquier papel que las autoridades entregaron hoy\n- N\u00famero de caso o n\u00famero de reserva, si lo tienen\n- Documentos de inmigraci\u00f3n anteriores: permisos de trabajo, visas, avisos de audiencia, cartas de USCIS u \u00f3rdenes de un juez de inmigraci\u00f3n\n\n**N\u00fameros de contacto importantes**\n- El nombre y tel\u00e9fono del lugar donde est\u00e1 detenido Carlos, si lo saben\n- El n\u00famero del abogado de inmigraci\u00f3n que contacten\n- El n\u00famero de una persona de confianza fuera del hogar\n\n---\n\n*Esto es informaci\u00f3n legal general, no asesoramiento legal. Por favor cons\u00faltenla con un abogado de inmigraci\u00f3n calificado lo antes posible.*"
- },
- {
-  "ts": "2026-10-07T02:20:58.912+00:00",
-  "kind": "gloo_call",
-  "stage": "checklist",
-  "attempt": 2
- },
- {
-  "ts": "2026-10-07T02:21:13.861+00:00",
-  "kind": "check",
-  "stage": "checklist",
-  "attempt": 2,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2812,
-  "tokens_out": 892,
-  "latency_s": 14.937
+  "tokens_in": 2849,
+  "tokens_out": 531,
+  "latency_s": 9.455
  },
  {
-  "ts": "2026-10-07T02:21:13.861+00:00",
+  "ts": "2026-10-07T02:44:18.190+00:00",
   "kind": "gate",
   "stage": "checklist",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:21:13.861+00:00",
+  "ts": "2026-10-07T02:44:18.190+00:00",
   "kind": "stage_start",
   "stage": "pastoral",
   "deps_used": [
@@ -175,31 +139,31 @@
   ]
  },
  {
-  "ts": "2026-10-07T02:21:13.861+00:00",
+  "ts": "2026-10-07T02:44:18.190+00:00",
   "kind": "gloo_call",
   "stage": "pastoral",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T02:21:18.893+00:00",
+  "ts": "2026-10-07T02:44:23.304+00:00",
   "kind": "check",
   "stage": "pastoral",
   "attempt": 1,
   "passed": true,
   "violations": [],
   "reason_categories": [],
-  "tokens_in": 2864,
-  "tokens_out": 160,
-  "latency_s": 5.026
+  "tokens_in": 2508,
+  "tokens_out": 187,
+  "latency_s": 5.109
  },
  {
-  "ts": "2026-10-07T02:21:18.893+00:00",
+  "ts": "2026-10-07T02:44:23.304+00:00",
   "kind": "gate",
   "stage": "pastoral",
   "action": "approve"
  },
  {
-  "ts": "2026-10-07T02:21:18.893+00:00",
+  "ts": "2026-10-07T02:44:23.304+00:00",
   "kind": "outcome",
   "outcome": "package_complete",
   "failed_stage": null
