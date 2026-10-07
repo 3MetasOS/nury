@@ -10,8 +10,8 @@ call, SETTINGS = ns["call"], ns["SETTINGS"]
 ERIC = "cjVigY5qzO86Huf0OWal"
 L = {"L1": "Two oh seven A M. Maria is calling.", "L2": "Her husband was detained last evening.", "L3": "This is Nury.", "L4": "Five stages. A gate after each.",
      "L5": "Her language. Every point cited.", "L6": "Unsafe draft. Rejected. He never sees it.", "L7": "Gloo AI Studio writes, seeing tokens, not names.",
-     "L8": "Tested with Jev. People review what is unsure.", "L9": "A warm message. His to edit.", "L10": "Nury is not a pastor. It never sends.",
-     "L11": "The crisis-response agent for solo pastors."}
+     "L8": "Jev checks every draft. People decide.", "L9": "A warm message. His to edit.", "L10": "Nury is not a pastor. It never sends.",
+     "L11": "An AI crisis response agent."}
 want = [a for a in sys.argv[1:] if a.startswith("L")] or list(L)
 print(len(want), "lines,", sum(len(L[k]) for k in want), "characters")
 if "--dry" in sys.argv: sys.exit()

@@ -32,7 +32,7 @@ export const Night: React.FC = () => {
       </div>
       <Vignette s={0.85} /><Grain o={0.1} />
       <div style={{position: 'absolute', left: 140, bottom: 110, fontFamily: serif, fontSize: 54, color: 'rgba(236,231,220,.92)'}}>2:07 AM.</div>
-      <div style={{position: 'absolute', left: 140, bottom: 60, fontFamily: sans, fontSize: 26, color: 'rgba(167,159,141,.9)'}}>A solo pastor. No staff. No lawyer.</div>
+      <div style={{position: 'absolute', left: 140, bottom: 60, fontFamily: sans, fontSize: 26, color: 'rgba(167,159,141,.9)'}}>A pastor. No lawyer on the line.</div>
     </AbsoluteFill>
   );
 };
@@ -58,7 +58,7 @@ export const Dawn: React.FC = () => {
       <AbsoluteFill style={{background: 'linear-gradient(180deg, #2a2f3a 0%, #6b6f78 14%, #c9a874 34%, #ecd7b2 48%, #f7f3ea 70%)'}} />
       <Img src={staticFile('logo-mark-paper.svg')} style={{position: 'absolute', left: 960 - 70, top: 520, width: 140, height: 140}} />
       <div style={{position: 'absolute', top: 700, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontSize: 64, color: '#0d1015'}}>Nury.</div>
-      <div style={{position: 'absolute', top: 790, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontSize: 38, color: '#5b5547'}}>the crisis-response agent for solo pastors.</div>
+      <div style={{position: 'absolute', top: 790, left: 0, right: 0, textAlign: 'center', fontFamily: serif, fontSize: 38, color: '#5b5547'}}>An AI Crisis Response Agent.</div>
       <Grain o={0.07} blend="multiply" />
     </AbsoluteFill>
   );

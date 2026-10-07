@@ -12,7 +12,7 @@ Clean each file with `video/vo/clean_voice.sh in.m4a out.wav`, then put them in 
 | L5 | Her language. Every point cited. | 2.0 s |
 | L6 | Unsafe draft. Rejected. He never sees it. | 2.3 s |
 | L7 | Gloo AI Studio writes, seeing tokens, not names. | 2.9 s |
-| L8 | Tested with Jev. People review what is unsure. | 3.0 s |
+| L8 | Jev checks every draft. People decide. | (re-render after the final build) |
 | L9 | A warm message. His to edit. | 1.4 s (retake 2.2 s) |
 | L10 | Nury is not a pastor. It never sends. | 2.5 s |
-| L11 | The crisis-response agent for solo pastors. | 2.3 s |
+| L11 | An AI crisis response agent. | (re-render after the final build) |

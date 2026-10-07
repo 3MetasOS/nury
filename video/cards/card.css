@@ -12,3 +12,5 @@ h1{font:600 188px/1 var(--serif);color:var(--amber);letter-spacing:-.02em}
 .line{font:400 76px/1.2 var(--serif);max-width:1400px;text-wrap:balance}
 .line b{font-weight:600;color:var(--amber);font-variant-numeric:lining-nums tabular-nums}
 .src{font:400 30px/1.4 var(--sans);color:var(--muted)}
+
+.lockup{width:1000px}

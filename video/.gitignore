@@ -1,4 +1,6 @@
-vo/out/
 capture/raw/
 cards/out/
+incoming/
 out_ffmpeg.mp4
+remotion/public/incoming/
+vo/out/

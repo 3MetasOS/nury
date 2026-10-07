@@ -1,10 +1,11 @@
-01|It is two in the morning. A family is calling their pastor.
-02|Her husband was detained last evening. The pastor has no staff, and no lawyer on the line.
-03|Nury turns the call into a clear case. Facts only. No advice.
-04|After every stage, the pastor decides.
-05|Rights in the family's own language. Built only from a vetted source. Every point cited.
-06|When a draft crosses the line from information into advice, Nury rejects it and tries again. The pastor never sees it.
-07|Attorney hotlines. A checklist for tonight.
-08|And a short, warm message, in the pastor's hands to edit.
-09|Nury is not a pastor, and it never sends. The pastor does.
-10|Nury. The crisis-response agent for solo pastors.
+L1|Two oh seven A M. Maria is calling.
+L2|Her husband was detained last evening.
+L3|This is Nury.
+L4|Five stages. A gate after each.
+L5|Her language. Every point cited.
+L6|Unsafe draft. Rejected. He never sees it.
+L7|Gloo AI Studio writes, seeing tokens, not names.
+L8|Jev checks every draft. People decide.
+L9|A warm message. His to edit.
+L10|Nury is not a pastor. It never sends.
+L11|An AI crisis response agent.

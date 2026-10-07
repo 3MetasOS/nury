@@ -131,7 +131,7 @@ const Persona: React.FC<{dur: number}> = ({dur}) => {
       </svg>
       <PhoneOnTable x={px} y={py} lift={lift * 40} glow={0.9} />
       <Vig s={0.85} /><Grain o={0.1} />
-      <div style={{position: 'absolute', left: 150, bottom: 100, fontFamily: serif, fontSize: 52, color: 'rgba(236,231,220,.95)', opacity: interpolate(t, [1, 1.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>Solo pastor. No staff. No lawyer.</div>
+      <div style={{position: 'absolute', left: 150, bottom: 100, fontFamily: serif, fontSize: 52, color: 'rgba(236,231,220,.95)', opacity: interpolate(t, [1, 1.6], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'})}}>A pastor. No lawyer on the line.</div>
     </AbsoluteFill>
   );
 };
@@ -172,7 +172,7 @@ const NameCard: React.FC = () => {
           <span style={{fontFamily: sans, fontSize: 36, color: C.muted}}>/NOO-ree/ <i style={{fontFamily: serif}}>proper noun</i></span>
         </div>
         <div style={{fontFamily: serif, fontSize: 42, marginTop: 14, opacity: fi(3.2, 3.8)}}>1. A given name from Arabic <i>nūr</i>, “light”.</div>
-        <div style={{fontFamily: serif, fontSize: 42, opacity: fi(4.2, 4.8)}}>2. The crisis-response agent for solo pastors.</div>
+        <div style={{fontFamily: serif, fontSize: 42, opacity: fi(4.2, 4.8)}}>2. An AI crisis response agent.</div>
         <div style={{fontFamily: sans, fontSize: 24, color: C.muted, opacity: fi(5.0, 5.5)}}>see also: lantern</div>
         <div style={{fontFamily: serif, fontSize: 44, color: C.amber, marginTop: 34, opacity: fi(5.6, 6.3)}}>Five stages. A gate after each. Nothing sent.</div>
       </div>
@@ -224,10 +224,11 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
     ...(memorialOn ? [<Snd key="rt" f="room" at={st('memorial')} v={0.03} dur={dur('memorial')} />] : []),
   ];
   const retake = (k: string) => (data.voice as any)?.retakes === true && (k === 'L3' || k === 'L9') ? k + '_retake' : k; // voice.json {retakes:true} = slower L3 and L9
-  const eric = (k: string, at: number) => <Snd key={k} f={retake(k)} at={at} v={1} dir="arc/" />;
+  const stale = (k: string) => (k === 'L8' || k === 'L11') && !((data.voice as any)?.fresh ?? []).includes(k); // L8 and L11 are re-rendered after the final build; voice.json fresh:["L8","L11"] then turns them on
+  const eric = (k: string, at: number) => stale(k) ? null : <Snd key={k} f={retake(k)} at={at} v={1} dir="arc/" />;
   const voice = [eric('L1', st('persona')), eric('L2', st('stakes') + 0.3), eric('L3', st('nury') + 0.3), eric('L4', st('tool') + 0.5), eric('L5', st('rights') + 0.4),
     eric('L6', st('turn') + 1.0), ...(techOn ? [eric('L7', st('tech') + 0.2), eric('L8', st('tech') + 6.0)] : []), eric('L9', st('stages') + 0.5), eric('L10', st('copy') + 0.6), eric('L11', st('dawn') + 0.4)];
-  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', 'A full package: 50 to 56 s, about 9 cents'];
+  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 50 to 56 s, about 9 cents'];
   return (
     <AbsoluteFill>
       <Grade k={[[0, INK], [st('nury'), INK], [st('nury') + 1.2, '#4a2f14'], [st('nury') + 2.3, '#dfa04c'], [st('nury') + 3.6, '#f3e6cc'], [st('tool') + 4, '#f5ecd9'], [st('dawn'), PAPER]]} />
@@ -241,12 +242,36 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
           </>)}
           {s.kind === 'name' && <NameCard />}
           {s.kind === 'clip' && <Fade dur={s.dur}><AppClip s={s} marks={data.marks} y={s.id === 'stages' || s.id === 'copy' ? 0.0 : 0.0} /></Fade>}
-          {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} /></Fade>}
+          {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} opts={{redteam: data.tech?.redteam === true, redteamNames: data.tech?.redteamNames === true}} /></Fade>}
           {s.kind === 'dawn' && <Fade dur={s.dur}><End /></Fade>}
           {s.kind === 'memorial' && <Fade dur={s.dur} slow><Memorial m={data.memorial} /></Fade>}
         </Sequence>
       ))}
       {sound}{voice}
+    </AbsoluteFill>
+  );
+};
+
+// ---- JuanClip: a clip Juan records, in the film's look. Cut to fit, speed at most +-5 percent, never stretched; soft rounded frame on paper; captions from an SRT. ----
+export type ClipProps = {file: string; start: number; end: number; duration: number; captions: {from: number; to: number; text: string}[]};
+export const JuanClip: React.FC<ClipProps> = ({file, start, end, duration, captions}) => {
+  useFonts();
+  const f = useCurrentFrame(), t = f / FPS;
+  const src = Math.max(0.1, end - start), rate = Math.min(1.05, Math.max(0.95, src / duration));
+  const play = Math.floor((src / rate) * FPS), full = Math.round(duration * FPS);
+  const clip = Math.min(play, full);
+  const o = interpolate(f, [0, 12, full - 12, full], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const vid = <OffthreadVideo src={staticFile(file)} startFrom={Math.round(start * FPS)} playbackRate={rate} style={{width: '100%', height: '100%', objectFit: 'contain', background: '#0d1015'}} />;
+  const cs = t * rate + start; // source time, to match SRT times to the recording
+  const cap = captions.find((c) => cs >= c.from && cs <= c.to);
+  return (
+    <AbsoluteFill style={{background: PAPER, opacity: o}}>
+      <div style={{position: 'absolute', left: 240, top: 70, width: 1440, height: 810, borderRadius: 28, overflow: 'hidden', boxShadow: '0 40px 90px rgba(70,45,10,.28), 0 8px 24px rgba(70,45,10,.16), 0 0 0 1px rgba(13,16,21,.14)'}}>
+        {play >= full ? vid : (<><Sequence durationInFrames={Math.max(1, play)}>{vid}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{vid}</Freeze></Sequence></>)}
+      </div>
+      {cap && <div style={{position: 'absolute', left: 0, right: 0, bottom: 70, textAlign: 'center'}}>
+        <span style={{fontFamily: sans, fontSize: 36, color: INK, background: 'rgba(247,243,234,.95)', padding: '10px 24px', borderRadius: 12, boxShadow: '0 2px 14px rgba(70,45,10,.14)', textWrap: 'balance' as any}}>{cap.text}</span>
+      </div>}
     </AbsoluteFill>
   );
 };
