@@ -67,9 +67,7 @@ def _key():
 
 
 def call(state, questions, model=None, retries=2):
-    body = {"state": state, "questions": questions}
-    if model:
-        body["model"] = model
+    body = {"state": state, "questions": questions, "model": model or os.environ.get("JEV_MODEL", "jev-latest")}
     data = json.dumps(body).encode()
     for attempt in range(retries + 1):
         req = urllib.request.Request(f"{BASE}/v1/systemone", data=data, method="POST", headers={
@@ -81,7 +79,8 @@ def call(state, questions, model=None, retries=2):
             if e.code in (429, 500, 502, 503) and attempt < retries:
                 time.sleep(2 ** attempt)
                 continue
-            raise JevError(f"Jev HTTP {e.code}") from None  # no body: never echo headers
+            detail = e.read().decode("utf-8", "replace")[:300]  # response body only, never request headers
+            raise JevError(f"Jev HTTP {e.code}: {detail}") from None
         except urllib.error.URLError as e:
             if attempt < retries:
                 time.sleep(2 ** attempt)

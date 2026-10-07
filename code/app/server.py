@@ -12,7 +12,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from nury.audit import AuditLog
-from nury.engine import DEMO_PROVOKE, CaseState, GateDecision, run_stage
+from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, run_stage
 from nury.gloo_client import GlooClient
 from nury.stages import STAGES
 
@@ -29,7 +29,8 @@ class Session:
         self.id = uuid.uuid4().hex[:12]
         self.state = CaseState(intake, language)
         self.audit = AuditLog()
-        self.provoke = DEMO_PROVOKE if demo_guardrail else None
+        # Per-session fault, never the process-wide env var: it would hit every concurrent session.
+        self.fault = {"stage": "rights", "times": 1, "draft_suffix": UNSAFE_SUFFIX} if demo_guardrail else None
         self.current = None        # stage id being worked
         self.waiting = None        # StageResult at the gate
         self.decision = None
@@ -52,7 +53,7 @@ class Session:
             client = GlooClient()
             for s in STAGES:
                 self.current = s.id
-                r = run_stage(s.id, self.state, self.gate, client, self.audit, self.provoke)
+                r = run_stage(s.id, self.state, self.gate, client, self.audit, fault_injection=self.fault)
                 if r.status not in ("approved", "edited"):
                     self.halted = r.message
                     break
