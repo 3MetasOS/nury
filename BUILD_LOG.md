@@ -897,3 +897,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 08:07: church place form removed from the Network page (Juan: made no sense). The fallback it fed stays in the engine as an optional 'home' in the network file (a case without a state uses it; without it only nationwide contacts are listed; the fictional demo network uses Aurora, CO). No engine change; documented as a setting and a limit.
 - 08:14: Juan: Home, Cases and Network pages are LOCKED (no more changes unless he asks).
 - 08:20: case detail page (Juan): same width as the other pages; the eleven sections become tabs that do not jump to the top; the three action buttons small, one row; the saved-cases notice moves to the bottom before the footer.
+- 08:25: case detail Overview (Juan): cards use the whole page, Next steps first with the map large and readable, a large stage strip, Something changed as a primary button in the header; the right rail removed.
