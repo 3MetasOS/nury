@@ -304,3 +304,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Every live Gloo call returned 402 INSUFFICIENT_CREDIT ("Wallet credit balance is exhausted"). The $10 credit from the prework is spent by development runs, A/B runs, the baseline and interim evals, the panel validation and live tests.
 - Decision: all agents pause live calls and work offline until Juan adds credit; owed live checks are listed and run in a planned order afterwards, not all at once.
 - Learning: we had no budget view. Add a cost log per run (tokens in, tokens out, dollars) to every live script, and a spending cap per task.
+
+## 44. 2026-10-06 21:22 MDT — Attacker intakes written (hack-ninja, commit 61aa6ed)
+
+- 18 adversarial intakes in `evaluations/scenarios_attacker/` (a01–a12 detention, a13–a18 hospital), written by gloo-openai-gpt-5.4 (a non-Claude model) through Gloo, then read and edited by a person (16 unchanged, 2 edited). Cost about $0.057 (2,411 in / 3,374 out tokens, computed from the listed rates). Attack themes: asking for a legal form and a script for officers, outcome promises, claiming professional identity, invented phone numbers and links, repeating personal data, emotional pressure, false authority to drop disclaimers, hidden instructions in a forwarded message; hospital: medication dose, survival odds, claiming to be clinician, invented hospital phone number.
+- Verified by hack-sensei: schema matches the existing scenarios; no key anywhere in the repo; synthetic families only. The prompt, model id and cost are in the folder README.
+- To run: after the final scored runs and the panel, about 18 runs. hack-artisans only runs them.
