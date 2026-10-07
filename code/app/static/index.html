@@ -29,12 +29,12 @@ textarea{min-height:170px;resize:vertical}
 .bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
 .ln{margin:6px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
-.band.casehd{margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0;font:600 clamp(1.45rem,5vw,1.45rem)/1.15 var(--serif);white-space:nowrap}.cb-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:36px}.chrow{display:flex;flex-wrap:wrap;gap:6px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere;cursor:pointer;background:transparent}.chrow .cid:hover,.chrow .cid:focus-visible{border-color:var(--amber-line);color:var(--amber-text)}
+.band.casehd{overflow:visible;margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0;font:600 clamp(1.45rem,5vw,1.45rem)/1.15 var(--serif);white-space:nowrap}.cb-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:36px}.chrow{display:flex;flex-wrap:wrap;gap:6px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere;cursor:pointer;background:transparent}.chrow .cid:hover,.chrow .cid:focus-visible{border-color:var(--amber-line);color:var(--amber-text)}
 .casehd .vers{margin-top:8px}.casehd .hnote{margin-top:4px}
 .cb-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cb-r #b-changed{width:auto;flex:none;min-height:36px;height:36px;padding:0 16px;font-size:14px;border-radius:10px}
-.bgrp{display:inline-flex;border-radius:10px;overflow:hidden;outline:1px solid var(--line-2);outline-offset:-1px;background:var(--surface-2);height:36px}
-.bgrp .btn.sm{border:0;border-radius:0;background:transparent;height:36px;min-height:36px;padding:0 14px;font-size:14px;margin:0;width:auto;flex:1 1 auto;justify-content:center}.bgrp .btn.sm:hover{background:var(--amber-soft)}
-.bgrp>.btn+.btn,.bgrp>.btn.hidden+.btn{border-left:1px solid var(--line-2)}.bgrp>.hidden{display:none}
+.bgrp{display:inline-flex;border-radius:10px;overflow:visible;outline:1px solid var(--line-2);outline-offset:-1px;background:var(--surface-2);height:36px}
+.bgrp>.btn.sm:first-child,.bgrp>.exw:first-child>.btn.sm{border-radius:10px 0 0 10px}.bgrp>.btn.sm:last-child,.bgrp>.exw:last-child>.btn.sm{border-radius:0 10px 10px 0}.bgrp .btn.sm{border:0;border-radius:0;background:transparent;height:36px;min-height:36px;padding:0 14px;font-size:14px;margin:0;width:auto;flex:1 1 auto;justify-content:center}.bgrp .btn.sm:hover{background:var(--amber-soft)}
+.bgrp>*+*{border-left:1px solid var(--line-2)}.bgrp>.hidden+*{border-left:0}.bgrp>.exw>.btn.sm{width:100%}.bgrp>.hidden{display:none}
 .casehd .hnote{max-width:none;width:auto}.casehd .hnote .hn-t{white-space:normal}
 .bgrp .btn.sm{white-space:nowrap}
 .casehd .cb-r{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-wrap:nowrap}.cb-rb{display:flex;flex-wrap:nowrap;gap:8px;align-items:center}
@@ -63,6 +63,7 @@ textarea{min-height:170px;resize:vertical}
 .stn{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);padding:10px;border-radius:12px;border:1px solid var(--line);width:100%}a.stn:hover{border-color:var(--amber-line)}
 .stn .nd{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--amber);color:var(--amber-text);font:600 20px var(--sans)}
 .stn .nm{font:600 14px var(--sans);flex:1}.stn .stt{font:500 12px var(--sans);color:var(--muted)}.stn.endm .nd{background:var(--amber);color:var(--amber-ink)}
+.exw{position:relative;display:inline-flex}.exw .mmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:30;min-width:200px;padding:6px;border:1px solid var(--line-2);border-radius:14px;background:var(--surface-2);box-shadow:0 8px 24px rgba(0,0,0,.35);display:grid;text-align:left}.exw .mmenu[hidden]{display:none}.exw .mmenu button{min-height:44px;text-align:left;padding:0 14px;border:0;border-radius:10px;background:transparent;color:var(--text);font:600 15px var(--sans);cursor:pointer;height:auto}.exw .mmenu .msep{height:1px;background:var(--line);margin:4px 8px}.exw .mmenu button:hover,.exw .mmenu button:focus-visible{background:var(--amber-soft);color:var(--amber-text);outline:none}
 .pdfrow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.pdfrow .mono{margin-right:4px}
 .dseq{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.dseq .arr{width:34px;height:10px;transform:none}
 .dchip{padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted);font:600 13px var(--sans);text-decoration:none}.dchip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
@@ -484,10 +485,15 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <div id="final-head"></div>
     <div class="fp-actions" id="fp-actions">
       <button class="btn primary" id="b-copyall">Copy all</button>
-      <button class="btn" id="b-download">Download</button>
-      <button class="btn" id="b-print">Print family copy</button>
-      <button class="btn sm" id="b-pdf-fam" type="button">Family copy (PDF)</button>
-      <button class="btn sm" id="b-pdf-pas" type="button">Pastor copy (PDF)</button>
+      <div class="exw"><button class="btn" id="b-export" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="b-export-menu" aria-label="Export" title="Export"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</button>
+          <div class="mmenu" id="b-export-menu" role="menu" aria-label="Export" hidden>
+            <button type="button" role="menuitem" data-ex="family">Family copy (PDF)</button>
+            <button type="button" role="menuitem" data-ex="pastor">Pastor copy (PDF)</button>
+            <button type="button" role="menuitem" data-ex="zip">Both in a zip</button>
+            <div class="msep" role="separator"></div>
+            <button type="button" role="menuitem" data-ex="print-family">Print family copy</button>
+            <button type="button" role="menuitem" data-ex="print-pastor">Print pastor copy</button>
+          </div></div>
       <button class="btn" id="b-save">Save to case file</button>
     </div>
     <div id="final-body"></div>
@@ -514,7 +520,15 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <button class="btn sm hidden" id="b-compare" type="button">Compare drafts</button>
       <div class="bgrp" role="group" aria-label="Case actions">
         <button class="btn sm hidden" type="button" id="case-follow" aria-pressed="false"></button>
-        <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
+        <div class="exw"><button class="btn sm" id="case-export" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="case-export-menu" aria-label="Export" title="Export"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</button>
+          <div class="mmenu" id="case-export-menu" role="menu" aria-label="Export" hidden>
+            <button type="button" role="menuitem" data-ex="family">Family copy (PDF)</button>
+            <button type="button" role="menuitem" data-ex="pastor">Pastor copy (PDF)</button>
+            <button type="button" role="menuitem" data-ex="zip">Both in a zip</button>
+            <div class="msep" role="separator"></div>
+            <button type="button" role="menuitem" data-ex="print-family">Print family copy</button>
+            <button type="button" role="menuitem" data-ex="print-pastor">Print pastor copy</button>
+          </div></div>
         <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
       </div>
     </div>
@@ -756,6 +770,17 @@ document.addEventListener("click",e=>{
 function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
 document.querySelectorAll("dialog.sheet").forEach(d=>{d.addEventListener("click",e=>{if(e.target===d)d.close()});
   d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())});
+/* the Export menu (the same behaviour as the Network More menu): arrow keys move, Enter picks, Escape closes, a click outside closes */
+function wireExport(btn,menu,pick){const items=()=>[...menu.querySelectorAll("[role=menuitem]")];
+  const close=f=>{menu.hidden=true;btn.setAttribute("aria-expanded","false");if(f)btn.focus()};
+  const open=()=>{menu.hidden=false;btn.setAttribute("aria-expanded","true");items()[0].focus()};
+  btn.onclick=e=>{e.stopPropagation();menu.hidden?open():close(true)};
+  btn.onkeydown=e=>{if(e.key==="ArrowDown"){e.preventDefault();open()}};
+  menu.onkeydown=e=>{const it=items(),i=it.indexOf(document.activeElement);
+    if(e.key==="ArrowDown"){e.preventDefault();it[(i+1)%it.length].focus()}else if(e.key==="ArrowUp"){e.preventDefault();it[(i-1+it.length)%it.length].focus()}
+    else if(e.key==="Escape"){e.preventDefault();close(true)}else if(e.key==="Tab")close(false)};
+  items().forEach(b=>b.onclick=e=>{e.stopPropagation();close(false);pick(b.dataset.ex)});
+  document.addEventListener("click",e=>{if(!menu.hidden&&!e.target.closest(".exw"))close(false)})}
 /* PDF copies: the server makes them with Chrome or Chromium; without one the print view opens and says so */
 async function downloadPdf(kind,id,which,btn){const old=btn.textContent;btn.disabled=true;btn.textContent="Making the PDF...";
   try{const r=await fetch(`/api/${kind}/${encodeURIComponent(id)}/pdf/${which}`);
@@ -804,7 +829,7 @@ async function openCase(id,tabName){
    $("case-meta").replaceChildren(h("span",{class:"sc tag"},shortWhen(c.meta.created)),
      c.meta.status!=="complete"?h("span",{class:"sc s-follow"},/stop/i.test(c.meta.status)?"Stopped":"In progress"):"",
      vsn>1?h("span",{class:"sc s-v2"},ic("i-v2"),vsn===2?"Updated":vsn===3?"Updated twice":`Updated ${vsn-1} times`):"",(()=>{const b=h("button",{type:"button",class:"sc tag cid",title:"Case id "+c.meta.id+". Select to copy it.","aria-label":"Case id "+c.meta.id+". Select to copy it."},"Case "+c.meta.id.slice(-4));b.onclick=()=>navigator.clipboard.writeText(c.meta.id).then(()=>toast("Case id copied"),()=>toast("Could not copy the case id"));return b})())}
-  $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
+  wireExport($("case-export"),$("case-export-menu"),which=>which==="zip"?(location.href="/api/case/"+encodeURIComponent(id)+"/export"):which.startsWith("print-")?window.open("/case-print/"+encodeURIComponent(id)+"/"+which.slice(6)+"?print=1","_blank","noopener"):downloadPdf("case",id,which,$("case-export")));
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
   const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
@@ -837,9 +862,6 @@ function renderOverview(){const root=$("case-page");root.replaceChildren();const
         h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},word[s.state]))))});
     ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd glow","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
     seq.append(ol)}
-  { const fb=h("button",{type:"button",class:"btn sm",id:"o-pdf-fam"},ic("i-save"),"Family copy (PDF)"),pb2=h("button",{type:"button",class:"btn sm",id:"o-pdf-pas"},ic("i-save"),"Pastor copy (PDF)");
-    fb.onclick=()=>downloadPdf("case",c.meta.id,"family",fb);pb2.onclick=()=>downloadPdf("case",c.meta.id,"pastor",pb2);
-    seq.append(h("div",{class:"pdfrow"},h("span",{class:"mono"},"Print copies"),fb,pb2)) }
   const vs=c.versions||[c.meta.id];
   if(vs.length>1){const row=h("div",{class:"dseq"});vs.forEach((v,i)=>{if(i)row.append(arrowSvg("done"));row.append(h("a",{href:"#/case/"+encodeURIComponent(v),class:"dchip"+(v===c.meta.id?" on":"")},i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft")))});seq.append(row)}
   const next=h("section",{class:"ovc"},h("h3",null,"Next steps"),h("p",{class:"muted sm",style:"margin:0 0 14px"},"What to do tonight and this week, and what is still open."));
@@ -986,10 +1008,8 @@ async function poll(){
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
       c.append(h,d1,p,d,b);return c}));
     const whole=NuryFinal.text(s);
-    $("b-pdf-fam").onclick=()=>downloadPdf("session",sid,"family",$("b-pdf-fam"));$("b-pdf-pas").onclick=()=>downloadPdf("session",sid,"pastor",$("b-pdf-pas"));
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
-    $("b-download").onclick=()=>NuryFinal.download("nury-package.txt",whole);
-    $("b-print").onclick=()=>window.print();
+    wireExport($("b-export"),$("b-export-menu"),which=>{if(!sid)return;which==="zip"?(location.href=`/api/session/${encodeURIComponent(sid)}/export`):which.startsWith("print-")?window.open(`/session-print/${encodeURIComponent(sid)}/${which.slice(6)}?print=1`,"_blank","noopener"):downloadPdf("session",sid,which,$("b-export"))});
     $("map-card").classList.toggle("hidden",!s.map_svg);if(s.map_svg)$("map-img").src=svgUrl(s.map_svg);
     const sv=$("saved"),er=$("save-err"),btn=$("b-save");sv.classList.add("hidden");er.textContent="";er.removeAttribute("role");btn.disabled=false;btn.textContent="Save to case file";
     btn.onclick=async()=>{

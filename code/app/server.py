@@ -588,14 +588,14 @@ class H(BaseHTTPRequestHandler):
                 return None, None
             title = _case_title(c)
             data = pdf_export.case_payload(c, title)
-            return pdf_export.print_html("case", data, copy, title, _iso(c["meta"].get("created")), fonts_base=fonts, screen_note=screen_note), title
+            return pdf_export.print_html("case", data, copy, title, _iso(c["meta"].get("created")), fonts_base=fonts, screen_note=screen_note, extras=pdf_export.playbook_extras(c["meta"].get("playbook", ""), PLAYBOOKS_DIR)), title
         s_ = SESSIONS.get(ident)
         if not s_:
             return None, None
         v = s_.view()
         title = (v.get("playbook") or {}).get("title") or "Case"
         iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-        return pdf_export.print_html("session", v, copy, title, iso, fonts_base=fonts, screen_note=screen_note), title
+        return pdf_export.print_html("session", v, copy, title, iso, fonts_base=fonts, screen_note=screen_note, extras=pdf_export.playbook_extras((v.get("playbook") or {}).get("id", ""), PLAYBOOKS_DIR)), title
 
     def do_GET(self):
         if not self._guard(False):
@@ -699,10 +699,24 @@ class H(BaseHTTPRequestHandler):
             except Exception:
                 return self._json({"error": "case not found"}, 404)
             from app import pdf_export
-            z, _pdf = pdf_export.export_zip_bytes(cid, c, _case_title(c), _iso(c["meta"].get("created")))   # PDFs and records/case.json; never the token map
+            z, _pdf = pdf_export.export_zip_bytes(cid, c, _case_title(c), _iso(c["meta"].get("created")), extras=pdf_export.playbook_extras(c["meta"].get("playbook", ""), PLAYBOOKS_DIR))   # PDFs and records/case.json; never the token map
             self.send_response(200)
             self.send_header("Content-Type", "application/zip")
             self.send_header("Content-Disposition", f'attachment; filename="{cid}.zip"')
+            self.send_header("Content-Length", str(len(z)))
+            self.end_headers()
+            self.wfile.write(z)
+        elif (m := re.match(r"^/api/session/([A-Za-z0-9._%-]+)/export$", p)):
+            from app import pdf_export
+            s_ = SESSIONS.get(urllib.parse.unquote(m.group(1)))
+            if not s_:
+                return self._json({"error": "no such session"}, 404)
+            vw = s_.view()
+            z, _ok = pdf_export.session_zip_bytes(vw, (vw.get("playbook") or {}).get("title") or "Case", datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+                                                  extras=pdf_export.playbook_extras((vw.get("playbook") or {}).get("id", ""), PLAYBOOKS_DIR))
+            self.send_response(200)
+            self.send_header("Content-Type", "application/zip")
+            self.send_header("Content-Disposition", 'attachment; filename="nury-copies.zip"')
             self.send_header("Content-Length", str(len(z)))
             self.end_headers()
             self.wfile.write(z)

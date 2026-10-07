@@ -1,6 +1,7 @@
 {
   "id": "hospital",
   "title": "Hospital emergency",
+  "title_es": "Emergencia en el hospital",
   "order": 2,
   "status": "live",
   "description": "A family member is in the emergency room or intensive care. The pastor takes the call and needs a case summary, an information brief, hospital resources, a checklist, and a pastoral message.",

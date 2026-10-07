@@ -81,41 +81,31 @@ PY
 )
   case "$PR" in ok*) PRS=ok;; *) PRS="$PR";; esac
   check "$TT print: the PDF has the family copy only (no header, footer, buttons), the pastor's name, the right headings, at most 4 pages [$PR]" "$PRS" "ok"
-  # DOWNLOAD (txt): real click, name, bytes, UTF-8
-  ev "window.__dl=[];const oc=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){window.__dl.push(this.download||'');return oc.apply(this,arguments)};1" >/dev/null
-  rm -f /tmp/dl/pkg-$LANG.txt; agent-browser download "#b-download" /tmp/dl/pkg-$LANG.txt >/dev/null 2>&1
-  EXPECT=$(ev "NuryFinal.text({stages:window.__stubStages})")
-  NAMEGOT=$(ev "window.__dl[0]")
-  check "$TT download: the file is offered as nury-package.txt" "$NAMEGOT" '"nury-package.txt"'
-  RES=$(EXPECT_JSON="$EXPECT" python3 - "$LANG" <<'PY'
-import sys,os,json
-b=open(f'/tmp/dl/pkg-{sys.argv[1]}.txt','rb').read()
-exp=json.loads(os.environ['EXPECT_JSON'])
-ok_bom=b.startswith(b'\xef\xbb\xbf'); t=b.decode('utf-8').lstrip('﻿')
-acc=sum(1 for ch in t if ch in 'áéíóúñÁÉÍÓÚÑ¿¡')
-print('ok' if (t==exp and len(b)>800 and (sys.argv[1]=='en' or acc>10) and ok_bom) else f'bad len={len(b)} eq={t==exp} bom={ok_bom} acc={acc}')
-PY
-)
-  check "$TT download: the saved file has the full text, valid UTF-8 (BOM, accents intact), and opens" "$RES" "ok"
+  # EXPORT MENU: one button with five items, no Download and no separate Print button
+  agent-browser click "#b-export" >/dev/null 2>&1; agent-browser wait 400 >/dev/null 2>&1
+  check "$TT export: one Export menu with the three downloads, a separator and the two print items; no Download or Print button" "$(ev "(()=>{const m=document.getElementById('b-export-menu');return !m.hidden&&[...m.querySelectorAll('[role=menuitem]')].map(b=>b.textContent).join('|')==='Family copy (PDF)|Pastor copy (PDF)|Both in a zip|Print family copy|Print pastor copy'&&!document.getElementById('b-download')&&!document.getElementById('b-print')&&!!m.querySelector('[role=separator]')})()")" "true"
+  agent-browser press Escape >/dev/null 2>&1
  done
  ZC="${ES:-$EN}"
  # case zip: real click on the saved-case export
  if [ -n "$ZC" ]; then
   open_case(){ agent-browser open "about:blank" >/dev/null 2>&1; agent-browser open "http://127.0.0.1:$PORT/#/case/$ZC" >/dev/null 2>&1; agent-browser wait 1800 >/dev/null 2>&1; }
-  open_case; rm -f /tmp/dl/case-$T.zip; agent-browser download "#case-export" /tmp/dl/case-$T.zip >/dev/null 2>&1
+  open_case; agent-browser click "#case-export" >/dev/null 2>&1; agent-browser wait 400 >/dev/null 2>&1
+  check "$T export: the case Export button opens a menu with the five items" "$(ev "[...document.querySelectorAll('#case-export-menu [role=menuitem]')].length===5&&!document.getElementById('case-export-menu').hidden")" "true"
+  agent-browser press Escape >/dev/null 2>&1
+  rm -f /tmp/dl/case-$T.zip; curl -s -o /tmp/dl/case-$T.zip "localhost:$PORT/api/case/$ZC/export"
   HDR=$(curl -s -D - -o /dev/null "localhost:$PORT/api/case/$ZC/export" | tr -d '\r' | grep -i content-disposition)
   check "$T zip: the server names it after the case id" "$HDR" "Content-Disposition: attachment; filename=\"$ZC.zip\""
-  ZR=$(python3 - "$ZC" "$PORT" "/tmp/dl/case-$T.zip" <<'PY'
-import sys,zipfile,json,urllib.request
-cid,port,path=sys.argv[1:4]
+  ZR=$(python3 - "$ZC" "/tmp/dl/case-$T.zip" <<'PY'
+import sys,zipfile
+cid,path=sys.argv[1:3]
 z=zipfile.ZipFile(path); bad=z.testzip(); names=z.namelist()
-api=json.load(urllib.request.urlopen(f'http://localhost:{port}/api/case/{cid}'))
-need=[f'{cid}/{n}' for n in ('01-triage.md','02-rights.md','03-attorney.md','04-checklist.md','05-pastoral.md','index.md','case.json')]
-same=all(z.read(f'{cid}/{n}').decode('utf-8')==api['pages'][n] for n in ('02-rights.md','05-pastoral.md'))
-print('ok' if bad is None and all(n in names for n in need) and same else f'bad {bad} {len(names)} same={same}')
+want={f'{cid}/Family copy.pdf',f'{cid}/Pastor copy.pdf',f'{cid}/records/case.json'}
+pdfs_ok=all(z.read(n).startswith(b'%PDF') for n in names if n.endswith('.pdf'))
+print('ok' if bad is None and set(names)==want and pdfs_ok and not any(n.endswith('.md') or 'privacy-map' in n for n in names) else f'bad {bad} {names}')
 PY
 )
-  check "$T zip: a valid zip with every page, UTF-8 text identical to the case viewer" "$ZR" "ok"
+  check "$T zip: a valid zip with the two PDFs and records/case.json only (no markdown, no token map)" "$ZR" "ok"
  fi
 done; done
 ev "try{localStorage.setItem('nury-theme','dark');localStorage.removeItem('nury-pastor')}catch(e){};1" >/dev/null

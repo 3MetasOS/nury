@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[2] / "code"
 sys.path.insert(0, str(ROOT))
 from app import pdf_export as px  # noqa: E402
 
+EX = {"disc": {"en": "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice.", "es": "Nury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. Esto es información legal general, no asesoramiento legal."}, "title_loc": {"es": "Asunto de inmigración"}}
 DISC = "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. Esto es información legal general, no asesoramiento legal."
 CASE = {"meta": {"id": "detention-20261007-120000-abcd", "playbook": "detention", "title": "Immigration detention or raid", "created": "2026-10-07 12:00 UTC",
                  "language": "es", "status": "complete", "edited": ["checklist"]},
@@ -48,7 +49,7 @@ def test_case_payload_leaves_out_the_map_and_the_token_map():
 
 
 def test_export_zip_has_no_markdown_and_no_token_map():
-    z, _ = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z")
+    z, _ = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z", extras=EX)
     names = _zip(z).namelist()
     assert not [n for n in names if n.endswith(".md")], names
     assert not [n for n in names if "privacy-map" in n], names
@@ -60,7 +61,7 @@ def test_export_zip_has_no_markdown_and_no_token_map():
 
 @pytest.mark.skipif(px.find_chrome() is None, reason="needs Chrome or Chromium")
 def test_pdfs_exist_start_with_pdf_have_pages_text_accents_and_embedded_fonts():
-    z, ok = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z")
+    z, ok = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z", extras=EX)
     assert ok
     zf = _zip(z)
     pdfs = {n.split("/")[-1]: zf.read(n) for n in zf.namelist() if n.endswith(".pdf")}
@@ -83,8 +84,12 @@ def test_pdfs_exist_start_with_pdf_have_pages_text_accents_and_embedded_fonts():
                 if name.startswith("Family"):
                     assert "José" in txt and "María" in txt and "Página" in txt and "identificación" in txt
                     assert "Lo que está pasando" in txt
+                    assert "Asunto de inmigración" in txt and "Immigration matter" not in txt          # the crisis is named in the family's language, also in the running header
+                    assert "Nury es un asistente de IA" in txt and "Nury is an AI assistant" not in txt  # the Spanish disclaimer on every page
+                    assert "IGLESIA" in re.sub(r"\s", "", txt).upper() and txt.upper().count("PREPARADO") >= 1
                 else:
                     assert "Audit summary" in txt and "Edited by the pastor" in txt and "ACLU Know Your Rights" in txt
+                    assert "Immigration matter" in txt and "CHURCH" in re.sub(r"\s", "", txt).upper()
 
 
 def test_find_chrome_honours_chrome_bin(monkeypatch, tmp_path):
@@ -97,7 +102,21 @@ def test_find_chrome_honours_chrome_bin(monkeypatch, tmp_path):
 
 def test_without_a_browser_the_zip_falls_back_to_print_ready_html(monkeypatch):
     monkeypatch.setattr(px, "find_chrome", lambda: None)
-    z, ok = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z")
+    z, ok = px.export_zip_bytes(CASE["meta"]["id"], CASE, "Immigration matter", "2026-10-07T12:00:00Z", extras=EX)
     names = _zip(z).namelist()
     assert ok is False and any(n.endswith(".html") for n in names) and not any(n.endswith(".pdf") for n in names)
     assert "Chrome or Chromium" in _zip(z).read([n for n in names if n.endswith("READ ME.txt")][0]).decode()
+
+
+def test_playbooks_carry_a_spanish_title_as_data():
+    from nury.playbook import PLAYBOOKS_DIR
+    for pid in ("detention", "hospital"):
+        ex = px.playbook_extras(pid, PLAYBOOKS_DIR)
+        assert ex["title_loc"].get("es") and ex["disc"].get("es") and ex["disc"].get("en")
+
+
+def test_export_is_one_menu_not_extra_buttons():
+    idx = (px.STATIC / "index.html").read_text(encoding="utf-8")
+    for gone in ("o-pdf-fam", "o-pdf-pas", "b-pdf-fam", "b-pdf-pas"):
+        assert gone not in idx, gone
+    assert 'id="case-export-menu"' in idx and 'id="b-export-menu"' in idx and "Both in a zip" in idx and 'aria-haspopup="menu"' in idx

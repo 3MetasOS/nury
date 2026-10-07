@@ -36,7 +36,15 @@
   const root = document.getElementById("final-root");
   root.dataset.fam = fam && lang !== "en" ? "1" : "0";
   s.language = fam ? lang : "en";
+  const famLang = fam && lang !== "en";
+  const shownTitle = famLang ? ((P.title_loc || {})[lang] || s.playbook.title) : s.playbook.title;   // the family copy names the crisis in the family's language
+  s.playbook.title = shownTitle;
   NuryFinal.render(s);
+  // A line for the church, so the pastor can sign for it as well as for themselves.
+  { const kf = document.querySelector("#final-head .keyfacts"); if (kf) {
+      const d = el("div"), dt = el("dt", "mono", famLang ? "Iglesia" : "Church"), dd = el("dd"), line = el("span", "pn-print"); line.style.cssText = "display:inline-block;min-width:2.2in;border-bottom:1px solid #111;min-height:1.2em";
+      dd.append(line); d.append(dt, dd); kf.append(d);
+    } }
   // Key facts in the family's own words (the labels already are).
   if (fam && lang !== "en") document.querySelectorAll("#final-head .keyfacts dd").forEach(d => {
     const t = d.textContent.trim();
@@ -76,7 +84,8 @@
   // Running header and footer: @page margin boxes (Chrome 131 or later). Strings are escaped for CSS.
   const cs = t => '"' + String(t).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\n/g, " ") + '"';
   const dateTxt = new Date(P.date).toLocaleDateString(fam && lang === "es" ? "es-US" : "en-US", { year: "numeric", month: "long", day: "numeric" });
-  const dis = (auditSrc.find(x => x.disclaimer) || {}).disclaimer || "Nury is an AI assistant. It is not a lawyer, pastor, counselor, or therapist. This is general information, not legal advice.";
+  const dd2 = P.disc || {};
+  const dis = (famLang ? dd2[lang] : dd2.en) || dd2.en || (auditSrc.find(x => x.disclaimer) || {}).disclaimer || "Nury is an AI assistant. It is not a lawyer, pastor, counselor, or therapist. This is general information, not legal advice.";
   const pageWord = fam && lang === "es" ? "Página " : "Page ", ofWord = fam && lang === "es" ? " de " : " of ";
   const st = el("style");
   st.textContent = `@page{@top-left{content:${cs("Nury  ·  " + (s.playbook.title || P.title))};font:500 8.5pt Inter,sans-serif;color:#444;vertical-align:bottom;padding-bottom:6pt}` +
@@ -87,4 +96,5 @@
   document.documentElement.lang = fam ? lang : "en";
   const note = document.getElementById("print-note");
   if (P.note) { note.textContent = P.note + "."; note.hidden = false; }
+  if (/[?&]print=1/.test(location.search)) setTimeout(() => window.print(), 500);   // "Print ... copy" opens this page ready to print
 })();

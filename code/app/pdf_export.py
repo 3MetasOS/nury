@@ -45,14 +45,14 @@ def _inline(s):
     return s.replace("</", "<\\/")
 
 
-def print_html(kind, data, copy, title, date_iso, fonts_base="/fonts", screen_note=True):
+def print_html(kind, data, copy, title, date_iso, fonts_base="/fonts", screen_note=True, extras=None):
     """One self-contained HTML file. kind: 'case' (a saved case: pages, meta) or 'session' (a finished run).
     copy: 'family' (the family's language) or 'pastor' (English headings plus the audit summary)."""
     tpl = (STATIC / "case-print.html").read_text(encoding="utf-8")
     css = (STATIC / "case-print.css").read_text(encoding="utf-8").replace("__FONTS__", fonts_base)
     js = (STATIC / "final.js").read_text(encoding="utf-8") + "\n" + (STATIC / "case-print.js").read_text(encoding="utf-8")
     mark = re.search(r'<symbol id="i-mark"[^>]*>(.*?)</symbol>', (STATIC / "icons.svg").read_text(encoding="utf-8"), re.S)
-    payload = {"kind": kind, "copy": copy, "data": data, "title": title, "date": date_iso, "note": NO_BROWSER if screen_note else ""}
+    payload = {"kind": kind, "copy": copy, "data": data, "title": title, "date": date_iso, "note": NO_BROWSER if screen_note else "", **(extras or {})}
     out = tpl.replace("/*@CSS@*/", _inline(css)).replace("/*@JS@*/", _inline(js))
     out = out.replace("/*@DATA@*/", "window.__PRINT__=" + _inline(json.dumps(payload, ensure_ascii=False)) + ";")
     out = out.replace("<!--@MARK@-->", mark.group(1) if mark else "")
@@ -105,6 +105,15 @@ def slug(s):
     return re.sub(r"[^A-Za-z0-9]+", "-", s).strip("-").lower() or "case"
 
 
+def playbook_extras(playbook_id, playbooks_dir):
+    """Title and disclaimer in each language, read from the playbook's own data (text only)."""
+    try:
+        pj = json.loads((Path(playbooks_dir) / playbook_id / "playbook.json").read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+    return {"disc": pj.get("disclaimer") or {}, "title_loc": {k[6:]: v for k, v in pj.items() if k.startswith("title_") and isinstance(v, str)}}
+
+
 def case_payload(case, title):
     """What the print page needs from a saved case, without the token map and without the map image."""
     meta = case.get("meta", {})
@@ -112,13 +121,13 @@ def case_payload(case, title):
     return {"meta": {k: meta.get(k) for k in ("id", "playbook", "created", "language", "status", "edited")}, "pages": pages, "playbook_title": title}
 
 
-def export_zip_bytes(case_id, case, title, date_iso):
+def export_zip_bytes(case_id, case, title, date_iso, extras=None):
     """The export zip: the family copy and the pastor copy as PDF (or print-ready HTML when there is no browser),
     and one records/case.json. No .md files, no privacy-map.json."""
     import io
     data = case_payload(case, title)
-    fam = print_html("case", data, "family", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False)
-    pas = print_html("case", data, "pastor", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False)
+    fam = print_html("case", data, "family", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False, extras=extras)
+    pas = print_html("case", data, "pastor", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False, extras=extras)
     fam_pdf, pas_pdf = render_pdf(fam), render_pdf(pas)
     buf = io.BytesIO()
     root = case_id
@@ -127,8 +136,26 @@ def export_zip_bytes(case_id, case, title, date_iso):
             z.writestr(f"{root}/Family copy.pdf", fam_pdf)
             z.writestr(f"{root}/Pastor copy.pdf", pas_pdf)
         else:
-            z.writestr(f"{root}/Family copy (print me).html", print_html("case", data, "family", title, date_iso, screen_note=True).replace('src="/', 'src="'))
-            z.writestr(f"{root}/Pastor copy (print me).html", print_html("case", data, "pastor", title, date_iso, screen_note=True))
+            z.writestr(f"{root}/Family copy (print me).html", print_html("case", data, "family", title, date_iso, screen_note=True, extras=extras).replace('src="/', 'src="'))
+            z.writestr(f"{root}/Pastor copy (print me).html", print_html("case", data, "pastor", title, date_iso, screen_note=True, extras=extras))
             z.writestr(f"{root}/READ ME.txt", NO_BROWSER + ".\nOpen a copy in a browser and print it to PDF.\n")
         z.writestr(f"{root}/records/case.json", json.dumps({"meta": data["meta"], "pages": data["pages"]}, ensure_ascii=False, indent=1))
     return buf.getvalue(), bool(fam_pdf and pas_pdf)
+
+
+def session_zip_bytes(view, title, date_iso, extras=None):
+    """Both PDFs for a finished run that is not saved yet (no records folder: there is no case)."""
+    import io
+    fam = print_html("session", view, "family", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False, extras=extras)
+    pas = print_html("session", view, "pastor", title, date_iso, fonts_base=STATIC.as_uri() + "/fonts", screen_note=False, extras=extras)
+    fp, pp = render_pdf(fam), render_pdf(pas)
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w", zipfile.ZIP_DEFLATED) as z:
+        if fp and pp:
+            z.writestr("Family copy.pdf", fp)
+            z.writestr("Pastor copy.pdf", pp)
+        else:
+            z.writestr("Family copy (print me).html", print_html("session", view, "family", title, date_iso, extras=extras))
+            z.writestr("Pastor copy (print me).html", print_html("session", view, "pastor", title, date_iso, extras=extras))
+            z.writestr("READ ME.txt", NO_BROWSER + ".\nOpen a copy in a browser and print it to PDF.\n")
+    return buf.getvalue(), bool(fp and pp)
