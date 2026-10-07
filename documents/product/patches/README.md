@@ -1,6 +1,6 @@
-# Hardening patch set (prepared, NOT applied)
+# Hardening patch set (applied in commit 0ac365a)
 
-Written 2026-10-07 by hack-jedi for hack-sensei. It answers the findings in `documents/product/CODE_REVIEW.md`. Nothing here is applied. There are two patches, made against `main` and tested in a scratch clone, on `main` at `636d782`:
+Written 2026-10-07 by hack-jedi for hack-sensei. It answers the findings in `documents/product/CODE_REVIEW.md`. **Both patches were applied together in commit `0ac365a` on 2026-10-07** (hack-sensei approved), with the output cap added after in `0dbfebb`. The files stay here as the record of what was proposed. There are two patches, made against `main` and tested in a scratch clone, on `main` at `636d782`:
 
 - `hardening-app.patch`: the web app and the case files (`code/app/server.py`, `code/app/network_api.py`, `code/app/static/index.html`, `code/nury/casefile.py`) plus 18 tests. **Safe to apply while the re-run is going**: the evaluation harness does not import `app/`. (`casefile.py` is used by the case-file checks; the change only sets file rights and an export option.)
 - `hardening-core.patch`: `code/nury/gloo_client.py`, `privacy.py`, `guardrails.py` plus 5 tests. **Apply after the re-run ends**: the harness uses all three.
