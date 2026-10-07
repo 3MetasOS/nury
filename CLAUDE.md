@@ -28,7 +28,7 @@ Nury is a crisis-management engine that runs playbooks. A crisis is data: a fold
 - Nury is not a pastor and never claims to be one (or a counselor, therapist, or lawyer).
 - Run time: Claude Sonnet 4.6 writes through Gloo AI Studio's guarded endpoint, our named rules check each draft, and Jev classifies each draft (the gate, added 2026-10-07 at Juan's request; no second LLM reviewer in the product). Jev also judges the system at test time. The red team (GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick through Gloo) is a pre-release advisory audit only.
 - `GLOO_API_KEY` and `JEV_API_KEY` come from the environment. Never in a file, commit, or message.
-- Every meaningful step is a commit dated Oct 6–8. Author is Juan Peláez (set on this repo). Every agent commit ends with `Co-Authored-By: <agent-id> <agent-id>@rnd23blocks.aimaestro.local`.
+- Every meaningful step is a commit made on the real clock between Oct 6 and Oct 8. NEVER set GIT_AUTHOR_DATE, GIT_COMMITTER_DATE, `--date` or change the system clock: commit dates must be the real time (2026-10-07 found 93 commits with hand-typed dates; see BUILD_LOG 138). Author is Juan Peláez (set on this repo). Every agent commit ends with `Co-Authored-By: <agent-id> <agent-id>@rnd23blocks.aimaestro.local`.
 - Agents talk over AMP. Route work; do not do another agent's job.
 - Submission text carries: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules." (Corrected 2026-10-07 by Juan: he did not develop Jev; he uses it. Never write "my project" or "prior project" about Jev.)
 - Short sentences, active voice, plain words.
