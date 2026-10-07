@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nury: submission form, copy and paste</title>
+<style>
+:root{--bg:#f7f3ea;--ink:#0d1112;--mut:#5a5546;--card:#fffdf7;--line:#e6dcc6;--amb:#b8680f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Inter,system-ui,sans-serif;padding:32px 20px}
+main{max-width:900px;margin:auto}h1{font:600 34px/1.1 Fraunces,Georgia,serif;margin:0 0 6px}p.s{color:var(--mut);margin:0 0 24px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px 20px;margin:0 0 16px}
+h2,h3{font:600 20px/1.2 Fraunces,Georgia,serif;margin:0 0 10px}h3{font-size:17px}
+.f{display:flex;gap:12px;align-items:flex-start;margin:0 0 10px}pre{flex:1;margin:0;white-space:pre-wrap;word-wrap:break-word;font:15px/1.5 Inter,system-ui,sans-serif;background:#f3ecd9;border-radius:10px;padding:10px 12px}
+button{flex:none;border:0;border-radius:10px;padding:10px 16px;font-weight:600;background:var(--amb);color:#fff;cursor:pointer;min-height:40px}button.ok{background:#2a7a4a}
+</style><main><h1>Nury: submission form</h1><p class="s">Each box is one field. Press Copy, paste into the form. Built from SUBMISSION_FORM.md. The repository link is already filled. Check the 'Fields I could not confirm' box first.</p>
+<section class="card"><h2>Fields I could NOT confirm</h2><div class="f"><pre>The actual form is not in the repo. documents/prework (PREWORK.md, JUDGING.md) says only: preliminary entry = working solution plus a 250-word English description, &quot;via organizer-provided GitHub and/or Drive&quot;; video optional at this stage; finalists send a 90-second video to Google Drive by 9:00 AM MDT Oct 8. Juan will paste the real fields. I could not confirm: the exact field names and limits; whether the track is a drop-down; whether &quot;built with&quot;, &quot;challenges&quot;, &quot;learned&quot; and &quot;next&quot; exist as fields; whether a demo video or a deck link is asked for; whether the submission is a repo link, a Drive folder or both; team size limits; bonus-challenge checkboxes (the notes list: MCP endpoint, practitioner quote, what-didn&#x27;t-work section); the 3-minute versus 90-second pitch format (the rules doc says 90 s, the newer Discord post says 3 min: verify at the venue).</pre><button>Copy</button></div></section><section class="card"><h2>Basics</h2><div class="f"><pre>Project name: Nury</pre><button>Copy</button></div><div class="f"><pre>Tagline: An AI Crisis Response Agent</pre><button>Copy</button></div><div class="f"><pre>Track: Agents</pre><button>Copy</button></div><div class="f"><pre>Category notes (if asked): crisis response for churches; humanitarian, not political.</pre><button>Copy</button></div><div class="f"><pre>Team: Juan Peláez, 3Metas, with five AI agents (hack-sensei coordinator, hack-jedi architecture and integration, hack-artisans developers, hack-ninja presentation, hack-video video).</pre><button>Copy</button></div><div class="f"><pre>Built in: Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.</pre><button>Copy</button></div><div class="f"><pre>Registrant line (from the README): Entered by Juan Peláez under 3Metas. Hackathon registration is under jkpelaez@hotmail.com (Solo Hacker ticket T000857383). *Juan: this prints a personal email and a ticket number. Confirm it before it goes in any public field.*</pre><button>Copy</button></div><div class="f"><pre>License: MIT</pre><button>Copy</button></div></section><section class="card"><h2>The 250-word description (two-playbooks version; use this one)</h2><div class="f"><pre>Strictest word count 246 (240 by wc is for the one-playbook variant; this one is 242 by wc).
+
+
+Nury. An AI Crisis Response Agent.
+
+Nury is a crisis-management engine. A crisis is a defined workflow, a folder of plain files people can add. So can rules and evaluations. Two run: detention, hospital.
+
+It is 2 AM. A pastor&#x27;s phone rings. A panicked family says a relative was detained. No lawyer, only a phone.
+
+Nury turns that call into a response. The pastor types what the family said. Each crisis defines its own stages. Detention has five, from triage and a plain-language rights brief to a pastoral message. Family materials come out in Spanish.
+
+After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
+
+Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
+
+Each draft is checked by our rules and by Jev, a classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor&#x27;s approval.
+
+Nury runs on Gloo&#x27;s guarded endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
+
+The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
+
+Entry by Juan Peláez, 3Metas.
+</pre><button>Copy</button></div></section><section class="card"><h2>The 250-word description (one-playbook fallback)</h2><div class="f"><pre>Strictest word count 244. Use only if the form or the judges expect a single crisis.
+
+
+Nury. An AI Crisis Response Agent.
+
+Nury is a crisis-management engine. A crisis is a defined workflow, a folder of plain files people can add. So can rules and evaluations.
+
+It is 2 AM. A pastor&#x27;s phone rings. A panicked family says a relative was detained. No lawyer, only a phone.
+
+Nury turns that call into a response. The pastor types what the family said. Each crisis defines its own stages. Detention has five, from triage and a plain-language rights brief to a pastoral message. Family materials come out in the family&#x27;s language.
+
+After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the family except through the pastor.
+
+Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
+
+Each draft is checked by our rules and by Jev, a classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor&#x27;s approval.
+
+Nury runs on Gloo&#x27;s guarded endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
+
+The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
+
+Entry by Juan Peláez, 3Metas.
+</pre><button>Copy</button></div></section><section class="card"><h3>25 words (25)</h3><div class="f"><pre>Nury is an AI crisis response agent for churches. A pastor types what a family said; Nury drafts careful, sourced stages. The pastor approves each.</pre><button>Copy</button></div></section><section class="card"><h3>60 words (60)</h3><div class="f"><pre>Nury is an AI crisis response agent for churches. A pastor picks the crisis and types what the family said. Nury drafts the stages that crisis defines, such as a cited plain-language brief and a pastoral message, in the family&#x27;s language. Rules and a second check review every draft. The pastor approves every stage. Nothing is sent without the pastor.</pre><button>Copy</button></div></section><section class="card"><h3>What it does</h3><div class="f"><pre>(about 87 words)
+
+When a family calls a pastor in crisis, the pastor picks the kind of crisis and types what the family said. Nury drafts the stages that crisis defines. For an immigration matter that means a case summary, a plain-language brief where every point cites a vetted source, a list of vetted contacts, a family checklist and a short pastoral message, in the family&#x27;s language. After each stage the pastor can approve, edit or stop. Nury has no way to send anything. It gives legal information, never advice.</pre><button>Copy</button></div></section><section class="card"><h3>How we built it</h3><div class="f"><pre>(about 83 words)
+
+Claude Sonnet 4.6 writes each stage through Gloo AI Studio&#x27;s guarded endpoint. Twenty named rules and a safety floor read every draft. Jev, a decision API from TypeSafe, checks it again with yes or no questions. A failing draft is rewritten up to three times, then the pastor takes over. Names become tokens before any model sees them. A crisis is a folder of plain files, so adding one does not change the engine. The engine is plain Python with no agent framework.</pre><button>Copy</button></div></section><section class="card"><h3>Challenges we ran into</h3><div class="f"><pre>(about 78 words)
+
+Our own checks found the hard problems. The tone judge never reached its target, and warm drafts sometimes made promises the church had not made. A judge scored drafts the pastor never saw. Eleven of eighteen hostile intakes stopped at triage until we rewrote the triage prompt. A made-up website passed our link check. Our first outside-review result was wrong, so we re-ran it and fixed every claim. We typed some commit dates by hand and disclosed it.</pre><button>Copy</button></div></section><section class="card"><h3>What we learned</h3><div class="f"><pre>(about 83 words)
+
+A judge has to read only what the pastor saw. A low score can reveal a real bug: the tone score exposed the promises. A number copied between documents drifts, so we write claims last, from one table of verified facts. The model should never write Scripture: it picks a verse from a list a person approved, and the engine inserts the exact text. Rules and a second check lower the chance of an unsafe draft. They do not replace the pastor&#x27;s reading.</pre><button>Copy</button></div></section><section class="card"><h3>What is next</h3><div class="f"><pre>(about 76 words)
+
+The next step is to put Nury in front of real pastors, carefully, with a consent process in place. An immigration attorney and a hospital chaplain should review our vetted sources, and a native Spanish speaker should read the family copies. We want to finish calibrating the Jev check and measure how often it rejects a safe draft. Then come the two crises marked coming soon, sudden loss and house fire, each added as a folder.</pre><button>Copy</button></div></section><section class="card"><h2>Built with</h2><div class="f"><pre>Gloo AI Studio (guarded endpoint) and Claude Sonnet 4.6 · Jev decision API from TypeSafe · YouVersion API (Scripture text) · ElevenLabs (AI-generated narration voice for the film) · Python (plain, no agent framework) · plain HTML and JavaScript (the app and the deck) · Remotion (the film).</pre><button>Copy</button></div></section><section class="card"><h2>Disclosure (verbatim)</h2><div class="f"><pre>The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.</pre><button>Copy</button></div></section><section class="card"><h2>Other notes for the notes field</h2><div class="f"><pre>The video narration is an AI-generated voice (ElevenLabs).</pre><button>Copy</button></div><div class="f"><pre>With no Gloo key the app runs a recorded run of each sample intake (replay mode). The model&#x27;s words are recorded; the checks, gates and privacy layer run for real. It is not a live run, and it is off when a key is present.</pre><button>Copy</button></div><div class="f"><pre>The shipped build differs from the scored build (9bc5c6d) only in the crisis card titles and in the title text inside one context string given to the Jev check. Judge results are not human verdicts, and we quote no pass rate.</pre><button>Copy</button></div><div class="f"><pre>The planning notes and a small scripted scaffold existed before the event and are kept as reference. Everything in the product code was written during the event.</pre><button>Copy</button></div><div class="f"><pre>Nury is tested on made-up families only. Hand-typed commit dates are disclosed in documents/product/COMMIT_DATES.md.</pre><button>Copy</button></div></section><section class="card"><h2>Links (placeholders; fill when public)</h2><div class="f"><pre>Repository (public at submission): https://github.com/3MetasOS/nury</pre><button>Copy</button></div><div class="f"><pre>Deck: [DECK URL] (presentation/deck.html)</pre><button>Copy</button></div><div class="f"><pre>Demo video: [VIDEO URL] (finalists: Google Drive, by 9:00 AM MDT Oct 8)</pre><button>Copy</button></div><div class="f"><pre>About page: https://github.com/3MetasOS/nury#readme</pre><button>Copy</button></div><div class="f"><pre>Build log: https://github.com/3MetasOS/nury/blob/main/BUILD_LOG.md</pre><button>Copy</button></div></section><section class="card"><h2>Checklist before pressing Submit</h2><div class="f"><pre>Hard stop: 9:00 PM MDT, Wed Oct 7. Judging window 9:00 to 11:00 PM MDT. Prelim pitch: 3 minutes (rules doc says 90 s: verify at the venue). Top 25 at midnight. Finalist video by 9:00 AM MDT Oct 8 (Google Drive).
+1. Repo is public, and LICENSE (MIT) is at the root.
+2. README: the registrant line (email and ticket) confirmed or removed; the clone URL placeholder replaced.
+3. No key anywhere: scan the repo and the history for GLOO_API_KEY and JEV_API_KEY values; .env is gitignored.
+4. cd code &amp;&amp; ./test.sh passes (336 product tests) and python3 -m pytest -q evaluations/tests passes (109).
+5. The app starts with no key (replay mode) and with a key (live), on the final build.
+6. Description pasted: 246 words or fewer, the disclosure line verbatim, &quot;Entry by Juan Peláez, 3Metas.&quot;
+7. The deck opens from the link, at 1280 and on a phone; the Close shows &quot;In memory of Tía Nury&quot; and &quot;08-2026&quot; (Juan approved these two lines in writing: confirm).
+8. Nobody has written &quot;pass rate&quot;, &quot;package&quot; or a claim that a pastor, attorney or family used Nury.
+9. COMMIT_DATES.md is in the repo and linked from the notes; the README says every step is in the build log.
+10. The form&#x27;s real fields are matched to this file; anything this file does not cover is answered from the same facts (ALIGNMENT_AUDIT.md).
+11. Submit before 8:30 PM to leave a margin. Keep a screenshot of the confirmation.
+12. Then: deck and script in Juan&#x27;s hands by 8:30 PM; pitch window 9:00 to 11:00 PM.</pre><button>Copy</button></div></section>
+<script>document.querySelectorAll('.f button').forEach(function(b){b.onclick=function(){var t=b.previousElementSibling.innerText;
+function done(){b.textContent='Copied';b.className='ok';setTimeout(function(){b.textContent='Copy';b.className=''},1400)}
+if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(done)}else{var a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();done()}}})</script></main></html>
