@@ -151,7 +151,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 /* home */
 .home{display:flex;flex-direction:column;gap:24px}
 .colA,.colB{display:contents}
-.hero{order:0;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:24px 20px 8px;background:radial-gradient(120% 120% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
+.hero{order:0;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:24px 20px 24px;background:radial-gradient(120% 120% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
 .hero p{margin-top:8px;color:var(--muted);max-width:44ch}
 .hero .cta{margin-top:20px;width:100%}
 .hero .scene{margin:8px auto 0;max-width:300px}
@@ -267,7 +267,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   main{padding:24px 24px 56px}
   .home{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:24px;align-items:start}
   .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
-  .hero{grid-column:1/-1;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:center;padding:32px 32px 24px}
+  .hero{grid-column:1/-1;padding:32px 32px 28px}
   .hero .cta{width:auto;min-width:260px}.hero .scene{margin:0}.built{grid-column:1/-1}
   .band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}
   .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}.cband .scene{max-width:none}
@@ -293,7 +293,6 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <p id="hero-sub"></p>
         <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
       </div>
-      <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-home"/></svg>
     </section>
     <div class="colA">
       <section id="continue" aria-labelledby="h-cont">
