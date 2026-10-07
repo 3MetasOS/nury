@@ -1,8 +1,7 @@
 """Rehearsal/final capture of the Nury app at phone size (390x844 CSS, rendered 2x via html zoom).
 Playwright video does not scale with device_scale_factor, so we use a 780x1688 viewport and zoom:2.
-Usage: python capture/record.py [base_url] [out_dir] [--full-selector]
-Shot 1b default (hack-sensei decision b): the selector shows ONLY the Detention card.
-Pass --full-selector for version (a): all cards as the app draws them.
+Usage: python capture/record.py [base_url] [out_dir] [--detention-only]
+Selector default: all cards as the app draws them (hospital is live and scored). --detention-only hides the others.
 Needs: playwright + system Chrome. Server must already run. Reads no secrets.
 Writes out_dir/run.webm and out_dir/marks.txt (seconds at each gate and at the end).
 """
@@ -10,7 +9,7 @@ import re, sys, time
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
-FULL = "--full-selector" in sys.argv
+FULL = "--detention-only" not in sys.argv  # hospital is live and scored: the selector shows both live cards by default
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 base = args[0] if args else "http://127.0.0.1:8099/"
 out = Path(args[1] if len(args) > 1 else "capture/raw"); out.mkdir(parents=True, exist_ok=True)
