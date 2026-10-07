@@ -97,6 +97,10 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 .empty{padding:28px 0;color:var(--muted)}
 .lrow .sv{margin:6px 0 0;font-size:15px;color:var(--text)}.lrow .ct2{margin:4px 0 0;font-size:14px;overflow-wrap:anywhere}
 .lrow button.go{background:none;border:0;cursor:pointer;min-height:44px;padding:0 4px}
+.moreh{position:relative;flex:none}.fbar .morebtn{min-height:44px;height:44px;padding:0 16px}
+.mmenu{position:absolute;right:0;top:calc(100% + 6px);z-index:20;min-width:210px;padding:6px;border:1px solid var(--line-2);border-radius:14px;background:var(--surface-2);box-shadow:0 8px 24px rgba(0,0,0,.35);display:grid}
+.mmenu button:disabled{opacity:.45;cursor:not-allowed}.mmenu[hidden]{display:none}.mmenu button{min-height:44px;text-align:left;padding:0 14px;border:0;border-radius:10px;background:transparent;color:var(--text);font:600 15px var(--sans);cursor:pointer}
+.mmenu button:hover,.mmenu button:focus-visible{background:var(--amber-soft);color:var(--amber-text);outline:none}
 .fbar .addbtn{flex:none;min-height:44px;height:44px;padding:0 18px}
 .fbar #kf{flex:1 1 100%;margin:0;padding-left:0;padding-right:0}
 #form-dialog{max-width:560px}
@@ -125,6 +129,12 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   </div>
   <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search contacts</label><input id="q" type="search" placeholder="Search name, city, service, tag" autocomplete="off"></div>
   <button class="cta primary addbtn" id="add-btn" type="button"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Add a contact</button>
+  <div class="moreh"><button class="cta morebtn" id="more-btn" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="more-menu"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-settings"/></svg>More</button>
+    <div class="mmenu" id="more-menu" role="menu" aria-label="More actions" hidden>
+      <button type="button" role="menuitem" id="m-imp">Import contacts</button>
+      <button type="button" role="menuitem" id="m-exp">Export contacts</button>
+    </div></div>
+  <input type="file" id="imp" accept="application/json" hidden>
   <div class="fgroup" role="group" aria-label="Type of help" id="kf"></div>
 </div>
 <ul class="rows" id="list"></ul>
@@ -141,13 +151,6 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
   </div>
 </section>
 <div class="pw after">
-<details style="margin-top:22px">
-  <summary>Import or export</summary>
-  <p class="meta">Export saves your contacts as a file. Import adds contacts from a file; if one entry is wrong, nothing is imported.</p>
-  <div class="acts"><button class="btn sm" id="exp">Export file</button>
-  <label class="btn sm" style="margin:0;display:inline-flex;align-items:center" for="imp">Import file</label><input type="file" id="imp" accept="application/json" hidden></div>
-  <p class="err" id="io-msg" role="status"></p>
-</details>
 </div>
 </main>
 <dialog class="sheet" id="form-dialog" aria-labelledby="form-title">
@@ -205,7 +208,7 @@ async function load(){S=await api("GET","/api/network");paint()}
 const inScope=(e,s)=>s==="all"||(s==="nationwide"&&e.nationwide)||(s==="onestate"&&!e.nationwide&&!!e.state);
 function paint(){
   $("banner").hidden=!S.fictional;
-  document.querySelectorAll("#add-btn,#imp").forEach(e=>e.disabled=S.readonly);
+  document.querySelectorAll("#add-btn,#imp,#m-imp").forEach(e=>e.disabled=S.readonly);
   $("f-kind").innerHTML=S.kinds.map(k=>`<option value="${k}">${esc(KIND[k]||k)}</option>`).join("");
   document.querySelectorAll("#f-scope button").forEach(b=>{b.setAttribute("aria-pressed",String(b.dataset.v===scope));b.querySelector("b").textContent=String(S.entries.filter(e=>inScope(e,b.dataset.v)).length)});
   const present=S.kinds.filter(k=>S.entries.some(e=>e.kind===k));
@@ -252,11 +255,26 @@ $("q").oninput=list;
 $("f-scope").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;scope=b.dataset.v;paint()};
 $("kf").onclick=ev=>{const b=ev.target.closest("button");if(!b)return;kind=b.dataset.v;paint()};
 document.querySelectorAll("dialog.sheet").forEach(d=>d.addEventListener("click",e=>{if(e.target===d&&d.id!=="confirm")d.close()}));
-$("exp").onclick=async()=>{const j=await api("GET","/api/network/export");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(j,null,2)],{type:"application/json"}));a.download="our-network.json";a.click()};
-$("imp").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;let j;try{j=JSON.parse(await f.text())}catch(e){$("io-msg").textContent="That file is not valid.";return}
+const doExport=async()=>{const j=await api("GET","/api/network/export");const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(j,null,2)],{type:"application/json"}));a.download="our-network.json";a.click()};
+$("imp").onchange=async ev=>{const f=ev.target.files[0];if(!f)return;let j;try{j=JSON.parse(await f.text())}catch(e){toast("That file is not valid.");return}
   if(!await askConfirm({title:"Import these contacts?",body:"Nury adds the contacts from the file. If one entry is wrong, nothing is imported.",ok:"Import contacts"})){ev.target.value="";return}
-  try{const r=await api("POST","/api/network/import",{entries:j.entries||[]});S=r;paint();$("io-msg").className="err ok";$("io-msg").textContent=`Added ${r.added??"the"} contacts.`}catch(e){$("io-msg").className="err";$("io-msg").textContent=e.message}ev.target.value=""};
-load().catch(e=>{$("io-msg").textContent=e.message});
+  try{const r=await api("POST","/api/network/import",{entries:j.entries||[]});S=r;paint();toast(`Added ${r.added??"the"} contacts.`)}catch(e){toast(e.message)}ev.target.value=""};
+
+/* the More menu: arrow keys move, Enter or Space picks, Escape closes and returns focus, a click outside closes */
+const mb=$("more-btn"),mm=$("more-menu"),items=()=>[...mm.querySelectorAll("[role=menuitem]:not(:disabled)")];
+function closeMenu(focus){mm.hidden=true;mb.setAttribute("aria-expanded","false");if(focus)mb.focus()}
+function openMenu(){mm.hidden=false;mb.setAttribute("aria-expanded","true");items()[0].focus()}
+mb.onclick=()=>mm.hidden?openMenu():closeMenu(true);
+mb.onkeydown=e=>{if(e.key==="ArrowDown"){e.preventDefault();openMenu()}};
+mm.onkeydown=e=>{const it=items(),i=it.indexOf(document.activeElement);
+  if(e.key==="ArrowDown"){e.preventDefault();it[(i+1)%it.length].focus()}
+  else if(e.key==="ArrowUp"){e.preventDefault();it[(i-1+it.length)%it.length].focus()}
+  else if(e.key==="Escape"){e.preventDefault();closeMenu(true)}
+  else if(e.key==="Tab")closeMenu(false)};
+document.addEventListener("click",e=>{if(!mm.hidden&&!e.target.closest(".moreh"))closeMenu(false)});
+$("m-imp").onclick=()=>{closeMenu(false);$("imp").click()};
+$("m-exp").onclick=()=>{closeMenu(false);doExport()};
+load().catch(e=>{toast(e.message)});
 </script>
 </body>
 </html>
