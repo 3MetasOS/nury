@@ -11,10 +11,10 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="
   agent-browser set viewport $W $H >/dev/null 2>&1; agent-browser open "http://127.0.0.1:$PORT/#/" >/dev/null 2>&1
   ev "try{localStorage.setItem('nury-theme','$TH')}catch(e){};1" >/dev/null
   agent-browser open "http://127.0.0.1:$PORT/#/" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
-  HOMESIG=$(ev '(()=>{const h=document.querySelector("header.top");return [[...h.querySelectorAll(".tabs a")].map(a=>a.textContent.trim()).join("|"),!!h.querySelector("#theme"),!!h.querySelector("#how-link"),!!h.querySelector("#ops-link"),Math.round(h.getBoundingClientRect().height)].join(";")})()')
-  click "#ops-link"; agent-browser wait "#cards .card" >/dev/null 2>&1; agent-browser wait 1200 >/dev/null 2>&1
-  check "$T ops: the header link opens /observability" "$(ev "location.pathname")" '"/observability"'
-  check "$T ops: same shared header, Observability marked current" "$(ev '(()=>{const h=document.querySelector("header.top");return [[...h.querySelectorAll(".tabs a")].map(a=>a.textContent.trim()).join("|"),!!h.querySelector("#theme"),!!h.querySelector("#how-link"),!!h.querySelector("#ops-link"),Math.round(h.getBoundingClientRect().height)].join(";")})()')|$(ev "document.querySelector('#ops-link').getAttribute('aria-current')")" "$HOMESIG|\"page\""
+  SIG="$(cat $HERE/shellsig.js)"; HOMESIG=$(ev "$SIG")
+  click ".fnav a[data-nav=ops]"; agent-browser wait "#cards .card" >/dev/null 2>&1; agent-browser wait 1200 >/dev/null 2>&1
+  check "$T ops: the footer link opens /observability" "$(ev "location.pathname")" '"/observability"'
+  check "$T ops: same shared header and footer, Observability marked current" "$(ev "$SIG")|$(ev "document.querySelector('.fnav a[data-nav=ops]').getAttribute('aria-current')")" "$HOMESIG|\"page\""
   check "$T ops: the honesty line is on the page" "$(ev "document.getElementById('honest').textContent")" '"No alerts, no retention policy, no per-church separation yet."'
   check "$T ops: the source line says where the numbers come from" "$(ev "/^Source: /.test(document.getElementById('src').textContent)")" "true"
   check "$T ops: seven headline cards, each with a one-line explanation" "$(ev "[...document.querySelectorAll('#cards .card')].length===7&&[...document.querySelectorAll('#cards .card')].every(c=>c.querySelector('p').textContent.length>20&&c.title.length>20)")" "true"

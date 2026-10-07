@@ -25,3 +25,4 @@ Fraunces and Inter, SIL Open Font License, loaded from Google Fonts in the deck.
 
 ## Fonts (self-hosted in the app)
 - Fraunces 400 and 600, and Inter 400 and 500, served from `code/app/static/fonts/` as woff2. Both families are open source under the SIL Open Font License 1.1. The app no longer loads fonts from Google.
+- Gochi Hand 400, self-hosted at `code/app/static/fonts/GochiHand-400.woff2`, used only for the hand-written notes (decoration, aria-hidden). Open source under the SIL Open Font License 1.1 (Google Fonts). No font is loaded from a CDN at run time.

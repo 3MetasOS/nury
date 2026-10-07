@@ -122,7 +122,7 @@ h1{font-weight:500}
 .nv h3{font:500 18px/1.3 var(--serif);margin:0}
 .nv p,.nv ul,.nv ol{margin:0}.nv ul,.nv ol{padding:0;list-style:none}
 /* top bar and tabs */
-main{max-width:1120px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
 body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .narrow{max-width:640px;margin:0 auto}
 /* buttons for the new views */
@@ -179,7 +179,10 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .built ul{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
 .built li{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:6px 12px;line-height:1.3}
 .linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-.foot{margin-top:24px;font-size:13px;color:var(--muted);max-width:70ch}
+.judges{display:flex;flex-wrap:wrap;align-items:center;gap:2px 20px;margin-top:6px}
+.judges a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font:500 14px var(--sans);text-decoration:underline;text-underline-offset:3px}.judges a:hover{color:var(--amber-text)}
+.gnotes{display:grid;grid-template-columns:1fr;gap:0;margin:6px 0 -2px}
+@media (min-width:640px){.gnotes{grid-template-columns:repeat(3,1fr);gap:0 12px}.gnotes .hnote{margin-top:2px}}
 .safety{margin-top:14px;font-size:14px;color:var(--muted)}
 /* area bands */
 .band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
@@ -305,7 +308,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <section class="start" id="start" aria-labelledby="h-start">
         <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
         <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
-        <div class="pickgrid" id="picks"></div>
+        <div class="pickgrid" id="picks" data-note="pick the one that sounds like your call" data-arrow="up" data-rot="-1.5" data-note-at="before"></div>
         <p class="safety">If anyone is in immediate danger, call 911 first.</p>
       </section>
       <section class="netcard" id="netcard" aria-labelledby="h-net">
@@ -316,7 +319,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
       </section>
     </div>
     <section class="built" aria-labelledby="h-built">
-      <span class="lbl" id="h-built">How this was built</span>
+      <span class="lbl mono" id="h-built">Built with</span>
       <ul>
         <li>Gloo AI Studio, guarded endpoint</li>
         <li>Claude Sonnet 4.6</li>
@@ -324,10 +327,9 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <li id="built-checks">Named checks, 3 tries</li>
         <li>Jev classifying every draft at run time, and before release a red team audit and human review</li>
       </ul>
-      <a class="linkbtn" href="/how-it-was-built" id="home-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="/icons.svg#i-build"/></svg>How this was built</a>
+      <nav class="judges" aria-label="For judges and reviewers"><span class="mono">For judges and reviewers</span><a href="/how-it-was-built">How this was built</a><a href="/observability">Observability</a><a href="/self-improvement">Self-improvement</a></nav>
     </section>
   </div>
-  <p class="foot">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
 </section>
 
 <section class="nv" id="v-cases" hidden>
@@ -381,7 +383,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <select id="lang"><option value="es">Spanish</option><option value="en">English</option></select>
     <label id="demo-row"><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
     <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
-    <div class="row two" style="margin-top:12px">
+    <div class="row two" style="margin-top:12px" data-note="nothing is sent to the family" data-arrow="up" data-rot="-1.2">
       <button class="btn" id="btn-demo">Use demo intake</button>
       <button class="btn primary" id="btn-start">Begin</button>
     </div>
@@ -418,7 +420,12 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <p class="hint hidden" id="g-hint">Keep only what you will do. Edit anything you will not.</p>
     <div class="disc" id="g-disc"></div>
     <div class="metrics" id="g-metrics"></div>
-    <div class="fbrow hidden" id="fb-row" role="group" aria-labelledby="fb-l"><span class="fbl" id="fb-l">How is this draft? Optional.</span><span class="fbchips" id="fb-chips"></span><span class="fbm" id="fb-msg" role="status"></span></div>
+    <div class="fbrow hidden" id="fb-row" data-note="one tap tells Nury what to fix" data-arrow="up" data-rot="-1.2" role="group" aria-labelledby="fb-l"><span class="fbl" id="fb-l">How is this draft? Optional.</span><span class="fbchips" id="fb-chips"></span><span class="fbm" id="fb-msg" role="status"></span></div>
+    <div class="gnotes" aria-hidden="true">
+      <span class="gn" data-note="sends nothing; you stay in charge" data-note-at="in" data-arrow="down" data-rot="-1.5"></span>
+      <span class="gn" data-note="change anything, your words win" data-note-at="in" data-arrow="down" data-rot="1" data-note-phone="skip"></span>
+      <span class="gn" data-note="I will handle this myself" data-note-at="in" data-arrow="down" data-rot="-1" data-note-phone="skip"></span>
+    </div>
     <div class="row dock" id="g-btns">
       <button class="btn primary" id="b-approve">Approve</button>
       <button class="btn" id="b-edit">Edit</button>
@@ -454,7 +461,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <button class="cta hidden" type="button" id="case-follow" aria-pressed="false" style="margin-top:12px"></button><p class="note" id="case-follow-msg" role="status" style="margin:6px 0 0"></p>
     <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
-  <div class="card"><button class="btn" id="b-changed" style="min-height:56px">Something changed</button>
+  <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; version 2 keeps version 1" data-arrow="left" data-rot="-1.2">Something changed</button>
     <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare versions</button></div>
   <div class="card hidden" id="revise">
     <h2>What happened?</h2>
@@ -488,7 +495,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 <dialog class="sheet" id="chooser" aria-labelledby="chooser-t" aria-modal="true">
   <div class="sheet-h"><h2 id="chooser-t">A family needs help</h2><button class="cta" type="button" data-close style="min-height:48px"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-close"/></svg>Close</button></div>
   <div class="sheet-b nv"><p class="muted" style="margin-bottom:14px">Choose what the family is facing. You will see how it works before you begin the response.</p>
-    <div class="pickgrid" id="chooser-list"></div>
+    <div class="pickgrid" id="chooser-list" data-note="pick the one that sounds like your call" data-arrow="down" data-rot="-1.5" data-note-at="before"></div>
     <p class="safety">If anyone is in immediate danger, call 911 first.</p></div>
 </dialog>
 

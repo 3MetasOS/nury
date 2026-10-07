@@ -6,6 +6,7 @@ from collections import Counter
 from pathlib import Path
 
 STATIC = Path(__file__).resolve().parents[2] / "code" / "app" / "static"
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def parts(name):
@@ -68,8 +69,17 @@ def test_every_page_uses_the_shared_shell_and_defines_no_header_of_its_own():
 def test_shell_has_logo_three_nav_items_toggle_and_how_link_and_no_popup():
     js = (STATIC / "shell.js").read_text(encoding="utf-8")
     assert js.count('<header class="top"') == 1
-    for token in ('i-mark', 'data-nav="home"', 'data-nav="cases"', 'data-nav="network"', 'id="theme"', 'id="how-link"', 'href="/how-it-was-built"'):
+    for token in ('i-mark', 'data-nav="home"', 'data-nav="cases"', 'data-nav="network"', 'id="theme"'):
         assert token in js, token
+    head = js.split("const header = `")[1].split("`;")[0]
+    assert head.count("<a ") == 1 + 1 + 3 and "how-it-was-built" not in head and "observability" not in head and "self-improvement" not in head, \
+        "the header holds the mark, Home, Cases, Network and the Day/Night switch only; the pages for judges live in the footer"
+    foot = js.split("const footer = `")[1].split("`;")[0]
+    assert foot.count("<footer") == 1 and "For judges and reviewers" in foot
+    for href in ("/how-it-was-built", "/observability", "/self-improvement"):
+        assert f'href="{href}"' in foot, href
+    assert "Improvement" not in js.replace("Self-improvement", ""), "the page is called Self-improvement everywhere"
+
     assert "<dialog" not in js and 'id="about"' not in js, "the About popup is gone; the page replaces it"
     assert "An AI Crisis Response Agent" in js and "solo pastor" not in js
     css = (STATIC / "shell.css").read_text(encoding="utf-8")
@@ -179,3 +189,23 @@ def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
     assert "14 named checks" not in s, "the count is read from the registry (/api/features named_checks)"
     assert "a red team, human review" not in s
     assert "Jev classifying every draft at run time, and before release a red team audit and human review" in s and 'id="built-checks"' in s
+
+
+def test_hand_written_notes_are_decoration_only_and_self_hosted():
+    js = (STATIC / "shell.js").read_text(encoding="utf-8")
+    assert 'setAttribute("aria-hidden", "true")' in js, "notes are aria-hidden: the real label carries the same information"
+    assert "nury-notes" in js and "notes-toggle" in js, "a Hide notes toggle, remembered in the browser"
+    css = (STATIC / "shell.css").read_text(encoding="utf-8")
+    assert "/fonts/GochiHand-400.woff2" in css and (STATIC / "fonts" / "GochiHand-400.woff2").is_file(), "Gochi Hand is self-hosted"
+    assert "googleapis" not in css
+    assert "@media (max-width:639px){.hnote" in css, "on a phone a note becomes a small caption (no rotation, no arrow)"
+    assert 'html[data-notes="off"] .hnote{display:none}' in css
+    credits = (ROOT.parents[0] / "branding" / "IMAGES.md").read_text(encoding="utf-8") if False else ""
+    page_notes = re.findall(r'data-note="([^"]+)"', (STATIC / "index.html").read_text(encoding="utf-8") + (STATIC / "network.html").read_text(encoding="utf-8"))
+    assert len(page_notes) >= 6 and all(len(n) <= 60 for n in page_notes), "short notes only"
+
+
+def test_every_shell_css_brace_is_closed():
+    """A dangling @media once swallowed the whole footer and note styles."""
+    css = (STATIC / "shell.css").read_text(encoding="utf-8")
+    assert css.count("{") == css.count("}")

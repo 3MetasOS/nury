@@ -111,7 +111,7 @@ def test_observability_page_is_in_the_shell_and_never_writes_html_from_data():
     assert "innerHTML" not in s and "insertAdjacentHTML" not in s, "data goes in with textContent only"
     assert "No alerts, no retention policy, no per-church separation yet." in s
     shell = (STATIC / "shell.js").read_text(encoding="utf-8")
-    assert 'href="/observability"' in shell and 'id="ops-link"' in shell
+    assert 'href="/observability"' in shell and 'data-nav="ops"' in shell
 
 
 def test_the_ledger_module_and_this_module_do_not_share_a_name():

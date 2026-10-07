@@ -433,8 +433,8 @@ class H(BaseHTTPRequestHandler):
             p = "/how-it-was-built.html"
         elif p in ("/observability", "/observability/"):
             p = "/observability.html"
-        elif p in ("/improvement", "/improvement/"):
-            p = "/improvement.html"
+        elif p in ("/improvement", "/improvement/", "/self-improvement", "/self-improvement/"):
+            p = "/improvement.html"      # the page is called Self-improvement; the old path keeps working
         if STATIC_OK.match(p) and (STATIC / p[1:]).is_file() and p != "/index.html":
             b = (STATIC / p[1:]).read_bytes()
             self.send_response(200)

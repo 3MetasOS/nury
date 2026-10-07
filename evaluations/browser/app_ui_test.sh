@@ -110,17 +110,17 @@ JS
   check "$T chooser: choosing Detention closes it and opens the crisis page" "$(ev "!document.getElementById('chooser').open&&location.hash==='#/crisis/detention'&&document.body.dataset.view==='crisis'")" "true"
   agent-browser eval "location.hash='#/';1" >/dev/null 2>&1; agent-browser wait 500 >/dev/null 2>&1
   # ---- one shared header on every page
-  SIG='(()=>{const h=document.querySelectorAll("header.top");if(h.length!==1)return "headers:"+h.length;const t=[...h[0].querySelectorAll(".tabs a")].map(a=>a.textContent.trim()).join("|");return [t,!!h[0].querySelector(".brand .i"),h[0].querySelector(".brand b").textContent,!!h[0].querySelector("#theme"),!!h[0].querySelector("#open-about"),Math.round(h[0].getBoundingClientRect().height),Math.round(h[0].getBoundingClientRect().top)].join(";")})()'
+  SIG="$(cat $HERE/shellsig.js)"
   HOMESIG=$(ev "$SIG")
   agent-browser open "http://127.0.0.1:$PORT/network" >/dev/null 2>&1; agent-browser wait "#h-net" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
-  check "$T shell: Our network has the same header as Home" "$(ev "$SIG")" "$HOMESIG"
-  check "$T shell: Our network marks its own tab" "$(ev "document.querySelector('.tabs a[aria-current=page]').dataset.nav")" '"network"'
-  check "$T shell: Our network keeps its content and has no sideways scroll" "$(ev "!!document.getElementById('h-net')&&document.documentElement.scrollWidth<=innerWidth")" "true"
-  check "$T shell: Our network contrast clean" "$(scan)" '"[]"'
+  check "$T shell: Network has the same header as Home" "$(ev "$SIG")" "$HOMESIG"
+  check "$T shell: Network marks its own tab" "$(ev "document.querySelector('.tabs a[aria-current=page]').dataset.nav")" '"network"'
+  check "$T shell: Network keeps its content and has no sideways scroll" "$(ev "!!document.getElementById('h-net')&&document.documentElement.scrollWidth<=innerWidth")" "true"
+  check "$T shell: Network contrast clean" "$(scan)" '"[]"'
   agent-browser screenshot $SHOTS/network-$T.png >/dev/null 2>&1
-  click "#theme"; check "$T shell: the toggle works on Our network too" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""; click "#theme"
+  click "#theme"; check "$T shell: the toggle works on Network too" "$(ev "document.documentElement.dataset.theme")" "\"$OTHER\""; click "#theme"
   click ".tabs a[data-nav=cases]"; agent-browser wait "#h-cases" >/dev/null 2>&1; agent-browser wait 800 >/dev/null 2>&1
-  check "$T shell: from Our network the Cases tab lands on Cases with the same header" "$(ev "document.body.dataset.view==='cases'")|$(ev "$SIG")" "true|$HOMESIG"
+  check "$T shell: from Network the Cases tab lands on Cases with the same header" "$(ev "document.body.dataset.view==='cases'")|$(ev "$SIG")" "true|$HOMESIG"
   check "$T shell: Cases has the same header as Home" "$(ev "$SIG")" "$HOMESIG"
   click "#rows a.lrow"; agent-browser wait 600 >/dev/null 2>&1
   check "$T shell: the case viewer has the same header" "$(ev "$SIG")" "$HOMESIG"
@@ -129,9 +129,9 @@ JS
   # ---- How this was built: a full page, not a popup
   agent-browser eval "location.href='/#/';1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
   check "$T how: there is no About popup anywhere" "$(ev "!document.getElementById('about')&&!document.querySelector('[data-about]')")" "true"
-  click "#how-link"; agent-browser wait "#doc" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
+  click ".fnav a[data-nav=how]"; agent-browser wait "#doc" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
   check "$T how: the header link opens /how-it-was-built" "$(ev "location.pathname")" '"/how-it-was-built"'
-  check "$T how: same shared header as every page, link marked current" "$(ev "$SIG")|$(ev "document.querySelector('#how-link').getAttribute('aria-current')")" "$HOMESIG|\"page\""
+  check "$T how: same shared header as every page, link marked current" "$(ev "$SIG")|$(ev "document.querySelector('.fnav a[data-nav=how]').getAttribute('aria-current')")" "$HOMESIG|\"page\""
   read -r -d '' J <<'JS'
 (()=>{const t=document.body.innerText;return /An AI Crisis Response Agent/.test(document.querySelector('header.top').textContent)&&!!document.querySelector('[data-consent]')&&document.querySelector('[data-disclose]').textContent==='The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.'&&!/solo pastor|local computer/i.test(t)})()
 JS

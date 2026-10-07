@@ -46,8 +46,8 @@ JS
     check "$T progress($MODE): Jev phase reads 'Checking the draft with Jev'" "$(ev "/Checking the draft with Jev/.test(document.getElementById('strip-text').textContent)")" "true"
   done
   # the Improvement page
-  open "http://127.0.0.1:$PORT/#/"; click "#imp-link"; agent-browser wait "#cands" >/dev/null 2>&1; agent-browser wait 1200 >/dev/null 2>&1
-  check "$T improvement: the header link opens /improvement, marked current" "$(ev "location.pathname+'|'+document.querySelector('#imp-link').getAttribute('aria-current')")" '"/improvement|page"'
+  open "http://127.0.0.1:$PORT/#/"; click ".fnav a[data-nav=improve]"; agent-browser wait "#cands" >/dev/null 2>&1; agent-browser wait 1200 >/dev/null 2>&1
+  check "$T improvement: the footer link opens /self-improvement, marked current" "$(ev "location.pathname+'|'+document.querySelector('.fnav a[data-nav=improve]').getAttribute('aria-current')")" '"/self-improvement|page"'
   check "$T improvement: the page says nothing changes without a person approving it" "$(ev "document.getElementById('honest').textContent")" '"Nothing changes without a person approving it."'
   check "$T improvement: synthetic data is labelled, capture state is shown" "$(ev "!document.getElementById('syn-note').hidden&&/synthetic/.test(document.getElementById('src').textContent)&&/Feedback capture: off/.test(document.getElementById('mode').textContent)")" "true"
   check "$T improvement: candidates show type, status, evidence and that they are not approved" "$(ev "(()=>{const c=[...document.querySelectorAll('.cand')];return c.length>=1&&c.every(k=>k.querySelector('.ty')&&k.querySelector('.st')&&k.querySelector('.ev li')&&/Not approved|Approved by/.test(k.textContent))})()")" "true"

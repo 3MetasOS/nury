@@ -2,6 +2,7 @@
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Fraunces-400-0.woff2) format("woff2")}
 @font-face{font-family:"Fraunces";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/Fraunces-600-1.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Inter-400-2.woff2) format("woff2")}
+@font-face{font-family:"Gochi Hand";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/GochiHand-400.woff2) format("woff2")}
 @font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/Inter-500-3.woff2) format("woff2")}
 :root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.10);
 --amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--text:#ece7dc;--muted:#a79f8d;
@@ -50,9 +51,6 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 .muted{color:var(--muted)}
 .top .tools{margin-left:auto;display:flex;gap:8px}.top .tools .iconbtn{margin-left:0}
 .iconbtn:hover,.iconbtn[aria-pressed="true"]{border-color:var(--amber-line)}
-.iconbtn.howlink{text-decoration:none;gap:8px}.howlink .lbl{display:none;font:600 15px var(--sans)}
-.howlink[aria-current="page"]{border-color:var(--amber-line);background:var(--amber-soft);color:var(--amber-text)}
-@media (min-width:1360px){.iconbtn.howlink{width:auto;padding:0 14px;display:inline-flex}.howlink .lbl{display:inline}}
 @media (min-width:640px){.sheet-b{padding:20px 28px 32px}}
 @media (min-width:960px){
   .brand small{display:inline}
@@ -64,3 +62,30 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
   dialog.sheet{margin:auto;width:640px;border-radius:20px;max-height:86vh}.sheet-b{max-height:calc(86vh - 76px)}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* ---- taste layer: one accent, mono labels, flatter shapes, confident type (the 3Metas bar, in Nury's own colors) ---- */
+:root{--mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;--r:8px;--hl:rgba(232,163,61,.42);--note-ink:var(--text)}
+:root[data-theme="light"]{--hl:rgba(232,163,61,.62)}
+.mono{font:500 11px/1.4 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+/* footer: the same on every page */
+.sitefoot{border-top:1px solid var(--line);margin-top:24px;background:var(--bg)}
+.sitefoot .wrap{max-width:1120px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom));display:grid;gap:10px 24px;grid-template-columns:minmax(0,1fr)}
+.sitefoot .fl{margin:0}
+.fnav{display:flex;flex-wrap:wrap;gap:4px 22px}
+.fnav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text);font:600 15px var(--sans);text-decoration:none;border-bottom:1px solid transparent}
+.fnav a:hover{border-bottom-color:var(--amber-text)}
+.fnav a[aria-current="page"]{color:var(--amber-text);border-bottom-color:var(--amber-text)}
+.sitefoot .fr{display:flex}
+.sitefoot .fine{margin:0;max-width:62ch;font-size:13px;line-height:1.5;color:var(--muted)}
+.linkbtn{background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+@media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:minmax(0,1fr) auto;align-items:center}.sitefoot .fine{grid-column:1/-1}.sitefoot .fr{justify-content:flex-end}}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+@media (min-width:960px){body{padding-bottom:0}}
+/* hand-written notes: in the flow, never over text. Decoration: the label beside the control says the same thing. */
+.hnote{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%;margin:6px 0 2px;color:var(--note-ink);font:400 21px/1.15 "Gochi Hand","Bradley Hand","Segoe Print",cursive;transform:rotate(var(--rot,-1.5deg));transform-origin:left center;pointer-events:none;user-select:none}
+.hnote .hn-a{width:34px;height:30px;flex:none;fill:none;stroke:var(--amber-text);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.hnote .hn-t{background:linear-gradient(transparent 60%,var(--hl) 60% 90%,transparent 90%);padding:0 4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+html[data-notes="off"] .hnote{display:none}
+@media (max-width:639px){.hnote{transform:none;font-size:17px;margin:4px 0 0}.hnote .hn-a{display:none}.hnote.no-phone{display:none}}
+@media (prefers-reduced-motion:reduce){.hnote{transform:none}}
+@media print{.hnote,.sitefoot .fr{display:none!important}}

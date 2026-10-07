@@ -9,7 +9,7 @@
 <meta name="description" content="Nury is an AI crisis response agent. This page lists the contacts your church has vetted.">
 <link rel="stylesheet" href="/shell.css">
 <style>
-main{max-width:720px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+main{max-width:720px;margin:0 auto;padding:16px 16px 24px}
 @media(min-width:960px){main{padding:24px 24px 56px}}
 h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0 0 4px;color:var(--amber-text)}
 a{color:var(--amber-text);overflow-wrap:anywhere}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
@@ -51,7 +51,7 @@ details>summary{cursor:pointer;color:var(--amber-text);font-weight:600;min-heigh
 <body data-nav="network">
 <script src="/shell.js"></script>
 <main id="main">
-<h1 id="h-net" tabindex="-1">Our network</h1>
+<h1 id="h-net" tabindex="-1" data-note="only people your church has vetted" data-arrow="up" data-rot="-1.5">Our network</h1>
 <p class="lede">People our church has worked with. Nury lists them first, labeled as the church's own contacts. It never ranks or recommends them. The app saves it on the server. There is no sign-in yet.</p>
 <div id="banner" class="banner" hidden><b>Fictional demo contacts.</b> These are made up for the demo and are read only. A real network is never mixed with them.</div>
 
