@@ -21,7 +21,7 @@
   // The footer is the same component on every page. The three pages for judges and reviewers live here, not in the header.
   const footer = `
 <footer class="sitefoot" data-shell="footer"><div class="wrap">
-  <div class="lockup" data-lockup><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>
+  <div class="flogo"><div class="lockup" data-lockup><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div><a class="fabout" href="/about" data-nav="about">About</a></div>
   <div class="fj">
     <div class="flrow"><p class="fl mono">For judges and reviewers</p></div>
     <nav class="fnav" aria-label="For judges and reviewers">
@@ -41,6 +41,7 @@
     <div class="fb"><p class="fl mono">Scripture</p><p>Verses are never written by the model. Each verse is chosen from a verified list and inserted word for word from YouVersion (Berean Standard Bible in English, Biblia Libre in Spanish), or from the public-domain Reina-Valera 1909 and World English Bible. Every verse shows its version and copyright. <a href="/how-it-was-built#scripture">Details</a></p></div>
     <div class="fb"><p class="fl mono">Outside review</p><p>Before release, AI models from other makers read sample drafts and flagged problems. Their notes are advice to us. They are not part of the app. <a href="/how-it-was-built#outside-review">Details</a></p></div>
     <div class="fb" id="fm-build" hidden><p class="fl mono">Build</p><p><span></span></p></div>
+    <p class="fmore"><a href="/about">More about how it was made</a></p>
   </div>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
@@ -93,7 +94,7 @@
   function revealFooter() {
     const f = document.querySelector(".sitefoot");
     if (!f || !("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const parts = [...f.querySelectorAll(".lockup, .fj, .fm, .prov, .fine")];
+    const parts = [...f.querySelectorAll(".flogo, .fj, .fm, .prov, .fine")];
     parts.forEach((p, i) => p.style.setProperty("--fd", (i < 3 ? i * 80 : 240 + (i - 2) * 80) + "ms"));
     f.classList.add("rv");
     let done = false;

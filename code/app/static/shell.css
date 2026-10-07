@@ -69,7 +69,7 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 /* footer: the same on every page. Row 1: the logo at the left, the pages for judges at the right. Row 2: the provenance line. Row 3: the disclaimer. */
 .sitefoot{border-top:1px solid var(--line);margin-top:24px;background:var(--bg)}
 .sitefoot .wrap{max-width:1120px;margin:0 auto;padding:22px 16px calc(28px + env(safe-area-inset-bottom));display:grid;gap:14px 24px;grid-template-columns:minmax(0,1fr);grid-template-areas:"logo" "judges" "made" "prov" "fine"}
-.sitefoot .lockup{grid-area:logo}.sitefoot .fj{grid-area:judges;min-width:0}.sitefoot .fm{grid-area:made;min-width:0}.sitefoot .prov{grid-area:prov}.sitefoot .fine{grid-area:fine}
+.sitefoot .flogo{grid-area:logo;display:flex;flex-direction:column;align-items:flex-start;gap:6px}.fabout{display:inline-flex;align-items:center;min-height:32px;color:var(--text);font:600 14px var(--sans);text-decoration:none;border-bottom:1px solid transparent}.fabout:hover,.fabout[aria-current="page"]{color:var(--amber-text);border-bottom-color:var(--amber-text)}.fmore{margin:0}.fmore a{color:var(--amber-text);font-size:14px}.sitefoot .fj{grid-area:judges;min-width:0}.sitefoot .fm{grid-area:made;min-width:0}.sitefoot .prov{grid-area:prov}.sitefoot .fine{grid-area:fine}
 .flrow{display:flex;align-items:center;flex-wrap:wrap;gap:2px 12px;margin-bottom:4px}.flrow .fl{margin:0}
 .flrow .hnote{margin:7px 0 0;white-space:nowrap}.flrow .hn-t{white-space:nowrap}
 .fnav{display:flex;flex-direction:column;align-items:flex-start;gap:0}
@@ -101,6 +101,6 @@ body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 .sitefoot .prov a{color:var(--amber-text);text-underline-offset:3px;margin-left:6px;white-space:nowrap}
 
 /* footer reveal: opacity 0 to 1 and 16 px up, 500 ms, columns 80 ms apart, then the provenance line and the disclaimer. The hidden state exists only while .rv is on. */
-.sitefoot.rv .lockup,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:0;transform:translateY(16px)}
-.sitefoot.rv.rv-in .lockup,.sitefoot.rv.rv-in .fj,.sitefoot.rv.rv-in .fm,.sitefoot.rv.rv-in .prov,.sitefoot.rv.rv-in .fine{opacity:1;transform:none;transition:opacity .5s ease-out var(--fd,0ms),transform .5s ease-out var(--fd,0ms)}
-@media (prefers-reduced-motion:reduce){.sitefoot.rv .lockup,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:1;transform:none}}
+.sitefoot.rv .flogo,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:0;transform:translateY(16px)}
+.sitefoot.rv.rv-in .flogo,.sitefoot.rv.rv-in .fj,.sitefoot.rv.rv-in .fm,.sitefoot.rv.rv-in .prov,.sitefoot.rv.rv-in .fine{opacity:1;transform:none;transition:opacity .5s ease-out var(--fd,0ms),transform .5s ease-out var(--fd,0ms)}
+@media (prefers-reduced-motion:reduce){.sitefoot.rv .flogo,.sitefoot.rv .fj,.sitefoot.rv .fm,.sitefoot.rv .prov,.sitefoot.rv .fine{opacity:1;transform:none}}

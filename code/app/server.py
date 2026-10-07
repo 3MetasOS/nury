@@ -615,12 +615,20 @@ class H(BaseHTTPRequestHandler):
             p = "/how-it-was-built.html"
         elif p in ("/observability", "/observability/"):
             p = "/observability.html"
-        elif p.rstrip("/") in ("/standards", "/what-did-not-work", "/economics", "/pattern", "/run-your-own"):
+        elif p.rstrip("/") in ("/standards", "/what-did-not-work", "/economics", "/pattern", "/run-your-own", "/about"):
             p = p.rstrip("/") + ".html"
         elif p in ("/build-log", "/build-log/"):
             p = "/build-log.html"
         elif p in ("/improvement", "/improvement/", "/self-improvement", "/self-improvement/"):
             p = "/improvement.html"      # the page is called Self-improvement; the old path keeps working
+        if p == "/memorial/nury.jpg" and (STATIC / "memorial" / "nury.jpg").is_file():      # the photo slot on About: only when Juan provides the file
+            b = (STATIC / "memorial" / "nury.jpg").read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", "image/jpeg")
+            self.send_header("Content-Length", str(len(b)))
+            self.end_headers()
+            self.wfile.write(b)
+            return
         if STATIC_OK.match(p) and (STATIC / p[1:]).is_file() and p != "/index.html":
             b = (STATIC / p[1:]).read_bytes()
             self.send_response(200)
@@ -901,7 +909,7 @@ def rebuild_static_pages():
     The server itself needs no extra package: without it, the committed pages are served as they are. Never stops the server."""
     try:
         from app import build_docs
-        build_docs.build(); build_docs.build_log(); build_docs.build_standards()
+        build_docs.build(); build_docs.build_log(); build_docs.build_standards(); build_docs.build_about()
         for a, b, c, d in build_docs.SIMPLE_DOCS:
             build_docs.build_simple(a, b, c, d)
         return True

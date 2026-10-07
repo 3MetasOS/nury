@@ -4,6 +4,7 @@ Needs python-markdown at BUILD time only. The server stays dependency-free: it s
 Two live markers stay live: <!--LIVE:RULES--> and <!--LIVE:PLAYBOOKS--> are filled in the browser from /api/rules and /api/playbook/<id>.
 <!--LIVE:SCORECARD--> is dropped: the page quotes no pass rate (the source says so)."""
 import html
+import json
 import re
 from pathlib import Path
 
@@ -257,3 +258,55 @@ if __name__ == "__main__":
     print(f"wrote {STD_OUT} ({n} bytes, {t} sections)")
     for a, b, c, d in SIMPLE_DOCS:
         print(f"wrote {b} ({build_simple(a, b, c, d)} bytes)")
+
+
+ABOUT_SRC = ROOT / "documents" / "product" / "ABOUT_PAGE.md"
+ABOUT_OUT = Path(__file__).resolve().parent / "static" / "about.html"
+ABOUT_DATA = Path(__file__).resolve().parent / "about_data.json"
+
+
+def _about_sections(text):
+    """Sections of ABOUT_PAGE.md by '## ' heading. 'How it was made' is a list of '- **Label.** text' blocks; the others are prose."""
+    out = {}
+    for m in re.finditer(r"(?ms)^## (.+?)\n(.*?)(?=^## |\Z)", text):
+        out[m.group(1).strip().lower()] = m.group(2).strip()
+    return out
+
+
+def build_about(out=None, src=None, data=None):
+    """The About page in the shared shell. Sections come from documents/product/ABOUT_PAGE.md (ninja): What Nury is, How it was made (blocks,
+    each '**Label.** text'), Where it came from, Credits. The memorial text and its flag come from about_data.json, verbatim, in the place of the
+    'MEMORIAL BLOCK' line. Until the source exists, a short text from the project's own docs stands in."""
+    d = json.loads(Path(data or ABOUT_DATA).read_text(encoding="utf-8"))
+    src = Path(src or ABOUT_SRC)
+    sec = _about_sections(src.read_text(encoding="utf-8")) if src.is_file() else {}
+    def md(t):
+        return htmlsafe.clean(markdown.markdown(t.strip(), extensions=["sane_lists"]))
+    def inline(t):
+        h = md(t)
+        return re.sub(r"^<p>(.*)</p>$", r"\1", h.strip(), flags=re.S)
+    parts = []
+    parts.append(f'<section class="sec" aria-labelledby="a-what"><h2 id="a-what">What Nury is</h2>{md(sec.get("what nury is") or d["fallback"]["what"])}</section>')
+    blocks = []
+    for para in re.split(r"\n{2,}", sec.get("how it was made", "")):
+        m = re.match(r"^\*\*(.+?)\.?\*\*\s*(.*)$", para.strip(), re.S)
+        if m:
+            blocks.append((m.group(1).strip().rstrip("."), m.group(2).strip()))
+    if blocks:
+        cards = "".join(f'<div class="blk"><p class="mono">{html.escape(a)}</p><p>{inline(b)}</p></div>' for a, b in blocks)
+        parts.append(f'<section class="sec" aria-labelledby="a-how"><h2 id="a-how">How it was made</h2><div class="blocks">{cards}</div></section>')
+    parts.append(f'<section class="sec" aria-labelledby="a-where"><h2 id="a-where">Where it came from</h2>{md(sec.get("where it came from") or d["fallback"]["origin"])}</section>')
+    if sec.get("credits"):
+        parts.append(f'<section class="sec credits" aria-labelledby="a-cred"><h2 id="a-cred">Credits</h2>{md(sec["credits"])}</section>')
+    mem = d.get("memorial") or {}
+    memorial = ""
+    if mem.get("visible"):
+        lines = "".join(f"<p>{html.escape(l)}</p>" for l in mem.get("lines", []))
+        memorial = ('<!-- Memorial: Juan\'s words, verbatim. Pending his final OK (about_data.json memorial.visible). -->'
+                    '<section class="memorial" aria-label="In memory">'
+                    '<svg class="lant" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><use href="/icons.svg#i-mark"/></svg>'
+                    f'<blockquote>{lines}</blockquote>'
+                    '<figure id="mem-photo"><img alt="Nury Pel\u00e1ez"></figure></section>')
+    page = Path(__file__).resolve().parent.joinpath("about_template.html").read_text(encoding="utf-8").replace("@@SECTIONS@@", "".join(parts)).replace("@@MEMORIAL@@", memorial)
+    Path(out or ABOUT_OUT).write_text(page, encoding="utf-8")
+    return len(page)

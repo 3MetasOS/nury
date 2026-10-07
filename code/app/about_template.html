@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<title>About Nury</title>
+<meta name="description" content="Nury is an AI crisis response agent for churches and the pastors who answer the call. What it is, how it was made, and where it came from.">
+<link rel="stylesheet" href="/shell.css">
+<style>
+main{max-width:1120px;margin:0 auto;padding:16px 16px 24px}
+@media(min-width:960px){main{padding:24px 24px 24px}}
+h1{font:600 clamp(1.6rem,6vw,2rem)/1.15 var(--serif);margin:0;color:var(--text)}
+h2{font:600 1.35rem/1.25 var(--serif);margin:0 0 10px}
+a{color:var(--amber-text);overflow-wrap:anywhere}a:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px;background:var(--surface)}
+.band .hnote{margin-top:8px;width:auto;max-width:100%}.band .hnote .hn-t{white-space:normal}
+@media(min-width:960px){.band{padding:24px 28px}}
+.sec{margin:28px 0 0}
+.sec p{max-width:68ch;margin:0 0 12px;line-height:1.6}
+.blocks{display:grid;gap:12px;grid-template-columns:1fr}
+@media(min-width:760px){.blocks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1000px){.blocks{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.blk{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.blk .mono{margin:0 0 6px}.blk p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+.sec ul{margin:0;padding-left:20px;max-width:68ch;display:grid;gap:8px;line-height:1.55}
+/* the memorial: quiet, light, last block before the footer. Pending Juan's final OK (about_data.json: memorial.visible). */
+.memorial{margin:40px 0 0;padding:28px 24px;border-radius:20px;background:#f7f1e4;color:#2b2418;border:1px solid #e3d8bd;display:grid;gap:16px;justify-items:center;text-align:center}
+.memorial .lant{width:34px;height:34px;color:#b8660e}
+.memorial blockquote{margin:0;font:400 clamp(1.1rem,3.4vw,1.35rem)/1.6 var(--serif);max-width:34em}
+.memorial blockquote p{margin:0}
+.memorial figure{margin:0;display:none}.memorial figure.on{display:block}.memorial img{display:block;max-width:220px;width:100%;height:auto;border-radius:12px;border:1px solid #e3d8bd}
+</style>
+</head>
+<body data-nav="about">
+<script src="/shell.js"></script>
+<main id="main">
+<div class="band"><h1 id="h-about" tabindex="-1" data-note="the short story" data-arrow="up" data-rot="-1.2">About Nury</h1></div>
+@@SECTIONS@@
+@@MEMORIAL@@
+</main>
+<script>
+/* the photo slot shows only when the file exists */
+(function(){var f=document.getElementById("mem-photo");if(!f)return;var i=new Image();i.onload=function(){f.querySelector("img").src=i.src;f.classList.add("on")};i.src="/memorial/nury.jpg"})();
+</script>
+</body>
+</html>
