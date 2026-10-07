@@ -904,3 +904,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 09:11: glow locked (Juan).
 - 09:13: GitHub pushes fail with an Internal Server Error on any branch (SSH and HTTPS; fetch works; status page green). Commits stay local; retry later; a mirror repository is the fallback if it lasts until noon (Juan: keep working, it will fix itself).
 - 09:25: case detail page LOCKED (Juan), with the Export/Print menu and PDFs.
+- 09:28: crisis pages LOCKED (Juan): #/crisis/detention and the hospital crisis page.
