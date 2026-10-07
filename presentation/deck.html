@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nury — pitch deck</title>
+<title>Nury pitch deck</title>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--ink:#0d1015;--surface:#131824;--text:#ece7dc;--muted:#9a9a9a;--amber:#e8a33d;--ok:#5fb37c;--bad:#d9605a}
@@ -22,31 +22,41 @@ ul{margin:0;padding-left:1.1em;display:grid;gap:1.4vh}
 .bad{background:var(--bad)} .ok{background:var(--ok)}
 .ph{outline:2px dashed var(--amber);padding:0 .3em;color:var(--amber)}
 .foot{position:fixed;bottom:2vh;left:7vw;right:7vw;display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+.flow{list-style:none;margin:0;padding:0;counter-reset:n;display:grid;gap:1.6vh;max-width:62ch}
+.flow li{counter-increment:n;display:grid;grid-template-columns:2.2em 1fr;column-gap:.4em;font-size:clamp(18px,2.4vw,30px);line-height:1.3}
+.flow li::before{content:counter(n);color:var(--amber);font-family:Fraunces,serif;font-weight:600;grid-row:span 2}
+.flow b{font-family:Fraunces,serif;font-weight:600}
+.flow span{color:var(--muted);font-size:clamp(15px,1.8vw,22px)}
+.proof{border-collapse:collapse;font-size:clamp(18px,2.4vw,30px);max-width:62ch;width:100%}
+.proof th{text-align:left;font-weight:400;padding:1.2vh 1.5vw 1.2vh 0;border-bottom:1px solid #263044}
+.proof td{padding:1.2vh 0;border-bottom:1px solid #263044}
+::selection{background:var(--amber);color:var(--ink)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+h1,h2{text-wrap:balance}
 @media print{.slide{display:flex;page-break-after:always}.foot{display:none}}
 </style></head><body>
 
 <section class="slide on" id="s1"><!-- 0:00 -->
-<p class="amber muted">2:07 AM</p>
 <h1>Nury</h1>
 <p>The crisis-response agent for solo pastors.</p>
 <p class="muted">Juan Pelaez · 3Metas · Gloo AI Hackathon · Track 1</p></section>
 
 <section class="slide" id="s2">
-<h2>The user</h2>
+<h2><span class="amber">2:07 AM.</span> A solo pastor's phone rings.</h2>
 <ul>
 <li>A solo pastor. No staff. No lawyer on the line.</li>
 <li>A panicked call from an immigrant family. Sunday afternoon, or 2 AM.</li>
-<li>They have a phone and minutes. Not a plan.</li></ul>
-<p class="amber">Humanitarian, not political. A family and a night.</p></section>
+<li>They have a phone and a few minutes.</li></ul>
+<p class="amber">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></section>
 
 <section class="slide" id="s3">
 <h2>Playbook #1: detention. Five stages, the pastor decides each.</h2>
-<div class="row">
-<div class="card"><b>1 Triage</b><p>Facts only. No advice.</p></div>
-<div class="card"><b>2 Rights brief</b><p>Family's language. Vetted source. Cited.</p></div>
-<div class="card"><b>3 Attorneys</b><p>Hotlines and church-vetted entries. Never one named attorney.</p></div>
-<div class="card"><b>4 Checklist</b><p>Do tonight. Do not do. Gather documents.</p></div>
-<div class="card"><b>5 Message</b><p>Under 120 words. Warm and steady.</p></div></div>
+<ol class="flow">
+<li><b>Triage</b><span>States the facts without advice.</span></li>
+<li><b>Rights brief</b><span>Family's language. Vetted source. Every point cited.</span></li>
+<li><b>Attorney resources</b><span>Hotlines and church-vetted entries. Never one named attorney.</span></li>
+<li><b>Family checklist</b><span>Do tonight. Do not do. Gather these documents.</span></li>
+<li><b>Pastoral message</b><span>Under 120 words. Warm and steady.</span></li></ol>
 <p class="muted">Demo: Maria, Jose, two children (8 and 11). Live app or the 90-second video.</p></section>
 
 <section class="slide" id="s4">
@@ -55,7 +65,7 @@ ul{margin:0;padding-left:1.1em;display:grid;gap:1.4vh}
 <p><span class="chip bad">Draft rejected by guardrail</span> → Regenerating (2 of 3) → <span class="chip ok">Passed</span></p>
 <ul><li>Up to three tries, then escalate to the pastor.</li>
 <li>The pastor never sees the unsafe draft.</li>
-<li>No send path. Copy, not Send.</li></ul></section>
+<li>Nury has no send path. The pastor copies the text and sends it by hand.</li></ul></section>
 
 <section class="slide" id="s5">
 <h2>How it is built</h2>
@@ -64,17 +74,17 @@ ul{margin:0;padding-left:1.1em;display:grid;gap:1.4vh}
 <li>Adding a crisis is adding a playbook folder. The engine does not change. Tested with a test playbook.</li>
 <li>Gloo guarded Responses endpoint.</li>
 <li>Legal information only, from a vetted source file. No open web.</li>
-<li>Not a pastor, counselor, therapist or lawyer. Says so on every output.</li>
+<li>Nury is not a pastor, counselor, therapist or lawyer, and says so on every output.</li>
 <li>English screen for the pastor. Spanish output for the family.</li></ul></section>
 
 <section class="slide" id="s6">
 <h2>Proof</h2>
 <p>Hand-built scenarios, scored by typed judges.</p>
-<div class="row">
-<div class="card"><b>Pass rate</b><p class="ph">[PLACEHOLDER]</p></div>
-<div class="card"><b>Rejected and regenerated</b><p class="ph">[PLACEHOLDER]</p></div>
-<div class="card"><b>Cost per run</b><p class="ph">[PLACEHOLDER]</p></div>
-<div class="card"><b>Latency per run</b><p class="ph">[PLACEHOLDER]</p></div></div>
+<table class="proof">
+<tr><th>Pass rate</th><td class="ph">[PLACEHOLDER]</td></tr>
+<tr><th>Drafts rejected and regenerated</th><td class="ph">[PLACEHOLDER]</td></tr>
+<tr><th>Cost per run</th><td class="ph">[PLACEHOLDER]</td></tr>
+<tr><th>Latency per run</th><td class="ph">[PLACEHOLDER]</td></tr></table>
 <p class="muted">Fill from hack-artisans' real scorecard only (not the mock). No real numbers by Oct 7 16:00 MDT: delete this slide.</p>
 <p class="muted">Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.</p></section>
 
