@@ -88,7 +88,7 @@ td:first-child code{white-space:nowrap}
     <details class="toc" id="toc"><summary>Contents</summary><nav aria-label="On this page"><ol><li><a href="#1-what-a-case-costs-today">1. What a case costs today</a></li><li><a href="#2-where-the-time-goes">2. Where the time goes</a></li><li><a href="#3-what-breaks-the-economics">3. What breaks the economics</a></li><li><a href="#4-mitigations-in-one-table">4. Mitigations, in one table</a></li><li><a href="#5-what-we-still-do-not-know">5. What we still do not know</a></li></ol></nav></details>
     <article id="doc">
 <h2 id="1-what-a-case-costs-today">1. What a case costs today<a class="anc" href="#1-what-a-case-costs-today" aria-label="Link to this section">#</a></h2>
-<p>A case is one run through five stages (triage, then four family-facing stages) with the privacy layer, the rules and the Jev gate on.</p>
+<p>A case is one run through the stages of a crisis (both live crises have five: triage, then four family-facing stages) with the privacy layer, the rules and the Jev gate on.</p>
 <div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>
 <thead>
 <tr>
@@ -151,14 +151,14 @@ td:first-child code{white-space:nowrap}
 <li><strong>Order of magnitude.</strong> At the scorecard means, 100 cases cost about $6.40 (detention) to $8.90 (hospital) in Gloo spend. 1,000 cases cost about $64 to $89. That excludes Jev, hosting, people and everything in section 3.</li>
 </ul>
 <h2 id="2-where-the-time-goes">2. Where the time goes<a class="anc" href="#2-where-the-time-goes" aria-label="Link to this section">#</a></h2>
-<p>Per review note 3: Gloo latency per stage has a median of <strong>6.0 to 11.8 seconds</strong>. The Jev gate adds one call per draft attempt, a median of about <strong>155 ms</strong> each. On the final scored sets that is about 0.8 seconds per case against 34 to 46 seconds of model time: about <strong>2 percent</strong> of the time the calls take (detention 2.2, hospital 1.7). The stages run one after another because each reads the approved text of the stage before it, so five stages is roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.</p>
+<p>Per review note 3: Gloo latency per stage has a median of <strong>6.0 to 11.8 seconds</strong>. The Jev gate adds one call per draft attempt, a median of about <strong>155 ms</strong> each. On the final scored sets that is about 0.8 seconds per case against 34 to 46 seconds of model time: about <strong>2 percent</strong> of the time the calls take (detention 2.2, hospital 1.7). The stages run one after another because each reads the approved text of the stage before it, so the five stages of a live crisis take roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.</p>
 <p>Two consequences:
 - A pastor waits 30 to 50 seconds per case, plus however long they take to read and approve. The product is built around that wait, not around speed.
 - Jev is cheap in time and in money (section 3.6).</p>
 <h2 id="3-what-breaks-the-economics">3. What breaks the economics<a class="anc" href="#3-what-breaks-the-economics" aria-label="Link to this section">#</a></h2>
 <p>Each item says what happens, how bad it could get, and what stands in the way today.</p>
 <h3 id="3-1-the-retry-loop-worst-case">3.1 The retry loop, worst case<a class="anc" href="#3-1-the-retry-loop-worst-case" aria-label="Link to this section">#</a></h3>
-<p>A stage can make several calls for one draft attempt. From the constants in the code: 5 stages × 3 attempts × 3 calls for privacy repair (the first call plus up to 2 repair calls) × 3 tries for HTTP errors (the first plus up to 2 retries) = <strong>135 Gloo calls</strong>, against 5 in the normal case. Jev adds up to 15 more calls (one per attempt, at most). That is up to 27 times the calls of a clean run. It needs every layer to fail every time, so it is a ceiling, not an expected value. The scored runs show corrections per run well below 1 and a handful of escalations.
+<p>A stage can make several calls for one draft attempt. From the constants in the code: 5 stages (for a live crisis) × 3 attempts × 3 calls for privacy repair (the first call plus up to 2 repair calls) × 3 tries for HTTP errors (the first plus up to 2 retries) = <strong>135 Gloo calls</strong>, against 5 in the normal case. Jev adds up to 15 more calls (one per attempt, at most). That is up to 27 times the calls of a clean run. It needs every layer to fail every time, so it is a ceiling, not an expected value. The scored runs show corrections per run well below 1 and a handful of escalations.
 - <strong>Built:</strong> the attempt limit (3), the repair limit (2), the HTTP retry limit (2) with a bounded wait (3 s without a <code>Retry-After</code>, up to 20 s with one), a Jev timeout (8 s) that fails open, and no retry on a 402.
 - <strong>Not built:</strong> a cap on calls or dollars per case.</p>
 <h3 id="3-2-long-case-summaries">3.2 Long case summaries<a class="anc" href="#3-2-long-case-summaries" aria-label="Link to this section">#</a></h3>
