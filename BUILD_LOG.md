@@ -877,3 +877,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 06:27: items 1 and 2 pushed (5702063); item 3 sent; items 4 to 6 held until Juan has seen each.
 - 06:27: Juan: do all Home changes in one go (items 3 to 6 sent together: remove the footer card on Home, judges links in a column, a second footer column with model and build details, two handwritten notes on Home).
 - 06:39: hack-jedi found that the crisis title feeds the context Jev reads (engine line 271), so the card rename changes one string given to Jev; small live check approved after the sets end (detention 01, 14, attacker a02). Honest sentence meanwhile: the shipped build differs from the scored build only in the crisis card titles and that one context string.
+- 06:44: icon decision (Juan): the immigration card uses a path fork with two arrows (the diamond-plus read as a crosshair and was removed).
