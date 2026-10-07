@@ -267,6 +267,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   main{padding:24px 24px 56px}
   .home{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:start}
   .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
+  .colB{grid-column:1;grid-row:1}.colA{grid-column:2;grid-row:1}      /* laptop: the Respond card and crisis types on the left, saved cases and the network on the right */
   .band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}
   .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}.cband .scene{max-width:none}
   .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
@@ -596,10 +597,10 @@ function renderPicks(){const cards=()=>pbs.map(p=>{const live=p.status==="live",
   $("picks").replaceChildren(...cards());$("chooser-list").replaceChildren(...cards())}
 function renderHome(){const fam=families(),n=fam.length;
   $("home").classList.toggle("has-cases",n>0);
-  $("cont-list").replaceChildren(...fam.slice(0,3).map(mkCase));
+  $("cont-list").replaceChildren(...fam.slice(0,2).map(mkCase));
   $("first-run").hidden=n>0;$("see-all").hidden=n===0;$("cont-list").hidden=n===0;
   $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
-  $("see-all").textContent=n>3?`See all ${n} cases`:"All cases";
+  $("see-all").textContent=n>2?`All cases (${n})`:"All cases";
   $("stats").hidden=n<=3;
   if(n>3)$("stats-grid").replaceChildren(...[["all","All"],["follow","Needs follow-up"],["v2","Version 2"]].map(([k,l])=>
     h("a",{class:"stat",href:"#/cases/"+k},h("b",null,String(fam.filter(c=>matchStatus(c,k)).length)),h("span",null,l))));
