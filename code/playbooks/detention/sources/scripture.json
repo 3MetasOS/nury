@@ -1,0 +1,202 @@
+{
+ "_about": "Verse bank for the pastoral message. The model chooses an id from this list. It never writes Scripture. The engine inserts the exact text below. Comfort and presence only. No verse that promises an outcome, none about foreigners or politics.",
+ "translations": {
+  "es": {
+   "name": "Reina-Valera 1909",
+   "license": "Public domain",
+   "license_page": "https://ebible.org/find/details.php?id=spaRV1909",
+   "checked": "2026-10-06"
+  },
+  "en": {
+   "name": "World English Bible (Classic)",
+   "license": "Public domain",
+   "license_page": "https://ebible.org/eng-web/",
+   "note": "The page states: 'The World English Bible is in the Public Domain. You may copy and share it freely.'",
+   "checked": "2026-10-06"
+  }
+ },
+ "typesetting": "Text is verbatim from the source pages except: chapter superscriptions removed (Salmo 46, Salmo 121), small-capital words written in ordinary case (DIOS, ALZARÉ), a footnote marker removed (Josué 1:9 English), stray quotation marks at the edges removed, and the first word of 1 Peter 5:7 (English) capitalized because the verse starts mid-sentence.",
+ "verses": [
+  {
+   "source_id": "scr-psa46-1",
+   "id": "psa46_1",
+   "reference_es": "Salmo 46:1",
+   "reference_en": "Psalm 46:1",
+   "text_es": "Dios es nuestro amparo y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+   "text_en": "God is our refuge and strength, a very present help in trouble.",
+   "themes": [
+    "presence",
+    "comfort",
+    "fear"
+   ],
+   "words_es": 12,
+   "words_en": 12,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/PSA046.htm",
+   "source_url_en": "https://ebible.org/eng-web/PSA046.htm"
+  },
+  {
+   "source_id": "scr-psa34-18",
+   "id": "psa34_18",
+   "reference_es": "Salmo 34:18",
+   "reference_en": "Psalm 34:18",
+   "text_es": "Cercano está Jehová á los quebrantados de corazón; y salvará á los contritos de espíritu.",
+   "text_en": "Yahweh is near to those who have a broken heart, and saves those who have a crushed spirit.",
+   "themes": [
+    "presence",
+    "comfort",
+    "mercy"
+   ],
+   "words_es": 15,
+   "words_en": 18,
+   "review_note": "Contains 'saves' (salvará). Read as nearness to the broken-hearted, not rescue from the case. Juan: decide.",
+   "source_url_es": "https://ebible.org/spaRV1909/PSA034.htm",
+   "source_url_en": "https://ebible.org/eng-web/PSA034.htm"
+  },
+  {
+   "source_id": "scr-psa23-4",
+   "id": "psa23_4",
+   "reference_es": "Salmo 23:4",
+   "reference_en": "Psalm 23:4",
+   "text_es": "Aunque ande en valle de sombra de muerte, no temeré mal alguno; porque tú estarás conmigo: tu vara y tu cayado me infundirán aliento.",
+   "text_en": "Even though I walk through the valley of the shadow of death, I will fear no evil, for you are with me. Your rod and your staff, they comfort me.",
+   "themes": [
+    "presence",
+    "comfort",
+    "fear",
+    "courage"
+   ],
+   "words_es": 24,
+   "words_en": 30,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/PSA023.htm",
+   "source_url_en": "https://ebible.org/eng-web/PSA023.htm"
+  },
+  {
+   "source_id": "scr-isa41-10",
+   "id": "isa41_10",
+   "reference_es": "Isaías 41:10",
+   "reference_en": "Isaiah 41:10",
+   "text_es": "No temas, que yo soy contigo; no desmayes, que yo soy tu Dios que te esfuerzo: siempre te ayudaré, siempre te sustentaré con la diestra de mi justicia.",
+   "text_en": "Don’t you be afraid, for I am with you. Don’t be dismayed, for I am your God. I will strengthen you. Yes, I will help you. Yes, I will uphold you with the right hand of my righteousness.",
+   "themes": [
+    "presence",
+    "courage",
+    "fear"
+   ],
+   "words_es": 28,
+   "words_en": 38,
+   "review_note": "Contains 'I will help you' (siempre te ayudaré). Presence and strength; no outcome of the case. Juan: decide.",
+   "source_url_es": "https://ebible.org/spaRV1909/ISA41.htm",
+   "source_url_en": "https://ebible.org/eng-web/ISA41.htm"
+  },
+  {
+   "source_id": "scr-jos1-9",
+   "id": "jos1_9",
+   "reference_es": "Josué 1:9",
+   "reference_en": "Joshua 1:9",
+   "text_es": "Mira que te mando que te esfuerces y seas valiente: no temas ni desmayes, porque Jehová tu Dios será contigo en donde quiera que fueres.",
+   "text_en": "Haven’t I commanded you? Be strong and courageous. Don’t be afraid. Don’t be dismayed, for Yahweh your God is with you wherever you go.",
+   "themes": [
+    "presence",
+    "courage",
+    "fear"
+   ],
+   "words_es": 25,
+   "words_en": 24,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/JOS01.htm",
+   "source_url_en": "https://ebible.org/eng-web/JOS01.htm"
+  },
+  {
+   "source_id": "scr-deu31-6",
+   "id": "deu31_6",
+   "reference_es": "Deuteronomio 31:6",
+   "reference_en": "Deuteronomy 31:6",
+   "text_es": "Esforzaos y cobrad ánimo; no temáis, ni tengáis miedo de ellos: que Jehová tu Dios es el que va contigo: no te dejará ni te desamparará.",
+   "text_en": "Be strong and courageous. Don’t be afraid or scared of them, for Yahweh your God himself is who goes with you. He will not fail you nor forsake you.",
+   "themes": [
+    "presence",
+    "courage",
+    "fear"
+   ],
+   "words_es": 26,
+   "words_en": 29,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/DEU31.htm",
+   "source_url_en": "https://ebible.org/eng-web/DEU31.htm"
+  },
+  {
+   "source_id": "scr-mat11-28",
+   "id": "mat11_28",
+   "reference_es": "Mateo 11:28",
+   "reference_en": "Matthew 11:28",
+   "text_es": "Venid á mí todos los que estáis trabajados y cargados, que yo os haré descansar.",
+   "text_en": "Come to me, all you who labor and are heavily burdened, and I will give you rest.",
+   "themes": [
+    "rest",
+    "comfort"
+   ],
+   "words_es": 15,
+   "words_en": 17,
+   "review_note": "'I will give you rest' (yo os haré descansar). Rest for the weary, not an outcome. Juan: decide.",
+   "source_url_es": "https://ebible.org/spaRV1909/MAT11.htm",
+   "source_url_en": "https://ebible.org/eng-web/MAT11.htm"
+  },
+  {
+   "source_id": "scr-php4-6-7",
+   "id": "php4_6_7",
+   "reference_es": "Filipenses 4:6-7",
+   "reference_en": "Philippians 4:6-7",
+   "text_es": "Por nada estéis afanosos; sino sean notorias vuestras peticiones delante de Dios en toda oración y ruego, con hacimiento de gracias. Y la paz de Dios, que sobrepuja todo entendimiento, guardará vuestros corazones y vuestros entendimientos en Cristo Jesús.",
+   "text_en": "In nothing be anxious, but in everything, by prayer and petition with thanksgiving, let your requests be made known to God. And the peace of God, which surpasses all understanding, will guard your hearts and your thoughts in Christ Jesus.",
+   "themes": [
+    "rest",
+    "comfort",
+    "fear",
+    "waiting"
+   ],
+   "words_es": 39,
+   "words_en": 40,
+   "review_note": "'The peace of God will guard your hearts'. Peace, not an outcome. Juan: decide.",
+   "source_url_es": "https://ebible.org/spaRV1909/PHP04.htm",
+   "source_url_en": "https://ebible.org/eng-web/PHP04.htm"
+  },
+  {
+   "source_id": "scr-1pe5-7",
+   "id": "1pe5_7",
+   "reference_es": "1 Pedro 5:7",
+   "reference_en": "1 Peter 5:7",
+   "text_es": "Echando toda vuestra solicitud en él, porque él tiene cuidado de vosotros.",
+   "text_en": "Casting all your worries on him, because he cares for you.",
+   "themes": [
+    "comfort",
+    "fear",
+    "mercy"
+   ],
+   "words_es": 12,
+   "words_en": 11,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/1PE05.htm",
+   "source_url_en": "https://ebible.org/eng-web/1PE05.htm"
+  },
+  {
+   "source_id": "scr-rom8-38-39",
+   "id": "rom8_38_39",
+   "reference_es": "Romanos 8:38-39",
+   "reference_en": "Romans 8:38-39",
+   "text_es": "Por lo cual estoy cierto que ni la muerte, ni la vida, ni ángeles, ni principados, ni potestades, ni lo presente, ni lo por venir, Ni lo alto, ni lo bajo, ni ninguna criatura nos podrá apartar del amor de Dios, que es en Cristo Jesús Señor nuestro.",
+   "text_en": "For I am persuaded that neither death, nor life, nor angels, nor principalities, nor things present, nor things to come, nor powers, nor height, nor depth, nor any other created thing will be able to separate us from God’s love which is in Christ Jesus our Lord.",
+   "themes": [
+    "presence",
+    "comfort",
+    "courage"
+   ],
+   "words_es": 48,
+   "words_en": 47,
+   "review_note": "",
+   "source_url_es": "https://ebible.org/spaRV1909/ROM08.htm",
+   "source_url_en": "https://ebible.org/eng-web/ROM08.htm"
+  }
+ ]
+}
