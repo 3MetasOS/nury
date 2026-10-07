@@ -111,6 +111,9 @@
         ],
         "field": "url"
       }
+    ],
+    "skills": [
+      "grounding"
     ]
   },
   {
@@ -152,6 +155,10 @@
       {
         "name": "no_agency_names"
       }
+    ],
+    "skills": [
+      "voice",
+      "grounding"
     ]
   },
   {
@@ -177,6 +184,9 @@
       {
         "name": "no_agency_names"
       }
+    ],
+    "skills": [
+      "voice"
     ]
   }
 ]

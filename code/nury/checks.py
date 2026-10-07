@@ -71,5 +71,19 @@ def no_agency_names(p, text, ctx):
     return [g.R("agency_name", f"names an agency: {sorted(hits)}")] if hits else []
 
 
+_STOCK = re.compile(
+    r"\b(delve|tapestry|testament to|vibrant|pivotal|crucial role|stands as a|serves as a|it(?:'s| is) important to note|i hope this helps|here(?:'s| is) what you need to know)\b"
+    r"|\b(tapiz|es un testimonio de|testimonio de|en el panorama|en el mundo actual|cabe destacar|es importante destacar|espero que esto (?:te|le) ayude)\b", re.I)
+_CONTRAST = re.compile(
+    r"\bnot (?:just|only|merely) [^.\n]{1,60}, (?:but|it(?:'s| is))\b|\bit(?:'s| is) not [^.\n]{1,40}[,;] it(?:'s| is)\b"
+    r"|\bno (?:es|son|se trata de|fue) (?:solo|sólo|solamente|simplemente|únicamente) [^.\n]{1,60}\bsino\b|\bno solo [^.\n]{1,60}\bsino (?:también )?", re.I)
+
+
+def no_stock_phrases(p, text, ctx):
+    """Voice skill: stock AI phrases and the 'not X but Y' tic."""
+    hits = [m.group(0) for m in _STOCK.finditer(text)] + [m.group(0)[:40] for m in _CONTRAST.finditer(text)]
+    return [g.R("stock_phrase", f"stock or inflated wording: {sorted(set(hits))[:3]}")] if hits else []
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
-                                    vetted_links_present, required_headings, max_words, no_agency_names)}
+                                    vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases)}

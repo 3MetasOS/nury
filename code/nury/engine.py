@@ -89,7 +89,7 @@ def with_disclaimer(text, disclaimer):
 
 def _new_metrics():
     return {"attempts": 0, "retries": 0, "self_corrections": 0, "latency_s": 0.0,
-            "input_tokens": 0, "output_tokens": 0, "cost_usd": None}
+            "input_tokens": 0, "output_tokens": 0, "cost_usd": None, "skills": []}
 
 
 def _cost(m):
@@ -152,10 +152,13 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
         v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
-        for c in stage.checks:
+        for c in stage.checks + [c for sk in stage.skills for c in sk.checks]:
             v += CHECKS[c["name"]](c, txt, ctx_ns)
         return v
     audit.log("stage_start", stage=stage_id, deps_used=list(ctx))
+    for sk in stage.skills:
+        audit.log("skill_applied", name=sk.name, version=sk.version, stage=stage_id)
+    m["skills"] = [{"name": sk.name, "version": sk.version} for sk in stage.skills]
 
     rec = StageResult(stage_id, stage.title, "error", None, None, disclaimer, m, input_context=ctx)
     violations, draft = [], None

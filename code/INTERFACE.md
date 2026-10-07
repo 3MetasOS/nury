@@ -81,13 +81,21 @@ StageResult(stage_id, title,
 - `playbook.json` may carry `intake: {placeholder, demo}`. The app reads it for the intake box and the "Use demo intake" button. The detention demo text is the locked text from `presentation/SHARED_DEMO.md`, byte for byte.
 - Hospital extra banned patterns (medical outcome, diagnosis guesses, medical advice, promises of healing) live in `playbooks/hospital/playbook.json` under `extra_banned`, not in the engine.
 
+## Skills
+
+Small versioned instruction modules in `code/skills/<name>/SKILL.md` (header: name, version; sections `## EN` and `## ES`; optional `checks.json` of named checks). A stage names them in `stages.json`: `"skills": ["voice", "grounding"]`. The engine adds the skill text for the stage's output language to the stage prompt. No extra model call.
+
+- Today: `voice` on pastoral and checklist (both playbooks); `grounding` on checklist (both), attorney (detention), resources (hospital). `{professional}` in a skill is filled from the playbook's `boundary.professional`, so skills carry no domain words.
+- **Floor wins.** A skill can add rules and checks. The loader refuses a skill that tries to override the floor, the disclaimer or the citations (English or Spanish wording), that has no version or no EN and ES section, or whose checks.json removes, replaces, or names an unknown check. A playbook that names a refused skill does not load.
+- **Evidence.** Audit event `skill_applied` with `name`, `version`, `stage` (once per stage run). `StageResult.metrics["skills"]` = `[{"name", "version"}]`. A skill's own check failure shows as a category, for example `stock_phrase`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.
 - **Correction loop.** Draft, check, on fail feed the reasons back and regenerate. `MAX_ATTEMPTS = 3` attempts total (first draft + 2 regenerations), so `retries <= 2`. Then `status="escalated"` with `draft=None`. An unsafe draft never reaches the gate. A Gloo 403 (`GuardrailBlock`) counts as a failed try.
 - **Stop.** `stop` returns `status="stopped"`. `run_pipeline` halts on stopped, escalated, or error. Continue by hand with `state.set_manual(stage_id, text)` and `run_stage(next_id, state)`.
 - **Edits.** The pastor owns them. They are checked and any warnings go to the audit log. They are not blocked. The engine re-appends the disclaimer after an edit. `final` and `state.approved[stage]` always end with the disclaimer, once.
-- **Reason categories.** `banned_phrase` (prediction, advice, identity claim, specific-attorney recommendation), `ungrounded_claim` (link or bullet not in vetted sources), `missing_vetted_entry`, `missing_referral`, `format`, `length`, `language`, `gloo_block`. They appear in each `check` / `draft_rejected` audit event and in `StageResult`.
+- **Reason categories.** `banned_phrase` (prediction, advice, identity claim, specific-attorney recommendation), `ungrounded_claim` (link or bullet not in vetted sources), `missing_vetted_entry`, `missing_referral`, `format`, `length`, `language`, `stock_phrase`, `gloo_block`. They appear in each `check` / `draft_rejected` audit event and in `StageResult`.
 - **Fault injection** (`fault_injection={"stage": "rights", "times": 1, "draft_suffix": "..."}`). The engine appends `draft_suffix` to the first `times` drafts of that stage, after generation and before the checks. `times=1` gives reject, regenerate, pass. `times=3` gives escalation. Use `UNSAFE_SUFFIX` (Spanish) for a suffix that trips `banned_phrase` only. The rejected text goes to the audit log and `attempts` only. The gate and the pastor never get it.
 - **Demo switch.** `NURY_FORCE_REJECTION=1` forces exactly one rejection on stage 2 (rights): reject, regenerate, pass.
 - **Cost.** `cost_usd` is `None` unless you set `NURY_PRICE_IN` and `NURY_PRICE_OUT` (USD per 1M tokens).

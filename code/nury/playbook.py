@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Optional
 
 from . import checks as checks_lib
+from . import skills as skills_lib
 
 PLAYBOOKS_DIR = Path(__file__).resolve().parent.parent / "playbooks"
 LANG_NAME = {"es": "Spanish", "en": "English"}
@@ -38,6 +39,7 @@ class Stage:
     when: Optional[dict] = None                    # run only if this matches triage fields
     variants: list = field(default_factory=list)   # [{"when", "prompt"}] first match swaps the prompt
     prompt_file: str = ""
+    skills: list = field(default_factory=list)     # Skill objects, loaded from code/skills/
 
 
 @dataclass
@@ -127,7 +129,7 @@ def _validate_disclaimer(d):
             raise PlaybookError(f"disclaimer[{lang}] is missing required wording: {missing}")
 
 
-def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
+def load_playbook(playbook_id, root: Optional[Path] = None, skills_root: Optional[Path] = None) -> Playbook:
     d = (root or PLAYBOOKS_DIR) / playbook_id
     if not (d / "playbook.json").is_file():
         raise PlaybookError(f"no playbook {playbook_id!r} in {d.parent}")
@@ -150,6 +152,7 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
             prompt_file=sj["prompt"], deps=sj.get("deps", []), sources=[s["name"] for s in specs],
             source_specs=specs, checks=sj.get("checks", []), input=sj.get("input", {"from": "intake"}),
             when=sj.get("when"),
+            skills=_load_skills(sj, skills_root),
             variants=[{"when": v["when"], "prompt": (d / v["prompt"]).read_text(encoding="utf-8").strip()}
                       for v in sj.get("variants", [])]))
     if not stages or stages[0].id != "triage":
@@ -174,6 +177,16 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
                     stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
     pb.pending_sources = pending
     return pb
+
+
+def _load_skills(sj, skills_root):
+    out = []
+    for name in sj.get("skills", []):
+        try:
+            out.append(skills_lib.load_skill(name, skills_root))
+        except skills_lib.SkillError as e:
+            raise PlaybookError(f"stage {sj['id']}: {e}")
+    return out
 
 
 # ---------- prompt and source rendering ----------
@@ -214,6 +227,7 @@ def render_prompt(stage, pb, lang, state, fields):
     vars_ = {"lang_name": LANG_NAME[lang], **render_sources(stage, pb, lang)}
     for k, v in vars_.items():
         prompt = prompt.replace("{{" + k + "}}", v)
+    prompt += skills_lib.render(stage.skills, lang, pb.boundary)
     left = re.findall(r"\{\{(\w+)\}\}", prompt)
     if left:
         raise PlaybookError(f"stage {stage.id}: unfilled prompt variables {left}")
