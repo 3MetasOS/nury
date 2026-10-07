@@ -31,7 +31,13 @@ textarea{min-height:170px;resize:vertical}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
 .band.casehd{margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0 0 8px;font:600 clamp(1.5rem,5vw,2rem)/1.15 var(--serif)}.chrow{display:flex;flex-wrap:wrap;gap:6px 8px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere}
 .casehd .vers{margin-top:8px}
-.cb-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cb-r #b-changed{width:auto;flex:none;min-height:40px;height:40px;padding:0 18px}
+.cb-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cb-r #b-changed{width:auto;flex:none;min-height:36px;height:36px;padding:0 16px;font-size:14px;border-radius:10px}
+.bgrp{display:inline-flex;border-radius:10px;overflow:hidden;outline:1px solid var(--line-2);outline-offset:-1px;background:var(--surface-2);height:36px}
+.bgrp .btn.sm{border:0;border-radius:0;background:transparent;height:36px;min-height:36px;padding:0 14px;font-size:14px;margin:0;width:auto;flex:1 1 auto;justify-content:center}.bgrp .btn.sm:hover{background:var(--amber-soft)}
+.bgrp>.btn+.btn,.bgrp>.btn.hidden+.btn{border-left:1px solid var(--line-2)}.bgrp>.hidden{display:none}
+.casehd .hnote{max-width:none;width:auto}.casehd .hnote .hn-t{white-space:normal}
+.bgrp .btn.sm{white-space:nowrap}@media (max-width:959px){.bgrp .btn.sm{padding:0 8px}.cb-r{flex-direction:column;align-items:stretch}.cb-r #b-changed{width:100%}.bgrp{width:100%}.bgrp .btn.sm{flex:1 1 0}}
+@media (min-width:960px){.casehd .hnote .hn-t{white-space:nowrap}}
 @media (min-width:960px){.band.casehd{grid-template-columns:minmax(0,1fr) auto;gap:16px 24px}.cb-r{justify-content:flex-end;flex-wrap:nowrap}}
 .chd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin:0 0 6px}.chd-t{min-width:0;flex:1 1 320px}.chd h2{margin:6px 0 4px;font:600 clamp(1.4rem,5vw,1.8rem)/1.2 var(--serif)}
 .chd-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chd-m{flex:1 1 100%;margin:0}.chd-m:empty{display:none}
@@ -488,7 +494,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 </section>
 <section id="v-case" class="hidden">
   <a class="back" id="back-case" href="#/cases">&larr; Cases</a>
-  <div class="band casehd">
+  <div class="band cases casehd">
     <div class="cb-l">
       <h2 id="case-title" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5"></h2>
       <div class="chrow" id="case-meta"></div>
@@ -497,9 +503,11 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <div class="cb-r chd-a">
       <button class="btn primary" id="b-changed" type="button">Something changed</button>
       <button class="btn sm hidden" id="b-compare" type="button">Compare drafts</button>
-      <button class="btn sm hidden" type="button" id="case-follow" aria-pressed="false"></button>
-      <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
-      <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
+      <div class="bgrp" role="group" aria-label="Case actions">
+        <button class="btn sm hidden" type="button" id="case-follow" aria-pressed="false"></button>
+        <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
+        <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
+      </div>
     </div>
   </div>
   <p class="note chd-m" id="case-follow-msg" role="status"></p>
