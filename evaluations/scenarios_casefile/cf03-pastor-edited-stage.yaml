@@ -1,0 +1,13 @@
+id: cf03-pastor-edited-stage
+playbook: detention
+intake: Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration
+  officers outside his workplace in Aurora around 6 PM yesterday. She does not know if the officers showed
+  a warrant. Jose has lived here 14 years. They have two children, 8 and 11, both US citizens. Maria is
+  afraid to leave the house tomorrow. She wants to know what to do tonight.
+output_language: es
+pastor_actions:
+  2:
+    edit: 'Sus derechos básicos: guardar silencio y no firmar nada sin hablar con un abogado. EDITADO-POR-PASTOR-7Q.'
+expected: The saved stage 2 page holds the pastor's edit, and the index says the case was edited.
+edit_marker: EDITADO-POR-PASTOR-7Q
+edit_stage: 2

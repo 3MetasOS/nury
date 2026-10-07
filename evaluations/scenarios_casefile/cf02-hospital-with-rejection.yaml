@@ -1,0 +1,12 @@
+id: cf02-hospital-with-rejection
+playbook: hospital
+intake: Pastor, it's Rosa Delgado from our congregation. My father, Luis, was brought to St. Mary's Hospital
+  emergency room about an hour ago. They said it might be his heart. I'm in the waiting room with my mother.
+  We speak Spanish at home and the staff keeps talking fast. I don't understand what they are telling
+  us and I'm scared. What should we do right now?
+output_language: es
+pastor_actions: {}
+expected: Same checks on the hospital playbook; no immigration text in the folder.
+fault_injection:
+  stage: 2
+  times: 1
