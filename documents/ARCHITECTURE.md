@@ -77,5 +77,21 @@ After the pastor approves a package, Nury can save it as a **case file**: a loca
 - **Next-steps map.** One SVG per case: lanes for tonight, this week, questions still open, and who to call. It shows steps and questions, never outcomes. No future-tense claims about the case.
 - **Later (not before submission):** a possible-paths map from vetted process sources (`pathways.json` per playbook), and a case update loop where Nury proposes page edits and the pastor approves each one.
 
+## Privacy layer: pseudonymize before anything leaves the device (decided by Juan 2026-10-07)
+Nury sends no direct identifiers to any model. A **PrivacyClient** wraps the Gloo client (the engine already takes `client=`, so the core does not change).
+- **Outbound:** names, phone numbers, emails, street addresses, dates of birth, A-numbers and case numbers are replaced with tokens (`[PERSON_1]`, `[PHONE_1]`, `[PLACE_1]`...) before the request is sent. Places are generalized to the city or state level when a token would break the meaning.
+- **Mapping stays local.** The token map lives in memory for the run and in the case file on the pastor's machine. It is never sent anywhere.
+- **Inbound:** the response is detokenized locally, so the pastor sees real names. The family-facing message reads naturally.
+- **Detection:** deterministic rules for phones, emails, IDs, dates and addresses; for names, the pastor confirms a **protected terms** list on the intake screen (Nury proposes capitalized words it found; the pastor adds or removes). The pastor stays in charge of what counts as protected.
+- **Honest limit:** this removes direct identifiers. Context ("14 years", "his workplace") can still hint at who a person is. We say that plainly.
+- **Proof:** a leak test sends a synthetic intake full of canary names and numbers and checks the captured outbound request: none of them may appear. The same wrapper covers the eval harness's calls to Gloo; Jev only ever sees synthetic families.
+- On by default in the app and in the eval adapter.
+
+## Case revision: reload a case and run a second path (decided by Juan 2026-10-07)
+A pastor reopens a saved case, records **what happened** (a step, and whether it went as hoped, did not, or is unknown, in the pastor's words), and Nury re-runs the affected stages with the new facts. Never a prediction; it is a record plus a new draft.
+- Built on existing pieces: the case file holds the approved text; a revision builds a new `CaseState` with the earlier approved stages kept, the update appended to the intake, and runs the stages from triage on (new facts always re-run triage), through the same correction loop and approval gates.
+- The case keeps **versions**: `v1` stays untouched; `v2` is saved beside it with a change log (what the pastor reported, which stages were re-run, what changed). The pastor can compare v1 and v2.
+- Revision runs go through the PrivacyClient like every other run.
+
 ## Rules that stay
 Vetted sources only. No open web. No send path. Nury is not a pastor. Humanitarian, never political. Keys from the environment only.
