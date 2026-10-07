@@ -22,3 +22,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - First live call: success, 1.6 s, 870 input / 4 output tokens, model gloo-anthropic-claude-sonnet-4.6. Key never printed or committed.
 - Vetted data copied to `code/nury/data`.
 - Next: stage registry, engine (chaining, correction loop, gates, audit), then `code/INTERFACE.md`.
+
+## 4. 2026-10-06 19:45 MDT — Description draft v1, video storyboard (hack-ninja, hack-video)
+
+- hack-ninja: `presentation/description.txt` v1, 238 words. Decision: the scorecard sentence ships only with real numbers from hack-artisans. If none by Oct 7 16:00 MDT, the whole sentence is cut. Commit cc817a8.
+- hack-video: `video/STORYBOARD.md`, 10 shots, 90 s, draft voiceover about 105 words. Tooling: ffmpeg, Chrome capture at 390x844, no paid editor. The unsafe draft text is never shown on screen. Commit 032b777.
+- Decision: "max 3 tries" means 3 attempts total (first draft + 2 regenerations), then escalate. Matches PRODUCT.md and the description.
+- Open: who reads the voiceover (Juan or TTS), needed by Oct 7 17:00. Seeded forced rejection requested from hack-jedi for the demo.
