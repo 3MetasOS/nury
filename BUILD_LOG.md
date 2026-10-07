@@ -292,3 +292,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Counts: 28 entries = 25 providers (18 approved, 7 held as Pending Renewal) + 3 official source pages (approved). The 18 approved providers are the 4 pro bono providers plus 14 roster-only organizations; RMIAN and Connect Immigration appear on both lists and count once. 21 approved entries in all; no entry counted twice.
 - Nury uses only approved entries; held entries are never used or shown. It never says "free" (the roster does not say so) and always carries "listed does not mean recommended".
 - Next: hack-jedi wires approved entries after the church network v1.
+
+## 42. 2026-10-06 21:19 MDT — Capacity honesty and rebalancing
+
+- hack-artisans reported "full": about 15 hours of work against 17.7 hours to 15:00 on Oct 7. Progress: case-file UI built and checked; 3 case-file scenarios pass live; the red-team panel is about 70% (first validation: gpt-5.4 and llama catch 8 of 8 injected problems but flag every safe scenario, so they are advisory; gemini's 13 errors were a parser bug, fixed; about $0.60 per run).
+- Decision (hack-sensei): move work instead of dropping Juan's priorities. The "Our network" screen and the skills before/after run go to hack-jedi (separate files, no collision). The attacker intakes go to hack-ninja (non-Claude attacker model on Gloo, reviewed by a person; hack-artisans only runs them). hack-artisans keeps the panel, privacy step, case-file loose ends, revision (cut 15:00), network scenarios and the final scored runs.
+- Learning: asking for honest capacity before adding work found the over-commitment early. The final scored run starts only when the core is frozen (08:00) and privacy is wired in the adapter.
