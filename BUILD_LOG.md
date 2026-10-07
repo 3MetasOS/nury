@@ -355,3 +355,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Slot B (hack-jedi, `tools/live_checks.py`): five checks, six pipelines, all PASS, $0.545 total. a) detention 01, Aurora CO, demo network and privacy on: church contact present, official-list section with the caveat, nothing called free. b) detention 18, Mesa AZ: church contact listed, no Colorado official list. c) detention 20: completed. d) hospital h01 with the demo network: resources list church contacts. f) forced rejection on stage 2 for detention 01 and hospital h01: each stage 2 took 2 attempts and passed.
 - Honest limits (hack-jedi): the pass conditions are string checks and the engine's own checks; the script saved no texts; one pipeline per check is evidence, not a rate; per-stage attempt counts were not printed. No bugs found; nothing changed.
 - Next: slot C (hack-artisans) case file, revision, app end to end, network scenarios; then freeze declaration and the final scored runs.
+
+## 52. 2026-10-06 21:43 MDT — Logo chosen by Juan: option C (outline lantern)
+
+- Options by hack-ninja (`branding/options.html`): A peaked lantern (recommended), B arched lantern on a cord loop, C outline lantern. Decision (Juan): C.
+- Known limit of C: thin at 16 px. Mitigation: a heavier-stroke small-size variant for the favicon and sizes under 24 px.
+- To apply: brand kit (`branding/`), deck, app header and favicon, video end card, hub.
