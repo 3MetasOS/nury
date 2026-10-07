@@ -34,7 +34,21 @@ textarea{min-height:170px;resize:vertical}
 .row.two{grid-template-columns:1fr 1fr}
 .steps{display:flex;gap:6px;margin-bottom:14px}
 .step{flex:1;height:6px;border-radius:3px;background:var(--surface-2)}
-.step.done{background:var(--green)}.step.work{background:var(--amber)}.step.bad{background:var(--red)}
+.step{transition:background .3s cubic-bezier(.16,1,.3,1)}
+.step.done{background:var(--green)}.step.work{background:var(--amber);animation:lantern 1.8s ease-in-out infinite}
+.step.chk{background:var(--amber)}.step.ready{background:var(--amber)}.step.bad{background:var(--red)}
+@keyframes lantern{0%,100%{opacity:.5;box-shadow:0 0 0 0 rgba(232,163,61,0)}50%{opacity:1;box-shadow:0 0 12px 1px rgba(232,163,61,.5)}}
+@keyframes fadein{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+.stage-of{margin:0 0 8px;font-size:13px;color:var(--muted)}
+.dot{flex:none;width:9px;height:9px;border-radius:50%;background:var(--muted)}
+.dot.busy{background:var(--amber);animation:lantern 1.8s ease-in-out infinite}
+.dot.ok{background:var(--green)}.dot.warn{background:var(--amber)}.dot.err{background:var(--red)}
+.elapsed{margin-left:auto;white-space:nowrap;flex:none;font-variant-numeric:tabular-nums;font-size:13px;opacity:.8}
+.strip{display:flex;align-items:center;gap:10px}
+.strip.busy{background:var(--surface);color:var(--muted);border:1px solid var(--line)}
+.okmark{display:inline-block;vertical-align:-3px;margin-right:8px;color:var(--green);animation:fadein .45s cubic-bezier(.16,1,.3,1)}
+.dock.idle .btn{opacity:.45}
+@media (prefers-reduced-motion:reduce){.step.work,.dot.busy,.okmark{animation:none}.step{transition:none}.pick{transition:none}}
 .strip{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
 .strip.warn{background:var(--amber-soft);color:var(--amber)}.strip.ok{background:var(--green-soft);color:var(--green)}
 .strip.err{background:var(--red-soft);color:var(--red)}
@@ -98,8 +112,12 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 <section id="v-pipe" class="hidden">
   <button class="back" id="back-pipe">&larr; All crises</button>
   <div class="steps" id="steps"></div>
-  <div id="strip" class="strip hidden"></div>
-  <div class="card" id="work"><h2 id="work-title"></h2><p class="note" id="work-msg"></p></div>
+  <p class="stage-of" id="stage-of"></p>
+  <div id="strip" class="strip busy" role="status" aria-live="polite"><span class="dot" id="dot"></span><span id="strip-text"></span><span class="elapsed" id="elapsed"></span></div>
+  <div class="card" id="work" aria-busy="true"><h2 id="work-title"></h2>
+    <div class="row dock idle" aria-hidden="true">
+      <button class="btn primary" disabled>Approve</button><button class="btn" disabled>Edit</button><button class="btn danger" disabled>Stop</button>
+    </div></div>
   <div class="card hidden" id="gate">
     <h2 id="g-title"></h2>
     <p class="rej hidden" id="g-rej"></p>
@@ -188,14 +206,26 @@ async function poll(){
   if(!sid)return;
   const s=await api("/api/session/"+sid);
   if(s.error&&!s.stages){return}
-  $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");
-    d.className="step "+(x.status==="approved"||x.status==="edited"?"done":x.status==="working"?"work":["stopped","escalated","error"].includes(x.status)?"bad":"");
-    d.title=x.title;return d}));
+  const P=s.progress||{phase:"idle"},N=s.stages.length;
+  const cls=x=>{if(x.status==="approved"||x.status==="edited")return"done";
+    if(["stopped","escalated","error"].includes(x.status)||(x.id===P.stage&&P.phase==="escalated"))return"bad";
+    if(x.id!==P.stage)return"";
+    return{writing:"work",regenerating:"work",checking:"chk",ready:"ready"}[P.phase]||""};
+  $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");d.className="step "+cls(x);d.title=x.title;return d}));
+  const idx=s.stages.findIndex(x=>x.id===P.stage);
+  $("stage-of").textContent=idx>=0?`Stage ${idx+1} of ${N}`:"";
   renderLog($("log"),s.log);
-  const strip=$("strip");
-  if(s.strip){strip.classList.remove("hidden");
-    strip.className="strip "+(s.strip==="passed"?"ok":"warn");strip.textContent=s.strip==="passed"?"Passed":s.strip}
-  else strip.className="strip hidden";
+  const halted0=s.halted||s.error,title=idx>=0?s.stages[idx].title.replace(/^\d+\.\s*/,"").toLowerCase():"draft";
+  let text,kind,dot;
+  if(halted0){text="Nury stopped. Nothing was sent.";kind="busy";dot="err"}
+  else if(P.phase==="regenerating"){text=`Draft rejected by guardrail. Regenerating (${P.attempt} of 3).`;kind="warn";dot="busy"}
+  else if(P.phase==="checking"){text="Checking safety rules\u2026";kind="busy";dot="busy"}
+  else if(P.phase==="ready"){text=s.gate&&s.gate.metrics.self_corrections?"Passed":"Ready for your review";kind="ok";dot="ok"}
+  else{text=`Nury is working on ${title}\u2026`;kind="busy";dot="busy"}
+  const st=$("strip");st.className="strip "+kind;$("dot").className="dot "+dot;
+  if($("strip-text").textContent!==text)$("strip-text").textContent=text;
+  $("elapsed").textContent=halted0||P.phase==="idle"?"":(P.phase==="ready"?`took ${P.elapsed_s} s`:`${P.elapsed_s} s`);
+  $("strip").classList.toggle("hidden",P.phase==="idle"&&!halted0);
   if(s.done&&!s.halted&&!s.error){clearInterval(timer);
     $("pkg").replaceChildren(...s.stages.map(x=>{const c=document.createElement("div");c.className="card";
       const h=document.createElement("h2");h.textContent=x.title;
@@ -217,14 +247,15 @@ async function poll(){
   if(g){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
-      $("g-title").textContent=g.title;$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
+      $("g-title").textContent=g.title;
+      $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
       const rj=g.metrics.self_corrections;$("g-rej").classList.toggle("hidden",!rj);
       $("g-rej").textContent=rj===1?"Rejected once, regenerated, passed.":`Rejected ${rj} times, regenerated, passed.`;
       $("g-draft").className=g.id==="triage"?"plain":"family";
       const m=g.metrics;$("g-metrics").textContent=`Checked ${m.attempts} time${m.attempts>1?"s":""}`+(m.self_corrections?`, ${m.self_corrections} self-correction${m.self_corrections>1?"s":""}`:"")+`, ${m.latency_s} s`}
   }else if(!halted){
     const cur=s.stages.find(x=>x.status==="working")||s.stages.find(x=>x.status==="pending");
-    $("work-title").textContent=cur?cur.title:"Working";$("work-msg").textContent="Nury is drafting and checking. A stage takes 5 to 20 seconds."}
+    $("work-title").textContent=cur?cur.title:"Working"}
 }
 loadSelect();
 </script>
