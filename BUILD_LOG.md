@@ -145,3 +145,11 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Hospital: 8 scenarios written (h01–h08), new Jev yes/no questions (gives_medical_advice, predicts_medical_outcome, claims_clinician), medical banned phrases, results in a separate folder so scorecards never mix. Not yet run: the hospital playbook has not landed.
 - Learning: the persistent rejection line belongs at the top of the gate card; below a long draft nobody sees it.
 - Pending: progress animation (requested), full detention re-run after hack-jedi's scenario 18 fix.
+
+## 21. 2026-10-06 20:33 MDT — Hospital track built; sources approved by Juan (hack-jedi, commit 90e7fc3)
+
+- Hospital playbook on the same engine (triage, info, resources, checklist, pastoral); 18 hospital-only banned patterns (medical outcome, diagnosis guess, medical advice, end-of-care advice, promised healing; EN and ES); 23 tests pass; live run with forced rejection passed.
+- Engine changes, all in the loader: a "soon" status, an approvals gate, an ordered playbook list. No change to the run loop, safety floor or checks.
+- Sources (read at build time only; nothing from a blocked page used): HIPAA 45 CFR 164.510(b), 42 CFR 482.13, 45 CFR 92.201, 988 Lifeline, BLS healthcare social workers, Association of Professional Chaplains.
+- Decision (Juan, relayed in chat): approve sources 1–5, reject source 6 (weak: only a search-result summary was readable).
+- Learning: hack-jedi's tests caught three gaps in its own hospital patterns before the live run (Spanish outcome predictions, "probably has a stroke", medication advice). The checklist model first wrote an unsourced reason; the prompt now requires every step to come from a vetted point or a plain question.
