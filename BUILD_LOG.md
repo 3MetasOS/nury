@@ -165,3 +165,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Decision (Juan, "go"): add an eval-time adversarial panel. Three non-Claude reviewers through the same Gloo key (gpt-5.4, gemini-3.1-pro, llama-4-maverick) look for advice, predictions, clergy/clinician claims and unsourced facts, and quote what they find. Any finding or disagreement goes to Juan's human-review canvas. An attacker model writes 10–20 adversarial intakes; the ones that break Nury become scenarios and go in FAILURE_LOG.md.
 - Why: Nury's writer is Claude; a reviewer from another maker has different blind spots. Layers: deterministic checks, Jev, red-team panel, human.
 - Not in the product runtime: a second model per stage would add seconds and risk the demo. Budget under $5. Owner: hack-artisans, hack-jedi advising.
+
+## 24. 2026-10-06 20:36 MDT — Hospital track live (hack-jedi, commit 44c8bcd)
+
+- approvals.json records Juan's decision: sources 1–5 approved, source 6 rejected (relayed by hack-sensei; recorded by hack-jedi). The loader drops the rejected source; hospital resources has 4 entries and no chaplaincy anywhere (a test asserts it).
+- /api/playbooks now lists detention live, hospital live, sudden-death soon, house-fire soon. 24 tests pass (verified by hack-sensei). Live hospital run with a forced rejection on the info stage: rejected once (banned_phrase), then passed; package_complete.
+- Not yet claimed in the pitch: hospital needs its scored scenarios (h01–h08) first.
