@@ -150,7 +150,7 @@ td:first-child code{white-space:nowrap}
         +-- any problem? --&gt; regenerate, with the reasons and never the draft  (3 tries)
         |                    still failing after 3 --&gt; &quot;I'll handle this manually&quot;
         v
-   APPROVAL GATE      the pastor sees only a draft that passed. Approve / Edit / Stop
+   APPROVAL GATE      the pastor sees a draft after the checks that ran. Approve / Edit / Stop
         |
         v
  Package: every approved stage. Copy or download. The pastor shares it by hand.
@@ -168,7 +168,7 @@ td:first-child code{white-space:nowrap}
 <li><strong>Detokenize.</strong> The reply is converted back so the pastor sees real names. A mangled token is repaired. An unknown token makes Nury ask again, twice at most, and then shows a visible gap. <span class="st st-built-off">BUILT, offline</span>.</li>
 <li><strong>Named checks.</strong> Plain code tests the draft against the stage's rules and the safety floor. Section 4 lists them. <span class="st st-built-live">BUILT, live</span>.</li>
 <li><strong>Jev gate.</strong> If the draft passed the named checks, one batched call to the Jev decision API (from TypeSafe) asks that stage's yes/no questions, for example "Does any text give legal advice about this family's case?" Each question is written so that "yes" is the unsafe answer. At or over the question's line (0.50, or 0.60 for the facts question) the draft is rejected. From 0.30 up to the line it passes and the audit log records "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate. <span class="st st-built-live">BUILT, live</span> on three scenarios; see section 2.</li>
-<li><strong>The loop.</strong> A rejected draft goes back to the model with the reasons, in plain words, never the rejected text. Three tries in all. After the third failure the stage ends with no draft shown and the line "I'll handle this manually." The pastor never sees an unsafe draft. <span class="st st-built-live">BUILT, live</span>.</li>
+<li><strong>The loop.</strong> A rejected draft goes back to the model with the reasons, in plain words, never the rejected text. Three tries in all. After the third failure the stage ends with no draft shown and the line "I'll handle this manually." A rejected draft is held back, not shown. The checks are tripwires, not proofs, so a draft that passes can still be wrong, and the pastor approves every stage. <span class="st st-built-live">BUILT, live</span>.</li>
 <li><strong>Scripture</strong> (pastoral message only). The model returns a verse id from an approved list and at most two short why-lines. The app inserts the exact verse text. <span class="st st-built-live">BUILT, live</span>. See section 7.</li>
 <li><strong>Approval gate.</strong> The pastor sees a draft that passed. Approve moves on. Edit replaces the text, and a name typed in an edit is protected before the next stage runs. Stop ends the run with "I'll handle this manually." and offers the vetted sources. <span class="st st-built-live">BUILT, live</span>.</li>
 <li><strong>Package.</strong> Every approved stage, with Copy all and Download, and the line "Nury never sends anything. You do." <span class="st st-built-live">BUILT, live</span>.</li>
@@ -211,7 +211,7 @@ td:first-child code{white-space:nowrap}
 <h2 id="2-how-the-engine-works">2. How the engine works<a class="anc" href="#2-how-the-engine-works" aria-label="Link to this section">#</a></h2>
 <p>This section explains how Nury's core works: the cycle for one stage, the five-stage run, a real trace, the files, what we chose not to build, and where the design came from. Written by hack-jedi from the code. The function names, the file line counts and the prework quotes were checked against the repo on 2026-10-07. Line numbers are for <code>code/nury/engine.py</code> at the final build and may move; the function names will not. The raw trace file is <code>documents/product/trace_detention_01.jsonl</code>.</p>
 <h3 id="the-cycle-for-one-stage">The cycle for one stage<a class="anc" href="#the-cycle-for-one-stage" aria-label="Link to this section">#</a></h3>
-<p>One stage is one call of <code>run_stage</code> (<code>engine.py</code> line 154). The pastor sees only a draft that passed every layer below, or a plain "I'll handle this manually."</p>
+<p>One stage is one call of <code>run_stage</code> (<code>engine.py</code> line 154). The pastor sees a draft only after it passed the layers below that ran (the Jev gate fails open when Jev is unreachable, and the audit log says so), or a plain "I'll handle this manually." The checks are tripwires, not proofs.</p>
 <ol>
 <li><strong>Read the inputs.</strong> The engine loads the playbook and the stage, and reads the fields from the approved triage text (line 169). A stage with a <code>when</code> condition that does not match is skipped (line 172). It gathers the approved text of the stages this one depends on (line 189) and builds the stage input (line 192, <code>playbook.build_input</code>).</li>
 <li><strong>Fill in the sources.</strong> Fixed sources come from the playbook's vetted JSON. Dynamic sources are chosen at run time: the church's own contacts, the official list for the state, and the approved verses (<code>dynamic_source</code>, line 89). The audit records which entries were offered (line 185).</li>
