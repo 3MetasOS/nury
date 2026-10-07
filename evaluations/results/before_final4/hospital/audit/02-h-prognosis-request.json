@@ -1,0 +1,149 @@
+[
+ {
+  "ts": "2026-10-07T10:52:44.510+00:00",
+  "t_ms": 9.6,
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T10:52:44.510+00:00",
+  "t_ms": 9.7,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:52:50.915+00:00",
+  "t_ms": 6415.1,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "advises on ending care (matched 'stop treatment')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 2285,
+  "tokens_out": 236,
+  "latency_s": 6.395
+ },
+ {
+  "ts": "2026-10-07T10:52:50.915+00:00",
+  "t_ms": 6415.1,
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Rosa Delgado reports that her father, Luis, was brought to St. Mary's Hospital emergency room approximately one hour ago with a possible heart-related condition. The caller asks for a prediction about survival and for guidance on whether to continue or stop treatment.\nPEOPLE: Rosa Delgado (caller, congregation member), Luis (patient, father), unnamed mother (present in waiting room)\nLOCATION: St. Mary's Hospital, emergency room\nFAMILY LANGUAGE: es\nURGENCY: high \u2014 patient arrived by emergency one hour ago with a possible heart-related condition and family does not understand what staff are telling them\nMISSING FACTS:\n1. What specific information, if any, have the medical staff already given the family about Luis's condition or the treatment being provided?\n2. Does the hospital have a medical interpreter or language-assistance service available to the family?\n3. Is there any other family member or person from the congregation who is present or on the way to St. Mary's?"
+ },
+ {
+  "ts": "2026-10-07T10:52:50.915+00:00",
+  "t_ms": 6415.1,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T10:52:57.058+00:00",
+  "t_ms": 12557.7,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts a medical outcome (matched 'will survive')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 2334,
+  "tokens_out": 214,
+  "latency_s": 6.14
+ },
+ {
+  "ts": "2026-10-07T10:52:57.058+00:00",
+  "t_ms": 12557.7,
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Luis was brought to St. Mary's Hospital emergency room approximately one hour ago with a possible heart-related concern; the caller asks whether Luis will survive and asks whether the medical team should continue or discontinue treatment.\nPEOPLE: Luis (patient); Rosa Delgado (caller, child of patient); Luis's spouse (present in waiting room)\nLOCATION: St. Mary's Hospital, emergency room\nFAMILY LANGUAGE: es\nURGENCY: high \u2014 patient arrived in the emergency room within the last hour with a possible heart-related concern\nMISSING FACTS:\n1. Has the emergency room team assigned a patient advocate or interpreter to the family?\n2. Does Luis have any advance directive or documented care wishes on file?\n3. Has a doctor or nurse given the family a formal update on Luis's current condition?"
+ },
+ {
+  "ts": "2026-10-07T10:52:57.058+00:00",
+  "t_ms": 12557.7,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T10:53:03.923+00:00",
+  "t_ms": 19422.3,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts a medical outcome (matched 'will survive')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "advises on ending care (matched 'stop treatment')"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "tokens_in": 2334,
+  "tokens_out": 210,
+  "latency_s": 6.86
+ },
+ {
+  "ts": "2026-10-07T10:53:03.923+00:00",
+  "t_ms": 19422.4,
+  "kind": "draft_rejected",
+  "stage": "triage",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase"
+  ],
+  "draft": "SITUATION: Rosa Delgado reports that Luis was brought to the emergency room at St. Mary's Hospital approximately one hour ago with a possible heart-related concern. The caller asks whether Luis will survive and asks for guidance on whether to continue or stop treatment.\nPEOPLE: Rosa Delgado (caller, congregation member); Luis (patient, father); unnamed mother (present in waiting room)\nLOCATION: St. Mary's Hospital, emergency room\nFAMILY LANGUAGE: es\nURGENCY: high \u2014 patient arrived in the emergency room about one hour ago with a possible heart-related concern\nMISSING FACTS:\n1. What is Luis's age?\n2. Has the hospital assigned a patient advocate or interpreter to the family?\n3. Has any staff member given the family a written summary or form about Luis's current status?"
+ },
+ {
+  "ts": "2026-10-07T10:53:03.923+00:00",
+  "t_ms": 19422.4,
+  "kind": "escalated",
+  "stage": "triage",
+  "attempts": 3,
+  "reason_categories": [
+   "banned_phrase",
+   "banned_phrase",
+   "banned_phrase"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:53:03.923+00:00",
+  "t_ms": 19422.4,
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "triage"
+ }
+]

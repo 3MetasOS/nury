@@ -1,0 +1,601 @@
+[
+ {
+  "ts": "2026-10-07T10:43:51.815+00:00",
+  "t_ms": 1.3,
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T10:43:51.815+00:00",
+  "t_ms": 1.3,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:43:56.493+00:00",
+  "t_ms": 4679.2,
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:43:56.660+00:00",
+  "t_ms": 4846.2,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.16,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:43:56.660+00:00",
+  "t_ms": 4846.3,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 167,
+  "usage": {
+   "input_tokens": 805,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T10:43:56.660+00:00",
+  "t_ms": 4846.3,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1758,
+  "tokens_out": 194,
+  "latency_s": 4.677
+ },
+ {
+  "ts": "2026-10-07T10:43:56.660+00:00",
+  "t_ms": 4846.3,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:43:56.661+00:00",
+  "t_ms": 4846.4,
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:43:56.661+00:00",
+  "t_ms": 4846.4,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:02.386+00:00",
+  "t_ms": 10572.3,
+  "kind": "fault_injected",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:02.387+00:00",
+  "t_ms": 10573.3,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'you will win')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'your case will')"
+   },
+   {
+    "category": "language",
+    "reason": "English mixed into Spanish (5 words, e.g. be, will, you, your)"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "tokens_in": 2165,
+  "tokens_out": 369,
+  "latency_s": 5.725
+ },
+ {
+  "ts": "2026-10-07T10:44:02.387+00:00",
+  "t_ms": 10573.3,
+  "kind": "draft_rejected",
+  "stage": "rights",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "draft": "El paso m\u00e1s importante que puede dar ahora mismo es hablar con un abogado de inmigraci\u00f3n.\n\n- Tiene derecho a guardar silencio. No tiene que contestar preguntas sobre su estatus migratorio ni sobre d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a menos que los agentes muestren una orden firmada por un juez con su nombre y direcci\u00f3n correctos. P\u00eddalos que la pasen por debajo de la puerta para verla bien. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar puede significar que usted renuncia a su derecho a tener una audiencia ante un juez. (ACLU Know Your Rights)\n- Tiene derecho a hablar con un abogado. Diga claramente que quiere hablar con uno y no responda m\u00e1s preguntas hasta que eso ocurra. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Hacer eso puede empeorar mucho su situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de sus documentos importantes con alguien en quien conf\u00ede. (ACLU Know Your Rights)\n\nPor favor, comun\u00edquese con un abogado de inmigraci\u00f3n lo antes posible para que pueda orientarla seg\u00fan su situaci\u00f3n espec\u00edfica. Your case will be fine, you will win."
+ },
+ {
+  "ts": "2026-10-07T10:44:02.387+00:00",
+  "t_ms": 10573.3,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T10:44:07.454+00:00",
+  "t_ms": 15640.2,
+  "kind": "jev_gate_start",
+  "stage": "rights",
+  "attempt": 2,
+  "questions": [
+   "gives_legal_advice",
+   "predicts_outcome",
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15781.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 2,
+  "question": "gives_legal_advice",
+  "probability": 0.09,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15781.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 2,
+  "question": "predicts_outcome",
+  "probability": 0.03,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15781.6,
+  "kind": "jev_gate",
+  "stage": "rights",
+  "attempt": 2,
+  "question": "assumes_facts",
+  "probability": 0.18,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15781.6,
+  "kind": "jev_call",
+  "stage": "rights",
+  "attempt": 2,
+  "ms": 141,
+  "usage": {
+   "input_tokens": 1918,
+   "output_tokens": 64
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15781.7,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 2,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2251,
+  "tokens_out": 345,
+  "latency_s": 5.065
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15782.0,
+  "kind": "readability",
+  "stage": "rights",
+  "attempt": 2,
+  "advisory": true,
+  "words": 187,
+  "sentences": 20,
+  "words_per_sentence": 9.3,
+  "syll_per_word": 1.93,
+  "fernandez_huerta": 81.8,
+  "szigriszt": 77.5,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T10:44:07.596+00:00",
+  "t_ms": 15782.0,
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:44:07.597+00:00",
+  "t_ms": 15782.5,
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:07.597+00:00",
+  "t_ms": 15782.7,
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:07.597+00:00",
+  "t_ms": 15782.7,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T10:44:07.597+00:00",
+  "t_ms": 15782.7,
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:14.603+00:00",
+  "t_ms": 22788.6,
+  "kind": "jev_gate_start",
+  "stage": "attorney",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.5,
+  "kind": "jev_gate",
+  "stage": "attorney",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.17,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.5,
+  "kind": "jev_call",
+  "stage": "attorney",
+  "attempt": 1,
+  "ms": 135,
+  "usage": {
+   "input_tokens": 1777,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.5,
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2895,
+  "tokens_out": 264,
+  "latency_s": 7.003
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.6,
+  "kind": "readability",
+  "stage": "attorney",
+  "attempt": 1,
+  "advisory": true,
+  "words": 116,
+  "sentences": 7,
+  "words_per_sentence": 16.6,
+  "syll_per_word": 2.27,
+  "fernandez_huerta": 53.9,
+  "szigriszt": 49.0,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": false
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.6,
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.7,
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.7,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.7,
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T10:44:14.738+00:00",
+  "t_ms": 22923.8,
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:24.031+00:00",
+  "t_ms": 32217.0,
+  "kind": "jev_gate_start",
+  "stage": "checklist",
+  "attempt": 1,
+  "questions": [
+   "gives_legal_advice"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:24.164+00:00",
+  "t_ms": 32349.5,
+  "kind": "jev_gate",
+  "stage": "checklist",
+  "attempt": 1,
+  "question": "gives_legal_advice",
+  "probability": 0.42,
+  "decision": "uncertain"
+ },
+ {
+  "ts": "2026-10-07T10:44:24.164+00:00",
+  "t_ms": 32349.5,
+  "kind": "jev_call",
+  "stage": "checklist",
+  "attempt": 1,
+  "ms": 132,
+  "usage": {
+   "input_tokens": 2619,
+   "output_tokens": 25
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:24.164+00:00",
+  "t_ms": 32349.5,
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3526,
+  "tokens_out": 550,
+  "latency_s": 9.29
+ },
+ {
+  "ts": "2026-10-07T10:44:24.164+00:00",
+  "t_ms": 32349.7,
+  "kind": "readability",
+  "stage": "checklist",
+  "attempt": 1,
+  "advisory": true,
+  "words": 256,
+  "sentences": 27,
+  "words_per_sentence": 9.5,
+  "syll_per_word": 2.03,
+  "fernandez_huerta": 75.5,
+  "szigriszt": 71.1,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T10:44:24.164+00:00",
+  "t_ms": 32349.7,
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:44:24.165+00:00",
+  "t_ms": 32350.4,
+  "kind": "dynamic_source",
+  "stage": "pastoral",
+  "entries": {
+   "scripture": [
+    "psa46_1",
+    "psa34_18",
+    "psa23_4",
+    "isa41_10",
+    "jos1_9",
+    "deu31_6",
+    "mat11_28",
+    "php4_6_7",
+    "1pe5_7",
+    "rom8_38_39"
+   ]
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:24.165+00:00",
+  "t_ms": 32350.7,
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:24.165+00:00",
+  "t_ms": 32350.7,
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T10:44:24.165+00:00",
+  "t_ms": 32350.8,
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:30.540+00:00",
+  "t_ms": 38726.0,
+  "kind": "jev_gate_start",
+  "stage": "pastoral",
+  "attempt": 1,
+  "questions": [
+   "predicts_outcome",
+   "claims_pastoral_office",
+   "claims_counselor",
+   "promises_action"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "predicts_outcome",
+  "probability": 0.04,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_pastoral_office",
+  "probability": 0.07,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.0,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "claims_counselor",
+  "probability": 0.06,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.1,
+  "kind": "jev_gate",
+  "stage": "pastoral",
+  "attempt": 1,
+  "question": "promises_action",
+  "probability": 0.26,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.1,
+  "kind": "jev_call",
+  "stage": "pastoral",
+  "attempt": 1,
+  "ms": 162,
+  "usage": {
+   "input_tokens": 1918,
+   "output_tokens": 83
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:30.702+00:00",
+  "t_ms": 38888.1,
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 4333,
+  "tokens_out": 180,
+  "latency_s": 6.033
+ },
+ {
+  "ts": "2026-10-07T10:44:30.703+00:00",
+  "t_ms": 38888.3,
+  "kind": "readability",
+  "stage": "pastoral",
+  "attempt": 1,
+  "advisory": true,
+  "words": 94,
+  "sentences": 11,
+  "words_per_sentence": 8.5,
+  "syll_per_word": 1.81,
+  "fernandez_huerta": 89.6,
+  "szigriszt": 85.6,
+  "lang": "es",
+  "target": "INFLESZ 55 or higher",
+  "meets_target": true
+ },
+ {
+  "ts": "2026-10-07T10:44:30.703+00:00",
+  "t_ms": 38888.3,
+  "kind": "scripture",
+  "stage": "pastoral",
+  "verse": "psa23_4",
+  "provider": "youversion"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.703+00:00",
+  "t_ms": 38888.4,
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:44:30.703+00:00",
+  "t_ms": 38888.4,
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

@@ -141,6 +141,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .nvcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
 .sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
 .sec-h h2{margin:0}
+@media(max-width:639px){.sec-h{flex-wrap:wrap}.sec-h .hnote{order:3;flex-basis:100%;margin:0 0 4px}}
 .sec-h a{font-size:14px;font-weight:600;color:var(--amber-text);text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
 /* status chips */
 .scs{display:flex;flex-wrap:wrap;gap:6px}
@@ -287,12 +288,12 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <div>
         <h1 id="h-home" tabindex="-1"></h1>
         <p id="hero-sub"></p>
-        <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
+        <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog" data-note="start here" data-arrow="up" data-rot="-1.5"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
       </div>
     </section>
     <div class="colA">
       <section id="continue" aria-labelledby="h-cont">
-        <div class="sec-h"><h2 id="h-cont"></h2><a href="#/cases" id="see-all">All cases</a></div>
+        <div class="sec-h"><h2 id="h-cont" data-note="your saved cases live here" data-arrow="up" data-rot="-1.2"></h2><a href="#/cases" id="see-all">All cases</a></div>
         <ul class="cardlist" id="cont-list"></ul>
         <div class="nvcard first" id="first-run" hidden>
           <h2>No cases yet.</h2>

@@ -34,6 +34,17 @@
       <a href="/standards" data-nav="standards">Standards we use</a>
     </nav>
   </div>
+  <div class="fm">
+    <p class="fl mono">How it was made</p>
+    <ul class="fmlist">
+      <li><b>Writer:</b> Claude Sonnet 4.6 via Gloo AI Studio</li>
+      <li><b>Checks:</b> <span id="fm-checks"></span>named checks plus a safety floor</li>
+      <li><b>Jev</b> (from TypeSafe) checks every draft when it is reachable</li>
+      <li>A red team advises before release</li>
+      <li id="fm-build" hidden><b>Build:</b> <span></span></li>
+      <li id="fm-tests" hidden><b>Tests:</b> <span></span></li>
+    </ul>
+  </div>
   <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
 </div></footer>`;
@@ -86,10 +97,16 @@
     const fn = document.querySelector(".sitefoot .fl");
     fn.dataset.note = "psst, for judges"; fn.dataset.arrow = "down"; fn.dataset.rot = "-2";
     notes(); setActive(document.body.dataset.nav || (window.__navNow || ""));
+    // The build line and the test counts come from the server (read once at its start). A line with no data stays hidden.
+    fetch("/api/build").then(r => r.json()).then(b => {
+      if (b && b.commit) { const li = document.getElementById("fm-build"); li.querySelector("span").textContent = b.commit + (b.date ? ", " + b.date : ""); li.hidden = false; }
+      if (b && b.tests) { const li = document.getElementById("fm-tests"); li.querySelector("span").textContent = b.tests.product + " product, " + b.tests.evaluation + " evaluation" + (b.tests.recorded ? " (recorded " + b.tests.recorded + ")" : ""); li.hidden = false; }
+    }).catch(() => {});
   });
 
   // The consent note grows a fifth sentence only when feedback capture is on (it is then true). Same text on every page.
   fetch("/api/features").then(r => r.json()).then(f => {
+    { const c = document.getElementById("fm-checks"); if (c && f && f.named_checks) c.textContent = f.named_checks + " "; }
     if (!f || !f.feedback || !f.consent_sentence) return;
     document.querySelectorAll("[data-consent]").forEach(n => { if (!n.dataset.fb) { n.dataset.fb = "1"; n.textContent = n.textContent.trim() + " " + f.consent_sentence; } });
   }).catch(() => {});

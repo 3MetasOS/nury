@@ -6,6 +6,7 @@ There is no send path: nothing here contacts the family.
 """
 import json
 import os
+import subprocess
 import re
 import threading
 import uuid
@@ -456,6 +457,28 @@ class Session:
                 "case_id": getattr(self, "case_id", None)}
 
 
+def _build_info():
+    """Read once at server start: the commit and its date from git, and the test counts from the last recorded run (a small JSON; missing means show nothing)."""
+    out = {}
+    root = Path(__file__).resolve().parent.parent.parent
+    try:
+        r = subprocess.run(["git", "-C", str(root), "log", "-1", "--format=%h|%cd", "--date=format:%Y-%m-%d %H:%M"], capture_output=True, text=True, timeout=5)
+        if r.returncode == 0 and "|" in r.stdout:
+            out["commit"], out["date"] = r.stdout.strip().split("|", 1)
+    except Exception:
+        pass
+    try:
+        t = json.loads((Path(__file__).resolve().parent / "test_counts.json").read_text())
+        if isinstance(t.get("product"), int) and isinstance(t.get("evaluation"), int):
+            out["tests"] = {"product": t["product"], "evaluation": t["evaluation"], "recorded": str(t.get("recorded", ""))}
+    except Exception:
+        pass
+    return out
+
+
+BUILD = _build_info()
+
+
 class H(BaseHTTPRequestHandler):
     timeout = 30      # seconds a connection may stall before the server drops it
 
@@ -592,6 +615,8 @@ class H(BaseHTTPRequestHandler):
             from app import rules_info
             d = rules_info.playbook_detail(p.split("/")[3])
             self._json(d if d else {"error": "unknown playbook"}, 200 if d else 404)
+        elif p == "/api/build":
+            self._json(BUILD)
         elif p == "/api/features":
             fb = False
             sentence = ""

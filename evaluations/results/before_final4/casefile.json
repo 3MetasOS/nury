@@ -1,0 +1,74 @@
+{
+ "checks": [
+  {
+   "id": "cf01-detention-with-rejection",
+   "pass": true,
+   "problems": [],
+   "rejected_drafts": 1
+  },
+  {
+   "id": "cf02-hospital-with-rejection",
+   "pass": true,
+   "problems": [],
+   "rejected_drafts": 1
+  },
+  {
+   "id": "cf03-pastor-edited-stage",
+   "pass": true,
+   "problems": [],
+   "rejected_drafts": 0
+  },
+  {
+   "id": "rv01-detention-revision",
+   "pass": true,
+   "problems": [],
+   "rejected_drafts": 0
+  },
+  {
+   "id": "rv02-hospital-revision",
+   "pass": true,
+   "problems": [],
+   "rejected_drafts": 0
+  }
+ ],
+ "usage": [
+  {
+   "run": "cf01-detention-with-rejection (v1)",
+   "in": 21188,
+   "out": 1958
+  },
+  {
+   "run": "cf02-hospital-with-rejection (v1)",
+   "in": 19381,
+   "out": 2601
+  },
+  {
+   "run": "cf03-pastor-edited-stage (v1)",
+   "in": 17727,
+   "out": 1489
+  },
+  {
+   "run": "rv01-detention-revision (v1)",
+   "in": 18769,
+   "out": 1503
+  },
+  {
+   "run": "rv01-detention-revision (v2)",
+   "in": 14465,
+   "out": 1485
+  },
+  {
+   "run": "rv02-hospital-revision (v1)",
+   "in": 16521,
+   "out": 1913
+  },
+  {
+   "run": "rv02-hospital-revision (v2)",
+   "in": 20920,
+   "out": 2408
+  }
+ ],
+ "tokens_in": 128971,
+ "tokens_out": 13357,
+ "cost_usd": 0.5873
+}

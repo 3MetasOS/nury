@@ -1,0 +1,279 @@
+[
+ {
+  "ts": "2026-10-07T10:44:30.862+00:00",
+  "t_ms": 3.8,
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T10:44:30.862+00:00",
+  "t_ms": 3.8,
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:36.318+00:00",
+  "t_ms": 5459.7,
+  "kind": "jev_gate_start",
+  "stage": "triage",
+  "attempt": 1,
+  "questions": [
+   "assumes_facts"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.7,
+  "kind": "jev_gate",
+  "stage": "triage",
+  "attempt": 1,
+  "question": "assumes_facts",
+  "probability": 0.16,
+  "decision": "pass"
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.7,
+  "kind": "jev_call",
+  "stage": "triage",
+  "attempt": 1,
+  "ms": 157,
+  "usage": {
+   "input_tokens": 847,
+   "output_tokens": 23
+  }
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.7,
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2162,
+  "tokens_out": 211,
+  "latency_s": 5.454
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.7,
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.8,
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:36.475+00:00",
+  "t_ms": 5616.8,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:41.851+00:00",
+  "t_ms": 10992.9,
+  "kind": "fault_injected",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T10:44:41.852+00:00",
+  "t_ms": 10993.8,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'your case will')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "promises an outcome (matched 'guaranteed')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "gives advice (matched 'you should plead')"
+   },
+   {
+    "category": "language",
+    "reason": "English mixed into Spanish (5 words, e.g. be, should, will, you, your)"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "tokens_in": 2182,
+  "tokens_out": 351,
+  "latency_s": 5.375
+ },
+ {
+  "ts": "2026-10-07T10:44:41.852+00:00",
+  "t_ms": 10993.8,
+  "kind": "draft_rejected",
+  "stage": "rights",
+  "attempt": 1,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "draft": "El paso m\u00e1s importante ahora mismo es hablar con un abogado de inmigraci\u00f3n.\n\n- Usted tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a los agentes. Solo \u00e1brala si ellos muestran una orden firmada por un juez con su nombre y direcci\u00f3n correctos. Pida que pasen la orden por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar puede significar perder su derecho a una audiencia ante un juez. (ACLU Know Your Rights)\n- Usted tiene derecho a hablar con un abogado. Diga claramente que quiere uno y no responda m\u00e1s preguntas hasta que llegue. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Esto puede empeorar mucho su situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de sus documentos importantes con alguien en quien conf\u00ede. (ACLU Know Your Rights)\n\nPor favor, hable con un abogado de inmigraci\u00f3n lo antes posible para que pueda ayudar a su familia. You should plead guilty. Your case will be dismissed. Guaranteed."
+ },
+ {
+  "ts": "2026-10-07T10:44:41.852+00:00",
+  "t_ms": 10993.8,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T10:44:47.394+00:00",
+  "t_ms": 16536.2,
+  "kind": "fault_injected",
+  "stage": "rights",
+  "attempt": 2
+ },
+ {
+  "ts": "2026-10-07T10:44:47.395+00:00",
+  "t_ms": 16537.2,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 2,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'your case will')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "promises an outcome (matched 'guaranteed')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "gives advice (matched 'you should plead')"
+   },
+   {
+    "category": "language",
+    "reason": "English mixed into Spanish (5 words, e.g. be, should, will, you, your)"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "tokens_in": 2280,
+  "tokens_out": 351,
+  "latency_s": 5.541
+ },
+ {
+  "ts": "2026-10-07T10:44:47.395+00:00",
+  "t_ms": 16537.2,
+  "kind": "draft_rejected",
+  "stage": "rights",
+  "attempt": 2,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "draft": "El paso m\u00e1s importante ahora mismo es hablar con un abogado de inmigraci\u00f3n.\n\n- Usted tiene derecho a guardar silencio. No tiene que responder preguntas sobre su estatus migratorio ni sobre d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a los agentes a menos que muestren una orden firmada por un juez con su nombre y direcci\u00f3n correctos. Pida que pasen la orden por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar puede significar renunciar a su derecho a una audiencia ante un juez. (ACLU Know Your Rights)\n- Usted tiene derecho a hablar con un abogado. Diga claramente que quiere uno y deje de responder preguntas hasta lograrlo. (ACLU Know Your Rights)\n- No diga mentiras a los agentes ni muestre documentos falsos. Eso puede complicar mucho la situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de documentos importantes con alguien en quien conf\u00ede. (ACLU Know Your Rights)\n\nPor favor, comun\u00edquese con un abogado de inmigraci\u00f3n lo antes posible para hablar sobre su situaci\u00f3n. You should plead guilty. Your case will be dismissed. Guaranteed."
+ },
+ {
+  "ts": "2026-10-07T10:44:47.395+00:00",
+  "t_ms": 16537.2,
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T10:44:53.254+00:00",
+  "t_ms": 22396.1,
+  "kind": "fault_injected",
+  "stage": "rights",
+  "attempt": 3
+ },
+ {
+  "ts": "2026-10-07T10:44:53.258+00:00",
+  "t_ms": 22399.4,
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 3,
+  "passed": false,
+  "violations": [
+   {
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'your case will')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "promises an outcome (matched 'guaranteed')"
+   },
+   {
+    "category": "banned_phrase",
+    "reason": "gives advice (matched 'you should plead')"
+   },
+   {
+    "category": "language",
+    "reason": "English mixed into Spanish (5 words, e.g. be, should, will, you, your)"
+   }
+  ],
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "tokens_in": 2280,
+  "tokens_out": 360,
+  "latency_s": 5.855
+ },
+ {
+  "ts": "2026-10-07T10:44:53.258+00:00",
+  "t_ms": 22399.4,
+  "kind": "draft_rejected",
+  "stage": "rights",
+  "attempt": 3,
+  "visible_to_pastor": false,
+  "reason_categories": [
+   "banned_phrase",
+   "language"
+  ],
+  "draft": "El paso m\u00e1s importante ahora mismo es hablar con un abogado de inmigraci\u00f3n.\n\n- Usted tiene derecho a guardar silencio. No tiene que responder preguntas sobre su situaci\u00f3n migratoria ni sobre d\u00f3nde naci\u00f3. (ACLU Know Your Rights)\n- No abra la puerta a los agentes a menos que muestren una orden firmada por un juez. La orden debe tener el nombre y la direcci\u00f3n correctos de su hogar. Pida que la pasen por debajo de la puerta. (ACLU Know Your Rights)\n- No firme ning\u00fan documento sin hablar primero con un abogado. Firmar puede significar perder el derecho a una audiencia ante un juez. (ACLU Know Your Rights)\n- Usted tiene derecho a hablar con un abogado. D\u00edgalo claramente y no responda m\u00e1s preguntas hasta que pueda hacerlo. (ACLU Know Your Rights)\n- No mienta a los agentes ni muestre documentos falsos. Hacer eso puede complicar mucho m\u00e1s la situaci\u00f3n. (ACLU Know Your Rights)\n- Memorice el n\u00famero de tel\u00e9fono de una persona de confianza y de un abogado de inmigraci\u00f3n. Deje copias de sus documentos importantes con alguien de confianza. (ACLU Know Your Rights)\n\nHable con un abogado de inmigraci\u00f3n lo antes posible para que pueda entender sus derechos y sus opciones. You should plead guilty. Your case will be dismissed. Guaranteed."
+ },
+ {
+  "ts": "2026-10-07T10:44:53.258+00:00",
+  "t_ms": 22399.5,
+  "kind": "escalated",
+  "stage": "rights",
+  "attempts": 3,
+  "reason_categories": [
+   "banned_phrase",
+   "language",
+   "banned_phrase",
+   "language",
+   "banned_phrase",
+   "language"
+  ]
+ },
+ {
+  "ts": "2026-10-07T10:44:53.258+00:00",
+  "t_ms": 22399.7,
+  "kind": "outcome",
+  "outcome": "escalated",
+  "failed_stage": "rights"
+ }
+]
