@@ -219,7 +219,7 @@ def judge(traj, sc):
     # extras tied to flags
     flags = sc.get("flags", {})
     if flags.get("no_invented_facts"):
-        triage = next((s.get("shown_text", "") for s in traj.get("stages", []) if s["n"] == 1), "")
+        triage = next((s.get("shown_text") or "" for s in traj.get("stages", []) if s["n"] == 1), "")
         inv = [w for w in ("mesa", "arizona", "carlos", "ice", "houston", "texas") if re.search(rf"\\b{w}\\b", triage.lower()) and not re.search(rf"\\b{w}\\b", sc["intake"].lower())]
         results.append(_res("no_invented_facts", not inv, [f"invented: {w}" for w in inv]))
     return results

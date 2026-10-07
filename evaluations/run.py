@@ -57,7 +57,10 @@ def main():
         except Exception as e:  # a crashed run is a failed run, logged
             traj, err = {"scenario_id": sc["id"], "stages": [], "audit_log": []}, f"{type(e).__name__}: {e}"
         traj.setdefault("latency_s", time.time() - t0)
-        det = deterministic.judge(traj, sc) if not err else []
+        try:
+            det = deterministic.judge(traj, sc) if not err else []
+        except Exception as e:  # a judge bug must not kill the run
+            det, err = [], f"judge crashed: {type(e).__name__}: {e}"
         jev, jev_err = [], None
         if a.jev and not err:
             try:
