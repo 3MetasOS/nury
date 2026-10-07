@@ -206,7 +206,7 @@ def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
     s = (STATIC / "index.html").read_text(encoding="utf-8")
     assert "14 named checks" not in s, "the count is read from the registry (/api/features named_checks)"
     assert "a red team, human review" not in s
-    assert "Jev classifying every draft at run time when it is reachable, and before release a red team audit and human review" in s and 'id="built-checks"' in s
+    assert 'id="built-checks"' not in s and 'class="built"' not in s, "the Built with card is gone from Home; the footer carries it"
 
 
 def test_hand_written_notes_are_decoration_only_and_self_hosted():

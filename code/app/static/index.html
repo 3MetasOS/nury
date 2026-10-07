@@ -157,7 +157,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .hero .cta{margin-top:20px;width:100%}
 .hero .scene{margin:8px auto 0;max-width:300px}
 .home.has-cases #continue{order:1}.home.has-cases .start{order:2}.home:not(.has-cases) .start{order:1}.home:not(.has-cases) #continue{order:2}
-#stats{order:3}#netcard{order:4}.built{order:5}
+#stats{order:3}#netcard{order:4}
 .cardlist{display:grid;gap:12px}
 .case{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:start;min-height:88px;padding:14px 12px 14px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
 .case:hover,.pk:hover,.lrow:hover,.stat:hover{border-color:var(--amber-line)}
@@ -179,10 +179,6 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .steps3 li::before{counter-increment:s;content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--amber-line);color:var(--amber-text);display:grid;place-items:center;font:600 14px var(--sans)}
 .netcard{display:grid;gap:12px;border:1px solid var(--line);border-radius:16px;padding:16px;background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
 .netcard h2{margin:0}.netcard .scene{max-width:240px;margin:0 auto}
-.built{border-top:1px solid var(--line);padding-top:16px}
-.built .lbl{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.built ul{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
-.built li{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:6px 12px;line-height:1.3}
 .linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .judges{display:flex;flex-wrap:wrap;align-items:center;gap:2px 20px;margin-top:6px}
 .judges a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font:500 14px var(--sans);text-decoration:underline;text-underline-offset:3px}.judges a:hover{color:var(--amber-text)}
@@ -269,7 +265,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   .home{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:24px;align-items:start}
   .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
   .hero{grid-column:1/-1;padding:32px 32px 28px}
-  .hero .cta{width:auto;min-width:260px}.hero .scene{margin:0}.built{grid-column:1/-1}
+  .hero .cta{width:auto;min-width:260px}
   .band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}
   .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}.cband .scene{max-width:none}
   .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
@@ -323,17 +319,6 @@ body:not([data-view="crisis"]) .startbar{display:none}
         <a class="cta" href="/network"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-network"/></svg>Open our network</a>
       </section>
     </div>
-    <section class="built" aria-labelledby="h-built">
-      <span class="lbl mono" id="h-built">Built with</span>
-      <ul>
-        <li>Gloo AI Studio, guarded endpoint</li>
-        <li>Claude Sonnet 4.6</li>
-        <li>Tokens, not names, reach the model</li>
-        <li id="built-checks">Named checks, 3 tries</li>
-        <li>Jev classifying every draft at run time when it is reachable, and before release a red team audit and human review</li>
-      </ul>
-      <nav class="judges" aria-label="For judges and reviewers"><span class="mono">For judges and reviewers</span><a href="/how-it-was-built">How this was built</a><a href="/observability">Observability</a><a href="/self-improvement">Self-improvement</a></nav>
-    </section>
   </div>
 </section>
 
@@ -614,7 +599,6 @@ function renderHome(){const fam=families(),n=fam.length;
   $("home").classList.toggle("has-cases",n>0);
   $("h-home").textContent=n?"Welcome back.":"Nury is ready.";
   $("hero-sub").textContent=n?"Pick up a case, or respond to a new one. Nury drafts. You decide.":"When a family calls, respond here. Nury drafts. You decide. Nury never sends anything.";
-  $("built-checks").textContent=(FEATURES.named_checks?FEATURES.named_checks+" named checks":"Named checks")+", 3 tries";   // the count is read from the registry, never typed here
   $("cont-list").replaceChildren(...fam.slice(0,3).map(mkCase));
   $("first-run").hidden=n>0;$("see-all").hidden=n===0;$("cont-list").hidden=n===0;
   $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
