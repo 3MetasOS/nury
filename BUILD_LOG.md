@@ -389,3 +389,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 57. 2026-10-06 21:57 MDT — Voice: scratch voice rejected, auditions started
 
 - Juan: the scratch voice (macOS Samantha) is robotic. Gloo has no speech models (176 models checked). Options ranked: Juan's own voice; ElevenLabs (account and key from Juan, Starter plan includes commercial use; key only in the gitignored `.env`; narration labeled as an AI voice in the submission); free fallbacks (Apple Premium voices, Kokoro). hack-video auditions the free ones now and ElevenLabs once the key exists. The locked voiceover text is unchanged.
+
+## 58. 2026-10-06 21:59 MDT — Introduction moment and memorial (Juan)
+
+- Juan asked for a "This is Nury" opening moment and a memorial as the last thing in the video and the presentation. Nury is named for his aunt Nury, who served her church for 83 years, always with a smile and with Jesus in her heart; she never married and passed away a month ago.
+- Source: `presentation/MEMORIAL.md` (draft until Juan approves). Rules: his words, no edits or humanizing; only facts he gave; no stock photo; Juan's own voice for the line, never text-to-speech; the finalist video stays at most 90 seconds. The memorial is gated by an approval flag, like the proof card.
