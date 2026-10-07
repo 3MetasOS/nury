@@ -128,7 +128,7 @@ def _build_attorney(state, data):
         "(names, dates, paperwork). Do not recommend any one attorney. Do not add entries.\n\nLIST:\n"
         + "\n".join(lines)
     )
-    return ins, "Case context:\n" + _prior(state, ["triage"])
+    return ins, "Case context:\n" + _prior(state, ["triage", "rights"])
 
 
 def _check_attorney(text, state, data):
@@ -150,7 +150,7 @@ def _build_checklist(state, data):
         "DO TONIGHT: 5-7 concrete steps. DO NOT DO: 4-5 items. GATHER THESE DOCUMENTS: IDs, paperwork, contact numbers. "
         "Base 'DO NOT DO' only on the vetted points below. General information only.\n\nVETTED POINTS:\n" + pts
     )
-    return ins, "Approved context:\n" + _prior(state, ["triage", "attorney"])
+    return ins, "Approved context:\n" + _prior(state, ["triage", "rights", "attorney"])
 
 
 def _check_checklist(text, state, data):
@@ -168,7 +168,7 @@ def _build_pastoral(state, data):
         "Say practical help is being arranged (an attorney search and a checklist). "
         "No legal claims. No promises about outcomes. Write it as words the pastor can say; do not sign it."
     )
-    return ins, "Approved context:\n" + _prior(state, ["triage", "checklist"])
+    return ins, "Approved context:\n" + _prior(state, ["triage", "rights", "checklist"])
 
 
 def _check_pastoral(text, state, data):
@@ -179,9 +179,9 @@ def _check_pastoral(text, state, data):
 STAGES = [
     Stage("triage", "1. Triage", "pastor", [], [], _build_triage, _check_triage),
     Stage("rights", "2. Rights brief", "family", ["rights"], ["triage"], _build_rights, _check_rights),
-    Stage("attorney", "3. Attorney resources", "family", ["attorneys"], ["triage"], _build_attorney, _check_attorney),
-    Stage("checklist", "4. Family checklist", "family", ["rights"], ["triage", "attorney"], _build_checklist, _check_checklist),
-    Stage("pastoral", "5. Pastoral message", "family", [], ["triage", "checklist"], _build_pastoral, _check_pastoral),
+    Stage("attorney", "3. Attorney resources", "family", ["attorneys"], ["triage", "rights"], _build_attorney, _check_attorney),
+    Stage("checklist", "4. Family checklist", "family", ["rights"], ["triage", "rights", "attorney"], _build_checklist, _check_checklist),
+    Stage("pastoral", "5. Pastoral message", "family", [], ["triage", "rights", "checklist"], _build_pastoral, _check_pastoral),
 ]
 REGISTRY = {s.id: s for s in STAGES}
 SOURCE_FILES = {"rights": "know_your_rights.json", "attorneys": "attorney_directory.json"}

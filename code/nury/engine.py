@@ -15,6 +15,7 @@ from .stages import REGISTRY, SOURCE_FILES, STAGES, load_source
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
 MAX_TRIES = MAX_ATTEMPTS  # old name
 STOP_MESSAGE = "I'll handle this manually."
+DRAFT_LABEL = {"en": "Nury draft for pastor review", "es": "Borrador de Nury para revisión del pastor"}
 
 # Forced unsafe text for fault injection. It trips the banned_phrase check.
 UNSAFE_SUFFIX = " Your case will be won, and we guarantee you will not be deported."
@@ -154,7 +155,8 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         if fault and attempt <= fault.get("times", 1):
             text += fault.get("draft_suffix", UNSAFE_SUFFIX)
             audit.log("fault_injected", stage=stage_id, attempt=attempt)
-        violations = g.unsafe_reasons(text) + stage.checks(text, state, data)
+        violations = (g.unsafe_reasons(text) + stage.checks(text, state, data)
+                      + g.language_reasons(text, lang))
         cats = sorted({v["category"] for v in violations})
         audit.log("check", stage=stage_id, attempt=attempt, passed=not violations, violations=violations,
                   reason_categories=cats, tokens_in=meta["input_tokens"], tokens_out=meta["output_tokens"],
@@ -178,7 +180,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         return rec
 
     rec.status, rec.draft = "approved", draft
-    rec.shown_text = with_disclaimer(draft, disclaimer)
+    rec.shown_text = f"{DRAFT_LABEL[lang]}\n\n" + with_disclaimer(draft, disclaimer)
     decision = gate(replace(rec, attempts=[]))      # the gate never gets rejected attempts
     audit.log("gate", stage=stage_id, action=decision.action)
     rec.gate = {"action": decision.action, "edited_text": None}
@@ -191,10 +193,11 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         rec.gate["edited_text"] = decision.text.strip()
         rec.final = with_disclaimer(decision.text, disclaimer)   # disclaimer re-appended after edit
         # The pastor owns edits. We flag, we do not block.
-        warn = g.unsafe_reasons(decision.text) + stage.checks(decision.text, state, data)
+        warn = (g.unsafe_reasons(decision.text) + stage.checks(decision.text, state, data)
+                + g.language_reasons(decision.text, lang))
         audit.log("edit_check", stage=stage_id, warnings=warn)
     elif decision.action == "approve":
-        rec.final = rec.shown_text
+        rec.final = with_disclaimer(draft, disclaimer)
     else:
         raise ValueError(f"unknown gate action {decision.action!r}")
 

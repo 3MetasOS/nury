@@ -9,14 +9,14 @@ import re
 
 DISCLAIMER = {
     "en": (
-        "Nury is not a lawyer, pastor, counselor, or therapist. This is general "
-        "legal information, not legal advice. Please review it with a qualified "
-        "immigration attorney as soon as possible."
+        "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. "
+        "This is general legal information, not legal advice. Please review it with "
+        "a qualified immigration attorney as soon as possible."
     ),
     "es": (
-        "Nury no es abogado, pastor, consejero ni terapeuta. Esto es información "
-        "legal general, no asesoramiento legal. Por favor revísela con un abogado "
-        "de inmigración calificado lo antes posible."
+        "Nury es un asistente de IA, no es abogado, pastor, consejero ni terapeuta. "
+        "Esto es información legal general, no asesoramiento legal. Por favor "
+        "revísela con un abogado de inmigración calificado lo antes posible."
     ),
 }
 
@@ -29,6 +29,8 @@ Hard rules:
 5. Never recommend a specific attorney.
 6. Be calm, plain, and kind. No frightening or sensational language.
 7. Short sentences. Plain words.
+8. Write the whole output in the language named in the task. Do not mix languages. Translate every quote. Do not add scripture, proverbs, or quotes that are not in the source material.
+9. Do not add a title, byline, signature, or any line that says who wrote the text. Never write "prepared by the pastor" or similar. Output only the content asked for.
 """
 
 # Predictions, advice, and identity claims. English and Spanish.
@@ -42,6 +44,8 @@ _UNSAFE_PATTERNS = [
     (r"\bthe best (strategy|option) (is|would be)\b", "suggests a legal strategy"),
     (r"\b(i am|i'm|as) (your|a) (lawyer|attorney|counselor|therapist)\b", "claims to be a lawyer or counselor"),
     (r"\b(i am|i'm) (a|your) pastor\b", "claims to be a pastor"),
+    (r"\b(preparad[oa]|escrit[oa]|redactad[oa]|written|prepared|drafted) (por|by) (el |la |the )?(pastor|iglesia|church)", "says a pastor wrote it"),
+    (r"\b(from|de parte de|firmado por) (the |el )?pastor\b", "signs as the pastor"),
     (r"\bsu caso (va a|será|sera|se va a)\b", "predicts an outcome"),
     (r"\b(será|sera|van a) (deportad[oa]s?|liberad[oa]s?)\b", "predicts an outcome"),
     (r"\bgarantiz\w+", "promises an outcome"),
@@ -85,3 +89,19 @@ def url_reasons(text, allowed_urls):
 
 def word_count(text):
     return len(text.split())
+
+
+# ---- language check (stages whose output is the family's language) ----
+_EN_WORDS = set("the and is are of you your our with for that this not will from have has be we they their but can should may was were been it its".split())
+_LANG_STRIP = re.compile(r"https?://\S+|www\.\S+|\b[A-Z][A-Za-z]*(?: [A-Z][A-Za-z]*)+\b|\bDO TONIGHT\b|\bDO NOT DO\b|\bGATHER THESE DOCUMENTS\b")
+
+
+def language_reasons(text, lang):
+    """Flag English mixed into Spanish. Proper names, links and the fixed headings are ignored."""
+    if lang != "es":
+        return []
+    body = _LANG_STRIP.sub(" ", text)
+    words = re.findall(r"[A-Za-z']+", body.lower())
+    hits = sorted({w for w in words if w in _EN_WORDS})
+    n = sum(1 for w in words if w in _EN_WORDS)
+    return [R("language", f"English mixed into Spanish ({n} words, e.g. {', '.join(hits[:5])})")] if n >= 3 else []

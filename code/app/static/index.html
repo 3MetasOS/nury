@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nury</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.10);
+--amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--text:#ece7dc;--muted:#a79f8d;
+--green:#8fce9e;--green-soft:rgba(143,206,158,.12);--red:#e0785f;--red-soft:rgba(224,120,95,.12);
+--serif:"Fraunces",Georgia,serif;--sans:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;--r:14px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
+main{max-width:640px;margin:0 auto;padding:16px 16px calc(32px + env(safe-area-inset-bottom))}
+header{display:flex;align-items:baseline;gap:10px;padding:8px 0 16px}
+header h1{font:600 28px var(--serif);margin:0;color:var(--amber)}
+header span{color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
+h2{font:500 20px var(--serif);margin:0 0 8px}
+label{display:block;font-size:14px;color:var(--muted);margin:12px 0 6px}
+textarea,select{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
+textarea{min-height:170px;resize:vertical}
+.family{font-family:var(--serif);font-size:18px;line-height:1.6;white-space:pre-wrap}
+.btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
+.btn.primary{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
+.btn.danger{color:var(--red)}
+.btn:disabled{opacity:.5}
+.row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:14px}
+.row.two{grid-template-columns:1fr 1fr}
+.steps{display:flex;gap:6px;margin-bottom:14px}
+.step{flex:1;height:6px;border-radius:3px;background:var(--surface-2)}
+.step.done{background:var(--green)}.step.work{background:var(--amber)}.step.bad{background:var(--red)}
+.strip{border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:15px}
+.strip.warn{background:var(--amber-soft);color:var(--amber)}.strip.ok{background:var(--green-soft);color:var(--green)}
+.strip.err{background:var(--red-soft);color:var(--red)}
+.disc{font-size:13px;color:var(--muted);border-top:1px solid var(--line);margin-top:12px;padding-top:10px}
+.metrics{font-size:13px;color:var(--muted);margin-top:6px}
+details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
+.log{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--muted);white-space:pre-wrap;word-break:break-word}
+.hidden{display:none}
+.note{color:var(--muted);font-size:14px}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);margin-left:8px;vertical-align:middle}
+</style>
+</head>
+<body>
+<main>
+<header><h1>Nury</h1><span>The crisis-response agent for solo pastors</span></header>
+
+<section id="v-intake">
+  <div class="card">
+    <h2>What did the family tell you?</h2>
+    <label for="intake">Type or paste the call, in your own words.</label>
+    <textarea id="intake" placeholder="Who called, who was detained, where, when, and what the family asks."></textarea>
+    <label for="lang">Family's language</label>
+    <select id="lang"><option value="es">Spanish</option><option value="en">English</option></select>
+    <label><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
+    <div class="row two" style="margin-top:12px">
+      <button class="btn" id="btn-demo">Use demo intake</button>
+      <button class="btn primary" id="btn-start">Start</button>
+    </div>
+    <p class="note" id="intake-err"></p>
+  </div>
+  <p class="note">Nury drafts. You decide. Nothing reaches the family unless you send it. Nury is an AI assistant. It is not a lawyer, pastor, counselor, or therapist.</p>
+</section>
+
+<section id="v-pipe" class="hidden">
+  <div class="steps" id="steps"></div>
+  <div id="strip" class="strip hidden"></div>
+  <div class="card" id="work"><h2 id="work-title"></h2><p class="note" id="work-msg"></p></div>
+  <div class="card hidden" id="gate">
+    <h2 id="g-title"></h2>
+    <div id="g-draft" class="family"></div>
+    <textarea id="g-edit" class="hidden family"></textarea>
+    <div class="disc" id="g-disc"></div>
+    <div class="metrics" id="g-metrics"></div>
+    <div class="row" id="g-btns">
+      <button class="btn primary" id="b-approve">Approve</button>
+      <button class="btn" id="b-edit">Edit</button>
+      <button class="btn danger" id="b-stop">Stop</button>
+    </div>
+    <div class="row two hidden" id="g-edit-btns">
+      <button class="btn" id="b-cancel">Cancel</button>
+      <button class="btn primary" id="b-save">Save and approve</button>
+    </div>
+  </div>
+  <div class="card hidden" id="halt"><h2>I'll handle this manually.</h2><p class="note" id="halt-msg"></p>
+    <button class="btn" id="b-new1">Start over</button></div>
+  <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
+</section>
+
+<section id="v-pkg" class="hidden">
+  <div class="card"><h2>Package ready</h2>
+    <p class="note">Five stages, approved by you. Copy what you want to use. Nury never sends anything.</p></div>
+  <div id="pkg"></div>
+  <button class="btn" id="b-new2">New case</button>
+  <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
+</section>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+let sid=null,timer=null,lastGate=null;
+const show=v=>["v-intake","v-pipe","v-pkg"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+async function api(path,body){
+  const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
+  return r.json();
+}
+$("btn-demo").onclick=async()=>{$("intake").value=(await api("/api/demo-intake")).intake;$("demo").checked=true};
+$("btn-start").onclick=async()=>{
+  $("intake-err").textContent="";
+  const r=await api("/api/run",{intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked});
+  if(r.error){$("intake-err").textContent=r.error;return}
+  sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
+};
+const reset=()=>{clearInterval(timer);sid=null;show("v-intake")};
+$("b-new1").onclick=reset;$("b-new2").onclick=reset;
+const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
+$("b-approve").onclick=()=>{lock();decide("approve")};
+$("b-stop").onclick=()=>{lock();decide("stop")};
+$("b-edit").onclick=()=>{$("g-edit").value=$("g-draft").textContent;$("g-draft").classList.add("hidden");
+  $("g-edit").classList.remove("hidden");$("g-btns").classList.add("hidden");$("g-edit-btns").classList.remove("hidden")};
+$("b-cancel").onclick=()=>unedit();
+$("b-save").onclick=()=>{const t=$("g-edit").value.trim();if(!t)return;lock();decide("edit",t)};
+function unedit(){$("g-draft").classList.remove("hidden");$("g-edit").classList.add("hidden");
+  $("g-btns").classList.remove("hidden");$("g-edit-btns").classList.add("hidden")}
+function lock(){document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=true)}
+function renderLog(el,log){
+  el.textContent=log.map(e=>{const {ts,kind,...rest}=e;return ts.slice(11,23)+"  "+kind+"  "+JSON.stringify(rest)}).join("\n")}
+async function poll(){
+  if(!sid)return;
+  const s=await api("/api/session/"+sid);
+  if(s.error&&!s.stages){return}
+  $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");
+    d.className="step "+(x.status==="approved"||x.status==="edited"?"done":x.status==="working"?"work":["stopped","escalated","error"].includes(x.status)?"bad":"");
+    d.title=x.title;return d}));
+  renderLog($("log"),s.log);
+  const strip=$("strip");
+  if(s.strip){strip.classList.remove("hidden");
+    strip.className="strip "+(s.strip==="passed"?"ok":"warn");strip.textContent=s.strip==="passed"?"Passed":s.strip}
+  else strip.className="strip hidden";
+  if(s.done&&!s.halted&&!s.error){clearInterval(timer);
+    $("pkg").replaceChildren(...s.stages.map(x=>{const c=document.createElement("div");c.className="card";
+      const h=document.createElement("h2");h.textContent=x.title;
+      const p=document.createElement("div");p.className=x.id==="triage"?"":"family";p.textContent=x.final;
+      const d=document.createElement("div");d.className="disc";d.textContent=x.disclaimer;
+      const b=document.createElement("button");b.className="btn";b.textContent="Copy";b.style.marginTop="12px";
+      b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
+      c.append(h,p,d,b);return c}));
+    renderLog($("log2"),s.log);show("v-pkg");return}
+  const halted=s.halted||s.error;
+  $("halt").classList.toggle("hidden",!halted);
+  if(halted){clearInterval(timer);$("halt-msg").textContent=s.halted||"Something went wrong ("+s.error+"). Your intake is not lost; start again."}
+  const g=s.gate;
+  $("gate").classList.toggle("hidden",!g);
+  $("work").classList.toggle("hidden",!!g||!!halted);
+  if(g){
+    const key=g.id+JSON.stringify(g.metrics.attempts);
+    if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
+      $("g-title").textContent=g.title;$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
+      $("g-draft").className=g.id==="triage"?"":"family";
+      const m=g.metrics;$("g-metrics").textContent=`Checked ${m.attempts} time${m.attempts>1?"s":""}`+(m.self_corrections?`, ${m.self_corrections} self-correction${m.self_corrections>1?"s":""}`:"")+`, ${m.latency_s} s`}
+  }else if(!halted){
+    const cur=s.stages.find(x=>x.status==="working")||s.stages.find(x=>x.status==="pending");
+    $("work-title").textContent=cur?cur.title:"Working";$("work-msg").textContent="Nury is drafting and checking. A stage takes 5 to 20 seconds."}
+}
+</script>
+</body>
+</html>
