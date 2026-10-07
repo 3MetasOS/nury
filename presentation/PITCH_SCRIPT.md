@@ -4,7 +4,7 @@ Speaker: Juan Pelaez (3Metas). Target about 2:55 with the memorial, 3:00 at most
 Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
 `[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
 Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
-Technical claims and the five hard questions: `TECH_STORY.md`. Use only claims that `documents/TECH_CLAIMS.md` marks VERIFIED.
+Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from `documents/TECH_CLAIMS.md`, VERIFIED rows only.
 
 ## 0:00 to 0:06  Slide 1: This is Nury  [90s]
 The lantern lights. [90s] This is Nury. The crisis-response agent for solo pastors.
@@ -22,7 +22,7 @@ Play the 90-second video, or run the app on the locked intake. The selector scre
 
 ## 1:02 to 1:22  Slide 4: how it is built  [90s]
 Trace the line once. [90s] The pastor types. A privacy layer swaps names for tokens on the pastor's computer. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are restored here, and named checks reject unsafe drafts, up to three tries. The pastor decides. Nothing leaves with a name in it.
-Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
+Under the diagram: thirteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
 
 ## 1:22 to 1:37  Slide 5: concept and product
 Five stages, one gate after each. The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon.
@@ -35,7 +35,7 @@ Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, 
 [ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
 
 ## 1:52 to 2:10  Slide 7: use of AI
-Four layers check it: plain code checks, typed judges, a red-team panel of models from other makers, and a person. The typed judge scored safe runs 0.17 to 0.30 and unsafe runs 0.83 to 0.90 on a five-scenario smoke test. The panel caught 8 of 8 injected problems and also flagged every safe review, so it advises and a person decides. Tests: re-run before export, then say the count.
+Four layers check it: plain code checks, typed judges, a red-team panel of models from other makers, and a person. The leak test ran 90 checks per playbook and found no names. The typed judge scored unsafe text 0.89 to 0.98 and safe text 0.02 to 0.24, on ten checks. The red team caught 8 of 8 injected problems and also flagged safe text, so it advises and a person decides. A full package takes 50 to 56 seconds and costs about nine cents.
 
 ## 2:10 to 2:22  Slide 8: impact and execution
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].

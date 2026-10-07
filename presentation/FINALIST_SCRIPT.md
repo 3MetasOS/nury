@@ -3,7 +3,7 @@
 For hack-video. Same family, intake and footage as `SHARED_DEMO.md` and `video/STORYBOARD.md`. Re-timed for three additions: "This is Nury" at the start, the technical beat (about 12 s), and the memorial as the last thing on screen (`MEMORIAL.md`). The video is at most 90 s total.
 `[NUMBER]` = real scorecard number from hack-artisans only. The proof beat from the earlier cut is dropped: the tech beat's captions carry the numbers now.
 **The memorial is gated: it ships only after Juan approves the text in writing.** Until then, use the version without it (end of this file).
-Technical claims: `TECH_STORY.md`. Only claims that `documents/TECH_CLAIMS.md` marks VERIFIED go on screen.
+Technical claims: `TECH_STORY.md`. Only rows that `documents/TECH_CLAIMS.md` marks VERIFIED go on screen.
 
 ## Re-timed shot list (sums to 90 s)
 | # | Time | Visual | VO | On-screen text |
@@ -31,10 +31,11 @@ Animated architecture shot by hack-video. Draw the same line as deck slide 4: pa
 **TECH-A voiceover (30 words, about 12 s):**
 > Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.
 
-**Three on-screen proof captions** (VERIFIED claims only, about 3 s each, one per step of the animation):
-1. "Leak test: canary names and numbers, zero in any request"
-2. "Typed judge, five-scenario check: safe 0.17 to 0.30, unsafe 0.83 to 0.90"
-3. "121 tests pass, offline" (re-run at export; change the number if it moved)
+**Three on-screen proof captions** (VERIFIED rows in `documents/TECH_CLAIMS.md` only, about 3 s each, one per step of the animation):
+1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
+2. "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24" (TC 26)
+3. "A full package: 50 to 56 s, about 9 cents" (TC 30)
+Spare if there is room: "85 offline tests pass; no send path" (re-run the count at export).
 
 **Disclosure caption, verbatim, small, on screen for the whole beat:** "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules."
 Lower-third labels: "Built on Gloo AI Studio" and "Tested with Jev". Optional TECH-B only if there is time: "A red team from other model makers checks it too. It advises; a person decides."
