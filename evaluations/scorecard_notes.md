@@ -1,0 +1,3 @@
+- Scored core: `00fe7b1` (code/nury and code/playbooks). After these runs the core gained commit `897a982`: an optional `summary` line per stage, display only. It never reaches a prompt, a check, the audit or a model request (hack-jedi tested this). The scored build differs from the shipped build only by display strings.
+- Later core commits (Scripture verse bank `094a748`, pending approval) are not part of these scores. When the pastoral prompt changes again, both sets are re-run.
+- Jev judge calls are billed by TypeSafe, not the Gloo wallet. That is an assumption, not confirmed.

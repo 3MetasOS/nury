@@ -90,6 +90,9 @@ def build(runs_path, out_dir):
         pn = r.get("panel")
         pcell = "-" if not pn else (f"{len(pn['corroborated'])} corroborated" + (" (to human)" if pn["needs_human"] else "") + "; findings " + "/".join(str(v) for v in pn["findings"].values()))
         L.append(f"| {r['number']} | {r['id']} | {r['category']} | {r['final']} | {pcell} | {x['corrections']} | {x['retries']} | {'yes' if x['escalated'] else 'no'} | {x['latency_s']} | {x['tokens_in']+x['tokens_out']} | {x['cost_usd']} |")
+    notes = Path(__file__).parent / "scorecard_notes.md"
+    if notes.exists():
+        L += ["", "## Notes on the build", "", notes.read_text().strip(), ""]
     L += ["", "## Failures and review items", ""]
     bad = [r for r in runs if r["final"] not in ("pass", "human_pass")]
     if not bad:
