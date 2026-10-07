@@ -81,7 +81,9 @@
           "probability": 0.15,
           "decision": "pass"
         }
-      ]
+      ],
+      "official_list_block": "**Listado por el Departamento de Justicia de los EE. UU.**\n\nListado por el Departamento de Justicia de los EE. UU. Estar en la lista no significa que sea recomendado.\n\n- ABA Commission on Immigration Detention Information Hotline — Ayuda para personas detenidas; si usted es familiar, use el correo electrónico — immcenter@americanbar.org — https://www.americanbar.org/groups/public_interest/immigration/\n- Rocky Mountain Immigrant Advocacy Network (RMIAN) — Ayuda legal de inmigración en los tribunales de Aurora y Denver — (303) 433-2812 / (303) 866-9308 / (720) 543-8898 — https://www.rmian.org\n- Connect Immigration — Ayuda en español e inglés; oficinas en Lakewood, Gypsum y Eagle — (720) 674-1919 / (970) 393-6479 / (720) 940-5333 — https://www.connectchurchcolorado.com/immigration\n- Bethany Immigration Services — Servicios de inmigración — (970) 389-1480\n- Catholic Charities and Community Services of the Archdiocese of Denver, Inc. — Servicios de inmigración — (303) 742-4971",
+      "official_list_block_note": "The model's own words for the Colorado official-list entries, from a live run with the demo network on (2026-10-07 12:02 MDT; that run passed this stage's live checks, then stopped at stage 4 when Gloo credit ran out). Used when this run's network gives the app a state, so the official list is handed to the stage."
     },
     "checklist": {
       "task": "Task: write a tonight-only checklist in Spanish.",

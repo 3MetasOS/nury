@@ -19,6 +19,13 @@ PACKS = Path(__file__).resolve().parents[1] / "replay"
 REFUSAL = "This is a recorded run. Add a Gloo key to run your own."
 BANNER = "Recorded run. The words were written by the model earlier; the checks run live. Add a Gloo key to run your own."
 EDIT_NOTE = "Your edit is carried forward as you wrote it. The later stages are the recorded ones, so they do not react to it."
+SPLICE_NOTE = ("The contacts from your church network (or the demo network) were added to the recorded list by the replay layer, copied exactly "
+               "as the app gave them, because the recording was made with an empty network.")
+_CONTACTS = re.compile(r"CHURCH CONTACTS \(the pastor's own; may be empty\):\n(.*?)\n\n", re.S)
+_OFFICIAL = re.compile(r"OFFICIAL LIST \(U\.S\. Department of Justice; may be empty\):\n(.*?)\n\n", re.S)
+_PHONE = re.compile(r"\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}")
+_HEAD = {"es": ("Personas con quienes nuestra iglesia ha trabajado", "Estos son contactos de nuestra iglesia. No son una recomendación de Nury."),
+         "en": ("People our church has worked with", "These are our church's own contacts, not endorsements by Nury.")}
 
 
 def active(env=None):
@@ -71,12 +78,48 @@ class ReplayClient:
 
     def __init__(self, pack=None):
         self.pack, self.calls, self.model = pack, {}, "recorded"
+        self.spliced = []           # stage ids whose recorded text got the church-contacts block (see _splice)
 
     def use_playbook(self, playbook, language):
         p = packs().get(playbook)
         if not p or language != p["language"]:
             raise RuntimeError(REFUSAL)
-        self.pack, self.calls = p, {}
+        self.pack, self.calls, self.spliced = p, {}, []
+
+    def _splice(self, sid, text, instructions):
+        """The recording was made with an empty church network. When this run's network is not empty, the prompt hands the
+        stage the contacts to list first, and the checks require every one of them. Put them in the way the prompt asks:
+        under the heading, with the note, each entry copied exactly as the app gave it. Nothing else of the text changes."""
+        blocks = []
+        m = _CONTACTS.search(instructions or "")
+        lines = [l for l in (m.group(1).splitlines() if m else []) if l.startswith("- ")]
+        if lines and lines[0][2:].split(":")[0].strip() not in text:
+            head, note = _HEAD[self.pack["language"] if self.pack["language"] in _HEAD else "en"]
+            blocks.append(f"**{head}**\n\n{note}\n\n" + "\n".join(self._entry(l, keep_services=self.pack["language"] == "en") for l in lines))
+        o = _OFFICIAL.search(instructions or "")
+        official = self.pack["stages"].get(sid, {}).get("official_list_block")
+        if o and official and any(l.startswith("- ") for l in o.group(1).splitlines()) and "Departamento de Justicia" not in text:
+            blocks.append(official)                                    # the model's own words for these fixed entries (see the pack's note)
+        if not blocks:
+            return text
+        first, _, rest = text.partition("\n\n")
+        self.spliced.append(sid)
+        return f"{first}\n\n---\n\n" + "\n\n---\n\n".join(blocks) + (f"\n\n---\n\n{rest}" if rest else "")
+
+    @staticmethod
+    def _entry(line, keep_services=True):
+        """'- name: services phone url' (how the app hands a contact to the prompt) -> '- name — phone — url'. The short description is kept only
+        in English: a model would translate it, and the replay layer cannot, so in Spanish the entry is the name, phone and link, copied exactly."""
+        m = re.match(r"- (.*?): (.*)$", line)
+        if not m:
+            return line
+        name, rest = m.group(1), m.group(2)
+        url = next((w for w in rest.split() if w.startswith("http")), "")
+        rest = rest.replace(url, "") if url else rest
+        ph = _PHONE.search(rest)
+        phone = ph.group(0) if ph else ""
+        services = (rest.replace(phone, "") if phone else rest).strip(" ,;")
+        return "- " + " — ".join(x for x in (name, services if keep_services else "", phone, url) if x)
 
     def ask(self, user_input, instructions=None, **kw):
         if self.pack is None:
@@ -87,7 +130,8 @@ class ReplayClient:
                 n = self.calls.get(sid, 0)
                 self.calls[sid] = n + 1
                 a = st["attempts"][min(n, len(st["attempts"]) - 1)]          # past the last recording: say the last thing again
-                return a["text"], {"latency_s": a.get("latency_s", 0.0), "input_tokens": a.get("input_tokens", 0),
+                text = self._splice(sid, a["text"], instructions)           # only a stage whose prompt hands it church contacts is touched
+                return text, {"latency_s": a.get("latency_s", 0.0), "input_tokens": a.get("input_tokens", 0),
                                    "output_tokens": a.get("output_tokens", 0), "model": self.pack.get("model", "recorded"), "http_retries": 0}
         raise RuntimeError("this recorded run has no words for that step")
 

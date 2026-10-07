@@ -1,8 +1,10 @@
 """Replay mode: the app with no key. Recorded model words, live checks. No network, no key."""
+import contextlib
 import http.client
 import json
 import os
 import sys
+import tempfile
 import threading
 import time
 import unittest
@@ -118,6 +120,107 @@ class ReplayOn(unittest.TestCase):
             c.ask("x", instructions="Task: something nobody recorded")
         with self.assertRaises(RuntimeError):
             replay.ReplayClient().use_playbook("detention", "en")         # a language that was not recorded
+
+
+@contextlib.contextmanager
+def in_network(state):
+    """Run with the church network in a known state: 'none' (empty), 'demo' (the fictional contacts) or 'custom' (the pastor's own contact)."""
+    old_cwd, old_env = os.getcwd(), os.environ.get("NURY_DEMO_NETWORK")
+    with tempfile.TemporaryDirectory() as d:
+        os.chdir(d)
+        try:
+            if state == "demo":
+                os.environ["NURY_DEMO_NETWORK"] = "1"
+            else:
+                os.environ.pop("NURY_DEMO_NETWORK", None)
+            if state == "custom":
+                os.makedirs("network")
+                with open("network/network.json", "w") as f:
+                    json.dump({"home": {"city": "Aurora", "state": "CO"}, "entries": [
+                        {"id": "n-1", "name": "Mi Abogada Local", "kind": "legal_aid", "services": "Consultas", "languages": ["es"], "city": "Aurora", "state": "CO",
+                         "phone": "(303) 555-0142", "url": "", "note": "", "last_used": "", "tags": [], "nationwide": False},
+                        {"id": "n-2", "name": "Ayuda Hospitalaria", "kind": "social_services", "services": "Apoyo", "languages": ["es"], "city": "Aurora", "state": "CO",
+                         "phone": "(303) 555-0143", "url": "", "note": "", "last_used": "", "tags": [], "nationwide": False}]}, f)
+            yield
+        finally:
+            os.chdir(old_cwd)
+            if old_env is None:
+                os.environ.pop("NURY_DEMO_NETWORK", None)
+            else:
+                os.environ["NURY_DEMO_NETWORK"] = old_env
+
+
+class NetworkStates(unittest.TestCase):
+    """The packs were recorded with an empty church network. With the demo network, or a pastor's own contacts, stage 3 must still
+    pass the live checks: the replay layer adds the contacts block the prompt asks for."""
+
+    def setUp(self):
+        os.environ["NURY_REPLAY"] = "1"
+        self.addCleanup(os.environ.__setitem__, "NURY_REPLAY", "0")
+        self.sessions = []
+
+    def tearDown(self):
+        for s in self.sessions:
+            s.abandon()
+            s.thread.join(timeout=10)
+
+    def run_through(self, pid):
+        s = server.Session(pid, replay.sample_intake(pid), replay.packs()[pid]["language"], False, [])
+        self.sessions.append(s)
+        for _ in range(600):
+            if s.done:
+                break
+            if s.waiting is not None:
+                s.decide("approve", stage=s.waiting.stage_id)
+            time.sleep(0.02)
+        self.assertTrue(s.done)
+        return s
+
+    def test_each_playbook_completes_in_each_network_state(self):
+        for st in ("none", "demo", "custom"):
+            for pid in ("detention", "hospital"):
+                with in_network(st):
+                    s = self.run_through(pid)
+                    v = s.view()
+                    self.assertTrue(v["done"] and not v["halted"] and not v["error"], (st, pid, v["halted"], v["error"]))
+                    self.assertEqual(sorted(v["package"]), sorted(x.id for x in s.pb.stages), (st, pid))
+                    stage3 = s.pb.stages[2].id
+                    text = s.state.approved[stage3]
+                    if st == "none":
+                        self.assertIsNone(v["replay_note"], pid)
+                        self.assertNotIn("nuestra iglesia ha trabajado", text)
+                    else:
+                        self.assertIn(replay.SPLICE_NOTE, v["replay_note"], (st, pid))
+                        self.assertIn("Personas con quienes nuestra iglesia ha trabajado", text)
+                        self.assertIn("(303) 555-01", text)                                   # the contacts' own phones, copied exactly
+
+    def test_the_demo_contacts_are_listed_exactly_as_the_app_gave_them(self):
+        with in_network("demo"):
+            s = self.run_through("detention")
+            text = s.state.approved["attorney"]
+            given = s.state.sources_used["attorney"]["church_network"]["entries"]       # the contacts the app handed to the stage
+            self.assertTrue(given)
+            for e in given:
+                self.assertIn(e["name"], text)
+                self.assertIn(e["phone"], text)
+                if e["url"]:
+                    self.assertIn(e["url"], text)
+
+    def test_the_contacts_stay_in_the_pastors_text_and_recorded_words_are_unchanged_elsewhere(self):
+        with in_network("custom"):
+            s = self.run_through("detention")
+            recorded = replay.packs()["detention"]["stages"]["attorney"]["attempts"][0]["text"]
+            shown = s.state.results["attorney"].attempts[-1]["text"]
+            self.assertIn(recorded.split("\n\n", 1)[1], shown)             # the recorded text, after its first paragraph, is still all there
+            self.assertEqual(s.state.results["triage"].attempts[-1]["text"], replay.packs()["detention"]["stages"]["triage"]["attempts"][0]["text"])
+
+    def test_no_splice_when_the_prompt_hands_no_contacts(self):
+        c = replay.ReplayClient()
+        c.use_playbook("detention", "es")
+        task = replay.packs()["detention"]["stages"]["attorney"]["task"]
+        text, _ = c.ask("x", instructions="a\n" + task + "\nCHURCH CONTACTS (the pastor's own; may be empty):\n(none)\n\nNATIONAL LIST:")
+        self.assertEqual(text, replay.packs()["detention"]["stages"]["attorney"]["attempts"][0]["text"])
+        self.assertEqual(c.spliced, [])
 
 
 class Selection(unittest.TestCase):

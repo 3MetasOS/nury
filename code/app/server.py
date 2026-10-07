@@ -458,7 +458,8 @@ class Session:
         progress = self.progress(ev)
         log = [safe_event(e) for e in ev]
         return {"id": self.id, "replay": self.replay, "replay_banner": replay.BANNER if self.replay else None,
-                "replay_note": replay.EDIT_NOTE if self.replay and self.replay_edited else None,
+                "replay_note": " ".join(x for x in (replay.EDIT_NOTE if self.replay and self.replay_edited else "",
+                                                   replay.SPLICE_NOTE if self.replay and getattr(getattr(self.client, "inner", self.client), "spliced", []) else "") if x) or None,
                 "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
                 "error": self.error, "sources_list": self.sources_list, "done": self.done, "log": log, "language": self.state.language,
                 "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None,
