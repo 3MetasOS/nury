@@ -31,3 +31,10 @@ Planned lines, ready to paste:
 - Deck slide 5 bullet: "Stages share reusable skills, such as voice and grounding, that a playbook includes by name."
 - Pitch script, 1:35 block, after the folder line: "Playbooks share small skills, like voice and grounding. A stage includes them by name."
 If a measured result is confirmed too (for example, a before and after score), add it with the real number only.
+
+## Case file and next-steps map (gated, added Oct 6)
+Not claimed anywhere. Ships only after hack-sensei confirms in writing that it is built and tested.
+Required wording: "the pastor keeps a case file on their own computer". Never say it predicts or forecasts. The map is steps and questions, never outcomes.
+Planned lines, ready to paste:
+- Deck slide 5 bullet: "The pastor keeps a case file on their own computer, with a map of next steps and questions to ask."
+- Pitch script, 1:35 block: "The pastor keeps a case file on their own computer. Nury adds a map of next steps and questions to bring to an attorney. It lists steps and questions. It does not say what will happen."
