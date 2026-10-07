@@ -108,6 +108,12 @@ No call can reach the family. A test (`NoSendPath` in `code/tests/test_core.py`)
 
 On the final build, a full package took about 33 seconds and cost about 6 cents for detention (mean of 20 scored runs), and about 49 seconds and 9 cents for hospital (mean of 8), at $3 and $15 per million tokens (`evaluations/results/scorecard.md`). The Jev gate adds one Jev call per draft attempt: about 150 to 230 ms a call, about 3 percent of the time. Jev's public price is $0.042 per million input tokens, and output tokens are free (https://docs.typesafe.ai/models, read 2026-10-07). From our own audit files, a package sends about 8,200 (detention) to 11,500 (hospital) Jev input tokens, so Jev costs about $0.0003 to $0.0005 per package: an estimate from our token counts, not a bill.
 
+### Replay mode, the command line and MCP
+
+With no Gloo key, the app runs a recorded run of each playbook's sample intake. The model's words were recorded on this build: one real run per playbook, including a real rejected-and-regenerated draft. Everything else runs for real: the safety floor, the named checks, the correction loop, the approval gates, the audit log, the privacy layer, the case file and the Scripture insertion. The Jev scores shown are the recorded ones and are labelled so. Typed intakes are refused. An edit at a gate is chained forward, but later stages stay recorded. It is **not a live run** and must never be called one. It is off whenever a Gloo key is present, so the scored and shown live behavior is unchanged. Limits: the packs are new recordings on the demo intakes, not rows of the scored sets, and they go stale if a prompt changes (re-record with `code/tools/record_replay.py`). BUILT, commit `ee674bf`: `code/nury/replay.py`.
+
+**The command line and the MCP server.** `python -m nury.cli` and `python -m nury.mcp_server` give another team Nury's rules from a shell or an agent: read-only tools over the safety floor and the named checks (playbooks, rules, explain a rule, check a draft, scorecard summary). They write nothing, call no model, need no key and cannot start a run. They run the deterministic rules only: Jev is not run, and the church network and official list are empty, so a draft that passes is not proven safe. BUILT, commit `fd4b851`; see `documents/product/CLI_AND_MCP.md`. The server also got a hardening pass (`0ac365a`).
+
 ## 2. How the engine works
 
 This section explains how Nury's core works: the cycle for one stage, the five-stage run, a real trace, the files, what we chose not to build, and where the design came from. Written by hack-jedi from the code. The function names, the file line counts and the prework quotes were checked against the repo on 2026-10-07. Line numbers are for `code/nury/engine.py` at the final build and may move; the function names will not. The raw trace file is `documents/product/trace_detention_01.jsonl`.
@@ -681,7 +687,7 @@ This is a suggested order, not a plan we have committed to.
 - The red team cannot gate. It flags safe text. It advises.
 - The test-time Jev judges are not independent of the run-time gate.
 - The effect of the skills is not measured.
-- The tone score did not rise after the promises fix.
+- The tone score did not rise after the promises fix. The tone judge moves by up to 0.75 between identical runs; one sample near its 3.0 line proves little.
 - The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood, and the Spanish has not been read by a native speaker.
 - No real pastor has used Nury. A native Spanish speaker has not scored the Spanish.
 - There is no sign-in and no encryption. Nury is a demo on synthetic families, not a service for real ones.

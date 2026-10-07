@@ -149,6 +149,7 @@ MENU = [
     ("For judges and reviewers", "What did not work", "md", "documents/product/WHAT_DID_NOT_WORK.md"),
     ("For judges and reviewers", "Economics", "md", "documents/product/ECONOMICS.md"),
     ("For judges and reviewers", "The pattern", "md", "documents/product/PATTERN.md"),
+    ("For judges and reviewers", "CLI and MCP", "md", "documents/product/CLI_AND_MCP.md"),
     ("Architecture", "How this was built (page content)", "md", "documents/product/HOW_IT_WAS_BUILT.md"),
     ("Architecture", "How the engine thinks (walkthrough)", "md", "documents/product/ENGINE_WALKTHROUGH.md"),
     ("Architecture", "Technical reference (for engineers)", "md", "documents/product/TECHNICAL_REFERENCE.md"),

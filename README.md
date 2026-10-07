@@ -76,7 +76,7 @@ Git-ignored on purpose: `.env`, `data/`, `cases/`, `network/`, `health/`, `node_
 | A playbook, and how to add a crisis | `code/playbooks/detention/`, `python3 code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md` |
 | The learning loop (built, off, nothing learned) | `code/nury/feedback.py`, `documents/product/LEARNING_LOOP.md` |
 | The observability ledger | `code/nury/ledger.py`, `documents/product/OBSERVABILITY.md` |
-| The command line and MCP server | not shipped yet |
+| The command line and MCP server (read-only rule checks, no key) | `python -m nury.cli`, `python -m nury.mcp_server`, `documents/product/CLI_AND_MCP.md` |
 | The evaluation sets | `evaluations/scenarios*/` and `evaluations/network/` (detention 20, hospital 8, hostile 18, network 3, case file 5) |
 | The scorecards and honest limits | `evaluations/results/scorecard.md`, `evaluations/FAILURE_LOG.md` |
 
@@ -90,10 +90,10 @@ Git-ignored on purpose: `.env`, `data/`, `cases/`, `network/`, `health/`, `node_
 ## Tests
 
 ```
-cd code && ./test.sh                          # product tests: offline, no keys; 296 tests
+cd code && ./test.sh                          # product tests: offline, no keys; 335 tests
 cd ..
 python3 -m pip install pytest PyYAML markdown
-python3 -m pytest -q evaluations/tests        # evaluation tests; 86 tests
+python3 -m pytest -q evaluations/tests        # evaluation tests; 88 tests
 python3 evaluations/run.py --agent mock       # the harness against a mock agent: no network
 ```
 

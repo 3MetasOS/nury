@@ -8,7 +8,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei, from `evaluations/FAILURE_LOG.
 - **Tried.** A Jev score for "warm, plain and human" on the pastoral message (target 4, fail below 3).
 - **Happened.** On the earlier build it sat at 2.61 to 3.15 and never reached 4. After the plain-language rewrite (build `8a28a18`) it fell below 3 on five detention scenarios (2.6 to 2.85, against 2.7 to 3.17 before). The reading level improved: Spanish INFLESZ median 71.6, English grade median 5.15. The warmth score did not.
 - **Changed.** Nothing. We did not tune the score. Tone is a human-review item.
-- **Not known.** Whether the judge measures warmth or just prefers longer text. No family, pastor or native Spanish speaker has scored these messages.
+- **Not known.** Whether the judge measures warmth or just prefers longer text. The tone judge moves by up to 0.75 between identical runs; one sample near its 3.0 line proves little. No family, pastor or native Spanish speaker has scored these messages.
 
 ### 2. The tone score exposed a real bug: the messages made promises
 - **Tried.** Warm pastoral drafts.
