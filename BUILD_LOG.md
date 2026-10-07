@@ -907,3 +907,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 09:28: crisis pages LOCKED (Juan): #/crisis/detention and the hospital crisis page.
 - 09:38: crisis pages LOCKED FOR GOOD (Juan), with the banner, the Begin glow and the workflow summary. Locked: Home, Cases, Network, case detail, both crisis pages.
 - 09:58: intake and run and final pages LOCKED (Juan). Next: a few small new features (Juan: nothing major, simple adjustments).
+- 10:09: LinkedIn update post published by Juan (Home, Network in dark mode, Cases; fictional demo data stated; wording: 'a second check', no scenario counts).
