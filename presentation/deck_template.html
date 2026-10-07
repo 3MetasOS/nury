@@ -204,12 +204,22 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .strip2s figcaption b{color:var(--amber-text);font-family:var(--serif);margin-right:.3em}
 @media (max-width:760px){.v2 .strip2s{grid-template-columns:1fr}}
 .v2 .stages{font:500 clamp(14px,1.4vw,24px)/1.45 var(--mono);color:var(--muted);margin:0}
-.v2 .demo2{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:start}
-.v2 .demo2 figure{margin:0;display:grid;gap:1.2vh;min-width:0}
-.v2 .demo2 .frame{padding:4px}.v2 .demo2 img{width:100%;height:auto}
+.v2 .dhead{display:flex;justify-content:space-between;align-items:flex-end;gap:2vw}
+.v2 .demo2{display:grid;grid-template-columns:1fr 1fr;gap:2vw;align-items:stretch}
+.v2 .demo2 figure{margin:0;display:grid;grid-template-rows:1fr auto;gap:1.2vh;min-width:0}
+.v2 .demo2 .frame{padding:4px;display:flex;flex-direction:column}.v2 .demo2 .frame img{width:100%;height:auto}
 .v2 .demo2 figcaption{font:600 clamp(14px,1.4vw,24px)/1.2 var(--sans);color:var(--ink)}
-.v2 .demo2 figcaption b{color:var(--amber-text);font-family:var(--serif);margin-right:.3em}
-.v2.demo{gap:2vh;padding-top:5vh}
+.v2 .seqlive{padding:2.4vh 1.6vw 1.6vh!important;gap:1.2vh;justify-content:flex-start}
+.v2 .seqlive .cap{margin:0}
+.v2 .seqlive ol{list-style:none;margin:0;padding:0;display:grid;gap:2.4vh}
+.v2 .seqlive li{position:relative;display:flex;align-items:center;gap:.9vw}
+.v2 .seqlive li:not(:last-child)::after{content:"";position:absolute;left:calc(.9vw + 2px);bottom:-2.4vh;width:2px;height:2.4vh;background:var(--amber)}
+.v2 .seqlive .cn{flex:none;width:clamp(26px,2.5vw,44px);height:clamp(26px,2.5vw,44px);border-radius:50%;border:2px solid var(--amber);display:grid;place-items:center;color:var(--amber)}
+.v2 .seqlive .cn svg{width:62%;height:62%;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.v2 .seqlive .lb{font:600 clamp(16px,1.56vw,30px)/1.15 var(--sans)}
+.v2 .seqlive .stt{margin-left:auto;font:500 clamp(13px,1.25vw,24px)/1 var(--sans);color:var(--muted)}
+.v2 .seqlive .end .cn{background:var(--amber);color:#fff}
+.v2.demo .sub{font-size:clamp(16px,1.9vw,36px);max-width:none}.v2.demo .hand{white-space:nowrap;font-size:clamp(20px,2.1vw,38px);flex:none}.v2.demo .dhead .stack{flex:1;min-width:0}.v2.demo{gap:1.6vh;padding-top:4vh}.v2.demo h2.h{font-size:clamp(30px,3.8vw,80px);max-width:none}
 @media (max-width:760px){.v2 .demo2{grid-template-columns:1fr}}
 /* family */
 .v2 .fam{grid-template-columns:.7fr 1.3fr}
@@ -307,12 +317,12 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 
 <section class="slide v2 demo" data-cut="90" data-part="talk" data-name="the-demo">
 <p class="lbl">04 · The demo</p>
-<div class="demo2"><div class="stack">
-<h2 class="h">One call. Start to finish.</h2>
-<p class="sub">Nothing moves on without the pastor. Nothing is sent.</p>
-<figure><div class="frame"><img src="images/screens/case-sequence.png" alt="The saved case: every stage approved, ending in Case complete" width="1864" height="408"></div><figcaption><b>2</b>Approve, edit or stop</figcaption></figure>
+<div class="dhead"><div class="stack"><h2 class="h">One call. Start to finish.</h2>
+<p class="sub">Nothing moves on without the pastor. Nothing is sent.</p></div>
 <p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">a made-up family</span></p></div>
-<figure><div class="frame"><img src="images/screens/gate.png" alt="Stage 1, Triage, ready for review: the title bar, the first lines of the draft, the feedback chips, and Approve, Edit and Stop" width="776" height="831"></div><figcaption><b>1</b>Read each stage</figcaption></figure></div>
+<div class="demo2">
+<figure><div class="frame"><img src="images/screens/gate.png" alt="Stage 1, Triage, ready for review: the title bar, the first lines of the draft, the feedback chips, and Approve, Edit and Stop" width="776" height="646"></div><figcaption>Read it. Approve, edit or stop.</figcaption></figure>
+<figure><div class="frame seqlive" role="img" aria-label="How this case went: Triage, Rights brief, Attorney resources, Family checklist and Pastoral message, each approved, then Case complete"><p class="cap">How this case went</p><ol><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Triage</span><span class="stt">Approved</span></li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Rights brief</span><span class="stt">Approved</span></li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Attorney resources</span><span class="stt">Approved</span></li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Family checklist</span><span class="stt">Approved</span></li><li><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Pastoral message</span><span class="stt">Approved</span></li><li class="end"><span class="cn"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4.5 10.5 L8.5 14.5 L15.5 6"/></svg></span><span class="lb">Case complete</span></li></ol></div><figcaption>The whole case, in order.</figcaption></figure></div>
 <aside class="notes">LIGHT. 0:29 to 1:07. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside>
 </section>
 
