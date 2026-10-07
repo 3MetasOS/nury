@@ -1,53 +1,59 @@
-# Nury: 3-minute pitch script
+# Nury: 3-minute pitch script (deck v2)
 
-Speaker: Juan Pelaez (3Metas). Target 3:00 spoken at a calm pace (about 140 words a minute, about 400 words).
-Tags: `[90s]` lines stay in the 90-second cut. Untagged lines are 3-minute only.
-Family and intake: see `SHARED_DEMO.md`. Slide numbers match `deck.html`.
-`[NUMBER]` = placeholder. Fill from hack-artisans' scorecard only. If no real number exists, say the fallback line.
+Speaker: Juan Pelaez (3Metas). Target 3:00 at a calm pace. Slide numbers match `deck.html` (default view, gated items hidden). Press `n` for notes, `g` to reveal gated items for review, `b` to jump to backup.
+Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
+`[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
+Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
 
-## 0:00 to 0:25  Slide 1 and 2: the user  (Concept/Product)
-[90s] It is 2 AM. A solo pastor's phone rings.
-[90s] A family. A husband was detained last evening. The pastor has no staff and no lawyer on the line.
-[90s] The pastor wants to help. But they are not a lawyer. They have minutes, and a phone.
-That is the job Nury is built for.
+## 0:00 to 0:10  Slide 1: title  [90s]
 [90s] Nury. The crisis-response agent for solo pastors.
 
-## 0:25 to 1:35  Slide 3: live demo  (Product, Use of AI)
-Play the 90-second video, or run the app live on the locked intake. Speak over it or cue it.
-[90s] The pastor types what the family said. Nury runs five stages: triage, rights brief, attorney resources, a family checklist, and a pastoral message.
-[90s] After every stage, the pastor decides: Approve, Edit, or Stop. Later stages use the pastor's edits.
-[90s] Watch this. A draft crosses from information into advice. Nury rejects it and regenerates. The pastor never sees it.
-[90s] The rights brief comes out in Spanish, built only from a vetted source, every point cited.
-[90s] At the end, the pastor has a package. Copy, not Send. Nury never sends. The pastor does.
+## 0:10 to 0:30  Slide 2: the call  [90s]
+[90s] It is 2:07 in the morning. A solo pastor's phone rings.
+[90s] A family. A husband was detained last evening. The pastor has no staff and no lawyer on the line, a phone, and a few minutes.
+That is the job Nury is built for.
 
-## 1:35 to 2:10  Slide 4 and 5: why it works  (Innovation, Use of AI)
-Nury is a crisis-management engine. The app opens on a crisis selector. Each card is a playbook. Detention is the one you just saw.
-[ONLY AFTER SENSEI CONFIRMS IN WRITING THAT HOSPITAL RUNS AND IS SCORED] A second playbook, hospital emergency, runs on the same engine. [PLACEHOLDER: hospital scenario count and pass rate from the scorecard]
-Two more cards, sudden death in a family and house fire or displacement, say coming soon. Say nothing more about them.
-Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a test playbook. Until sensei confirms hospital in writing, say only that detention runs and is scored.
-Two design choices keep the pastor in control.
-First, the approval gate. The agent drafts. The pastor decides. Nothing reaches the family except through the pastor's hands.
-Second, the self-correction loop. Every draft is checked. Unsafe drafts are rejected and regenerated, up to three tries, then handed to the pastor. The pastor never sees the unsafe one.
-Nury runs on Gloo's guarded Responses endpoint. It gives legal information only, from a vetted source file. No open web. It is not a pastor, a counselor, or a lawyer, and it says so.
+## 0:30 to 1:25  Slide 3: the demo  [90s]
+Play the 90-second video, or run the app on the locked intake. The selector screenshot goes in the slot.
+[90s] The pastor types what the family said. Nury runs five stages. After every stage the pastor decides: Approve, Edit, or Stop.
+[90s] Watch the strip: a draft is rejected, regenerated, passed. The pastor never saw the unsafe one.
+[90s] At the end, Copy, not Send. Nury never sends. The pastor does.
 
-## 2:10 to 2:40  Slide 6: proof  (Impact and Execution)
-We tested it.
-[ONLY IF TRUE] Twenty hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
+## 1:25 to 1:50  Slide 4: concept and product
+Five stages, one gate after each. The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon.
+[ONLY AFTER SENSEI CONFIRMS IN WRITING THAT HOSPITAL RUNS AND IS SCORED] A second playbook, hospital emergency, runs on the same engine. [PLACEHOLDER: hospital scenario count and pass rate]
+Say nothing more about the coming-soon cards.
+
+## 1:50 to 2:15  Slide 5: innovation
+Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a test playbook.
+Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, then escalated.
+[ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
+
+## 2:15 to 2:35  Slide 6: use of AI
+Nury runs on Gloo's guarded endpoint and gives legal information only, from vetted sources.
+Four layers check it: plain code checks, typed judges, a red-team panel of models from other makers, and a person. The panel catches problems but also flags safe text, so it advises and Juan decides.
+
+## 2:35 to 2:50  Slide 7: impact and execution
+[ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
 Fallback if no scorecard: "We built twenty scenarios and scored each stage. The scorecard is in our build document."
+Say one failure, plainly: a checklist named a detainee locator that was not in our vetted sources. We fixed the prompt and the check.
 The harness uses the Jev decision API, my prior project, as typed judges. Disclosed as prior technology per the rules.
 
-## 2:40 to 3:00  Slide 7 and 8: team and close  (Teamwork/Presentation)
-Built by Juan Pelaez at 3Metas, with a small team of AI agents that coordinate over a messaging protocol. Every step is in the commit log.
-[90s] Nury is named for my late tía Nury, a woman who was always ready to help at her church.
-[90s] The next call will come. Nury is there when the pastor picks up.
+## 2:50 to 3:00  Slide 8: teamwork, then slide 9: close
+Built by Juan Pelaez at 3Metas with a small team of AI agents that coordinate over a messaging protocol. Next is the human team: pastors to pilot with, and an attorney to review the sources. Not done yet.
+[90s] Slide 9. The next call will come. Nury is there when the pastor picks up.
 [90s] Nury. The crisis-response agent for solo pastors.
 
-## 90-second cut: how to run it
-Say only the `[90s]` lines. Run the 90-second video over the demo lines. Drop slides 4 to 6.
-Judges' rules doc says 90 s, Discord says 3 min. Verify at the venue. Both versions are ready.
+## 90-second cut
+Slides 1, 2, 3, 9 only: the `[90s]` lines and the video. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
+
+## Backup slides (do not speak; use for questions). Press `b`.
+What broke and what changed. Four evaluation layers. Privacy that is tested. How we differ. Credits.
+Gated, hidden until Sensei confirms in writing: the case file, and "listed does not mean recommended" (church network and official list).
 
 ## Rules for the speaker
 - Say "legal information", never "legal advice".
-- Never say Nury "helps the family directly". It helps the pastor, who helps the family.
-- Do not name an agency or a party. Humanitarian, never political.
-- Do not claim a pastor tested it. We have not validated with one. Say so if asked.
+- Nury helps the pastor, who helps the family. It never speaks to the family directly.
+- Humanitarian, never political. Name no agency and no party.
+- Do not claim a pastor, attorney or family has used it. We have not validated with one.
+- Say nothing about the church network, the skill system, the case file or hospital until Sensei confirms in writing.
