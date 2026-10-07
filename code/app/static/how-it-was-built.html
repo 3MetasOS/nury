@@ -554,7 +554,7 @@ td:first-child code{white-space:nowrap}
 </table></div>
 <p><strong>There is no second AI reviewer in the run-time product.</strong> Juan decided that (BUILD_LOG 102). The reasons on record: in our tests GPT-5.4 flagged every safe review (10.8 findings each) and Gemini flagged 7 of 8, so as hard gates they would reject normal drafts. They would add an estimated 5 to 15 seconds per stage. Two runs of the same reviewer can disagree. More rejections would flatten the tone, and the tone score was already about 3 of 5. A loop that never ends could also hang a pastor at 2 AM, so the loop is bounded at three tries.</p>
 <h3 id="layer-by-layer">Layer by layer<a class="anc" href="#layer-by-layer" aria-label="Link to this section">#</a></h3>
-<p><strong>1. Named rules (plain code).</strong> Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. <span class="st st-built-live">BUILT, live</span>. Evidence: <code>code/nury/checks.py</code>, <code>code/nury/guardrails.py</code>, 257 offline product tests that pass (run 2026-10-07 with no keys set).</p>
+<p><strong>1. Named rules (plain code).</strong> Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. <span class="st st-built-live">BUILT, live</span>. Evidence: <code>code/nury/checks.py</code>, <code>code/nury/guardrails.py</code>, 264 offline product tests that pass (run at the end of 2026-10-07 with no keys set).</p>
 <p><strong>2. Jev gate, at run time.</strong> <span class="st st-built-live">BUILT, live</span> on three scenarios (detention 01 and 14, hospital h01; build <code>50668d6</code>).</p>
 <div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>
 <thead>
@@ -650,7 +650,7 @@ td:first-child code{white-space:nowrap}
 <tr>
 <td>1. Capture</td>
 <td>At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. <strong>Off by default</strong> (<code>NURY_FEEDBACK</code>). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored.</td>
-<td>BUILT, offline tested. <strong>The app wiring is in progress</strong> (uncommitted when checked on 2026-10-07; FEATURES says <span class="st st-planned">PLANNED</span>).</td>
+<td>BUILT, offline tested. <strong>The app wiring is committed</strong> (<code>ca6d9aa</code>) and browser-tested with a stubbed gate; no live run.</td>
 <td><code>code/nury/feedback.py</code>; <code>tests/test_feedback.py</code> (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57</td>
 </tr>
 <tr>
@@ -699,7 +699,7 @@ td:first-child code{white-space:nowrap}
 <li>Hospital adds twelve more banned patterns in <code>playbooks/hospital/playbook.json</code>: no prognosis, no diagnosis guess, no medical advice, no advice on ending care, no promised healing. These are data, so a playbook can add its own.</li>
 </ul>
 <p><strong>Data rules.</strong> Plain settings in a playbook's JSON: banned patterns (<code>extra_banned</code>), required labels, required headings, word limits, the pattern a stage must end with. Section 5 shows where each one lives.</p>
-<p><strong>Named checks.</strong> Functions in code that a stage lists by name. The registry holds <strong>20</strong>. The scored runs used 14 of them. The other six (three about Scripture, three added after the red team's findings) are tested offline and have not been part of a scored run. Where this page says "14 named checks", it means the scored set.</p>
+<p><strong>Named checks.</strong> Functions in code that a stage lists by name. The registry holds <strong>20</strong>, and the same 20 were in the scored build. All 20 apply in a full run of the two playbooks. Six of them were added last: three about Scripture and three added after the red team's findings. An earlier version of this page said "14"; that figure came from an older build.</p>
 <p>The list below is read from the app's registry when this page loads. It shows each check's name, a plain explanation, and which stages use it.</p>
 <div class="live" data-live="rules" markdown="0"></div>
 
@@ -758,7 +758,7 @@ td:first-child code{white-space:nowrap}
 <li><strong>Name it in a stage.</strong> In the playbook's <code>stages.json</code>, add <code>{"name": "&lt;your_check&gt;", ...settings}</code> to the stage's <code>checks</code>.</li>
 <li><strong>Let the loader guard it.</strong> <code>load_playbook</code> refuses a stage that names a check not in the registry ("unknown check"). A typo cannot silently turn a rule off.</li>
 <li><strong>Write a test</strong> in <code>code/tests/</code> that feeds the check a passing text and a failing text, and one that loads the playbook and confirms the stage runs it. The existing checks have tests in <code>test_core.py</code>, <code>test_scripture.py</code> and <code>test_panel_fixes.py</code>.</li>
-<li><strong>Run the tests.</strong> <code>cd code &amp;&amp; python3 -m unittest discover -s tests</code>. All 257 must pass.</li>
+<li><strong>Run the tests.</strong> <code>cd code &amp;&amp; python3 -m unittest discover -s tests</code>. All of them must pass.</li>
 <li><strong>Run a scenario</strong> that should trigger the rule: <code>python3 evaluations/run.py --agent nury --only &lt;number or id&gt;</code> (needs a Gloo key and spends money; see <code>evaluations/README.md</code>). Add a scenario to <code>evaluations/scenarios/</code> if none covers it.</li>
 <li><strong>Commit.</strong> A person reads the diff. That review is the only approval step today.</li>
 </ol>
@@ -1156,9 +1156,9 @@ td:first-child code{white-space:nowrap}
 </tr>
 <tr>
 <td><strong>Learning from real use</strong></td>
-<td>Capture wired into the app, a retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate (about $10 for all three sets and both arms, plus Jev on its own key, and Jev scores drift by up to 0.12)</td>
-<td>The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app wiring is in progress and not committed. No real data.</td>
-<td>Code: <span class="st st-built-off">BUILT, offline</span>. App wiring: <span class="st st-inprog">IN PROGRESS</span>. The rest: <span class="st st-notbuilt">NOT BUILT</span></td>
+<td>A retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate (about $10 for all three sets and both arms, plus Jev on its own key, and Jev scores drift by up to 0.12)</td>
+<td>The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app wiring is committed (<code>ca6d9aa</code>) and browser-tested. No real data.</td>
+<td>Code and app wiring: <span class="st st-built-off">BUILT, offline</span>. The rest: <span class="st st-notbuilt">NOT BUILT</span></td>
 </tr>
 <tr>
 <td><strong>Real use</strong></td>
