@@ -21,7 +21,7 @@ RIGHTS = ("- Tiene derecho a guardar silencio. (ACLU Know Your Rights)\n"
 ATTY = ("Recursos: https://www.immigrationadvocates.org/nonprofit/legaldirectory/ "
         "https://www.ailalawyer.com/ https://www.aclu.org/know-your-rights/immigrants-rights https://nipnlg.org/")
 CHECK = "DO TONIGHT\n1. Busque papeles.\nDO NOT DO\n1. No firme.\nGATHER THESE DOCUMENTS\n1. Identificación."
-PAST = "María, la iglesia está con ustedes. No están solos. Estamos buscando ayuda."
+PAST = "María, la iglesia está con ustedes. No están solos. Estamos orando por ustedes."
 CANNED = {"triage": TRIAGE, "rights": RIGHTS, "attorney": ATTY, "checklist": CHECK, "pastoral": PAST}
 ORDER = ["triage", "rights", "attorney", "checklist", "pastoral"]
 
@@ -255,7 +255,7 @@ HINFO = ("- El hospital puede compartir información con un familiar que partici
          "Pregunte al equipo del hospital sobre el paciente.")
 HRES = "Recursos: 988 https://988lifeline.org/ Trabajador social. Capellanía. Intérprete gratis."
 HCHK = "DO TONIGHT\n1. Pregunte a quién llamar.\nDO NOT DO\n1. No use a un niño como intérprete.\nWHAT TO BRING AND ASK\n1. Una lista de preguntas."
-HPAST = "Estamos con ustedes y con su papá. No están solos. Estamos preparando una lista de recursos."
+HPAST = "Estamos con ustedes y con su papá. No están solos. Estamos orando por ustedes."
 HCANNED = {"triage": HTRIAGE, "info": HINFO, "resources": HRES, "checklist": HCHK, "pastoral": HPAST}
 HORDER = ["triage", "info", "resources", "checklist", "pastoral"]
 
@@ -649,6 +649,50 @@ class EvalOnly(unittest.TestCase):
         pat = _re.compile(r"jev_judges|redteam_panel|api\.typesafe\.ai|\bimport\s+\w*jev|\bfrom\s+\S*jev|scenarios_attacker", _re.I)
         for f in list((root / "nury").glob("*.py")) + list((root / "app").glob("*.py")):
             self.assertIsNone(pat.search(f.read_text(encoding="utf-8")), f"{f.name} mentions an eval-only tool")
+
+
+class Promises(unittest.TestCase):
+    """The pastor's voice may invite. It may not promise an action nobody has taken."""
+
+    def _pastoral(self, text, intake="intake", hospital=False):
+        st = CaseState(intake)
+        if hospital:
+            st.approved.update(triage=HTRIAGE, info=HINFO, checklist=HCHK)
+            return run_stage("pastoral", st, client=HFake(dict(HCANNED, pastoral=text)), playbook="hospital")
+        st.approved.update(triage=TRIAGE, rights=RIGHTS, checklist=CHECK)
+        return run_stage("pastoral", st, client=FakeClient(dict(CANNED, pastoral=text)))
+
+    def test_promises_are_rejected_in_both_playbooks(self):
+        for text in ("Estamos buscando un abogado de inmigración para ustedes.", "Les mandamos más información muy pronto.",
+                     "Ya estamos preparando dos cosas para ayudarles.", "Estaremos en contacto.", "Le llamaremos mañana.",
+                     "Voy a visitar a la familia.", "We will send you the list soon."):
+            for hosp in (False, True):
+                r = self._pastoral("La iglesia está con ustedes. " + text, hospital=hosp)
+                self.assertEqual(r.status, "escalated", (text, hosp))
+                self.assertIn("unauthorized_promise", r.reason_categories, (text, hosp))
+
+    def test_invitations_and_presence_pass(self):
+        from nury import checks as ck
+        ctx = type("C", (), {"state": CaseState("intake")})()
+        for text in ("We are praying for you.", "We are thinking of you.", "We are here with you."):
+            self.assertEqual(ck.no_unauthorized_promises({}, text, ctx), [], text)
+        for text in ("Estamos orando por ustedes.", "Estamos pensando en ustedes.",
+                     "Estamos aquí. No están solos.", "Los acompañamos en oración.", "Llámeme cuando quiera.", "Puede llamarme a cualquier hora."):
+            for hosp in (False, True):
+                r = self._pastoral("La iglesia está con ustedes. " + text, hospital=hosp)
+                self.assertEqual(r.status, "approved", (text, hosp))
+
+    def test_an_action_the_pastor_wrote_in_the_intake_is_allowed(self):
+        said = "El pastor dijo que va a visitar a la familia mañana."
+        self.assertEqual(self._pastoral("Vamos a visitar a la familia.", intake=said).status, "approved")
+        self.assertEqual(self._pastoral("Vamos a visitar a la familia.", intake="solo llamó").status, "escalated")
+
+    def test_the_pastoral_prompts_no_longer_ask_for_promises(self):
+        for pid in ("detention", "hospital"):
+            pb = pbm.load_playbook(pid)
+            text = pbm.render_prompt(pb.registry["pastoral"], pb, "es", None, {})
+            self.assertNotIn("being arranged", text)
+            self.assertIn("Do not promise any action", text)
 
 
 if __name__ == "__main__":

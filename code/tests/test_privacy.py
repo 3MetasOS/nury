@@ -51,7 +51,7 @@ class FakeHTTP:
             "triage": f"SITUATION: {t1} called about a family member.\nPEOPLE:\n- {t1} (caller)\nLOCATION: Aurora\nFAMILY LANGUAGE: es\nURGENCY: High, urgent\nMISSING FACTS:\n1. Where?\n2. Who?\n3. When?",
             "rights": RIGHTS, "info": HINFO, "attorney": ATTY, "resources": HRES,
             "checklist": (CHECK if not self.hospital else HCHK),
-            "pastoral": f"Querida {t1}, la iglesia está con ustedes. No están solos. Estamos buscando ayuda."}
+            "pastoral": f"Querida {t1}, la iglesia está con ustedes. No están solos. Estamos orando por ustedes."}
         text = texts[key]
         if self.unknown_first and not self.unknown_done and key == "pastoral":
             self.unknown_done = True
@@ -193,6 +193,19 @@ class Units(unittest.TestCase):
         self.assertNotIn("Spanish", c)
         self.assertNotIn("What", c)
         self.assertNotIn("Larkspur", " ".join(c))                     # addresses are patterns, not names
+
+    def test_propose_terms_skips_sentence_openers_but_keeps_names(self):
+        text = ("Write exactly that. Please call me. Esto es urgente. Llame al pastor. Maria called at 2:07 AM. "
+                "Her husband Jose was detained. Maria is afraid. Sra. Ruiz lives nearby. Pedro dijo que viene.")
+        c = {x["term"]: x for x in propose_terms(text)}
+        for word in ("Write", "Please", "Esto", "Llame"):
+            self.assertNotIn(word, c, word)
+        for name in ("Maria", "Jose", "Ruiz", "Pedro"):
+            self.assertTrue(c[name]["suggested"], name)
+        demo = ("Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration officers "
+                "outside his workplace in Aurora. Maria is afraid to leave the house tomorrow. She wants to know what to do tonight.")
+        d = {x["term"] for x in propose_terms(demo) if x["suggested"]}
+        self.assertEqual(d, {"Maria", "Jose"})
 
     def test_off_switch_returns_plain_client(self):
         class Plain:

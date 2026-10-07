@@ -210,6 +210,9 @@
       {
         "name": "max_words",
         "limit": 119
+      },
+      {
+        "name": "no_unauthorized_promises"
       }
     ],
     "skills": [

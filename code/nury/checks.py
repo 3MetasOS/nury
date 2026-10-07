@@ -193,6 +193,35 @@ def network_entries_present(p, text, ctx):
     return out
 
 
+_PROMISE = re.compile(
+    r"\bwe(?: are|'re) (?:looking|searching|working|preparing|arranging|organizing|organising|putting together|gathering|finding)\b"
+    r"|\b(?:we|i)(?: will|'ll| shall| am going to|'m going to| are going to|'re going to) (?:send|call|visit|bring|follow|reach|get back|be in touch|check in|arrange|find|help you find|prepare|look for|search|gather|come)\b"
+    r"|\bin touch\b|\b(?:soon|shortly|right away|very soon)\b"
+    r"|\bestamos (?:buscando|preparando|trabajando|organizando|armando|reuniendo|gestionando|coordinando)\b"
+    r"|\b(?:les|le|te|los|la|las) (?:mandamos|enviamos|haremos llegar|llamamos|visitamos|traemos|buscamos|preparamos)\b"
+    r"|\bya estamos\b|\b(?:muy )?pronto\b|\ben breve\b|\bdentro de poco\b|\bcuanto antes\b"
+    r"|\b(?:vamos a|voy a) (?:buscar|enviar|mandar|llamar|visitar|preparar|traer|conseguir|encontrar|organizar|ayudar a (?:buscar|encontrar))\b"
+    r"|\b(?:llamar|visitar|enviar|mandar|buscar|preparar|traer|conseguir|encontrar|organizar)(?:é|emos|aré|eremos)\b"
+    r"|\b(?:llamaré|llamaremos|visitaré|visitaremos|enviaré|enviaremos|mandaré|mandaremos|buscaremos|prepararemos|traeremos|conseguiremos|encontraremos|organizaremos)\b"
+    r"|\b(?:seguiremos|seguimos|estaremos|me pondré|nos pondremos|nos comunicaremos|me comunicaré) (?:en )?contacto\b|\bestaremos en contacto\b", re.I)
+
+
+def no_unauthorized_promises(p, text, ctx):
+    """The pastor's voice may invite (pray together, call me, you are not alone). It may not promise an action
+    the church has not taken: a search, a visit, a call back, sending or preparing anything, or any time word for
+    one. An action the pastor wrote in the intake is allowed."""
+    intake = _fold(getattr(ctx.state, "intake", "") or "")
+    hits = []
+    for m in _PROMISE.finditer(text):
+        word = _fold(m.group(0))
+        verb = re.sub(r"[^a-z ]", "", word).split()[-1] if re.sub(r"[^a-z ]", "", word).split() else ""
+        if verb and len(verb) >= 5 and verb[:5] in intake:
+            continue                                     # the pastor wrote it, so it may be said
+        hits.append(m.group(0))
+    return [g.R("unauthorized_promise", f"promises an action nobody has taken: {sorted(set(h.lower() for h in hits))[:3]}")] if hits else []
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
                                     vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases, no_endorsement_words,
-                                    listed_contacts_known, network_entries_present, official_list_rules)}
+                                    listed_contacts_known, network_entries_present, official_list_rules,
+                                    no_unauthorized_promises)}

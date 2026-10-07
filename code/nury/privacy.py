@@ -78,6 +78,11 @@ high medium low
 what when where why how who whom whose which whether
 qué que cómo como cuándo cuando dónde donde quién quien cuál cual cuánto cuanto
 do tonight not gather these documents bring ask
+write tell call ask say give take make keep let help find show send bring come go look wait think remember explain describe list answer respond use
+please thanks thank sorry hello hi hey okay ok well now then also first second third finally however because while after before today
+esto eso esta este estos estas aquello llame llama hable habla escriba escribe diga dime dígame digame ayude ayuda pida pide busque busca ponga pone
+traiga trae venga vaya mire mira recuerde gracias hola buenas buen quiero necesito favor primero segundo tercero también tambien ahora entonces además
+ademas pero porque cuando mientras después despues antes mucho muchas muchos mucha todo todos toda todas nada algo alguien nadie siempre nunca
 """.split())
 _PLACE_CUE = re.compile(r"\b(?:in|at|from|near|to|en|de|desde|cerca|hacia)\s+$", re.I)
 _STATES = set("""alabama alaska arizona arkansas california colorado connecticut delaware florida georgia hawaii idaho illinois
@@ -113,9 +118,11 @@ def propose_terms(text):
     kind is 'person' or 'place' (a guess). suggested is True for likely people and False for likely
     places (a state, or a word that follows in/at/from/en/de). The pastor's final list is what counts."""
     seen = {}
+    _where = [None]
     text = Pseudonymizer().pseudonymize(text or "", names=False)     # addresses, phones, ids are not names
     for m in _CAP.finditer(text):
         phrase = m.group(0)
+        _where[0] = _context(text, m.start(), m.end())
         words = phrase.split()
         while words and _norm(words[0]) in _STOP:
             words.pop(0)
@@ -125,11 +132,15 @@ def propose_terms(text):
             # keep only the non-stop words as separate candidates
             words = [w for w in words if _norm(w) not in _STOP]
             for w in words:
-                _tally(seen, w, text, m.start(), m.end())
+                _tally(seen, w, text, m.start(), m.end(), _where[0])
             continue
-        _tally(seen, " ".join(words), text, m.start(), m.end())
+        _tally(seen, " ".join(words), text, m.start(), m.end(), _where[0])
     out = []
     for term, info in seen.items():
+        # A lone capitalized word that only ever opens a sentence ("Write exactly that", "Please call") is usually
+        # not a name. Keep it only if it also appears mid-sentence, follows a title, or is followed by a verb.
+        if " " not in term and not info["mid"] and not info["title"] and not info["verbish"]:
+            continue
         out.append({"term": term, "kind": info["kind"], "count": info["count"], "suggested": info["kind"] == "person"})
     return sorted(out, key=lambda x: (-x["count"], x["term"]))
 
@@ -137,7 +148,26 @@ def propose_terms(text):
 _STATE_NEXT = re.compile(r"^,\s*([A-Za-zÁÉÍÓÚÑáéíóúñ]+)")
 
 
-def _tally(seen, term, text, pos, end):
+_TITLES = {"sr", "sra", "srta", "mr", "mrs", "ms", "miss", "dr", "dra", "don", "dona", "doña", "pastor", "pastora", "hermano", "hermana",
+           "senor", "señor", "senora", "señora", "father", "padre", "madre", "sister", "brother"}
+_AUX = {"is", "was", "has", "had", "said", "told", "asked", "es", "esta", "está", "tiene", "dijo", "dice", "fue", "era", "llamo", "llamó",
+        "called", "wants", "quiere", "says", "needs", "necesita", "can", "does", "did", "are", "were", "lives", "vive", "works", "trabaja"}
+_VERB_END = ("ed", "ió", "ó", "aron", "ieron", "ía", "aba", "ando", "iendo")
+
+
+def _context(text, pos, end):
+    """(is the word at the start of a sentence, does it follow a title, is the next word verb-like)."""
+    before = text[:pos].rstrip()
+    initial = (not before) or before[-1] in ".!?\n¿¡:;\"“"
+    prev = re.findall(r"[\w']+", before[-20:])
+    title = bool(prev) and _norm(prev[-1]) in {_norm(t) for t in _TITLES} and not initial
+    nxt = re.match(r"\s*,?\s*([\w']+)", text[end:end + 40])
+    nw = _norm(nxt.group(1)) if nxt else ""
+    verbish = nw in {_norm(a) for a in _AUX} or nw.endswith(tuple(_norm(v) for v in _VERB_END)) and len(nw) > 3
+    return initial, title, verbish
+
+
+def _tally(seen, term, text, pos, end, ctx=None):
     key = _norm(term)
     kind = "person"
     first = key.split()[0] if key else ""
@@ -145,8 +175,12 @@ def _tally(seen, term, text, pos, end):
     if (first in _STATES or _PLACE_CUE.search(text[max(0, pos - 12):pos]) or _PLACE_WORD.match(term.split()[-1])
             or (nxt and _norm(nxt.group(1)) in _STATES)):
         kind = "place"
-    e = seen.setdefault(term, {"kind": kind, "count": 0})
+    e = seen.setdefault(term, {"kind": kind, "count": 0, "mid": False, "title": False, "verbish": False})
     e["count"] += 1
+    initial, title, verbish = ctx or (False, False, False)
+    e["mid"] = e["mid"] or not initial
+    e["title"] = e["title"] or title
+    e["verbish"] = e["verbish"] or (initial and verbish)
 
 
 class Pseudonymizer:

@@ -227,6 +227,9 @@
       },
       {
         "name": "no_agency_names"
+      },
+      {
+        "name": "no_unauthorized_promises"
       }
     ],
     "skills": [
