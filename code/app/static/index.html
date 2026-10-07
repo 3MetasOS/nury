@@ -29,6 +29,17 @@ textarea{min-height:170px;resize:vertical}
 .bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
 .ln{margin:6px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
+.chd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin:0 0 6px}.chd-t{min-width:0;flex:1 1 320px}.chd h2{margin:6px 0 4px;font:600 clamp(1.4rem,5vw,1.8rem)/1.2 var(--serif)}
+.chd-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chd-m{flex:1 1 100%;margin:0}.chd-m:empty{display:none}
+.btn.sm{width:auto;flex:none;min-height:36px;height:36px;padding:0 12px;font-size:14px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
+.btn.sm .i{width:16px;height:16px}
+.ctabs{position:sticky;top:77px;z-index:5;background:var(--bg);margin:0 0 12px;border-bottom:1px solid var(--line)}
+.ctabs .chips{padding:8px 0 8px;margin:0;scrollbar-width:thin}.ctabs .chip{min-height:40px;text-transform:capitalize}.crail .hnote{width:auto;max-width:100%}.crail .hnote .hn-t{white-space:normal}
+.ctabs .chip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
+.cgrid{display:grid;gap:16px;grid-template-columns:minmax(0,1fr)}.cmain,.crail{min-width:0}.crail{display:grid;gap:12px;align-content:start}
+.crail .card{margin:0}
+.aboutsaved{margin:28px 0 0;padding:14px 16px;border-radius:12px;background:var(--surface);border:0}.aboutsaved p{margin:0}.aboutsaved .mono{margin:0 0 6px}.aboutsaved .consent{font-size:13px;line-height:1.5;color:var(--muted);border:0;padding:0;background:none}
+@media (min-width:960px){.cgrid{grid-template-columns:minmax(0,1fr) 360px;gap:24px;align-items:start}}
 .chip{flex:none;min-height:44px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
 .fbrow{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:10px 0 4px}.fbl{font-size:.85rem;color:var(--muted)}.fbchips{display:flex;flex-wrap:wrap;gap:6px}.fbm{font-size:.85rem;color:var(--muted)}
 .chip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
@@ -456,31 +467,44 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <button class="btn" id="b-new2">New case</button>
   </div>
 </section>
-<section id="v-case" class="hidden narrow">
-  <button class="back" id="back-case">&larr; Cases</button>
-  <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
-  <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
-    <figure class="dfig hidden" id="case-strip"></figure>
-    <button class="cta hidden" type="button" id="case-follow" aria-pressed="false" style="margin-top:12px"></button><p class="note" id="case-follow-msg" role="status" style="margin:6px 0 0"></p>
-    <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
-    <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
-  <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; it keeps the first draft" data-arrow="left" data-rot="-1.2">Something changed</button>
-    <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare drafts</button></div>
-  <div class="card hidden" id="revise">
-    <h2>What happened?</h2>
-    <p class="note" style="margin:0">Nury records what you tell it and drafts the case again. It does not predict what will happen next.</p>
-    <label class="fld2" for="rv-step">Which step</label><select id="rv-step"></select>
-    <fieldset style="border:0;padding:0;margin:14px 0 0"><legend class="note" style="padding:0">How did it go</legend>
-      <label class="radio"><input type="radio" name="rv-res" value="hoped"> Went as hoped</label>
-      <label class="radio"><input type="radio" name="rv-res" value="not_hoped"> Did not go as hoped</label>
-      <label class="radio"><input type="radio" name="rv-res" value="unknown" checked> Unknown</label></fieldset>
-    <label class="fld2" for="rv-note">What happened, in your words</label><textarea id="rv-note" style="min-height:120px"></textarea>
-    <div class="row two" style="margin-top:14px"><button class="btn" id="rv-cancel">Cancel</button><button class="btn primary" id="rv-go">Draft again</button></div>
-    <p class="note" id="rv-err"></p></div>
-  <div class="card hidden" id="case-map"><h2>Next steps</h2><img class="mapimg" id="case-map-img" alt="Next steps map"></div>
-  <div class="chips" id="case-chips" role="tablist"></div>
-  <div class="card"><div id="case-page" class="plain"></div></div>
-  <p class="note">Read-only.</p>
+<section id="v-case" class="hidden">
+  <div class="chd">
+    <div class="chd-t">
+      <button class="back" id="back-case">&larr; Cases</button>
+      <h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
+    </div>
+    <div class="chd-a">
+      <button class="btn sm hidden" type="button" id="case-follow" aria-pressed="false"></button>
+      <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
+      <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
+    </div>
+    <p class="note chd-m" id="case-follow-msg" role="status"></p>
+  </div>
+  <div class="ctabs"><div class="chips" id="case-chips" role="tablist" aria-label="Case sections"></div></div>
+  <div class="cgrid">
+    <div class="cmain"><div class="card"><div id="case-page" class="plain" role="tabpanel" tabindex="0"></div></div></div>
+    <aside class="crail">
+      <div class="card"><figure class="dfig hidden" id="case-strip"></figure>
+        <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
+        <div id="case-scs" class="scs" style="margin-top:6px"></div></div>
+      <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; it keeps the first draft" data-arrow="left" data-rot="-1.2">Something changed</button>
+        <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare drafts</button></div>
+      <div class="card hidden" id="revise">
+        <h2>What happened?</h2>
+        <p class="note" style="margin:0">Nury records what you tell it and drafts the case again. It does not predict what will happen next.</p>
+        <label class="fld2" for="rv-step">Which step</label><select id="rv-step"></select>
+        <fieldset style="border:0;padding:0;margin:14px 0 0"><legend class="note" style="padding:0">How did it go</legend>
+          <label class="radio"><input type="radio" name="rv-res" value="hoped"> Went as hoped</label>
+          <label class="radio"><input type="radio" name="rv-res" value="not_hoped"> Did not go as hoped</label>
+          <label class="radio"><input type="radio" name="rv-res" value="unknown" checked> Unknown</label></fieldset>
+        <label class="fld2" for="rv-note">What happened, in your words</label><textarea id="rv-note" style="min-height:120px"></textarea>
+        <div class="row two" style="margin-top:14px"><button class="btn" id="rv-cancel">Cancel</button><button class="btn primary" id="rv-go">Draft again</button></div>
+        <p class="note" id="rv-err"></p></div>
+      <div class="card hidden" id="case-map"><h2>Next steps</h2><img class="mapimg" id="case-map-img" alt="Next steps map"></div>
+    </aside>
+  </div>
+  <div class="aboutsaved"><p class="mono">About saved cases</p>
+    <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p></div>
 </section>
 <section id="v-compare" class="hidden narrow">
   <button class="back" id="back-compare">&larr; Back to the case</button>
@@ -672,11 +696,13 @@ function go(hash){
   if(unsaved()&&!allowLeave){pendingHash=hash;openD($("leave"));return}      // every way out of unsaved work asks first
   if(location.hash===hash){allowLeave=false;route(false)}else location.hash=hash}
 async function route(first){clearInterval(window.__navTimer);const hs=location.hash||"#/";let m;
+  if(!first&&curCase&&document.body.dataset.view==="case"&&(m=hs.match(/^#\/case\/([\w.-]+)(?:\/([\w-]+))?$/))&&decodeURIComponent(m[1])===curCase.meta.id){   // same case, another tab (Back, Forward or a link): switch in place
+    const n=Object.keys(curCase.pages).find(x=>slugOf(x)===(m[2]||"overview"));if(n){showPage(n);return}}
   const ok=await loadData();
   document.querySelectorAll("#v-home,#v-cases").forEach(x=>x.hidden=true);
   let title="Nury",hv="h-home";
   if((m=hs.match(/^#\/crisis\/([\w-]+)$/))){showCrisis(m[1]);title=(pb?pb.title+", ":"")+"Nury";hv="h1c"}
-  else if((m=hs.match(/^#\/case\/([\w.-]+)$/))){await openCase(decodeURIComponent(m[1]));title="Case, Nury";hv=null}
+  else if((m=hs.match(/^#\/case\/([\w.-]+)(?:\/([\w-]+))?$/))){await openCase(decodeURIComponent(m[1]),m[2]);title="Case, Nury";hv=null}
   else if(hs.startsWith("#/cases")){const s=hs.split("/")[2];filt={q:"",crisis:"all",status:["all","follow","v2"].includes(s)?s:"all"};shown=20;$("q").value="";
     show("v-cases");renderCases();title="Your cases, Nury";hv="h-cases"}
   else{show("v-home");renderHome();title="Nury, an AI Crisis Response Agent"}
@@ -713,12 +739,12 @@ $("clear").onclick=()=>{filt={q:"",crisis:"all",status:"all"};$("q").value="";sh
 $("more").onclick=()=>{shown+=20;renderCases()};
 
 let curCase=null,curPage="index.md";
-async function openCase(id){
+async function openCase(id,tabName){
   const c=await api("/api/case/"+encodeURIComponent(id));
   if(c.error){const e=$("load-err");e.hidden=false;e.textContent=c.error;go("#/cases");return}
   curCase=c;$("case-title").textContent=crisisInfo({playbook:c.meta.playbook}).title||c.meta.title||c.meta.id;
   const fb=$("case-follow");fb.classList.toggle("hidden",!FEATURES.followup);$("case-follow-msg").textContent="";
-  const paintF=on=>{fb.setAttribute("aria-pressed",String(on));fb.replaceChildren(ic("i-flag"),on?"Needs follow-up. Tap to clear":"Mark as needs follow-up")};
+  const paintF=on=>{fb.setAttribute("aria-pressed",String(on));fb.replaceChildren(ic("i-flag"),on?"Following up":"Follow-up");const full=on?"Needs follow-up. Tap to clear":"Mark as needs follow-up";fb.setAttribute("aria-label",full);fb.title=full};
   paintF(!!c.meta.needs_follow_up);
   const apply=async on=>{fb.disabled=true;
     const r=await api("/api/case/"+encodeURIComponent(c.meta.id)+"/followup",{value:on});
@@ -739,16 +765,26 @@ async function openCase(id){
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
   const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
-    b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
+    b.id="tab-"+slugOf(n);b.setAttribute("aria-controls","case-page");b.tabIndex=-1;
+    b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>pickTab(n);return b}));
+  $("case-page").setAttribute("aria-labelledby","tab-"+slugOf(names[0]));
   const vs=c.versions||[c.meta.id];$("case-vers").classList.toggle("hidden",vs.length<2);
   $("case-vers").replaceChildren(...vs.map((v,i)=>({v,i})).reverse().map(({v,i})=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent=i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft");b.setAttribute("aria-label",b.textContent);b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
   $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
-  show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
+  {const m=CASES.find(x=>x.id===c.meta.id)||{};const sc=$("case-scs");sc.replaceChildren();const add=(cls,icon,t)=>sc.append(h("span",{class:"sc "+cls},ic(icon),t));add("s-saved","i-check","Saved");if(vs.length>1)add("s-v2","i-v2",(n=>n===1?"Updated":n===2?"Updated twice":`Updated ${n} times`)(vs.length-1));if(c.meta.needs_follow_up)add("s-follow","i-flag","Needs follow-up")}
+  show("v-case");const want=tabName&&names.find(n=>slugOf(n)===tabName);showPage(want||(c.pages["index.md"]!==undefined?"index.md":names[0]),true);
 }
-function showPage(n){curPage=n;
-  document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on)});
-  fmt($("case-page"),curCase.pages[n]);window.scrollTo({top:0})}
-$("case-copy").onclick=()=>navigator.clipboard.writeText(curCase.pages[curPage]).then(()=>{$("case-copy").textContent="Copied";setTimeout(()=>$("case-copy").textContent="Copy this page",1500)});
+const slugOf=n=>n==="index.md"?"overview":n.replace(/\.md$/,"").replace(/^\d+-/,"");
+/* tabs switch in place: no reload, no jump to the top; the hash carries the tab so Back and refresh keep it */
+function pickTab(n){if(!curCase)return;const hash="#/case/"+encodeURIComponent(curCase.meta.id)+"/"+slugOf(n);showPage(n);if(location.hash!==hash){ignoreHash=true;history.pushState(null,"",hash);ignoreHash=false;lastHash=hash}}
+function showPage(n,first){curPage=n;
+  document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;if(on){$("case-page").setAttribute("aria-labelledby",b.id);if(!first)b.scrollIntoView({inline:"center",block:"nearest"})}});
+  fmt($("case-page"),curCase.pages[n]);
+  const bar=$("case-chips").parentElement.getBoundingClientRect();if(!first&&(bar.top<0||bar.bottom>innerHeight))$("case-chips").parentElement.scrollIntoView({block:"nearest"})}
+$("case-chips").onkeydown=e=>{const t=[...document.querySelectorAll("#case-chips .chip")],i=t.indexOf(document.activeElement);if(i<0)return;
+  let k=null;if(e.key==="ArrowRight")k=(i+1)%t.length;else if(e.key==="ArrowLeft")k=(i-1+t.length)%t.length;else if(e.key==="Home")k=0;else if(e.key==="End")k=t.length-1;
+  if(k===null)return;e.preventDefault();t[k].focus();pickTab(t[k].dataset.p)};
+$("case-copy").onclick=()=>navigator.clipboard.writeText(curCase.pages[curPage]).then(()=>{$("case-copy").lastChild.textContent="Copied";setTimeout(()=>$("case-copy").lastChild.textContent="Copy",1500)});
 $("back-case").onclick=()=>{NAV=null;go("#/cases")};
 let reviseCtx=null;
 $("b-changed").onclick=()=>{
