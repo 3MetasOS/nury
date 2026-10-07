@@ -819,3 +819,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 136. 2026-10-07 03:19 MDT — Juan: remove the Hide notes toggle and hidden note text; notes are always shown.
 
 ## 137. 2026-10-07 03:22 MDT — Correction (my error): the tagline belongs in the app header, under the logo. I had told hack-artisans to remove it from the 60 px header to avoid putting it beside the logo; Juan: the header has room, branding is critical. The header grows to 72 to 80 px with the tagline directly under the logo at every width; a bounding-box test enforces it.
+
+## 138. 2026-10-07 03:26 MDT — Provenance statement (Juan) and a date problem found
+
+- Juan: add "made locally in Boulder, Colorado, between 10-06 and 10-08", very specific that the product was made during the hackathon, with a link to the build log. Decision: the footer of every page carries "Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026" with a link to a new Build log page rendered from BUILD_LOG.md; README, deck, notes and the Q and A carry the same sentence, with the honest fact that planning notes and a small scripted scaffold (documents/prework) existed before the event and that the first commit of the repository is 2026-10-06 19:36 MDT.
+- PROBLEM FOUND while checking the history: 41 commits by hack-ninja carry author and committer dates on 2026-10-08 (00:10 to 17:20, round times) while the real time is 2026-10-07 around 03:30. I asked hack-ninja how the dates were set; no history rewrite has been done. To decide with Juan before submission (disclose in this log, or correct dates once every agent is idle).
