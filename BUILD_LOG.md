@@ -14,3 +14,11 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Juan supplied the Gloo key ("Hackaton 2026") and directed it into a local `.env` at the repo root.
 - Decision: `.env` is gitignored and never committed. The key is not in any tracked file, commit, or message. Verified with `git check-ignore`.
 - Learning: the key appeared once in the session transcript. Rotate it in Gloo Studio after the hackathon.
+
+## 3. 2026-10-06 19:44 MDT — Crew online; first live Gloo call (hack-jedi)
+
+- Crew hired and briefed: hack-jedi, hack-artisans, hack-ninja, hack-video. Assignments sent over AMP.
+- hack-jedi built `code/nury/gloo_client.py`: guarded Responses endpoint, Bearer key from env/.env, HTTP 403 mapped to GuardrailBlock, latency and token metadata returned.
+- First live call: success, 1.6 s, 870 input / 4 output tokens, model gloo-anthropic-claude-sonnet-4.6. Key never printed or committed.
+- Vetted data copied to `code/nury/data`.
+- Next: stage registry, engine (chaining, correction loop, gates, audit), then `code/INTERFACE.md`.
