@@ -12,6 +12,6 @@ Nury removes direct identifiers before anything reaches a language model. Names,
 
 ## Credits
 
-Narration voice by ElevenLabs.
+The video narration is an AI-generated voice (ElevenLabs).
 
 Photo, illustration and font credits: `branding/IMAGES.md`.

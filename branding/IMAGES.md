@@ -20,8 +20,5 @@ Processing: resized (900 px and 1200 px wide), JPEG quality 74 to 76, metadata s
 ## Our own illustrations
 Drawn for this project in the lantern style, flat shapes, no faces and no figures with identities. Files in `presentation/images/`: `phone-night.svg`, `family-silhouette.svg`, `shoes-door.svg`, `window-night.svg`. The lantern mark is in `branding/`.
 
-## Narration
-Narration voice by ElevenLabs. (Free plan terms require this attribution. It appears on the deck credits slide, the video end credits, the submission notes and the README. We make no other claim about ElevenLabs: no logo, no endorsement.)
-
 ## Fonts
 Fraunces and Inter, SIL Open Font License, loaded from Google Fonts in the deck. If the venue has no internet, the deck falls back to Georgia and the system sans.
