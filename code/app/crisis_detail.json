@@ -59,7 +59,7 @@
     "A family checklist",
     "A short pastoral message"
    ],
-   "short": "Detention",
+   "short": "Immigration matter",
    "card": "A family member was detained or taken in a raid."
   },
   "hospital": {
@@ -112,12 +112,12 @@
     "A family checklist",
     "A short pastoral message"
    ],
-   "short": "Hospital",
+   "short": "Hospital emergency",
    "card": "A family member is in the emergency room or intensive care."
   },
   "sudden-death": {
    "icon": "i-sudden",
-   "short": "Sudden death"
+   "short": "Sudden loss"
   },
   "house-fire": {
    "icon": "i-fire",
