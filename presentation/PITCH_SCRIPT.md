@@ -59,7 +59,7 @@ Q and A: TECH_STORY Q17; `code/nury/playbook.py`; `documents/product/ADD_A_RULE.
 For more, go to the backup "The evaluation system in detail" (press `b`).
 
 ## 10. Impact
-Do not read the disclosure aloud: it is on the slide. "We judged 46 made-up cases: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents. Tone is still under target, and no person has rated warmth." (36 words, 14 s; trim "no person has rated warmth" if short.)
+Do not read the disclosure aloud: it is on the slide. "We judged 46 made-up cases: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents. Tone is still under target, and no person has rated warmth." (31 words, about 12 s, inside its 13 s slot.)
 Source: `evaluations/results/build_comparison.md`, build 9bc5c6d. Judge results, not human verdicts. Do not add the counts into a pass rate.
 One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the triage prompt.
 
