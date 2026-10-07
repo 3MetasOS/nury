@@ -237,3 +237,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Decision (Juan): hack-video evaluates Remotion for the 90 s video. Latest version is 4.0.533 (`npm view remotion version`); installed in `video/remotion/` as remotion and @remotion/cli 4.0.533 (exact pin) with react 19. Node 20.19, npm 11. `npx remotion versions` clean. `node_modules` is gitignored.
 - Timebox: 2 hours. Decision rule: use Remotion for the final video and the overnight re-cut only if it is clearly better and a full render works by Oct 7 12:00 MDT; otherwise ffmpeg stays. The ffmpeg script stays working either way.
 - Note for Juan: Remotion's license is free for individuals and small companies; check it covers 3Metas before relying on it commercially. It is fine for the hackathon entry.
+
+## 34. 2026-10-06 20:57 MDT — Case file and next-steps map built (hack-jedi, commit aba3d57)
+
+- `code/nury/casefile.py`, no model call, additive (run loop, floor, checks and prompts untouched). `save_case`, `list_cases`, `load_case`, `export_zip`, `nextsteps_svg`. Folder `cases/<id>/`: index.md, one page per stage, people.md, documents.md, timeline.md, log.md, nextsteps.svg, case.json. `cases/` is gitignored. 42 tests pass (verified by hack-sensei; 9 new).
+- Safety: saves nothing unless every stage is approved or edited; refuses if rejected draft text or a key value would land in a page; the log says "draft rejected (not saved)" with categories only; edits are marked "edited by the pastor". A forced-rejection test shows the rejected draft appears nowhere in the folder or the zip.
+- Map: lanes Tonight, This week, Questions still open, Who to call (only vetted links and phones). Steps and questions only; text escaped; no outcome words (tests). Hospital case has no immigration text.
+- Failed first, fixed: the lane header overlapped the subtitle (agent-browser screenshot caught it) and items were cut mid-sentence; a draft of the rejected-draft guard could false-refuse on a shared closing sentence; a test flagged the SVG xmlns URL as unvetted.
+- Known limit: the map shows what the approved text says, so the two accepted checklist lines appear under "Tonight". Stage pages keep the pastor's edits verbatim, including any link the pastor adds.
+- Not built: possible-paths map and the case update loop (marked later). Next: hack-artisans builds the UI (12:00 Oct 7).
