@@ -8,3 +8,6 @@ network/
 video/incoming/*
 !video/incoming/README.md
 data/
+
+# raw app recordings (large, not for git)
+video/raw_app/
