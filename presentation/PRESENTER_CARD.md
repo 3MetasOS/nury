@@ -15,7 +15,7 @@ Juan reads this one page. Keys: `n` notes, `g` slide index, `G` show gated, `b` 
 | 9 | The evaluation system | Two evaluation systems. One builds, one checks. | Top lane, then bottom lane. 16 s. |
 | 10 | Impact | 46 made-up cases: 29 pass, 2 fail. | Do not read the Jev line. Say the tone gap. 13 s. |
 | 11 | What we built | One engine. Crises on top. Tools around it. | Point at the four layers. 12 s. |
-| 12 | Close | The next call will come. | Pause. 5 s. (90-second cut ends here.) |
+| 12 | Close | The next call will come. | Pause. 5 s. The small note "In memory of Tía Nury, 08-2026" is on the slide; Juan may stay silent on it. (90-second cut ends here.) |
 | 13 | Memorial | Juan's words, only after written approval. | Nothing else on screen. 16 s. |
 
 ## Never say
@@ -44,7 +44,7 @@ Source: the CHOREO block in `deck.html` and `ANIMATION_LOG.md`. On arrival a sli
 | 9 | The evaluation system (15 s, 3) | 2.0 "One runs before release": lane 1 boxes light, a progress line runs | 7.6 "One runs on every draft": the Jev bridge between the lanes (its words, "Jev works in both", come at 12.8, so it is about 5 s early) | 7.8 press again at once: lane 2 boxes light and 239 counts up | |
 | 10 | Impact (13 s, 2) | 0.0 "We judged 46": the bars wipe and all counts run up | 5.6 "A case costs": "6 to 9 cents a case", "34 to 50 seconds", the hostile-intake line and the Jev disclosure | | |
 | 11 | What we built (12 s, 4) | 0.0 "Nury is one engine": Layer 3, Connected to (its words come at 4.4) | 1.6 "Crises": Layer 2, The agent (its words, "one engine", came at 0.0) | 4.4 "It connects to": Layer 1, Crises (its words came at 1.6) | 7.2 "Around it": Layer 4, Around it |
-| 12 | Close (5 s, 4) | 0.0 on arrival, before speaking: the logo | 0.0 "The next call": the tagline and the whole line "The next call will come. Nury is there when the pastor picks up." (second sentence 2 s early) | 4.0 "picks up": "Read more: the About page" | 5.0 the photo and the disclaimer |
+| 12 | Close (5 s, 4) | 0.0 on arrival, before speaking: the logo | 0.0 "The next call": the tagline and the whole line "The next call will come. Nury is there when the pastor picks up." (second sentence 2 s early) | 4.0 "picks up": the small note "In memory of Tía Nury, 08-2026" (no spoken words) | 5.0 the photo and the disclaimer |
 | 13 | Memorial (16 s, 0) | No presses. The text is on screen. | | | |
 
 ## Where a step does not match the words (for hack-artisans)
@@ -58,3 +58,7 @@ Source: the CHOREO block in `deck.html` and `ANIMATION_LOG.md`. On arrival a sli
 8. **The demo:** step 3 depends on the film length (rows 5 to 7, about 27 s). Check on the final film.
 9. **Memorial:** read aloud in full it is about 17 s (43 words), one second over its slot, so the pitch would be 2:56. Juan reads it a little faster, or does not read it aloud.
 10. **Impact:** the spoken line is 31 words (12 s), inside its 13 s slot.
+
+## Timing, with and without the memorial slide
+- **With** the separate memorial slide: 13 slides, 2:55 (2:56 if the memorial is read aloud in full).
+- **Without** it (the note on the close only): 12 slides, 2:39. 16 s are free: give them to the demo or end calmly on the close.

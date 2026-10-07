@@ -67,10 +67,17 @@ One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the
 "Nury is one engine. Crises sit on top as plain files. It connects to Gloo, Jev and YouVersion. Around it: the app, the evaluation system, and tools for other agents." (30 words, 12 s) Four layers on the slide. The honest status is on the Impact slide, the About page, How this was built and What did not work. Skills, the church network and the case file may be named now (gate lifted, Juan's written confirmation). Do not say skills improve results: the before-and-after test has not run.
 
 ## 12. Close (dawn)  [90s]
-"The next call will come. Nury is there when the pastor picks up." (5 s) The slide ends with "Read more: the About page."
+"The next call will come. Nury is there when the pastor picks up." (5 s) A small note on the slide: "In memory of Tía Nury, 08-2026." Juan says nothing about the note (he may, or not). The About pill is gone.
 
 ## 13. Memorial (dawn)  [90s]  [ONLY AFTER JUAN APPROVES THE TEXT IN WRITING]
 Option 1 of `MEMORIAL.md`, Juan's words, verbatim (about 16 s). The words are on the slide; Juan chooses whether anyone reads them. The slide is hidden until approval (press `G` to preview). Do not edit, shorten or humanize the text. Do not add a photo unless Juan provides one.
+
+## Memorial: two versions of the timing (Juan chooses)
+With the note on the close, the separate memorial slide is optional. What it adds: the words that say who Nury is named for and why (Juan's Option 1). What the note alone gives: a quiet tribute, with no explanation. Without the slide, the name's story goes unsaid on stage.
+| Version | Slides | Total | Close ends | Notes |
+|---|---|---|---|---|
+| A. With the memorial slide | 13 | 2:55 (the limit) | 2:39, memorial 2:39 to 2:55 | The slide is gated: needs Juan's written approval. Read aloud in full it is about 17 s, so 2:56. |
+| B. Without it (note on the close only) | 12 | 2:39 | 2:39 | 16 s free. Give them back to the demo (38 s to 44 s) or leave a calm ending. The pitch then ends on "Nury is there when the pastor picks up." |
 
 ## 90-second cut
 Slides 1, 2, 4, 7, 12 and the memorial: about 11 + 10 + 34 + 14 + 5 + 16 = 90 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.

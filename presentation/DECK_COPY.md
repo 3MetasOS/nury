@@ -107,7 +107,7 @@ Real screens live in `presentation/screens/` (1280 wide, light mode). `06-final-
 ### 12. close (dawn)
 - Headline: Nury. An AI Crisis Response Agent.
 - Line: The next call will come. Nury is there when the pastor picks up.
-- Labels: Read more: the About page
+- Labels: a small note, "In memory of Tía Nury, 08-2026" (no About pill; the close stays silent on the note, Juan may say it or not)
 - Always on slide: Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist. This is general legal information, not legal advice. Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.
 - Spoken (5 s): "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here.
 - Screens: none (lanterns photo).
