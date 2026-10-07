@@ -171,3 +171,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - approvals.json records Juan's decision: sources 1–5 approved, source 6 rejected (relayed by hack-sensei; recorded by hack-jedi). The loader drops the rejected source; hospital resources has 4 entries and no chaplaincy anywhere (a test asserts it).
 - /api/playbooks now lists detention live, hospital live, sudden-death soon, house-fire soon. 24 tests pass (verified by hack-sensei). Live hospital run with a forced rejection on the info stage: rejected once (banned_phrase), then passed; package_complete.
 - Not yet claimed in the pitch: hospital needs its scored scenarios (h01–h08) first.
+
+## 25. 2026-10-06 20:38 MDT — Nury skill system approved (Juan)
+
+- Decision (Juan): build our own light skill system. A skill is a versioned instruction module (`code/skills/<name>/SKILL.md`) that a playbook stage includes by name; the engine adds it to the prompt. No extra model call. A skill can add rules and checks but cannot remove the safety floor, the disclaimer or playbook banned patterns.
+- First two skills: `voice` (humanizer ideas, plain words, natural Spanish) and `grounding` (every line from the vetted points or a plain question to the professional). The ad-hoc checklist sentence moves into `grounding`.
+- Evidence: `skill_applied` audit events; before/after eval with skills off and on; a stock-AI-phrase check and a Jev tone score.
+- Owners: hack-jedi (build, before the 06:00 freeze), hack-artisans (eval), hack-ninja (claim only after I confirm).
