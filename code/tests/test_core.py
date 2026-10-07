@@ -483,6 +483,13 @@ class Skills(unittest.TestCase):
         self.assertTrue(ck.no_stock_phrases({}, "It is not just a list, but a guide.", ns))
         self.assertEqual(ck.no_stock_phrases({}, "Llame a un abogado hoy. No firme nada sin hablar con él.", ns), [])
 
+    def test_hospital_triage_prompt_handles_vague_intake(self):
+        pb = pbm.load_playbook("hospital")
+        text = pbm.render_prompt(pb.registry["triage"], pb, "en", None, {})
+        self.assertIn("bare plea", text)
+        self.assertIn("not stated", text)
+        self.assertNotIn("immigra", text.lower())
+
     def test_hospital_has_skills_and_no_immigration_words(self):
         pb = pbm.load_playbook("hospital")
         self.assertEqual([s.name for s in pb.registry["checklist"].skills], ["voice", "grounding"])
