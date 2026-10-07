@@ -9,6 +9,8 @@ from pathlib import Path
 
 import markdown
 
+from app import htmlsafe
+
 ROOT = Path(__file__).resolve().parents[2]
 SRC = ROOT / "documents" / "product" / "HOW_IT_WAS_BUILT.md"
 OUT = Path(__file__).resolve().parent / "static" / "how-it-was-built.html"
@@ -147,7 +149,7 @@ def build_log(out=None):
     entries = []
     for i in range(1, len(parts), 3):
         num, title, body = int(parts[i]), parts[i + 1].strip(), parts[i + 2]
-        html_body = markdown.markdown(body.strip(), extensions=["tables", "fenced_code", "sane_lists"])
+        html_body = htmlsafe.clean(markdown.markdown(body.strip(), extensions=["tables", "fenced_code", "sane_lists"]))   # BUILD_LOG.md is pasted text: keep only document markup
         html_body = html_body.replace("<table>", '<div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>').replace("</table>", "</table></div>").replace("<pre>", '<pre tabindex="0">')
         m = re.match(r"(\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2})?(?: [A-Z]{3})?)\s+\u2014\s+(.*)$", title)
         when, what = (m.group(1), m.group(2)) if m else ("", title)
