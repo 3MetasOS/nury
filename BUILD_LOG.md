@@ -97,3 +97,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Decision: no path variants in detention without vetted source text; the mechanism and a test exist.
 - Learned: the model refuses to be provoked into advice, so faults are injected after generation.
 - Gap found by hack-sensei: the engine floor still hardcodes "immigrant family" and "immigration attorney". Domain wording moves into playbook fields. The platform claim stays off the pitch until fixed.
+
+## 14. 2026-10-06 19:58 MDT — Engine is crisis-neutral (hack-jedi)
+
+- Commit c16a287. Domain wording moved into `playbook.json` (boundary: who, domain, professional, professional_kind; disclaimer; draft_label; optional extra_banned). The engine keeps the rules as a template.
+- Verified by hack-sensei: no "immigra" in `code/nury/*.py`; 13 tests pass; a hospital test playbook runs with no engine change and asserts no immigration text.
+- Platform claim approved for the pitch, worded as built and tested on a test playbook. No second crisis is claimed as shipped or scored.
