@@ -88,7 +88,7 @@ def build(out=None):
     short = ""
     ms = re.search(r"<!--\s*in-short\s*-->(.*?)<!--\s*/in-short\s*-->", md, re.S)
     if ms:                                                   # the 'In short' block is a card above the contents, not part of the article
-        inner = re.sub(r"(?m)^#{1,6} .*\n", "", ms.group(1)).strip()
+        inner = re.sub(r"(?mi)^(#{1,6} .*|\*\*in short\*\*)\n", "", ms.group(1).strip() + "\n").strip()
         short = '<aside class="inshort" aria-labelledby="inshort-l"><p class="mono" id="inshort-l">In short</p>' + markdown.markdown(inner, extensions=["sane_lists"]) + "</aside>"
         md = md[:ms.start()] + md[ms.end():]
     md = md.replace("<!--LIVE:RULES-->", '\n<div class="live" data-live="rules" markdown="0"></div>\n')

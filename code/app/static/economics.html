@@ -151,7 +151,7 @@ td:first-child code{white-space:nowrap}
 <li><strong>Order of magnitude.</strong> At the scorecard means, 100 packages cost about $6.40 (detention) to $8.90 (hospital) in Gloo spend. 1,000 packages cost about $64 to $89. That excludes Jev, hosting, people and everything in section 3.</li>
 </ul>
 <h2 id="2-where-the-time-goes">2. Where the time goes<a class="anc" href="#2-where-the-time-goes" aria-label="Link to this section">#</a></h2>
-<p>Per review note 3: Gloo latency per stage has a median of <strong>6.0 to 11.8 seconds</strong>. Jev adds about <strong>160 to 224 ms per draft</strong>, about <strong>3 percent</strong> of the time. The stages run one after another because each reads the approved text of the stage before it, so five stages is roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.</p>
+<p>Per review note 3: Gloo latency per stage has a median of <strong>6.0 to 11.8 seconds</strong>. The Jev gate adds one call per draft attempt, a median of about <strong>155 ms</strong> each. On the final scored sets that is about 0.8 seconds per package against 34 to 46 seconds of model time: about <strong>2 percent</strong> of the time the calls take (detention 2.2, hospital 1.7). The stages run one after another because each reads the approved text of the stage before it, so five stages is roughly 30 to 60 seconds, which matches the scorecard means. Each Gloo call has a 120 second timeout in the code.</p>
 <p>Two consequences:
 - A pastor waits 30 to 50 seconds per package, plus however long they take to read and approve. The product is built around that wait, not around speed.
 - Jev is cheap in time and in money (section 3.6).</p>
