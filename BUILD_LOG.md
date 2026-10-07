@@ -298,3 +298,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - hack-artisans reported "full": about 15 hours of work against 17.7 hours to 15:00 on Oct 7. Progress: case-file UI built and checked; 3 case-file scenarios pass live; the red-team panel is about 70% (first validation: gpt-5.4 and llama catch 8 of 8 injected problems but flag every safe scenario, so they are advisory; gemini's 13 errors were a parser bug, fixed; about $0.60 per run).
 - Decision (hack-sensei): move work instead of dropping Juan's priorities. The "Our network" screen and the skills before/after run go to hack-jedi (separate files, no collision). The attacker intakes go to hack-ninja (non-Claude attacker model on Gloo, reviewed by a person; hack-artisans only runs them). hack-artisans keeps the panel, privacy step, case-file loose ends, revision (cut 15:00), network scenarios and the final scored runs.
 - Learning: asking for honest capacity before adding work found the over-commitment early. The final scored run starts only when the core is frozen (08:00) and privacy is wired in the adapter.
+
+## 43. 2026-10-06 21:22 MDT — Blocker: Gloo credit exhausted (HTTP 402)
+
+- Every live Gloo call returned 402 INSUFFICIENT_CREDIT ("Wallet credit balance is exhausted"). The $10 credit from the prework is spent by development runs, A/B runs, the baseline and interim evals, the panel validation and live tests.
+- Decision: all agents pause live calls and work offline until Juan adds credit; owed live checks are listed and run in a planned order afterwards, not all at once.
+- Learning: we had no budget view. Add a cost log per run (tokens in, tokens out, dollars) to every live script, and a spending cap per task.
