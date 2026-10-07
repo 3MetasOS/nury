@@ -150,6 +150,8 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .back:hover{color:var(--text)}
 .rej{font-size:14px;color:var(--green);margin:0 0 10px}
 .hidden{display:none!important}
+.sample-link{display:block;width:auto;background:none;border:0;padding:6px 0 2px;margin:0 0 10px;min-height:0;height:auto;font:500 13px var(--sans);color:var(--amber-text);opacity:.85;text-decoration:underline;text-underline-offset:3px;cursor:pointer;text-align:left}.sample-link:hover,.sample-link:focus-visible{opacity:1}
+#v-intake .row.two:has(#btn-start:only-child){grid-template-columns:1fr}
 .btn.replay-first{display:block;width:100%;margin:8px 0 6px}
 .replay-line{margin:0 0 12px;color:var(--muted);font-size:.92rem;line-height:1.5}.replay-line a{color:var(--amber-text)}
 .privacy-off{margin:0 0 14px;padding:12px 14px;border:1px solid var(--red);border-radius:var(--r);background:var(--red-soft);color:var(--text);font-weight:600}
@@ -917,8 +919,8 @@ function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
   $("btn-demo").classList.toggle("hidden",!p.demo_intake);$("demo-row").classList.toggle("hidden",!p.demo_intake);
-  {const rp=!!FEATURES.replay;$("intake").readOnly=rp;$("btn-demo").textContent=rp?"Use the sample intake":"Use demo intake";$("btn-demo").classList.toggle("primary",rp);
-   if(rp){$("intake-title").after($("btn-demo"));$("btn-demo").classList.add("replay-first")}else{$("btn-start").before($("btn-demo"));$("btn-demo").classList.remove("replay-first")}   // replay: the one path (the sample) comes first, above the typing box
+  {const rp=!!FEATURES.replay;$("intake").readOnly=rp;$("btn-demo").textContent=rp?"Use the sample intake":"Try a sample";$("btn-demo").classList.toggle("primary",rp);$("btn-demo").classList.toggle("btn",rp);$("btn-demo").classList.toggle("sample-link",!rp);
+   if(rp){$("intake-title").after($("btn-demo"));$("btn-demo").classList.add("replay-first")}else{$("intake").after($("btn-demo"));$("btn-demo").classList.remove("replay-first")}   // replay: the one path (the sample) comes first, above the typing box
    if(rp)$("intake").placeholder="This is a recorded run. Use the sample intake."}
   $("intake-err").textContent="";show("v-intake");
 }
