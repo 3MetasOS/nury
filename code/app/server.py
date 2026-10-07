@@ -13,7 +13,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from nury.audit import AuditLog
-from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, get_playbook, run_stage
+from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome, get_playbook, run_stage
 from nury.gloo_client import GlooClient
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
@@ -67,6 +67,8 @@ class Session:
         self.done = False
         self.error = None
         self.halted = None         # message when stopped / escalated / error
+        self.results = []
+        self.sources_list = []     # vetted names and links handed to the pastor on escalation
         self.thread = threading.Thread(target=self.work, daemon=True)
         self.thread.start()
 
@@ -84,7 +86,12 @@ class Session:
                 self.current = s.id
                 r = run_stage(s.id, self.state, self.gate, client, self.audit,
                               fault_injection=self.fault, playbook=self.pb.id)
+                self.results.append(r)
                 if r.status not in ("approved", "edited"):
+                    try:
+                        self.sources_list = compute_outcome(self.pb.id, self.state, self.results)["package"].get("sources_list", [])
+                    except Exception:
+                        self.sources_list = []
                     self.halted = r.message
                     break
         except Exception as e:
@@ -155,7 +162,7 @@ class Session:
         progress = self.progress(ev)
         log = [safe_event(e) for e in ev]
         return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
-                "error": self.error, "done": self.done, "log": log, "language": self.state.language,
+                "error": self.error, "sources_list": self.sources_list, "done": self.done, "log": log, "language": self.state.language,
                 "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None}
 
 

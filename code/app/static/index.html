@@ -23,8 +23,15 @@ h2{font:500 20px var(--serif);margin:0 0 8px}
 label{display:block;font-size:14px;color:var(--muted);margin:12px 0 6px}
 textarea,select{width:100%;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
 textarea{min-height:170px;resize:vertical}
-.family{font-family:var(--serif);font-size:18px;line-height:1.6;white-space:pre-wrap}
-.plain{white-space:pre-wrap;line-height:1.6}
+.family{font-family:var(--serif);font-size:18px;line-height:1.6}
+.plain{line-height:1.6}
+.fld{margin-top:14px}.fld:first-child{margin-top:0}
+.lbl{display:block;font:600 12px var(--sans);letter-spacing:.08em;color:var(--amber);text-transform:uppercase;margin-bottom:2px}
+.val{display:block}
+.hd{font:600 16px var(--sans);color:var(--amber);margin:16px 0 6px}
+.bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
+.ln{margin:6px 0}
+.disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
 .btn.primary{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
@@ -120,6 +127,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     </div></div>
   <div class="card hidden" id="gate">
     <h2 id="g-title"></h2>
+    <p class="disc1" id="g-disc1"></p>
     <p class="rej hidden" id="g-rej"></p>
     <div id="g-draft" class="family"></div>
     <textarea id="g-edit" class="hidden family"></textarea>
@@ -136,6 +144,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     </div>
   </div>
   <div class="card hidden" id="halt"><h2>I'll handle this manually.</h2><p class="note" id="halt-msg"></p>
+    <div id="halt-src" class="hidden"><p class="note" style="margin-bottom:4px">Vetted sources you can use by hand:</p><div id="halt-src-list" class="plain"></div></div>
     <button class="btn" id="b-new1">Start over</button></div>
   <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
 </section>
@@ -152,6 +161,25 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 </main>
 <script>
 const $=id=>document.getElementById(id);
+const LANG={es:"Spanish",en:"English",pt:"Portuguese",fr:"French"};
+function inline(p,str){str.split(/(\*\*[^*]+\*\*)/).forEach(x=>{if(/^\*\*[^*]+\*\*$/.test(x)){const b=document.createElement("strong");b.textContent=x.slice(2,-2);p.append(b)}else if(x)p.append(document.createTextNode(x))})}
+function fmt(el,text){
+  el.replaceChildren();let list=null;
+  for(const raw of text.split("\n")){
+    const line=raw.replace(/\s+$/,"");
+    const li=line.match(/^\s*[-*\u2022]\s+(.*)$/);
+    if(li){if(!list){list=document.createElement("ul");list.className="bul";el.append(list)}const e=document.createElement("li");inline(e,li[1]);list.append(e);continue}
+    list=null;if(!line.trim())continue;
+    const h=line.match(/^#{1,6}\s+(.*)$/);
+    if(h){const d=document.createElement("div");d.className="hd";inline(d,h[1]);el.append(d);continue}
+    const lab=line.match(/^([A-Z][A-Z0-9 &\/'-]{2,}):\s*(.*)$/);
+    if(lab){const d=document.createElement("div");d.className="fld";const l=document.createElement("span");l.className="lbl";l.textContent=lab[1];d.append(l);
+      let v=lab[2];if(lab[1]==="FAMILY LANGUAGE"&&LANG[v.trim().toLowerCase()])v=LANG[v.trim().toLowerCase()];
+      if(v){const sp=document.createElement("span");sp.className="val";inline(sp,v);d.append(sp)}el.append(d);continue}
+    const d=document.createElement("div");d.className="ln";inline(d,line);el.append(d)}
+}
+const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
+let rawDraft="";
 let sid=null,timer=null,lastGate=null;
 const show=v=>["v-select","v-intake","v-pipe","v-pkg"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
@@ -193,7 +221,7 @@ $("b-new1").onclick=reset;$("b-new2").onclick=reset;
 const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
 $("b-approve").onclick=()=>{lock();decide("approve")};
 $("b-stop").onclick=()=>{lock();decide("stop")};
-$("b-edit").onclick=()=>{$("g-edit").value=$("g-draft").textContent;$("g-draft").classList.add("hidden");
+$("b-edit").onclick=()=>{$("g-edit").value=rawDraft;$("g-draft").classList.add("hidden");
   $("g-edit").classList.remove("hidden");$("g-btns").classList.add("hidden");$("g-edit-btns").classList.remove("hidden")};
 $("b-cancel").onclick=()=>unedit();
 $("b-save").onclick=()=>{const t=$("g-edit").value.trim();if(!t)return;lock();decide("edit",t)};
@@ -229,17 +257,18 @@ async function poll(){
   if(s.done&&!s.halted&&!s.error){clearInterval(timer);
     $("pkg").replaceChildren(...s.stages.map(x=>{const c=document.createElement("div");c.className="card";
       const h=document.createElement("h2");h.textContent=x.title;
-      const p=document.createElement("div");p.className=x.id==="triage"?"plain":"family";p.textContent=x.final;
+      const p=document.createElement("div");p.className=x.id==="triage"?"plain":"family";fmt(p,x.final);const d1=document.createElement("p");d1.className="disc1";d1.textContent=oneLine(x.disclaimer);
       const d=document.createElement("div");d.className="disc";d.textContent=x.disclaimer;
       const b=document.createElement("button");b.className="btn";b.textContent="Copy";b.style.marginTop="12px";
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
-      c.append(h,p,d,b);return c}));
+      c.append(h,d1,p,d,b);return c}));
     const whole=s.stages.map(x=>x.title+"\n\n"+x.final+"\n\n"+x.disclaimer).join("\n\n----------\n\n");
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
     $("b-download").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([whole],{type:"text/plain;charset=utf-8"}));a.download="nury-package.txt";a.click();URL.revokeObjectURL(a.href)};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
   $("halt").classList.toggle("hidden",!halted);
+  if(halted){const sl=s.sources_list||[];$("halt-src").classList.toggle("hidden",!sl.length);fmt($("halt-src-list"),sl.map(x=>"- "+x).join("\n"))}
   if(halted){clearInterval(timer);$("halt-msg").textContent=(s.halted||"").replace(" I'll handle this manually.","")||"Something went wrong ("+s.error+"). Your intake is not lost; start again."}
   const g=s.gate;
   $("gate").classList.toggle("hidden",!g);
@@ -248,7 +277,7 @@ async function poll(){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;
-      $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
+      $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');rawDraft=g.draft;fmt($("g-draft"),g.draft);$("g-disc").textContent=g.disclaimer;$("g-disc1").textContent=oneLine(g.disclaimer);
       const rj=g.metrics.self_corrections;$("g-rej").classList.toggle("hidden",!rj);
       $("g-rej").textContent=rj===1?"Rejected once, regenerated, passed.":`Rejected ${rj} times, regenerated, passed.`;
       $("g-draft").className=g.id==="triage"?"plain":"family";
