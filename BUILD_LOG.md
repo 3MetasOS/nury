@@ -372,3 +372,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Juan asked for photos of children and detainees from immigration raids. Decision: no real detainee or child photos. Reasons: news photos are copyrighted; the children cannot consent and Nury promises to protect identities; raid imagery makes the entry read as political, against the code of conduct and our humanitarian rule. Instead: licensed photos with no identifiable people (Unsplash, Pexels, Wikimedia Commons) and our own lantern-style illustrations, each with its license recorded in `branding/IMAGES.md` and a credits slide.
 - Decision: the deck (and, pending Juan's confirmation, the video) moves to the light paper palette from the brand kit; the dark look stays inside the app for night use. Deck restructured around the five judging criteria, with the honest "what broke and what changed" slide.
 - Answer to "did the team use impeccable": yes (deck, app, end card, diagrams). The dark look came from the original brief, not from the skill.
+
+## 55. 2026-10-06 21:53 MDT — Light video; Day mode in the app (Juan: yes and yes)
+
+- The video moves to the paper palette; the app footage stays the dark app in a phone frame on the light background. The app gets an optional Day/Night toggle (Night stays the default); CSS variables only, no core change; lowest priority, cut if the final runs need the time.
