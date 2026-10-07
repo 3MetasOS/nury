@@ -10,7 +10,7 @@ Links used (the app's own pages): `/how-it-was-built`, `/what-did-not-work`, `/e
 
 Nury is an AI Crisis Response Agent for churches.
 
-When a family calls a pastor in crisis, the pastor picks the kind of crisis and types what the family said. Nury drafts five stages for the pastor to read: a case summary, a plain-language brief with every point cited, a list of vetted contacts, a family checklist and a short pastoral message. Family materials come out in the family's language.
+When a family calls a pastor in crisis, the pastor picks the kind of crisis and types what the family said. Nury drafts the stages that crisis defines, for the pastor to read. Each live crisis has five. For an immigration matter they are a case summary, a plain-language brief with every point cited, a list of vetted contacts, a family checklist and a short pastoral message. Family materials come out in the family's language.
 
 After every stage the pastor can Approve, Edit or Stop. Later stages build on the pastor's edits. Nothing reaches the family except through the pastor: Nury has no way to send a message. Nury is not a pastor, a counselor, a doctor or a lawyer, and it gives information, never advice.
 

@@ -6,7 +6,7 @@ Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. 
 
 ## What Nury is
 
-A family calls a church in the worst hour of its life. The pastor opens Nury, picks the crisis and types what the family said. Nury drafts five stages for the pastor to read: a case summary, a plain-language brief, a list of vetted contacts, a family checklist and a short pastoral message, with the family materials in the family's language. After every stage the pastor can Approve, Edit or Stop. Nothing reaches the family except through the pastor.
+A family calls a church in the worst hour of its life. The pastor opens Nury, picks the crisis and types what the family said. Nury drafts the stages that crisis defines, for the pastor to read. Each live crisis has five. For an immigration matter they are a case summary, a plain-language rights brief, a list of vetted contacts, a family checklist and a short pastoral message, with the family materials in the family's language. After every stage the pastor can Approve, Edit or Stop. Nothing reaches the family except through the pastor.
 
 Nury is not a pastor, counselor, doctor or lawyer, and never claims to be one. It gives legal and hospital information from vetted sources, never advice. Two playbooks are live: an immigration matter (a detention or a raid) and a hospital emergency.
 
@@ -20,7 +20,7 @@ License: MIT. Disclosure: The Jev decision API from TypeSafe is used as typed ju
         code rules (banned phrases, vetted links only, language, disclaimer) ──► Jev classifier
                        │ pass
                        ▼
-        pastor: Approve / Edit / Stop ──► next stage reads the approved text ──► ... five stages
+        pastor: Approve / Edit / Stop ──► next stage reads the approved text ──► ... the stages that crisis defines
                        │
                        ▼
         pastor copies the text and sends it by hand. Nury has no send path.

@@ -4,7 +4,8 @@
 D=$(cd "$(dirname "$0")" && pwd)
 T=$(mktemp -d); cp "$D/deck.html" "$T/fitdeck.html"; cp -r "$D/images" "$D/fonts" "$T/"
 JS=$(cat "$D/fit_check.js")
-cd "$T" && python3 -m http.server 18150 >/dev/null 2>&1 & P=$!
+lsof -ti tcp:18150 | xargs kill 2>/dev/null
+(cd "$T" && python3 -m http.server 18150 >/dev/null 2>&1 &)
 sleep 1
 export AGENT_BROWSER_SESSION=fit-check-deck
 for q in "?gated" ""; do for vp in "1280 720" "1920 1080" "390 844"; do
@@ -13,4 +14,4 @@ for q in "?gated" ""; do for vp in "1280 720" "1920 1080" "390 844"; do
   agent-browser open "http://127.0.0.1:18150/fit.html" >/dev/null 2>&1; sleep 3
   echo "[${q:-default}] $W x $H: $(agent-browser eval "$JS" 2>&1 | tail -1)"
 done; done
-agent-browser close >/dev/null 2>&1; kill $P 2>/dev/null
+agent-browser close >/dev/null 2>&1; lsof -ti tcp:18150 | xargs kill 2>/dev/null

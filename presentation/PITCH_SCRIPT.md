@@ -30,7 +30,7 @@ The slide is dark. Play the phone buzz if the room allows. [90s] It is 2:07 in t
 The slide turns from night to paper and the lantern lights. [90s] "This is Nury." Pause. The entry builds itself. [90s] "A given name from Arabic nur, light. An AI crisis response agent." Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
 
 ## 0:26 to 0:40  Slide 3 (light): concept and product
-"Five stages, one gate after each. The app opens on a crisis selector. Detention and hospital emergency are live, and two more are coming soon. Nothing is sent without the pastor." (30 words, 12 s)
+"Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." (29 words, 12 s)
 [ONLY AFTER SENSEI CONFIRMS IN WRITING THAT THE VERSE BANK IS BUILT: The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture.]
 Do not say "the one you saw": the demo comes next. Say nothing more about the coming-soon cards.
 
@@ -49,12 +49,12 @@ Evidence for the Q and A (TECH_STORY Q17): the playbook loader (`code/nury/playb
 The correction loop is said once, on the next slide. Skills and the church network: say nothing unless Sensei confirms in writing.
 
 ## 1:28 to 1:50  Slide 6 (light): how it is built  [90s]
-Trace the line once. [90s] "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The leak test ran 90 checks per playbook and found no names." (42 words, 17 s)
+Trace the line once. [90s] "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. Before release, a leak test ran 90 checks per playbook and found no names." (42 words, 17 s)
 Under the diagram: twenty named checks plus the safety floor, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
 
 ## 1:50 to 2:09  Slide 7 (light): use of AI, and why two judges
-[47 words, about 19 s] The writer is Claude, through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, classifies it with a probability before the pastor sees it. Before release, a red team of three models from other makers hunts for what we missed, and we decide what to change.
-If asked for more, go to the backup slide "Why two judges" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. In validation all three red-team reviewers caught 8 of 8 injected problems and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is from TypeSafe, not ours: say "used at run time and at test time, and disclosed as third-party technology".
+[47 words, about 19 s; two times: run time, then before release] While a pastor uses it, Claude writes through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again before the pastor sees it. Before release, once and by hand, three models from other makers reviewed it, and we decide what to change.
+If asked for more, go to the backup slide "Why two judges" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. In validation all three red-team reviewers caught 8 of 8 injected problems and also flagged safe text, so it advises. The panel was not re-run on the final build. Jev is from TypeSafe, not ours: say "used at run time and at test time, and disclosed as third-party technology".
 
 ## 2:09 to 2:22  Slide 8 (light): impact and execution
 Do NOT read the disclosure aloud: it is on the slide. Speak only the numbers and one failure (about 30 words).

@@ -3,7 +3,7 @@
 <!--in-short-->
 **In short**
 
-Nury helps a pastor who gets a crisis call. The pastor types what the family said. Nury drafts five short stages for the pastor to read, edit or stop. Nothing reaches the family except through the pastor.
+Nury helps a pastor who gets a crisis call. The pastor types what the family said. Nury drafts the stages that each crisis defines, for the pastor to read, edit or stop. Both live crises have five. Nothing reaches the family except through the pastor.
 
 A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.
 
@@ -50,7 +50,7 @@ Written 2026-10-07 by hack-ninja for the app route `/how-it-was-built`. Sources:
 
 ## 1. What Nury is and how a run works
 
-A pastor takes a call from a family in crisis. The pastor opens Nury, picks the crisis, and types what the family said. Nury drafts five stages. After each stage the pastor can **Approve**, **Edit** or **Stop**. Nothing reaches the family except through the pastor. Nury has no way to send anything.
+A pastor takes a call from a family in crisis. The pastor opens Nury, picks the crisis, and types what the family said. Nury drafts the stages that crisis defines (five in each live crisis). After each stage the pastor can **Approve**, **Edit** or **Stop**. Nothing reaches the family except through the pastor. Nury has no way to send anything.
 
 Nury is not a pastor, counselor, therapist, doctor or lawyer, and never says it is. It gives general information from vetted sources. It does not give advice, predict outcomes or suggest a strategy. Every output carries a disclaimer, in English and in the family's language.
 
