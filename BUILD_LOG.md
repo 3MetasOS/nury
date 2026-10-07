@@ -217,3 +217,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Full five-stage live runs on the final prompts, skills ON: detention 01 (39 s), 18 (37 s), 20 (37 s), hospital h01 (49 s). Every stage passed on attempt 1; package_complete; 4 skill_applied events each; checklists 351–410 words. Detention 01 with skills OFF: all five stages pass, 3 skills_off events. This closes the testing gap noted in entry 26.
 - Known limitations in PROMPT_NOTES: the two accepted checklist lines, grounding not airtight, no built-in before/after yet, the voice check does not measure naturalness.
 - The detention core is frozen: bug fixes only, announced first.
+
+## 31. 2026-10-06 20:52 MDT — Hospital h03 fix (hack-jedi, PROMPT_NOTES problem 13)
+
+- Hospital triage prompt only: a vague intake now yields a structured case (location "not stated", 3 missing facts, no comfort text, no invented facts). Live: h03 twice, both first-attempt passes; regression on h01 and h07 passes, all five stages, package_complete. Detention untouched. 33 tests pass (verified by hack-sensei).
+- Learning: an emotional vague intake pulled the triage model into comforting the pastor instead of structuring the case; the prompt now states the output is a case record, not a reply.
+- Next: hack-artisans re-runs h03 and the full hospital set; hack-jedi starts the case-file writer.
