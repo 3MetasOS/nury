@@ -29,6 +29,10 @@ textarea{min-height:170px;resize:vertical}
 .bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
 .ln{margin:6px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
+.band.casehd{margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0 0 8px;font:600 clamp(1.5rem,5vw,2rem)/1.15 var(--serif)}.chrow{display:flex;flex-wrap:wrap;gap:6px 8px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.casehd .vers{margin-top:8px}
+.cb-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cb-r #b-changed{width:auto;flex:none;min-height:40px;height:40px;padding:0 18px}
+@media (min-width:960px){.band.casehd{grid-template-columns:minmax(0,1fr) auto;gap:16px 24px}.cb-r{justify-content:flex-end;flex-wrap:nowrap}}
 .chd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin:0 0 6px}.chd-t{min-width:0;flex:1 1 320px}.chd h2{margin:6px 0 4px;font:600 clamp(1.4rem,5vw,1.8rem)/1.2 var(--serif)}
 .chd-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chd-m{flex:1 1 100%;margin:0}.chd-m:empty{display:none}
 .btn.sm{width:auto;flex:none;min-height:36px;height:36px;padding:0 12px;font-size:14px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
@@ -43,11 +47,16 @@ textarea{min-height:170px;resize:vertical}
 .lanes{display:grid;gap:18px;grid-template-columns:minmax(0,1fr)}.lane h4{font:700 1.05rem var(--serif);color:var(--amber-text);margin:0 0 8px}
 .lane ul{margin:0;padding:0;list-style:none;display:grid;gap:10px}.lane li{position:relative;padding-left:18px;font-size:16px;line-height:1.5}.lane li::before{content:"";position:absolute;left:2px;top:.62em;width:6px;height:6px;border-radius:50%;background:var(--amber)}
 @media (min-width:860px){.lanes{grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:0}.lane{padding:0 24px}.lane:first-child{padding-left:0}.lane+.lane{border-left:1px solid var(--line)}.lane:last-child{padding-right:0}}
-.stg{list-style:none;margin:0;padding:0;display:grid;gap:12px;grid-template-columns:minmax(0,1fr)}
-.stn{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);padding:10px;border-radius:12px;border:1px solid var(--line)}.stn:hover{border-color:var(--amber-line)}
-.stn .nd{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;border:2px solid var(--amber);color:var(--amber-text);font:600 18px var(--sans)}
-.stn .nm{font:600 14px var(--sans);flex:1}.stn .stt{font:500 12px var(--sans);color:var(--muted);text-transform:capitalize}
-@media (min-width:860px){.stg{grid-template-columns:repeat(5,minmax(0,1fr));position:relative}.stn{flex-direction:column;text-align:center;border:0;gap:8px}.stn .nm{flex:none}}
+.seq{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;align-items:stretch;gap:4px}
+.seq li{display:flex;justify-content:center}.seq .sa{padding:2px 0}
+.arr{width:12px;height:44px;transform:none;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.arr.done{stroke:var(--amber)}.arr.pending{stroke:var(--muted)}
+.seq .arr{transform:rotate(90deg);width:44px;height:12px;margin:16px 0}
+.stn{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text);padding:10px;border-radius:12px;border:1px solid var(--line);width:100%}a.stn:hover{border-color:var(--amber-line)}
+.stn .nd{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:2px solid var(--amber);color:var(--amber-text);font:600 20px var(--sans)}
+.stn .nm{font:600 14px var(--sans);flex:1}.stn .stt{font:500 12px var(--sans);color:var(--muted)}.stn.endm .nd{background:var(--amber);color:var(--amber-ink)}
+.dseq{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:12px;border-top:1px solid var(--line)}.dseq .arr{width:34px;height:10px;transform:none}
+.dchip{padding:6px 12px;border-radius:99px;border:1px solid var(--line-2);color:var(--muted);font:600 13px var(--sans);text-decoration:none}.dchip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
+@media (min-width:860px){.seq{flex-direction:row;align-items:flex-start;gap:0}.seq li{flex:1 1 0;min-width:0}.seq .sa{flex:0 0 52px;padding:0;align-items:flex-start;margin-top:22px}.seq .arr{transform:none;width:44px;height:12px;margin:0 4px}.stn{flex-direction:column;text-align:center;border:0;gap:8px;padding:0}.stn .nm{flex:none}}
 .aboutsaved{margin:28px 0 0;padding:14px 16px;border-radius:12px;background:var(--surface);border:0}.aboutsaved p{margin:0}.aboutsaved .mono{margin:0 0 6px}.aboutsaved .consent{font-size:13px;line-height:1.5;color:var(--muted);border:0;padding:0;background:none}
 
 .chip{flex:none;min-height:44px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
@@ -478,21 +487,22 @@ body:not([data-view="crisis"]) .startbar{display:none}
   </div>
 </section>
 <section id="v-case" class="hidden">
-  <div class="chd">
-    <div class="chd-t">
-      <button class="back" id="back-case">&larr; Cases</button>
-      <h2 id="case-title"></h2><p class="note chd-meta" id="case-meta" style="margin:0"></p>
+  <a class="back" id="back-case" href="#/cases">&larr; Cases</a>
+  <div class="band casehd">
+    <div class="cb-l">
+      <h2 id="case-title" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5"></h2>
+      <div class="chrow" id="case-meta"></div>
       <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
     </div>
-    <div class="chd-a">
-      <div class="chd-ch"><button class="btn primary" id="b-changed" type="button" data-note="tell Nury what happened; it keeps the first draft" data-arrow="up" data-rot="-1.2">Something changed</button></div>
+    <div class="cb-r chd-a">
+      <button class="btn primary" id="b-changed" type="button">Something changed</button>
       <button class="btn sm hidden" id="b-compare" type="button">Compare drafts</button>
       <button class="btn sm hidden" type="button" id="case-follow" aria-pressed="false"></button>
       <a class="btn sm" id="case-export" aria-label="Export zip" title="Export zip"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-save"/></svg>Export</a>
       <button class="btn sm" id="case-copy" type="button" aria-label="Copy this page" title="Copy this page"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-v2"/></svg>Copy</button>
     </div>
-    <p class="note chd-m" id="case-follow-msg" role="status"></p>
   </div>
+  <p class="note chd-m" id="case-follow-msg" role="status"></p>
   <div class="ctabs"><div class="chips" id="case-chips" role="tablist" aria-label="Case sections"></div></div>
   <div class="card hidden" id="revise">
     <h2>What happened?</h2>
@@ -509,7 +519,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <div hidden><figure id="case-strip"></figure><div id="case-scs"></div><div id="case-map"><img id="case-map-img" alt=""></div></div>
   <div class="aboutsaved"><p class="mono">About saved cases</p>
     <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
-    <p class="mono" id="case-id" style="margin:10px 0 0;text-transform:none;letter-spacing:0;font-size:12px"></p></div>
+    </div>
 </section>
 <section id="v-compare" class="hidden narrow">
   <button class="back" id="back-compare">&larr; Back to the case</button>
@@ -765,7 +775,9 @@ async function openCase(id,tabName){
     const ok=await askConfirm(on?{title:"Mark this case as needs follow-up?",body:"It moves to the top of your list.",ok:"Mark as needs follow-up"}:{title:"Clear the follow-up flag?",body:"The case goes back to its normal place.",ok:"Clear follow-up"});
     if(!ok)return;
     if(await apply(on))toast(on?"Marked as needs follow-up.":"Follow-up cleared.",()=>apply(!on))};
-  $("case-meta").replaceChildren(`${crisisInfo({playbook:c.meta.playbook}).title} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""} `,h("span",{class:"sc s-saved"},ic("i-check"),"Saved"));
+  {const st=c.meta.status==="complete"?"Package complete":String(c.meta.status||"").replace(/^./,x=>x.toUpperCase());const vsn=(c.versions||[c.meta.id]).length;
+   $("case-meta").replaceChildren(h("span",{class:"sc tag"},shortWhen(c.meta.created)),h("span",{class:"sc tag"},st+(c.meta.edited&&c.meta.edited.length?", edited by the pastor":"")),h("span",{class:"sc s-saved"},ic("i-check"),"Saved"),
+     vsn>1?h("span",{class:"sc s-v2"},ic("i-v2"),vsn===2?"Updated":vsn===3?"Updated twice":`Updated ${vsn-1} times`):"",h("span",{class:"sc tag cid"},c.meta.id))}
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
   const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
@@ -776,7 +788,6 @@ async function openCase(id,tabName){
   const vs=c.versions||[c.meta.id];$("case-vers").classList.toggle("hidden",vs.length<2);
   $("case-vers").replaceChildren(...vs.map((v,i)=>({v,i})).reverse().map(({v,i})=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent=i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft");b.setAttribute("aria-label",b.textContent);b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
   $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
-  $("case-id").textContent="Case id "+c.meta.id;
   curLanes=await lanesOf(c);
   show("v-case");const want=tabName&&names.find(n=>slugOf(n)===tabName);showPage(want||(c.pages["index.md"]!==undefined?"index.md":names[0]),true);
 }
@@ -788,18 +799,27 @@ function overview(t){const title=crisisInfo({playbook:curCase.meta.playbook}).ti
   let s=t.replace(/^# .*$/m,"# "+title).replace(/^Case [^\n]*·[^\n]*\n\n?/m,"");
   return s.replace(/^## Pages\n[\s\S]*?(?=^---|^## |$(?![\s\S]))/m,"")}
 /* Overview: full-width cards, Next steps first, drawn from the saved data as live text (current title, crisp at any size) */
-function renderOverview(){const root=$("case-page");root.replaceChildren();const c=curCase;
+function arrowSvg(cls){const n="http://www.w3.org/2000/svg",s=document.createElementNS(n,"svg");s.setAttribute("viewBox","0 0 44 12");s.setAttribute("class","arr "+cls);s.setAttribute("aria-hidden","true");s.setAttribute("focusable","false");
+  const l=document.createElementNS(n,"line");l.setAttribute("x1","0");l.setAttribute("y1","6");l.setAttribute("x2","38");l.setAttribute("y2","6");const p=document.createElementNS(n,"path");p.setAttribute("d","M37 1 L43 6 L37 11");s.append(l,p);return s}
+function renderOverview(){const root=$("case-page");root.replaceChildren();const c=curCase,cid=encodeURIComponent(c.meta.id);
+  const stg=Object.keys(c.pages||{}).filter(k=>/^0\d-[a-z]+\.md$/.test(k)).sort().map(k=>({k,title:((c.pages[k].match(/^#\s*(?:\d+\.\s*)?(.+)$/m)||[])[1])||k,state:(c.meta.edited||[]).includes(k.slice(3,-3))?"edited":"approved"}));
+  const word={approved:"Approved",edited:"Edited by the pastor",stopped:"Stopped"};
+  const seq=h("section",{class:"ovc"},h("h3",null,"How this case went"));
+  if(stg.length){const ol=h("ol",{class:"seq"});
+    stg.forEach((s,i)=>{if(i)ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")));
+      ol.append(h("li",null,h("a",{href:"#/case/"+cid+"/"+slugOf(s.k),class:"stn "+s.state,"aria-label":`${s.title}, ${word[s.state]}. Open it.`},
+        h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},word[s.state]))))});
+    ol.append(h("li",{class:"sa","aria-hidden":"true"},arrowSvg("done")),h("li",null,h("span",{class:"stn endm"},h("span",{class:"nd","aria-hidden":"true"},"\u2713"),h("span",{class:"nm"},c.meta.status==="complete"?"Package complete":"Package "+c.meta.status))));
+    seq.append(ol)}
+  const vs=c.versions||[c.meta.id];
+  if(vs.length>1){const row=h("div",{class:"dseq"});vs.forEach((v,i)=>{if(i)row.append(arrowSvg("done"));row.append(h("a",{href:"#/case/"+encodeURIComponent(v),class:"dchip"+(v===c.meta.id?" on":"")},i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft")))});seq.append(row)}
   const next=h("section",{class:"ovc"},h("h3",null,"Next steps"),h("p",{class:"muted sm",style:"margin:0 0 14px"},"What to do tonight and this week, and what is still open."));
   if(curLanes){const row=h("div",{class:"lanes",style:"--n:"+curLanes.length});curLanes.forEach(ln=>row.append(h("section",{class:"lane"},h("h4",null,ln.name),
       ln.items.length?h("ul",null,...ln.items.map(it=>h("li",null,it.t))):h("p",{class:"muted sm"},"Nothing listed."))));next.append(row)}
   else next.append(h("p",{class:"muted"},"No next steps were saved with this case."));
-  const stg=Object.keys(c.pages||{}).filter(k=>/^0\d-[a-z]+\.md$/.test(k)).sort().map(k=>({k,title:((c.pages[k].match(/^#\s*(?:\d+\.\s*)?(.+)$/m)||[])[1])||k,state:(c.meta.edited||[]).includes(k.slice(3,-3))?"edited":"approved"}));
-  const where=h("section",{class:"ovc"},h("h3",null,"Where this case stands"));
-  if(stg.length){const ol=h("ol",{class:"stg"});stg.forEach((s,i)=>ol.append(h("li",null,h("a",{href:"#/case/"+encodeURIComponent(c.meta.id)+"/"+slugOf(s.k),class:"stn "+s.state,"aria-label":`${s.title}, ${s.state}. Open it.`},
-      h("span",{class:"nd","aria-hidden":"true"},s.state==="edited"?"\u270e":"\u2713"),h("span",{class:"nm"},s.title),h("span",{class:"stt"},s.state)))));
-    where.append(ol,h("p",{class:"muted sm",style:"margin:14px 0 0"},"Each stage of this case: approved as drafted, or edited by the pastor. Select one to read it."))}
-  const sum=h("section",{class:"ovc"});const tmp=document.createElement("div");tmp.className="plain";fmt(tmp,overview(c.pages["index.md"]).replace(/^!\[[^\]]*\]\([^)]*\)\n\n?/m,""));sum.append(tmp);
-  root.append(next,where,sum)}
+  const sum=h("section",{class:"ovc"});const tmp=document.createElement("div");tmp.className="plain";
+  fmt(tmp,overview(c.pages["index.md"]).replace(/^!\[[^\]]*\]\([^)]*\)\n\n?/m,"").replace(/^# .*\n\n?/m,"").replace(/^Status:[^\n]*\n\n?/m,""));sum.append(tmp);
+  root.append(seq,next,sum)}
 function showPage(n,first){curPage=n;
   $("case-card").classList.toggle("ov",n==="index.md");
   document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;if(on){$("case-page").setAttribute("aria-labelledby",b.id);if(!first)b.scrollIntoView({inline:"center",block:"nearest"})}});
