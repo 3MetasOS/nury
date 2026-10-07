@@ -153,31 +153,58 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .prov{font-size:clamp(12px,1.1vw,15px)!important;max-width:60ch}
 .entry .lbl{align-self:flex-start;position:absolute;top:5vh;left:7vw}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
+
+/* ===== v2 design: one idea per slide, the app's design system (paper, Fraunces, Inter, one amber accent, solid 20 px cards) ===== */
+:root{--paper:#f7f3ea;--card2:#fffdf8;--line2:#e3dac6}
+.slide.on{animation:fadein .2s ease-out}
+.v2{padding:7vh 10vw 11vh;gap:3.4vh;justify-content:center}
+.v2 h2.h{font:600 clamp(34px,4.4vw,92px)/1.06 var(--serif);letter-spacing:-.02em;max-width:17ch;text-wrap:balance}
+.v2 .sub{font:400 clamp(18px,2.2vw,44px)/1.3 var(--sans);color:var(--muted);max-width:32ch;margin:0}
+.v2 .tags{display:flex;flex-wrap:wrap;gap:.6em}
+.v2 .tg{font:600 clamp(13px,1.15vw,20px)/1 var(--sans);padding:.55em 1em;border-radius:99px;border:1.5px solid var(--line2);background:var(--card2);color:var(--ink)}
+.v2 .hand{font-size:clamp(24px,2.7vw,44px)}
+.v2.night{background:#0d1015}.v2.night h2.h{color:#f7f3ea}.v2.night .sub{color:#c9c3b6}.v2.night .tg{background:#161c27;border-color:#2b3548;color:#ece7dc}
+.v2 .split{display:grid;grid-template-columns:1.05fr .95fr;gap:5vw;align-items:center}
+.v2 .stack{display:grid;gap:3.2vh;align-content:center}
+.v2 .photo2{width:100%;height:auto;max-height:64vh;object-fit:cover;border-radius:20px;display:block}
+.frame{background:var(--card2);border:1px solid var(--line2);border-radius:20px;padding:10px;box-shadow:0 18px 50px rgba(13,16,21,.12)}
+.frame img{display:block;width:100%;height:auto;border-radius:12px}
+.card2{background:var(--card2);border:1px solid var(--line2);border-radius:20px;padding:2.4vh 2vw}
+@media (max-width:760px){.v2{padding:5vh 7vw 3vh}.v2 .split{grid-template-columns:1fr;gap:3vh}}
+/* the name */
+.v2.nm{align-items:center;text-align:left}.v2.nm .wrap{display:grid;gap:2.2vh;justify-items:start}
+.v2.nm .head{display:flex;align-items:center;gap:clamp(16px,2.4vw,40px)}
+.v2.nm .lantern.small{width:clamp(70px,9vw,150px)}
+.v2.nm .word{font:600 clamp(72px,11vw,190px)/.95 var(--serif);letter-spacing:-.03em;margin:0}
+.v2.nm .tagl{font:400 clamp(22px,2.6vw,48px)/1.2 var(--serif);margin:0;color:var(--amber-text)}
+.v2.nm .tagline-line{font:400 clamp(18px,2.2vw,44px)/1.3 var(--sans);color:var(--muted);margin:0}
+.v2.nm .word,.v2.nm .tagl,.v2.nm .tagline-line,.v2.nm .tags,.v2.nm .hand{opacity:0;animation:rise .45s ease-out forwards}
+.v2.nm .word{animation-delay:.1s}.v2.nm .tagl{animation-delay:.5s}.v2.nm .tagline-line{animation-delay:.9s}.v2.nm .tags{animation-delay:1.3s}.v2.nm .hand{animation-delay:1.7s}
+.v2.nm .lantern .flame{animation-delay:.5s}.v2.nm .lantern .body{animation-delay:.5s}
+.v2.nm .lbl{left:10vw;top:6vh}
+@media (prefers-reduced-motion:reduce){.v2.nm .word,.v2.nm .tagl,.v2.nm .tagline-line,.v2.nm .tags,.v2.nm .hand{opacity:1;animation:none}}
 </style></head><body>
 
 <!-- ============ MAIN TALK (3:00). data-cut="90" stays in the 90-second cut ============ -->
 
 
-<section class="slide night on" data-cut="90" data-part="talk" data-name="the-call">
+<section class="slide night v2 on" data-cut="90" data-part="talk" data-name="the-call">
 <p class="lbl">01 · The call</p>
-<h2 class="big"><span class="amber">2:07 AM.</span> A pastor's phone rings.</h2>
-<div class="two"><div class="col">
-<p class="lead">A family. A husband was detained last evening.</p>
+<div class="split"><div class="stack">
+<h2 class="h"><span class="amber">2:07 AM.</span> A pastor's phone rings.</h2>
+<p class="sub">A husband was detained last evening. The family needs help now.</p>
 <p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">no lawyer on the line</span></p></div>
-<div class="col"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
+<div><img class="photo2" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
 <aside class="notes">NIGHT. 0:00 to 0:11. Say: "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." Open in the dark, with the phone buzz and the time. The film's person is a pastor: a character, not a market. A panicked call on a phone at 2:07 AM, no lawyer on the line. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md). Nury is humanitarian and takes no political side: the subject is a family and a night. (Cut from the slide in the taste pass; say it if asked.)</aside></section>
 
-<section class="slide center entry" data-cut="90" data-part="talk" data-name="the-name" data-title="The name">
+<section class="slide center entry v2 nm" data-cut="90" data-part="talk" data-name="the-name" data-title="The name">
 <p class="lbl">02 · The name</p>
-<div class="entrywrap">
-<div class="e-head"><div class="lantern small">{{MARKLIT}}</div><h1 class="e-word">Nury</h1></div>
-<p class="e-pron"><span>/NOO-ree/</span> <i>proper noun</i></p>
-<ol class="e-senses">
-<li><span>A given name from Arabic <i>nūr</i>, "light".</span></li>
-<li><span>An AI crisis response agent.</span></li></ol>
-<p class="e-ety muted">Etymology: Arabic <i>nūr</i>, "light, ray of light, lamp, lantern".</p>
-<p class="e-see hand"><span class="hl">see also: lantern</span></p>
-<p class="prov muted">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.</p></div>
+<div class="wrap">
+<div class="head"><div class="lantern small">{{MARKLIT}}</div><h1 class="word">Nury</h1></div>
+<p class="tagl">An AI Crisis Response Agent.</p>
+<p class="tagline-line">A given name from Arabic <i>nur</i>, light.</p>
+<div class="tags"><span class="tg">noun</span><span class="tg">/NOO-ree/</span></div>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">see also: lantern</span></p></div>
 <aside class="notes">LANTERN. 0:11 to 0:17. The slide turns from night to paper and the lantern lights. Say: "This is Nury." Pause while the entry builds (about 2 seconds), then read: "A given name from Arabic nur, light. An AI crisis response agent." Merged with the old "This is Nury." slide in the taste pass. Brand line locked: An AI Crisis Response Agent. Presenter credit line (cut from the slide, say it only if asked): Juan Peláez, 3Metas, Gloo AI Hackathon, Track 1. APPROVED by Juan. Do not say her name here: it appears once, in the memorial. Pronunciation /NOO-ree/. SOURCES: (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
 
 <section class="slide" data-part="talk" data-name="one-engine">
