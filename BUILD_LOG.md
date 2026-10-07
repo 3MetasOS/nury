@@ -185,3 +185,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Live on scenarios 1, 18, 20 (stages 1–4): no escalation, every stage passed on attempt 1; the checklist is 319–347 words (was 378–420). "Don't share on social media" is gone; DO NOT DO has 4 items, all from vetted points. Scenario 18's earlier failure no longer appears.
 - Known limitation (accepted by hack-sensei): "memorize the phone number" and "leave copies of documents with someone you trust" still appear in all three runs despite an explicit ban. They are neither legal advice nor predictions. No hard check, because it would escalate normal runs.
 - Honest testing gap: the final prompt ran stages 1–4, not all five. A full five-stage run happens after the skill system lands, before the freeze.
+
+## 27. 2026-10-06 20:44 MDT — Nury skill system built (hack-jedi, commit 7fb69ff)
+
+- `code/skills/voice` and `code/skills/grounding` (versioned SKILL.md, EN and ES). `voice` has a deterministic `no_stock_phrases` check (stock AI phrases and the "not X but Y" tic, EN and ES). `nury/skills.py` loads and validates; stages name skills in `stages.json`; the engine appends the skill text after the playbook prompt, with a closing line that skills never override the hard rules. No extra Gloo call.
+- The loader refuses a skill that tries to override the floor (English or Spanish wording), lacks a version or EN/ES text, removes or replaces checks, or names an unknown check.
+- Audit: `skill_applied {name, version, stage}`; skills are listed in each stage's metrics. Wired: voice on pastoral and checklist; grounding on checklist and attorney/resources, both playbooks.
+- Verified by hack-sensei: 31 tests pass. Live all-five-stage runs (hack-jedi): detention 01 (36 s), detention 20 (37 s), hospital h01 (45 s), every stage passed on attempt 1, no regression.
+- Known limitations: grounding is not airtight. Detention checklists still say "memorize the number" and "leave copies with someone you trust"; the hospital h01 checklist had "don't share Luis's personal information". None is advice or a prediction, and no check flags them.
+- Not built yet: the before/after comparison with skills off and on (hack-artisans, needs a toggle).
