@@ -98,7 +98,7 @@ START_HERE = wrap("Start here", """
 <h2>What Nury will never do</h2>
 <ul><li>Give legal or medical advice, or predict how a case or an illness will turn out.</li><li>Claim to be a pastor, a lawyer, a counselor or a clinician.</li><li>Send anything to the family. There is no send path.</li><li>Search the open web while it runs, or use a source nobody vetted.</li><li>Send names, phones, addresses or ID numbers to a language model.</li></ul>
 <h2>The pastor's journey</h2>
-<ol><li><b>Pick the crisis</b> on the selector (detention and hospital are live; sudden death and house fire are coming soon).</li><li><b>Intake.</b> Type the call. Confirm which names to protect.</li><li><b>Stages with gates.</b> Triage, rights or information brief, attorney or hospital resources, family checklist, pastoral message. Each ends with Approve, Edit or Stop.</li><li><b>Package.</b> Copy or download. The pastor gives it to the family.</li><li><b>Case file.</b> Save a local folder of linked pages and a next-steps map.</li><li><b>Something changed.</b> Reopen the case, say what happened, and draft again as version 2.</li></ol>
+<ol><li><b>Pick the crisis</b> on the selector (detention and hospital are live; sudden death and house fire are coming soon).</li><li><b>Intake.</b> Type the call. Confirm which names to protect.</li><li><b>Stages with gates.</b> Triage, rights or information brief, attorney or hospital resources, family checklist, pastoral message. Each ends with Approve, Edit or Stop.</li><li><b>Package.</b> Copy or download. The pastor gives it to the family.</li><li><b>Case file.</b> Save a set of linked pages and a next-steps map.</li><li><b>Something changed.</b> Reopen the case, say what happened, and draft again as version 2.</li></ol>
 <h2>Concepts, in plain words</h2>
 <dl>
 <dt>Playbook</dt><dd>One crisis as a folder: stages, prompts, vetted sources, outcomes. A new crisis is a new folder; the engine does not change.</dd>
@@ -107,14 +107,14 @@ START_HERE = wrap("Start here", """
 <dt>Correction loop</dt><dd>Each draft is checked. If it fails, Nury rewrites it, up to 3 attempts in all, then hands over. The pastor never sees an unsafe draft.</dd>
 <dt>Gate</dt><dd>The Approve / Edit / Stop step after every stage. Edits flow into later stages.</dd>
 <dt>Skills</dt><dd>Small versioned instruction modules a stage includes by name (voice, grounding). They can add rules, never remove the floor.</dd>
-<dt>Privacy layer</dt><dd>Replaces names, phones, emails, addresses, birth dates and IDs with tokens before anything reaches Gloo, and restores them on the pastor's computer.</dd>
+<dt>Privacy layer</dt><dd>Replaces names, phones, emails, addresses, birth dates and IDs with tokens before anything reaches Gloo, and restores them in Nury when the answer comes back.</dd>
 <dt>Church network</dt><dd>The pastor's own list of contacts they have worked with. Listed first, labeled as the church's own, never endorsed by Nury.</dd>
 <dt>Official list</dt><dd>The U.S. Department of Justice list of legal service providers, approved by Juan. Listed does not mean recommended.</dd>
-<dt>Case file</dt><dd>A local folder of linked pages, a log of every gate, and a next-steps map. Approved text only.</dd>
+<dt>Case file</dt><dd>A saved set of linked pages, a log of every gate, and a next-steps map. Approved text only.</dd>
 <dt>Evals</dt><dd>Four layers: deterministic checks, Jev yes/no and score judges, a cross-vendor red-team panel, and a human review by Juan.</dd>
 </dl>
 <h2>How the pieces run</h2>
-<p><b>At run time:</b> Gloo (guarded Responses endpoint, Claude Sonnet 4.6) writes drafts. Nury's own code checks them. <b>At test time:</b> Jev and the red-team panel judge the runs. Both keys sit in a local <code>.env</code> that git ignores.</p>
+<p><b>At run time:</b> Gloo (guarded Responses endpoint, Claude Sonnet 4.6) writes drafts. Nury's own code checks them. <b>At test time:</b> Jev and the red-team panel judge the runs. Both keys live in the server's environment file, which git ignores.</p>
 <h2>The crew</h2>
 <div class='grid'>
 <div class='card'><b>hack-sensei</b><br>Coordinator. Owns CLAUDE.md and BUILD_LOG.</div>
