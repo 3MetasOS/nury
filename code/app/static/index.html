@@ -66,6 +66,13 @@ a.lnk{color:var(--amber-text);text-decoration:underline;text-underline-offset:3p
 .dl{font:13px/1.55 ui-monospace,Menlo,monospace;white-space:pre-wrap;overflow-wrap:anywhere;padding:1px 6px;border-radius:4px}
 .dl.add{background:var(--green-soft);color:var(--green)}.dl.del{background:var(--red-soft);color:var(--red);text-decoration:line-through}
 .dl.same{color:var(--muted)}
+.steps-list{list-style:none;margin:14px 0 6px;padding:0}
+.steps-list li{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-top:1px solid var(--line)}
+.steps-list li:first-child{border-top:0}
+.steps-list .n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--amber-soft);color:var(--amber-text);font:600 15px var(--sans);display:flex;align-items:center;justify-content:center}
+.steps-list .t{display:block;font:500 18px/1.3 var(--serif)}
+.steps-list .l{display:block;font-size:14px;color:var(--muted);margin-top:3px}
+.btn.big{min-height:64px;font-size:19px}
 .disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
 .hint{margin:12px 0 0;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
@@ -132,12 +139,22 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <p class="note" style="margin:0">Choose the kind of crisis. Nury opens the right playbook.</p></div>
   <div id="picks"></div>
   <p class="note" id="select-err"></p>
-  <a class="crow hidden" id="net-link" href="/network" style="text-decoration:none"><span><span class="t">Our network</span><span class="d">Contacts your church has vetted. Stays on this computer.</span></span></a>
+  <a class="crow hidden" id="net-link" href="/network" style="text-decoration:none"><span><span class="t">Our network</span><span class="d">Contacts your church has vetted.</span></span></a>
   <div class="cases hidden" id="cases"><h3>Open cases</h3><div id="cases-list"></div></div>
 </section>
 
+<section id="v-detail" class="hidden">
+  <button class="back" id="back-detail">&larr; All crises</button>
+  <div class="card"><h2 id="d-title"></h2><p class="note" id="d-desc" style="margin:0 0 4px"></p></div>
+  <div class="card"><h2>What Nury produces</h2>
+    <ol class="steps-list" id="d-steps"></ol>
+    <p class="note" style="margin:6px 0 0">You decide at every step: approve, edit or stop.</p></div>
+  <p class="note"><b>Nury never sends anything. You do.</b></p>
+  <div class="dock"><button class="btn primary big" id="d-start">Start</button></div>
+</section>
+
 <section id="v-intake" class="hidden">
-  <button class="back" id="back-intake">&larr; All crises</button>
+  <button class="back" id="back-intake">&larr; Back</button>
   <div class="card">
     <h2 id="intake-title">What did the family tell you?</h2>
     <label for="intake">Type or paste the call, in your own words.</label>
@@ -221,7 +238,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
   <div class="card hidden" id="case-map"><h2>Next steps</h2><img class="mapimg" id="case-map-img" alt="Next steps map"></div>
   <div class="chips" id="case-chips" role="tablist"></div>
   <div class="card"><div id="case-page" class="plain"></div></div>
-  <p class="note">Read-only. This case stays on this computer.</p>
+  <p class="note">Read-only.</p>
 </section>
 
 <section id="v-compare" class="hidden">
@@ -279,7 +296,7 @@ function applyTheme(t){const light=t==="light";document.documentElement.dataset.
 applyTheme(document.documentElement.dataset.theme);
 document.getElementById("theme").onclick=()=>{const n=document.documentElement.dataset.theme==="light"?"dark":"light";applyTheme(n);try{localStorage.setItem("nury-theme",n)}catch(e){}};
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-select","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const show=v=>["v-select","v-detail","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   try{return await r.json()}catch(e){return{error:`The server did not answer properly (HTTP ${r.status}).`}}
@@ -296,7 +313,7 @@ async function loadSelect(){
     const wrap=document.createElement("span");
     const t=document.createElement("span");t.className="t";t.textContent=p.title;wrap.append(t);
     if(live){const d=document.createElement("span");d.className="d";d.textContent=p.description;wrap.append(d);
-      el.append(wrap);el.insertAdjacentHTML("beforeend",CHEV);el.onclick=()=>choose(p)}
+      el.append(wrap);el.insertAdjacentHTML("beforeend",CHEV);el.onclick=()=>detail(p)}
     else{el.setAttribute("aria-disabled","true");const tag=document.createElement("span");tag.className="tag";tag.textContent="Coming soon";el.append(wrap,tag)}
     return el}));
 }
@@ -361,6 +378,14 @@ $("b-compare").onclick=async()=>{
   $("cmp-chips").replaceChildren(...names.map(n=>{const c=document.createElement("button");c.className="chip";c.dataset.p=n;c.textContent=n.replace(/\.md$/,"").replace(/^\d+-/,"");c.onclick=()=>draw(n);return c}));
   draw(names.find(n=>d.pages[n].some(l=>l.t!=="same"))||names[0]);show("v-compare")};
 $("back-compare").onclick=()=>show("v-case");
+function detail(p){
+  pb=p;$("d-title").textContent=p.title;$("d-desc").textContent=p.description||"";
+  $("d-steps").replaceChildren(...(p.stages||[]).map((s,i)=>{const li=document.createElement("li");
+    const n=document.createElement("span");n.className="n";n.textContent=i+1;n.setAttribute("aria-hidden","true");
+    const w=document.createElement("span");const t=document.createElement("span");t.className="t";t.textContent=s.title;
+    const l=document.createElement("span");l.className="l";l.textContent=s.line;w.append(t,l);li.append(n,w);return li}));
+  $("d-start").onclick=()=>choose(p);show("v-detail");window.scrollTo({top:0})}
+$("back-detail").onclick=()=>loadSelect();
 function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
@@ -368,7 +393,7 @@ function choose(p){
   $("intake-err").textContent="";show("v-intake");
 }
 $("btn-demo").onclick=()=>{$("intake").value=pb.demo_intake;$("demo").checked=true};
-$("back-intake").onclick=()=>loadSelect();
+$("back-intake").onclick=()=>detail(pb);
 $("back-pipe").onclick=()=>{clearInterval(timer);sid=null;loadSelect()};
 let termList=[];
 function drawTerms(){

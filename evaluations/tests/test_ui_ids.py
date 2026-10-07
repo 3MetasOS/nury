@@ -34,3 +34,12 @@ def test_every_id_used_by_the_script_exists():
 def test_save_buttons_have_different_ids():
     html, _ = parts("index.html")
     assert 'id="b-save"' in html and 'id="b-edit-save"' in html
+
+
+def test_no_storage_location_wording_in_user_facing_text():
+    """The app will run on a server. It must not say where data is kept ('on this computer', 'stays here', 'local', 'on your device')."""
+    terms = re.compile(r"this computer|stays? here|stays? on (this|your)|\blocal(ly)?\b|your device|this device|your computer|never leaves|on-?device", re.I)
+    for f in STATIC.glob("*.html"):
+        s = re.sub(r"<style>.*?</style>", "", f.read_text(encoding="utf-8"), flags=re.S)
+        hits = [l.strip()[:80] for l in s.splitlines() if terms.search(l)]
+        assert not hits, f"{f.name}: {hits}"

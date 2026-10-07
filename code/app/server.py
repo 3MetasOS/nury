@@ -109,6 +109,26 @@ def write_changes(d, new_id, rv, stage_ids):
     (d / "revision.json").write_text(json.dumps({"revises": rv["case_id"], "step": rv.get("step"), "result": rv.get("result")}), encoding="utf-8")
 
 
+STAGE_LINE = {   # used only when a playbook's stage has no `summary` of its own
+    "pastor": "For you. Nury drafts it from what the family told you. You read it and decide.",
+    "family": "For the family, in their language, drafted from approved sources. You approve or edit it.",
+}
+
+
+def stage_lines(pid):
+    """[{id, title, line}] for the crisis detail page, from the playbook itself. Nothing here names a crisis."""
+    try:
+        pb = get_playbook(pid)
+    except PlaybookError:
+        return []
+    out = []
+    for st in pb.stages:
+        extra = getattr(st, "summary", "") or ""
+        out.append({"id": st.id, "title": re.sub(r"^\d+\.\s*", "", st.title),
+                    "line": extra or STAGE_LINE.get(st.audience, STAGE_LINE["family"])})
+    return out
+
+
 def playbooks():
     """Selector data: id, title, description, status, plus intake placeholder and demo text if the playbook has them."""
     out = []
@@ -120,6 +140,7 @@ def playbooks():
         if f.is_file():
             intake = json.loads(f.read_text(encoding="utf-8")).get("intake", {})
         p["placeholder"] = intake.get("placeholder", GENERIC_PLACEHOLDER)
+        p["stages"] = stage_lines(p["id"]) if p["status"] == "live" else []
         demo = intake.get("demo")
         if demo:
             p["demo_intake"] = demo
