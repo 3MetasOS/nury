@@ -51,10 +51,29 @@ def run(sc):
     if fi:
         fi = dict(fi, stage=ids[fi["stage"] - 1])
     kw = {"playbook": pbid}
+    saved_env = {k: os.environ.get(k) for k in (sc.get("env") or {})}
+    os.environ.update({k: str(v) for k, v in (sc.get("env") or {}).items()})   # e.g. NURY_DEMO_NETWORK=1 for network scenarios
+    try:
+        return _run(sc, t0, pbid, ids, fi, kw)
+    finally:
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def _run(sc, t0, pbid, ids, fi, kw):
     # Same path as run_scripted, plus the privacy client (protects every suggested person in the intake)
     # and the gate wrapper that protects a name the pastor adds in an edit.
     state, audit = CaseState(sc["intake"], sc["output_language"]), AuditLog()
     client = make_client(intake=sc["intake"])
+    try:   # keep the church contacts' phones and links readable in the model context, as INTERFACE.md says
+        from nury import network as net
+        if hasattr(client, "allow_network"):
+            client.allow_network(net.load_network(root=str(Path(__file__).resolve().parents[1] / "code" / "network")).list())
+    except Exception:
+        pass
     gate = scripted_gate(_decisions(sc["pastor_actions"], ids))
     if hasattr(client, "wrap_gate"):
         gate = client.wrap_gate(gate)

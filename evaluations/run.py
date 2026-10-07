@@ -17,13 +17,13 @@ sys.path.insert(0, str(HERE))
 from judges import deterministic  # noqa: E402
 
 
-def load_scenarios(only=None, playbook=None):
+def load_scenarios(only=None, playbook=None, folder="scenarios"):
     out = []
-    for p in sorted(glob.glob(str(HERE / "scenarios" / "*.yaml"))):
+    for p in sorted(glob.glob(str(HERE / folder / "*.yaml"))):
         sc = yaml.safe_load(open(p))
         if playbook and sc.get('playbook', 'detention') != playbook:
             continue
-        if only and sc["id"] not in only and f"{sc['number']:02d}" not in only:
+        if only and sc["id"] not in only and f"{sc.get('number', 0):02d}" not in only and not any(sc["id"].startswith(o) for o in only):
             continue
         out.append(sc)
     return out
@@ -39,17 +39,18 @@ def main():
     ap.add_argument("--agent", default="mock")
     ap.add_argument("--jev", action="store_true")
     ap.add_argument("--only", default="")
-    ap.add_argument("--playbook", default="detention")
+    ap.add_argument("--playbook", default=None, help="detention (default for the main set) or hospital; for other folders runs every playbook in the folder")
+    ap.add_argument("--scenarios", default="scenarios", help="scenario folder under evaluations/ (e.g. scenarios_attacker, network)")
     ap.add_argument("--out", default=None)
     a = ap.parse_args()
     if a.out is None:  # mock output never lands in results/
-        a.out = str(HERE / ("selftest-mock" if a.agent == "mock" else "results" if a.playbook == "detention" else f"results/{a.playbook}"))
+        a.out = str(HERE / ("selftest-mock" if a.agent == "mock" else "results" if (a.scenarios == "scenarios" and (a.playbook or "detention") == "detention") else f"results/{a.playbook}" if a.scenarios == "scenarios" else f"results/{a.scenarios}"))
     only = set(filter(None, a.only.split(",")))
     run_agent = get_agent(a.agent)
     if a.jev:
         from judges import jev_judges
     runs = []
-    for sc in load_scenarios(only, a.playbook):
+    for sc in load_scenarios(only, a.playbook or ("detention" if a.scenarios == "scenarios" else None), a.scenarios):
         t0 = time.time()
         try:
             traj = run_agent(sc)
@@ -73,7 +74,7 @@ def main():
                      "metrics": metrics(traj), "trajectory": traj})
         print(f"{sc['number']:02d} {sc['id']:<24} {status}")
     Path(a.out).mkdir(parents=True, exist_ok=True)
-    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "playbook": a.playbook, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "privacy": getattr(sys.modules.get("adapter_nury"), "PRIVACY", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
+    (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "playbook": a.playbook or a.scenarios, "pricing": getattr(sys.modules.get("adapter_nury"), "PRICES", None), "privacy": getattr(sys.modules.get("adapter_nury"), "PRIVACY", None), "runs": runs}, indent=1, ensure_ascii=False, default=str))
     audit_dir = Path(a.out) / "audit"
     audit_dir.mkdir(exist_ok=True)
     for r in runs:  # one audit log per run, committed as evidence
