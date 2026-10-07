@@ -266,7 +266,8 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 /* crisis detail */
 .cband{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin:4px 0 20px;display:grid;gap:12px;background:radial-gradient(120% 140% at 0% 0%,var(--wash),transparent 55%),var(--surface)}
 .kick{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
-.lead{color:var(--muted);max-width:56ch;margin-top:8px}.cband .scene{max-width:280px}
+.lead{color:var(--muted);max-width:68ch;margin-top:8px}.cband .scene{max-width:280px}
+.band.crhd{grid-template-columns:auto minmax(0,1fr);gap:16px 18px;align-items:start;margin:4px 0 20px}.crhd .tile.lg svg{width:30px;height:30px}.crhd h1{margin:0}.crhd .crt{min-width:0}
 .cols{display:grid;gap:28px}
 .dots li{position:relative;padding:6px 0 6px 24px}
 .dots li::before{content:"";position:absolute;left:4px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--ember)}
@@ -732,10 +733,12 @@ function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p)
   const aside=h("aside",{class:"aside","aria-label":"Begin"},h("div",{class:"nvcard"},h("h2",null,"Ready when you are"),
     h("p",{class:"muted sm"},"You will type what the family said, then confirm the names to protect."),
     h("button",{class:"cta primary block glow",type:"button","data-begin":""},"Begin the response"),h("p",{class:"muted sm"},"About a minute of drafting. You approve each stage.")));
-  $("crisis-page").replaceChildren(h("section",{class:"cband","aria-labelledby":"h1c"},
-    h("div",null,h("span",{class:"kick"},ic(d.icon||"i-lantern","sm"),"Crisis"),h("h1",{id:"h1c",tabindex:"-1",style:"margin-top:8px"},p.title),h("p",{class:"lead"},d.lead||p.description),
-      h("div",{class:"scs",style:"margin-top:12px"},h("span",{class:"sc on"},"Available now"),h("span",{class:"sc tag"},`${n} stages`),langs&&h("span",{class:"sc tag"},"Family language: "+langs))),
-    d.scene&&sceneEl(d.scene)),h("div",{class:"cols"},left,aside))}
+  const sum=d.workflow_summary||d.lead||p.description;
+  $("crisis-page").replaceChildren(h("section",{class:"band cases crhd","aria-labelledby":"h1c"},
+    h("span",{class:"tile lg","aria-hidden":"true"},ic(d.icon||"i-lantern")),
+    h("div",{class:"crt"},h("h1",{id:"h1c",tabindex:"-1"},p.title),h("p",{class:"lead"},sum),
+      h("div",{class:"scs",style:"margin-top:12px"},h("span",{class:"sc on"},"Available now"),h("span",{class:"sc tag"},`${n} stages`),langs&&h("span",{class:"sc tag"},"Family language: "+langs)))),
+    h("div",{class:"cols"},left,aside))}
 /* ---- routing, with a guard so unsaved work is not lost by a tap on a tab ---- */
 let allowLeave=false,lastHash=location.hash||"#/",ignoreHash=false,pendingHash=null;
 function unsaved(){const v=document.body.dataset.view;return v==="pipe"||(v==="pkg"&&$("saved").classList.contains("hidden"))}
