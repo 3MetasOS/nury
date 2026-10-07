@@ -202,7 +202,9 @@ class Session:
     def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None, revision=None):
         self.id = uuid.uuid4().hex[:12]
         self.pb = get_playbook(playbook_id)
+        self.language = language
         self.intake = intake
+        self.rec = None            # run ledger recorder (numbers only); None when the ledger is unavailable
         self.revision = revision      # {case_id, step, result, note} when this run revises a saved case
         # One privacy client per session: its token map lives here. The pastor's confirmed list is the list that counts.
         self.client = make_client(protected=protected) if protected is not None else make_client(intake=intake)
@@ -234,6 +236,11 @@ class Session:
         self.halted = None         # message when stopped / escalated / error
         self.results = []
         self.sources_list = []     # vetted names and links handed to the pastor on escalation
+        try:
+            from nury import ledger
+            self.rec = ledger.Recorder(self.pb.id, language)
+        except Exception:
+            self.rec = None
         self.thread = threading.Thread(target=self.work, daemon=True)
         self.thread.start()
 
@@ -242,7 +249,21 @@ class Session:
             self.waiting, self.decision = result, None
             self.cv.wait_for(lambda: self.decision is not None)
             d, self.waiting = self.decision, None
-            return d
+        self._feedback(result, d)
+        return d
+
+    def _feedback(self, result, d):
+        """One structured, name-free record of the pastor's decision, only when NURY_FEEDBACK is on. Never blocks the pastor."""
+        try:
+            from nury import feedback
+            if feedback.mode() == "off":
+                return
+            final = None if d.action == "stop" else (d.text if d.action == "edit" else result.shown_text)
+            label = (self.revision or {}).get("result")
+            feedback.record_gate(result.stage_id, d.action, result.shown_text, final, self.client, self.audit.events, outcome_label=label,
+                                 playbook=self.pb.id, language=self.language, run_id=getattr(self.rec, "run_id", None))
+        except Exception:
+            pass
 
     def work(self):
         try:
@@ -253,6 +274,8 @@ class Session:
                 r = run_stage(s.id, self.state, gate, client, self.audit,
                               fault_injection=self.fault, playbook=self.pb.id)
                 self.results.append(r)
+                if self.rec:
+                    self.rec.stage_done(r, self.audit.events)
                 if r.status not in ("approved", "edited"):
                     try:
                         self.sources_list = compute_outcome(self.pb.id, self.state, self.results)["package"].get("sources_list", [])
@@ -262,6 +285,11 @@ class Session:
                     break
         except Exception as e:
             self.error = type(e).__name__
+        try:
+            if self.rec:
+                self.rec.finish(compute_outcome(self.pb.id, self.state, self.results))
+        except Exception:
+            pass
         self.current, self.done = None, True
 
     def save(self):
@@ -296,7 +324,7 @@ class Session:
 
     def progress(self, ev):
         """What the engine is doing right now, read from real audit events. No timers, no guesses.
-        phase: writing | checking | regenerating | ready | escalated | idle. Carries categories and counts only."""
+        phase: writing | checking | checking_jev | regenerating | ready | escalated | idle. Carries categories and counts only."""
         sid = self.current or (self.waiting.stage_id if self.waiting else None)
         if not sid:
             return {"phase": "idle", "stage": None, "attempt": 0, "elapsed_s": 0}
@@ -310,6 +338,8 @@ class Session:
             phase = "ready"
         elif last and last["kind"] == "escalated":
             phase = "escalated"
+        elif last and last["kind"] == "jev_gate_start":
+            phase = "checking_jev"          # Jev is classifying the draft; real event, ends when the jev_gate events arrive
         elif last and last["kind"] == "check":
             phase = "checking"
         elif fails and last and last["kind"] in ("draft_rejected", "gloo_block", "gloo_call"):
@@ -403,6 +433,8 @@ class H(BaseHTTPRequestHandler):
             p = "/how-it-was-built.html"
         elif p in ("/observability", "/observability/"):
             p = "/observability.html"
+        elif p in ("/improvement", "/improvement/"):
+            p = "/improvement.html"
         if STATIC_OK.match(p) and (STATIC / p[1:]).is_file() and p != "/index.html":
             b = (STATIC / p[1:]).read_bytes()
             self.send_response(200)
@@ -415,6 +447,9 @@ class H(BaseHTTPRequestHandler):
         elif p == "/api/ops":
             from app import evals_api
             self._json(evals_api.ops())
+        elif p == "/api/improvement":
+            from app import improvement_api
+            self._json(improvement_api.view())
         elif p == "/api/evals":
             from app import evals_api
             self._json(evals_api.evals())
@@ -426,7 +461,21 @@ class H(BaseHTTPRequestHandler):
             d = rules_info.playbook_detail(p.split("/")[3])
             self._json(d if d else {"error": "unknown playbook"}, 200 if d else 404)
         elif p == "/api/features":
-            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up")})
+            fb = False
+            sentence = ""
+            try:
+                from nury import feedback
+                fb, sentence = feedback.mode() != "off", feedback.CONSENT_SENTENCE
+            except Exception:
+                pass
+            chips = []
+            try:
+                from nury import feedback as _f
+                chips = [{"slug": c, "label": _f.CHIP_LABELS[c]} for c in _f.CHIPS] if fb else []
+            except Exception:
+                pass
+            self._json({"network": (STATIC / "network.html").is_file(), "followup": hasattr(cf, "set_follow_up"),
+                        "feedback": fb, "consent_sentence": sentence if fb else "", "chips": chips})
         elif p == "/":
             b = (STATIC / "index.html").read_bytes()
             self.send_response(200)
@@ -522,7 +571,24 @@ class H(BaseHTTPRequestHandler):
             except PlaybookError:
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s
+            if rev and str(rev.get("result", "")).strip():
+                try:   # the 'Something changed' outcome, counted without the pastor's note
+                    from nury import feedback
+                    feedback.record_outcome(pid, str(rev.get("result")), language=b.get("language", "es"))
+                except Exception:
+                    pass
             self._json({"id": s.id})
+        elif p == "/api/feedback":
+            try:
+                from nury import feedback
+                s_ = SESSIONS.get(str(b.get("session", "")))
+                ok = False
+                if s_ and feedback.mode() != "off" and str(b.get("chip", "")) in feedback.CHIPS:
+                    ok = bool(feedback.record_chip(str(b.get("stage", "")), str(b["chip"]), playbook=s_.pb.id, language=s_.language,
+                                                   run_id=getattr(s_.rec, "run_id", None)))
+                self._json({"ok": ok})
+            except Exception:
+                self._json({"ok": False})
         elif p == "/api/evals/smoke":
             from app import evals_api
             code, payload = evals_api.start_smoke(b if isinstance(b, dict) else {})

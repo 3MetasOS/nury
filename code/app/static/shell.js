@@ -13,6 +13,7 @@
     <a href="/network" data-nav="network">${IC("i-network")}<span>Our network</span></a>
   </nav>
   <div class="tools">
+    <a class="iconbtn howlink" id="imp-link" href="/improvement" data-nav="improve" aria-label="Improvement">${IC("i-gate")}<span class="lbl">Improvement</span></a>
     <a class="iconbtn howlink" id="ops-link" href="/observability" data-nav="ops" aria-label="Observability">${IC("i-progress")}<span class="lbl">Observability</span></a>
     <a class="iconbtn howlink" id="how-link" href="/how-it-was-built" data-nav="how" aria-label="How this was built">${IC("i-build")}<span class="lbl">How this was built</span></a>
     <button class="iconbtn" id="theme" type="button" aria-pressed="false"></button>
@@ -37,5 +38,10 @@
     });
   }
   setActive(document.body.dataset.nav || "");
+  // The consent note grows a fifth sentence only when feedback capture is on (it is then true). Same text on every page.
+  fetch("/api/features").then(r => r.json()).then(f => {
+    if (!f || !f.feedback || !f.consent_sentence) return;
+    document.querySelectorAll("[data-consent]").forEach(n => { if (!n.dataset.fb) { n.dataset.fb = "1"; n.textContent = n.textContent.trim() + " " + f.consent_sentence; } });
+  }).catch(() => {});
   window.NuryShell = { setActive, setTheme, paint };
 })();

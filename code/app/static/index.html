@@ -28,6 +28,7 @@ textarea{min-height:170px;resize:vertical}
 .ln{margin:6px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
 .chip{flex:none;min-height:44px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
+.fbrow{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:10px 0 4px}.fbl{font-size:.85rem;color:var(--muted)}.fbchips{display:flex;flex-wrap:wrap;gap:6px}.fbm{font-size:.85rem;color:var(--muted)}
 .chip.on{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
 .chip:focus-visible,a.lnk:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 a.lnk{color:var(--amber-text);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
@@ -105,7 +106,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .back{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font-size:14px;background:none;border:0;padding:0;cursor:pointer;font-family:var(--sans)}
 .back:hover{color:var(--text)}
 .rej{font-size:14px;color:var(--green);margin:0 0 10px}
-.hidden{display:none}
+.hidden{display:none!important}
 .dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
 .bar .row{margin-top:10px}
@@ -417,6 +418,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <p class="hint hidden" id="g-hint">Keep only what you will do. Edit anything you will not.</p>
     <div class="disc" id="g-disc"></div>
     <div class="metrics" id="g-metrics"></div>
+    <div class="fbrow hidden" id="fb-row" role="group" aria-labelledby="fb-l"><span class="fbl" id="fb-l">How is this draft? Optional.</span><span class="fbchips" id="fb-chips"></span><span class="fbm" id="fb-msg" role="status"></span></div>
     <div class="row dock" id="g-btns">
       <button class="btn primary" id="b-approve">Approve</button>
       <button class="btn" id="b-edit">Edit</button>
@@ -527,6 +529,11 @@ function fmt(el,text){
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
 let sid=null,timer=null,lastGate=null;
+function renderChips(stage){const row=$("fb-row");row.classList.toggle("hidden",!(FEATURES.feedback&&(FEATURES.chips||[]).length));$("fb-msg").textContent="";
+  $("fb-chips").replaceChildren(...(FEATURES.chips||[]).map(c=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=c.label;b.setAttribute("aria-pressed","false");
+    b.onclick=async()=>{const r=await api("/api/feedback",{session:sid,stage,chip:c.slug});          // optional, never blocks Approve
+      if(r&&r.ok){$("fb-chips").querySelectorAll(".chip").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-pressed","false")});b.classList.add("on");b.setAttribute("aria-pressed","true");$("fb-msg").textContent="Thanks. Noted, without names."}
+      else $("fb-msg").textContent="Not saved. You can still approve."};return b}))}
 const VIEWS=["v-home","v-cases","v-crisis","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"],NEWV=["v-home","v-cases","v-crisis"];
 const TASKV=["v-crisis","v-intake","v-protect","v-pipe","v-pkg"],NAVOF={"v-home":"home","v-cases":"cases","v-case":"cases","v-compare":"cases"};
 function show(v){VIEWS.forEach(x=>{const el=$(x);if(NEWV.includes(x))el.hidden=x!==v;else el.classList.toggle("hidden",x!==v)});
@@ -798,7 +805,7 @@ async function poll(){
   const cls=x=>{if(x.status==="approved"||x.status==="edited")return"done";
     if(["stopped","escalated","error"].includes(x.status)||(x.id===P.stage&&P.phase==="escalated"))return"bad";
     if(x.id!==P.stage)return"";
-    return{writing:"work",regenerating:"work",checking:"chk",ready:"ready"}[P.phase]||""};
+    return{writing:"work",regenerating:"work",checking:"chk",checking_jev:"chk",ready:"ready"}[P.phase]||""};
   $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");d.className="step "+cls(x);d.title=x.title;return d}));
   const idx=s.stages.findIndex(x=>x.id===P.stage);
   $("stage-of").textContent=idx>=0?`Stage ${idx+1} of ${N}`:"";
@@ -808,6 +815,7 @@ async function poll(){
   if(halted0){text="Nury stopped. Nothing was sent.";kind="busy";dot="err"}
   else if(P.phase==="regenerating"){text=`Draft rejected by guardrail. Regenerating (${P.attempt} of 3).`;kind="warn";dot="busy"}
   else if(P.phase==="checking"){text="Checking safety rules\u2026";kind="busy";dot="busy"}
+  else if(P.phase==="checking_jev"){text="Checking the draft with Jev\u2026";kind="busy";dot="busy"}
   else if(P.phase==="ready"){text=s.gate&&s.gate.metrics.self_corrections?"Passed":"Ready for your review";kind="ok";dot="ok"}
   else{text=`Nury is working on ${title}\u2026`;kind="busy";dot="busy"}
   const st=$("strip");st.className="strip "+kind;$("dot").className="dot "+dot;
@@ -847,6 +855,7 @@ async function poll(){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;
+      renderChips(g.id);
       $("g-title").insertAdjacentHTML("afterbegin",'<svg class="okmark" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>');rawDraft=g.draft;fmt($("g-draft"),g.draft);$("g-hint").classList.toggle("hidden",g.id!=="pastoral");$("g-disc").textContent=g.disclaimer;$("g-disc1").textContent=oneLine(g.disclaimer);
       const rj=g.metrics.self_corrections;$("g-rej").classList.toggle("hidden",!rj);
       $("g-rej").textContent=rj===1?"Rejected once, regenerated, passed.":`Rejected ${rj} times, regenerated, passed.`;
