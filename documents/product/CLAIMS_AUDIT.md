@@ -184,3 +184,17 @@ These are hidden until hack-sensei confirms in writing. Each now has a BUILT sta
 3. M1 and M2: change the description sentences (M1 needs 4 words, M2 needs 1)? The two-playbooks file would reach 250.
 4. H7 and M7: leave the prework file and the README email as they are, or correct them?
 5. H10: do you want me to change the learning-loop lines to "built" as soon as hack-artisans commits, or wait for the re-run?
+
+## 1e. Re-audit after the final scorecards (2026-10-07, build 8a28a18)
+
+| Claim | Was | Now | Where changed (mine) |
+|---|---|---|---|
+| Time and cost per package | "50 to 56 s, about 9 cents" (four pre-gate runs) | "33 to 49 s, 6 to 9 cents": detention 33.5 s and $0.0642 (mean of 20), hospital 48.7 s and $0.0878 (mean of 8) | deck, ERIC_LINES, FINALIST_SCRIPT, TECH_STORY (row 30), TREATMENTS and its data, HOW_IT_WAS_BUILT |
+| Results | placeholders | detention 12 / 6 / 2, hospital 5 / 1 / 2, hostile 11 / 2 / 5 (pass / fail / undecided; judge results, not human verdicts); 28 / 9 / 9 across 46 | deck slides 8 and backup, both descriptions, pitch script |
+| Descriptions | 248 and 250 words with a placeholder | 248 and 250 words with "46 scenarios, judged: 28 pass, 9 fail, 9 undecided." | description.txt, description_two_playbooks.txt |
+| Product tests | 264 | 270 (`code/test.sh`, 2026-10-07) | TECH_STORY |
+| Evaluation tests | 77 | 86 (84 pass; 2 page tests wait for pages hack-artisans is building) | TECH_STORY |
+| Red-team panel | not re-run | Still not re-run on the final build. The deck says "audit on an earlier build, not re-run". | deck backup slide |
+| Names | Jev from TypeSafe; Claude Sonnet 4.6 via Gloo AI Studio; red team GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick | unchanged and consistent | n/a |
+
+Still outside my files and stale on the old number: `video/remotion/public/tech.json` (the package caption) and the fallback in `video/remotion/src/NuryA.tsx` (hack-video), `documents/TECH_CLAIMS.md` row 30 and `documents/design/HOME_SPEC.md` (hack-sensei and hack-artisans), `code/tools/trace_run.py` comment, and the built `code/app/static/how-it-was-built.html` until hack-artisans rebuilds it.
