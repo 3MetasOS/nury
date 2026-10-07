@@ -22,7 +22,7 @@ Play the 90-second video, or run the app on the locked intake. The selector scre
 
 ## 1:02 to 1:22  Slide 4: how it is built  [90s]
 Trace the line once. [90s] The pastor types. A privacy layer swaps names for tokens on the pastor's computer. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are restored here, and named checks reject unsafe drafts, up to three tries. The pastor decides. Nothing leaves with a name in it.
-Under the diagram: thirteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
+Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
 
 ## 1:22 to 1:37  Slide 5: concept and product
 Five stages, one gate after each. The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon.

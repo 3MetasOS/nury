@@ -35,7 +35,7 @@ Animated architecture shot by hack-video. Draw the same line as deck slide 4: pa
 1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
 2. "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24" (TC 26)
 3. "A full package: 50 to 56 s, about 9 cents" (TC 30)
-Spare if there is room: "85 offline tests pass; no send path" (re-run the count at export).
+Spare if there is room: "91 offline tests pass; no send path" (re-run the count at export).
 
 **Disclosure caption, verbatim, small, on screen for the whole beat:** "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules."
 Lower-third labels: "Built on Gloo AI Studio" and "Tested with Jev". Optional TECH-B only if there is time: "A red team from other model makers checks it too. It advises; a person decides."
