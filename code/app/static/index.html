@@ -180,7 +180,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .steps3{display:grid;gap:10px;counter-reset:s}
 .steps3 li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
 .steps3 li::before{counter-increment:s;content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--amber-line);color:var(--amber-text);display:grid;place-items:center;font:600 14px var(--sans)}
-.netcard{display:grid;gap:12px;border:1px solid var(--line);border-radius:16px;padding:16px;background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
+.netcard{display:grid;gap:12px;border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--surface)}
 .netcard h2{margin:0}.netcard .scene{max-width:240px;margin:0 auto}
 .linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .judges{display:flex;flex-wrap:wrap;align-items:center;gap:2px 20px;margin-top:6px}
@@ -192,8 +192,8 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
 .band .kicker{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
 .band p{color:var(--muted);max-width:52ch}.band .scene{max-width:260px;margin-top:4px}
-.band.cases{background:repeating-linear-gradient(transparent 0 31px,var(--line) 31px 32px),var(--surface)}
-.band.network{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
+.band.cases{background:var(--surface)}
+.band.network{background:var(--surface)}.band.network .scene,.netcard .scene{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px;border-radius:10px}
 /* cases */
 .ctools{display:grid;gap:10px;margin-bottom:12px}
 .search{position:relative}.search .i{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none}
@@ -695,7 +695,7 @@ let curCase=null,curPage="index.md";
 async function openCase(id){
   const c=await api("/api/case/"+encodeURIComponent(id));
   if(c.error){const e=$("load-err");e.hidden=false;e.textContent=c.error;go("#/cases");return}
-  curCase=c;$("case-title").textContent=c.meta.title||c.meta.id;
+  curCase=c;$("case-title").textContent=crisisInfo({playbook:c.meta.playbook}).title||c.meta.title||c.meta.id;
   const fb=$("case-follow");fb.classList.toggle("hidden",!FEATURES.followup);$("case-follow-msg").textContent="";
   const paintF=on=>{fb.setAttribute("aria-pressed",String(on));fb.replaceChildren(ic("i-flag"),on?"Needs follow-up. Tap to clear":"Mark as needs follow-up")};
   paintF(!!c.meta.needs_follow_up);
@@ -708,7 +708,7 @@ async function openCase(id){
    const stg=Object.keys(c.pages||{}).filter(k=>/^0\d-[a-z]+\.md$/.test(k)).sort().map(k=>({id:k.slice(3,-3),title:((c.pages[k].match(/^#\s*(.+)$/m)||[])[1])||k,state:(c.meta.edited||[]).includes(k.slice(3,-3))?"edited":"approved"}));
    fig.classList.toggle("hidden",!stg.length);
    if(stg.length){fig.append(NuryDiagram.strip(stg),h("figcaption",{class:"sm muted"},"Each stage of this case: approved as drafted, or edited by the pastor."))}}
-  $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
+  $("case-meta").textContent=`${crisisInfo({playbook:c.meta.playbook}).title} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;

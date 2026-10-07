@@ -165,7 +165,7 @@ JS
   check "$T how: a deep link lands on its section" "$(ev "document.getElementById('5-how-people-add-rules').getBoundingClientRect().top<innerHeight*0.5")" "true"
   agent-browser screenshot $SHOTS/how-$T.png >/dev/null 2>&1
   agent-browser eval "location.href='/#/';1" >/dev/null 2>&1; agent-browser wait "#h-home" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
-  check "$T how: the footer links to the page" "$(ev "document.querySelector('footer a[href=\\"/how-it-was-built\\"]').getAttribute('href')")" '"/how-it-was-built"'
+  check "$T how: the footer links to the page" "$(ev "document.querySelector('footer a[href=\"/how-it-was-built\"]').getAttribute('href')")" '"/how-it-was-built"'
   # ---- follow-up flag (a plain mark set by the pastor; no dates, no reminders)
   agent-browser eval "location.hash='#/cases';1" >/dev/null 2>&1; agent-browser wait "#h-cases" >/dev/null 2>&1; agent-browser wait 700 >/dev/null 2>&1
   click "#rows a.lrow"; agent-browser wait 700 >/dev/null 2>&1
