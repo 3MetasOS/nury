@@ -14,8 +14,10 @@ It works in one color. At small sizes the thin lines blur, so there is a heavier
 |---|---|
 | `logo-mark.svg` | The lantern alone, amber. 24 px and up. |
 | `logo-mark-small.svg` | The heavier lantern. Use it under 24 px, down to 16 px. |
-| `logo-lockup.svg` | Lantern, "Nury" and the tagline, on ink. |
-| `logo-lockup-light.svg` | The same, on paper. |
+| `logo-lockup-stacked.svg` | DEFAULT. Lantern on top, "Nury" below it, the tagline below that, centred, on ink. |
+| `logo-lockup-stacked-light.svg` | DEFAULT. The same, on paper. |
+| `logo-horizontal-NO-TAGLINE.svg` | Lantern beside "Nury", on ink. **No tagline**: the tagline never sits beside the logo. |
+| `logo-horizontal-NO-TAGLINE-light.svg` | The same, on paper. |
 | `favicon.svg` | The heavier lantern on an ink tile. Checked at 16, 24 and 32 px. |
 | `archive/` | Options A and B, not chosen, kept for the record. |
 | `APP_SNIPPETS.md` | Exact code for the app header and favicon. |

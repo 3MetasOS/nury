@@ -147,12 +147,10 @@ export const Tech: React.FC<{tests: number | string; captions?: string[]; times?
 };
 
 export const End: React.FC<{credit?: boolean}> = ({credit}) => (
-  <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 26}}>
-    {/* brand rule (Juan, 2026-10-07): the tagline sits BELOW the mark and the wordmark, never beside */}
-    <Img src={staticFile('logo-mark-paper.svg')} style={{width: 150, height: 150}} />
-    <div style={{fontFamily: serif, fontWeight: 600, fontSize: 176, color: C.amber, lineHeight: 1}}>Nury</div>
-    <div style={{fontFamily: sans, fontWeight: 500, fontSize: 40, color: C.muted, letterSpacing: '.01em'}}>An AI Crisis Response Agent</div>
-    <div style={{fontFamily: sans, fontSize: 28, color: C.muted, maxWidth: 1200, textWrap: 'balance' as any, marginTop: 36}}>
+  <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center', gap: 20}}>
+    {/* branding/logo-lockup-stacked-light.svg: mark, "Nury", tagline below (brand rule, 2026-10-07) */}
+    <Img src={staticFile('logo-lockup-stacked-light.svg')} style={{width: 760}} />
+    <div style={{fontFamily: sans, fontSize: 28, color: C.muted, maxWidth: 1200, textWrap: 'balance' as any}}>
       Nury is an AI assistant, not a pastor, counselor or lawyer. Legal information only. Not legal advice.
     </div>
     {credit && <div style={{fontFamily: sans, fontSize: 24, color: C.muted, marginTop: 8}}>Narration voice by ElevenLabs.</div>}

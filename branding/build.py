@@ -88,6 +88,24 @@ def lockup(opt, mark_color, word_color, tag_color, bg=None, tagline=True):
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -12 {W+40:.0f} 104" width="{W+40:.0f}" height="104" role="img" '
             f'aria-label="Nury, An AI Crisis Response Agent">'+"".join(parts)+'</svg>'), W
 
+
+def lockup_stacked(opt, mark_color, word_color, tag_color, bg=None):
+    """DEFAULT lockup (Juan's rule, 2026-10-07): the mark on top, "Nury" below it, the tagline below that, all centred. The tagline is never beside the logo."""
+    wd0, ww = text_path(FRAUNCES, "Nury", 68, 0, 0)
+    td0, tw = text_path(INTER, "An AI Crisis Response Agent", 15, 0, 0, tracking=0.012)
+    W = max(ww, tw) + 16; cx = W / 2
+    wd, _ = text_path(FRAUNCES, "Nury", 68, cx - ww / 2, 162)
+    td, _ = text_path(INTER, "An AI Crisis Response Agent", 15, cx - tw / 2, 196, tracking=0.012)
+    pad_x, top, bot = 30, 18, 24   # clear space around the logo
+    vb = (-pad_x, -top, W + 2 * pad_x, 196 + top + bot)
+    parts = []
+    if bg: parts.append(f'<rect x="{vb[0]}" y="{vb[1]}" width="{vb[2]:.0f}" height="{vb[3]:.0f}" fill="{bg}"/>')
+    parts.append(mark_group(opt, mark_color, cx - 44, 8, 1.375))   # mark about 88 units tall
+    parts.append(f'<path fill="{word_color}" d="{wd}"/>')
+    parts.append(f'<path fill="{tag_color}" d="{td}"/>')
+    return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="{vb[0]} {vb[1]} {vb[2]:.0f} {vb[3]:.0f}" width="{vb[2]:.0f}" height="{vb[3]:.0f}" role="img" '
+            f'aria-label="Nury, An AI Crisis Response Agent">' + "".join(parts) + '</svg>'), W
+
 def favicon(opt):
     body, kind = MARKS[opt + "s"] if opt + "s" in MARKS else MARKS[opt]
     stroke_attr = f' stroke="{AMBER}"' if kind else ""
@@ -120,6 +138,11 @@ svg[aria-label^="Nury,"]{{max-width:100%;height:auto}}span{{font-size:12px;opaci
         (OUT / "logo-mark.svg").write_text(mark_svg(opt, AMBER, 64))
         small = opt + "s"
         if small in MARKS: (OUT / "logo-mark-small.svg").write_text(mark_svg(small, AMBER, 64))
-        s_, w = lockup(opt, AMBER, TEXT, "#a9a59b", bg=INK); (OUT / "logo-lockup.svg").write_text(s_)
-        s_, _ = lockup(opt, AMBER_DEEP, INK, "#55524a", bg=PAPER); (OUT / "logo-lockup-light.svg").write_text(s_)
+        # default lockups: STACKED, tagline below. The horizontal mark + word has NO tagline (never beside the logo).
+        s_, w = lockup_stacked(opt, AMBER, TEXT, "#a9a59b", bg=INK); (OUT / "logo-lockup-stacked.svg").write_text(s_)
+        s_, _ = lockup_stacked(opt, AMBER_DEEP, INK, "#55524a", bg=PAPER); (OUT / "logo-lockup-stacked-light.svg").write_text(s_)
+        s_, _ = lockup(opt, AMBER, TEXT, "#a9a59b", bg=INK, tagline=False); (OUT / "logo-horizontal-NO-TAGLINE.svg").write_text(s_)
+        s_, _ = lockup(opt, AMBER_DEEP, INK, "#55524a", bg=PAPER, tagline=False); (OUT / "logo-horizontal-NO-TAGLINE-light.svg").write_text(s_)
+        for old in ("logo-lockup.svg", "logo-lockup-light.svg"):   # retired: the horizontal lockup carried the tagline beside the lantern
+            (OUT / old).unlink(missing_ok=True)
         (OUT / "favicon.svg").write_text(favicon(opt)); print("final", opt, round(w))

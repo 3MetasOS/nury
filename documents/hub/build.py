@@ -82,8 +82,8 @@ def brand_page():
         return None
     body = ("<h1>Nury logo</h1><p>Outline lantern. Chosen by Juan. Pure SVG.</p>"
             "<div class='grid'>"
-            f"<div class='card' style='background:#0d1015'><b>Lockup on ink</b><br><div style='max-width:360px'>{svg('logo-lockup.svg')}</div></div>"
-            f"<div class='card' style='background:#f6f1e7;color:#111'><b>Lockup on paper</b><br><div style='max-width:360px'>{svg('logo-lockup-light.svg')}</div></div></div>"
+            f"<div class='card' style='background:#0d1015'><b>Lockup on ink</b><br><div style='max-width:360px'>{svg('logo-lockup-stacked.svg')}</div></div>"
+            f"<div class='card' style='background:#f6f1e7;color:#111'><b>Lockup on paper</b><br><div style='max-width:360px'>{svg('logo-lockup-stacked-light.svg')}</div></div></div>"
             "<h2>Mark</h2><div class='grid'>"
             f"<div class='card'><div style='width:96px'>{svg('logo-mark.svg')}</div><p class='pill'>logo-mark.svg</p></div>"
             f"<div class='card'><div style='width:32px'>{svg('logo-mark-small.svg')}</div><p class='pill'>logo-mark-small.svg, for 24 px and under</p></div>"
