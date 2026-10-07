@@ -1,0 +1,26 @@
+   2.2 home
+   3.8 selector
+   9.2 crisis
+  11.0 intake_empty
+  13.3 intake
+  14.0 start
+  14.0 protected
+  25.0 gate1 shown: '1. Triage'
+  25.0 strip: 'Ready for your review\ntook 6 s'
+  30.0 approve1
+  35.9 reject
+  35.9 strip: rejected, stage 2
+  41.9 gate2 shown: '2. Rights brief'
+  41.9 strip: 'Passed\ntook 10 s'
+  47.0 approve2
+  55.0 gate3 shown: '3. Attorney resources'
+  55.0 strip: 'Ready for your review\ntook 7 s'
+  60.0 approve3
+  72.0 gate4 shown: '4. Family checklist'
+  72.0 strip: 'Ready for your review\ntook 10 s'
+  77.0 approve4
+  83.9 gate5 shown: '5. Pastoral message'
+  83.9 strip: 'Ready for your review\ntook 6 s'
+  89.0 approve5
+  90.4 package
+  94.4 end

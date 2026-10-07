@@ -80,11 +80,12 @@ const AppClip: React.FC<{s: any; marks: Marks; y?: number; file?: string}> = ({s
     return play >= full ? v : (<><Sequence durationInFrames={Math.max(1, play)}>{v}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{v}</Freeze></Sequence></>);
   };
   let body: React.ReactNode;
-  if (m != null && b - m < s.dur - 1 && m > a + 0.5) {
-    const d2 = Math.min(b - m, s.dur - 1), d1 = s.dur - d2;
+  if (m != null && m > a + 0.5) {
+    // fast through the wait, then REAL TIME for the last d2 seconds before the end mark (the READY gate, the strip, the tap): d2 is the part from the hold mark, capped so the fast part keeps at least 1.2 s
+    const d2 = Math.min(b - m, s.dur - 1.2), d1 = s.dur - d2, m2 = b - d2;
     body = (<>
-      <Sequence durationInFrames={Math.round(d1 * FPS)}>{seg(a, m, d1, Math.min(8, Math.max(0.85, (m - a) / d1)))}</Sequence>
-      <Sequence from={Math.round(d1 * FPS)}>{seg(m, m + d2, d2, 1)}</Sequence>
+      <Sequence durationInFrames={Math.round(d1 * FPS)}>{seg(a, m2, d1, Math.min(8, Math.max(0.85, (m2 - a) / d1)))}</Sequence>
+      <Sequence from={Math.round(d1 * FPS)}>{seg(m2, b, d2, 1)}</Sequence>
     </>);
   } else body = seg(a, b, s.dur, Math.min(4, Math.max(0.85, (b - a) / s.dur)));
   return (
@@ -258,7 +259,7 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
   ];
   const retake = (k: string) => (data.voice as any)?.retakes === true && (k === 'L3' || k === 'L9') ? k + '_retake' : k; // voice.json {retakes:true} = slower L3 and L9
   const voice = planVoice(data, scenes).map((x) => <Snd key={x.k} f={retake(x.k)} at={x.start} v={1} dir="arc/" />);
-  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 50 to 56 s, about 9 cents'];
+  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 33 to 49 s, 6 to 9 cents'];
   return (
     <AbsoluteFill>
       <Grade k={[[0, INK], [st('nury'), INK], [st('nury') + 1.2, '#4a2f14'], [st('nury') + 2.3, '#dfa04c'], [st('nury') + 3.6, '#f3e6cc'], [st('tool') + 4, '#f5ecd9'], [st('dawn'), PAPER]]} />

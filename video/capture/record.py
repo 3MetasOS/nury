@@ -32,16 +32,20 @@ with sync_playwright() as p:
     try:  # the Protected names step, if the app shows it
         page.wait_for_selector("#b-protect-go", state="visible", timeout=6000); mark("protected"); page.wait_for_timeout(3700); page.click("#b-protect-go")
     except Exception: pass
+    prev_title = ""
     for i in range(1, 6):
         t_end = time.time() + 240; seen_reject = False
         while time.time() < t_end:
-            if page.locator("#gate:not(.hidden)").count(): break
+            # a NEW gate: visible and its title differs from the one we just approved (the old gate lingers for a moment)
+            if page.locator("#gate:not(.hidden)").count() and page.inner_text("#g-title").strip() != prev_title: break
             if not seen_reject and "Draft rejected" in (page.inner_text("#strip") if page.locator("#strip:not(.hidden)").count() else ""):
                 seen_reject = True; mark("reject"); mark(f"strip: rejected, stage {i}")
             page.wait_for_timeout(150)
         else: raise TimeoutError(f"gate {i} never appeared")
-        page.wait_for_function("[...document.querySelectorAll('#gate .btn')].filter(b=>b.offsetParent).every(b=>!b.disabled)", timeout=20_000)
-        mark(f"gate{i} shown: {page.inner_text('#g-title')[:40]!r}")
+        t_rdy = time.time() + 20   # READY: every visible gate button is enabled (polled with evaluate: the app's CSP forbids wait_for_function)
+        while time.time() < t_rdy and not page.evaluate("[...document.querySelectorAll('#gate .btn')].filter(b=>b.offsetParent).every(b=>!b.disabled)"): page.wait_for_timeout(150)
+        prev_title = page.inner_text('#g-title').strip()
+        mark(f"gate{i} shown: {prev_title[:40]!r}")
         strip = page.locator("#strip:not(.hidden)")
         if strip.count(): mark(f"strip: {strip.inner_text()[:80]!r}")
         page.wait_for_timeout(int(HOLD * 1000)); page.click("#b-approve"); mark(f"approve{i}"); page.wait_for_timeout(600)

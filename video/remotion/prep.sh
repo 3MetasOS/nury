@@ -3,7 +3,7 @@
 # Usage: ./prep.sh [capture_dir]   (default ../capture/raw)
 set -euo pipefail
 cd "$(dirname "$0")"; CAP="${1:-../capture/raw}"; mkdir -p public
-ffmpeg -y -loglevel error -i "$CAP/run.webm" -r 30 -c:v libx264 -pix_fmt yuv420p -crf 14 -an public/run.mp4
+if [ -f "$CAP/run.mp4" ]; then cp "$CAP/run.mp4" public/run.mp4; else ffmpeg -y -loglevel error -i "$CAP/run.webm" -r 30 -c:v libx264 -pix_fmt yuv420p -crf 14 -an public/run.mp4; fi   # run.mp4 = DevTools screencast (current recorder); run.webm = the old recorder
 python3 - "$CAP/marks.txt" <<'PY'
 import json,re,sys
 m={}
