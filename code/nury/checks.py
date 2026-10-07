@@ -4,6 +4,7 @@ They add to the safety floor (guardrails.py + the engine). They never replace it
 Each check: (params, text, ctx) -> list of violations. ctx has .state, .data, .fields, .lang.
 """
 
+import json
 import re
 
 from . import guardrails as g
@@ -277,7 +278,63 @@ def verse_block_verbatim(p, text, ctx):
     return [g.R("scripture_altered", "the verse block does not match any approved verse word for word")]
 
 
+_CALL_NAME = re.compile(
+    r"\b(?:call|phone|ring|llame|llamen|llamar|llama|llamarme|contact|contacte|contacten)\s+(?:a\s+)?"
+    r"(?!(?:God|Dios|Jesus|Jes[uú]s|Christ|Cristo)\b)([A-ZÁÉÍÓÚÑ][\wáéíóúñ]+)")
+
+
+def no_name_after_call(p, text, ctx):
+    """The pastor's voice says 'call me' or 'call the pastor'. It never writes 'call <Name>', because the only
+    names in a case are the family's. (Panel finding, scenario 10: 'call Maria Lopez can call anytime'.)
+    A name the pastor wrote in the intake as a contact is allowed."""
+    intake = getattr(ctx.state, "intake", "") or ""
+    hits = [m.group(1) for m in _CALL_NAME.finditer(text)
+            if not re.search(rf"\b(?:call|llam\w*|contact\w*)\s+(?:a\s+)?{re.escape(m.group(1))}\b", intake, re.I)]
+    return [g.R("garbled", f"names a person after 'call': {sorted(set(hits))[:2]}; say 'call me' or 'call the pastor'")] if hits else []
+
+
+_SIGN_WORDS = re.compile(r"\b(?:sign\w*|firm\w*|autoriz\w*|authoriz\w*|authoris\w*)\b", re.I)
+_DECISION_WORDS = re.compile(r"\b(?:decisions?|decide|decision(?:es)?|decid\w+|tom\w+ decisiones)\b", re.I)
+
+
+def _do_not_lines(text):
+    up = text.upper()
+    i = up.find("DO NOT DO")
+    if i < 0:
+        return []
+    rest = text[i + len("DO NOT DO"):]
+    j = min([k for k in (rest.upper().find(h) for h in ("GATHER THESE", "WHAT TO BRING", "DO TONIGHT")) if k >= 0] or [len(rest)])
+    return [l.strip() for l in rest[:j].splitlines() if re.match(r"\s*(?:[-•*]|\d+[.)])\s*\S", l)]
+
+
+def do_not_directives(p, text, ctx):
+    """A DO NOT line may tell the family not to sign, or not to make a care decision, only if a vetted point says so.
+    signing: allowed only when the vetted points contain the signing word. decisions: p['decisions'] = 'never' forbids it."""
+    vetted = _fold(json.dumps(ctx.data, ensure_ascii=False))
+    out = []
+    for l in _do_not_lines(text):
+        if p.get("signing") and _SIGN_WORDS.search(l):
+            w = _fold(_SIGN_WORDS.search(l).group(0))[:4]
+            if w not in vetted:
+                out.append(g.R("ungrounded_claim", f"DO NOT line about signing that no vetted point supports: {l[:70]!r}"))
+        if p.get("decisions") == "never" and _DECISION_WORDS.search(l):
+            out.append(g.R("ungrounded_claim", f"DO NOT line directs a decision about care: {l[:70]!r}"))
+    return out
+
+
+def triage_facts_only(p, text, ctx):
+    """Triage is for the pastor and must be facts from the intake. No advice, no claim about what is critical or what to preserve.
+    A word the pastor wrote in the intake is allowed."""
+    intake = _fold(getattr(ctx.state, "intake", "") or "")
+    hits = []
+    for m in re.finditer(p["pattern"], text, re.I):
+        if _fold(m.group(0)) not in intake:
+            hits.append(m.group(0).lower())
+    return [g.R("advice", f"triage must state facts, not advice or claims about what matters: {sorted(set(hits))[:3]}")] if hits else []
+
+
 REGISTRY = {f.__name__: f for f in (required_labels, numbered_after, cited_bullets, ends_with_referral,
                                     vetted_links_present, required_headings, max_words, no_agency_names, no_stock_phrases, no_endorsement_words,
                                     listed_contacts_known, network_entries_present, official_list_rules,
-                                    no_unauthorized_promises, no_providence_claims, no_model_scripture, verse_block_verbatim)}
+                                    no_unauthorized_promises, no_providence_claims, no_model_scripture, verse_block_verbatim,
+                                    no_name_after_call, do_not_directives, triage_facts_only)}

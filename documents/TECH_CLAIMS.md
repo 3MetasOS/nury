@@ -99,6 +99,8 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 46 | The verse text is public domain (Reina-Valera 1909, World English Bible), with source and licence recorded. A verse ships only after Juan approves it. Licensed versions are NOT used and NOT claimed. | `playbooks/*/sources/scripture.json` (licence pages, checked 2026-10-06), `approvals.json` | VERIFIED on the source pages; approvals PENDING | 12 verses |
 | 47 | The choice is per case. Two different cases can get different verses, and if none fits no verse is added. | `tests/test_scripture.py` (a scripted model, not a live one) | VERIFIED offline test; live PENDING. Whether a live model matches verse to case well is NOT measured | n/a |
 
+| 48 | Three more deterministic checks come from the red-team panel: the pastor's voice never writes 'call <Name>'; a hospital or detention DO NOT line about signing needs a vetted point, and a hospital line may not direct a care decision; triage carries no advice and no claim about what is critical. | `checks.no_name_after_call`, `do_not_directives`, `triage_facts_only`; `tests/test_panel_fixes.py` (13 tests, each uses the panel's own sentence) | VERIFIED offline test; live PENDING | 13 tests |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

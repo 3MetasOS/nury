@@ -176,7 +176,8 @@ def playbooks():
         p["placeholder"] = intake.get("placeholder", GENERIC_PLACEHOLDER)
         p["stages"] = stage_lines(p["id"]) if p["status"] == "live" else []
         det = crisis_detail()
-        p["detail"] = dict(det["playbooks"].get(p["id"], {}), common_never=det.get("common_never", [])) if p["status"] == "live" else None
+        p["detail"] = dict(det["playbooks"].get(p["id"], {}), common_never=det.get("common_never", [])) if p["id"] in det["playbooks"] else None
+        p["languages"] = (json.loads((PLAYBOOKS_DIR / p["id"] / "playbook.json").read_text(encoding="utf-8")).get("languages", []) if (PLAYBOOKS_DIR / p["id"] / "playbook.json").is_file() else [])
         demo = intake.get("demo")
         if demo:
             p["demo_intake"] = demo

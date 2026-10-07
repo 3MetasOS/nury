@@ -26,6 +26,10 @@
         "name": "numbered_after",
         "marker": "MISSING FACTS",
         "count": 3
+      },
+      {
+        "name": "triage_facts_only",
+        "pattern": "\\b(urge[ds]?|urging|should|must|recommend\\w*|advis\\w*|make sure|ensure|critical|crucial|vital|preserv\\w+|best to|important to)\\b"
       }
     ]
   },
@@ -188,6 +192,11 @@
           "DO NOT DO",
           "WHAT TO BRING AND ASK"
         ]
+      },
+      {
+        "name": "do_not_directives",
+        "signing": true,
+        "decisions": "never"
       }
     ],
     "skills": [
@@ -234,6 +243,9 @@
       },
       {
         "name": "no_providence_claims"
+      },
+      {
+        "name": "no_name_after_call"
       }
     ],
     "skills": [

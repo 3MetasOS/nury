@@ -58,7 +58,9 @@
     "Attorney resources",
     "A family checklist",
     "A short pastoral message"
-   ]
+   ],
+   "short": "Detention",
+   "card": "A family member was detained or taken in a raid."
   },
   "hospital": {
    "icon": "i-hospital",
@@ -109,7 +111,17 @@
     "Hospital resources",
     "A family checklist",
     "A short pastoral message"
-   ]
+   ],
+   "short": "Hospital",
+   "card": "A family member is in the emergency room or intensive care."
+  },
+  "sudden-death": {
+   "icon": "i-sudden",
+   "short": "Sudden death"
+  },
+  "house-fire": {
+   "icon": "i-fire",
+   "short": "House fire"
   }
  }
 }

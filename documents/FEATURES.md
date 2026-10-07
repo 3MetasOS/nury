@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 43 live verified, 21 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
+Count: 43 live verified, 22 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
 
 ## 1. Pastor experience
 
@@ -36,7 +36,8 @@ Count: 43 live verified, 21 offline tested, 3 built but not yet checked live, 5 
 | Next-steps map | One picture with four lanes: tonight, this week, questions still open, who to call. Steps and questions only, no outcomes. | BUILT, live verified | `nury/casefile.nextsteps_svg`; `tests/test_casefile.py`; BUILD_LOG 34, 56 | pastor, judge |
 | Our network screen | The pastor adds, edits, tags and deletes contacts, sets the church's place, imports and exports. A banner says "Fictional demo contacts" in demo mode. | BUILT, offline tested | `code/app/static/network.html`, `code/app/network_api.py`; `tests/test_network_api.py`; browser checks at 390 and 1280 px; mounted in the app (BUILD_LOG 47) | pastor |
 | Scripture in the pastoral message | The model picks a verse id from the approved list for this case and writes at most two short why-lines. The app inserts the exact verse text, reference and translation name. If no verse fits, no verse is added. | BUILT, offline tested | `nury/scripture.py`; `checks.verse_block_verbatim`; `tests/test_scripture.py`; not yet run live | pastor, judge |
-| Three Scripture checks | `no_providence_claims` (no claim about what God will do or why this happened, EN and ES), `no_model_scripture` (the model writes no reference and no verse), `verse_block_verbatim` (the block equals the source word for word). The registry now holds 17 named checks; the 14 above are the ones the scored runs used. | BUILT, offline tested | `nury/checks.py`; `tests/test_scripture.py` | judge, developer |
+| Three Scripture checks | `no_providence_claims` (no claim about what God will do or why this happened, EN and ES), `no_model_scripture` (the model writes no reference and no verse), `verse_block_verbatim` (the block equals the source word for word). The registry now holds 20 named checks; the 14 above are the ones the scored runs used. | BUILT, offline tested | `nury/checks.py`; `tests/test_scripture.py` | judge, developer |
+| Three panel-driven checks | No 'call <Name>' in the pastor's voice, no unsupported signing or care-decision directive in a DO NOT list, no advice or 'critical' claim in triage. The registry now holds 20 named checks; the scored runs used 14. | BUILT, offline tested | `nury/checks.py`; `tests/test_panel_fixes.py` | judge, developer |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
