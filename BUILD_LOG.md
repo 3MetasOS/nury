@@ -917,3 +917,5 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 10:46: Jev gate in the final scored sets: 239 of 239 calls answered, 0 failed open (0 timeouts, 0 errors, 0 skipped), longest call 435 ms against an 8 s timeout; the fail-open path is tested with stubs only.
 - 10:50: vocabulary (Juan): 'package' is jargon; the app, the presentation and the film say 'case'; technical docs keep 'package' with a one-line definition.
 - 11:11: The pattern page (Juan: yes): purpose explained (the generalizable pattern the judges asked for); text pass by hack-ninja and a design pass by hack-artisans (banner, pull-quote, numbered five-part sequence with arrows, honest limits card).
+- 11:14: Juan: judge pages locked (What did not work, The pattern, Observability and the rest); next: documentation alignment starting with the README, then the deck review.
+- 11:14: documentation alignment ordered (README first, then a single table of facts and a grep of every document against it); deck opened for Juan's review.
