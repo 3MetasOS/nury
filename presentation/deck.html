@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nury — pitch deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d1015;--surface:#131824;--text:#ece7dc;--muted:#9a9a9a;--amber:#e8a33d;--ok:#5fb37c;--bad:#d9605a}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--ink);color:var(--text);font-family:Inter,system-ui,sans-serif}
+.slide{display:none;min-height:100vh;padding:6vh 7vw;flex-direction:column;justify-content:center;gap:2.2vh}
+.slide.on{display:flex}
+h1,h2{font-family:Fraunces,Georgia,serif;font-weight:600;margin:0;line-height:1.1}
+h1{font-size:clamp(44px,8vw,96px)} h2{font-size:clamp(30px,4.6vw,56px)}
+p,li{font-size:clamp(18px,2.4vw,30px);line-height:1.4;margin:0}
+ul{margin:0;padding-left:1.1em;display:grid;gap:1.4vh}
+.amber{color:var(--amber)} .muted{color:var(--muted);font-size:clamp(14px,1.6vw,20px)}
+.row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2vw}
+.card{background:var(--surface);border-radius:14px;padding:2.2vh 1.6vw;border-top:3px solid var(--amber)}
+.card b{display:block;margin-bottom:.6vh;font-family:Fraunces,serif}
+.card p{font-size:clamp(15px,1.7vw,22px)}
+.chip{display:inline-block;padding:.2em .7em;border-radius:99px;font-size:clamp(14px,1.6vw,20px);color:#0d1015}
+.bad{background:var(--bad)} .ok{background:var(--ok)}
+.ph{outline:2px dashed var(--amber);padding:0 .3em;color:var(--amber)}
+.foot{position:fixed;bottom:2vh;left:7vw;right:7vw;display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+@media print{.slide{display:flex;page-break-after:always}.foot{display:none}}
+</style></head><body>
+
+<section class="slide on" id="s1"><!-- 0:00 -->
+<p class="amber muted">2:07 AM</p>
+<h1>Nury</h1>
+<p>The crisis-response agent for solo pastors.</p>
+<p class="muted">Juan Pelaez · 3Metas · Gloo AI Hackathon · Track 1</p></section>
+
+<section class="slide" id="s2">
+<h2>The user</h2>
+<ul>
+<li>A solo pastor. No staff. No lawyer on the line.</li>
+<li>A panicked call from an immigrant family. Sunday afternoon, or 2 AM.</li>
+<li>They have a phone and minutes. Not a plan.</li></ul>
+<p class="amber">Humanitarian, not political. A family and a night.</p></section>
+
+<section class="slide" id="s3">
+<h2>Five stages. The pastor decides each one.</h2>
+<div class="row">
+<div class="card"><b>1 Triage</b><p>Facts only. No advice.</p></div>
+<div class="card"><b>2 Rights brief</b><p>Family's language. Vetted source. Cited.</p></div>
+<div class="card"><b>3 Attorneys</b><p>Hotlines and church-vetted entries. Never one named attorney.</p></div>
+<div class="card"><b>4 Checklist</b><p>Do tonight. Do not do. Gather documents.</p></div>
+<div class="card"><b>5 Message</b><p>Under 120 words. Warm and steady.</p></div></div>
+<p class="muted">Demo: Maria, Jose, two children (8 and 11). Live app or the 90-second video.</p></section>
+
+<section class="slide" id="s4">
+<h2>Safety you can see</h2>
+<p>Approve · Edit · Stop after every stage.</p>
+<p><span class="chip bad">Draft rejected by guardrail</span> → Regenerating (2 of 3) → <span class="chip ok">Passed</span></p>
+<ul><li>Up to three tries, then escalate to the pastor.</li>
+<li>The pastor never sees the unsafe draft.</li>
+<li>No send path. Copy, not Send.</li></ul></section>
+
+<section class="slide" id="s5">
+<h2>How it is built</h2>
+<ul>
+<li>Gloo guarded Responses endpoint.</li>
+<li>Legal information only, from a vetted source file. No open web.</li>
+<li>Not a pastor, counselor, therapist or lawyer. Says so on every output.</li>
+<li>English screen for the pastor. Spanish output for the family.</li></ul></section>
+
+<section class="slide" id="s6">
+<h2>Proof</h2>
+<p>Hand-built scenarios, scored by typed judges.</p>
+<div class="row">
+<div class="card"><b>Pass rate</b><p class="ph">[PLACEHOLDER]</p></div>
+<div class="card"><b>Rejected and regenerated</b><p class="ph">[PLACEHOLDER]</p></div>
+<div class="card"><b>Cost per run</b><p class="ph">[PLACEHOLDER]</p></div>
+<div class="card"><b>Latency per run</b><p class="ph">[PLACEHOLDER]</p></div></div>
+<p class="muted">Fill from hack-artisans' scorecard only. Remove this slide if there are no real numbers.</p>
+<p class="muted">Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.</p></section>
+
+<section class="slide" id="s7">
+<h2>Who built it</h2>
+<ul><li>Juan Pelaez, 3Metas.</li>
+<li>A small team of AI agents, coordinating over a messaging protocol.</li>
+<li>Every step is in the commit log.</li></ul>
+<p class="muted">Named for Juan's late tía Nury, always ready to help at her church.</p></section>
+
+<section class="slide" id="s8">
+<h1>Nury</h1>
+<p>The crisis-response agent for solo pastors.</p>
+<p class="muted">Legal information only. Not legal advice.</p></section>
+
+<div class="foot"><span>Nury</span><span id="n">1 / 8</span></div>
+<script>
+const S=[...document.querySelectorAll('.slide')];let i=0;
+function go(k){i=Math.max(0,Math.min(S.length-1,k));S.forEach((s,j)=>s.classList.toggle('on',j===i));document.getElementById('n').textContent=(i+1)+' / '+S.length}
+addEventListener('keydown',e=>{if(['ArrowRight',' ','PageDown'].includes(e.key))go(i+1);if(['ArrowLeft','PageUp'].includes(e.key))go(i-1)});
+addEventListener('click',e=>go(e.clientX>innerWidth/2?i+1:i-1));
+</script></body></html>
