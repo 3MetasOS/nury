@@ -87,6 +87,7 @@ Small versioned instruction modules in `code/skills/<name>/SKILL.md` (header: na
 
 - Today: `voice` on pastoral and checklist (both playbooks); `grounding` on checklist (both), attorney (detention), resources (hospital). `{professional}` in a skill is filled from the playbook's `boundary.professional`, so skills carry no domain words.
 - **Floor wins.** A skill can add rules and checks. The loader refuses a skill that tries to override the floor, the disclaimer or the citations (English or Spanish wording), that has no version or no EN and ES section, or whose checks.json removes, replaces, or names an unknown check. A playbook that names a refused skill does not load.
+- **Switch.** Skills are ON by default. Turn them off per call with `skills=False` on `run_stage`, `run_pipeline`, or `run_scripted` (`skills=True` forces on), or for the whole process with `NURY_SKILLS=off`. Off means no skill text, no skill checks, no `skill_applied` events (an audit event `skills_off` {stage, skipped} appears instead), and `metrics["skills"] == []`. The floor, the disclaimer, and playbook checks are unchanged. Use it for before and after runs.
 - **Evidence.** Audit event `skill_applied` with `name`, `version`, `stage` (once per stage run). `StageResult.metrics["skills"]` = `[{"name", "version"}]`. A skill's own check failure shows as a category, for example `stock_phrase`.
 
 ## Rules the seam enforces

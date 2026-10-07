@@ -217,7 +217,7 @@ def render_sources(stage, pb, lang):
     return out
 
 
-def render_prompt(stage, pb, lang, state, fields):
+def render_prompt(stage, pb, lang, state, fields, skills=None):
     """Instructions text for a stage: the playbook prompt with its variables filled in."""
     prompt = stage.prompt
     for v in stage.variants:
@@ -227,7 +227,7 @@ def render_prompt(stage, pb, lang, state, fields):
     vars_ = {"lang_name": LANG_NAME[lang], **render_sources(stage, pb, lang)}
     for k, v in vars_.items():
         prompt = prompt.replace("{{" + k + "}}", v)
-    prompt += skills_lib.render(stage.skills, lang, pb.boundary)
+    prompt += skills_lib.render(stage.skills if skills is None else skills, lang, pb.boundary)
     left = re.findall(r"\{\{(\w+)\}\}", prompt)
     if left:
         raise PlaybookError(f"stage {stage.id}: unfilled prompt variables {left}")

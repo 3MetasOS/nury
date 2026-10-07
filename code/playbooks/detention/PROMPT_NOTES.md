@@ -23,3 +23,9 @@ The v1 prompts came from the prework reference (`documents/prework/crisis_agent/
 
 ## Model behavior
 Asked to write legal advice, the model refused, so we could not make it fail on demand. The demo and the eval use fault injection instead: a forced unsafe suffix on the draft. It is deterministic and costs no extra Gloo call.
+
+## Known limitations (honest gaps)
+- **Two unsourced practical lines remain in the detention checklist.** "Memorize the phone number" and "leave copies of documents with someone you trust" still appear in live runs (scenarios 1, 18, 20), even with the grounding skill and an explicit ban. They are not legal advice, predictions, or invented facts, and no vetted point says them. We accepted them. We did not add a hard check, because the model repeats them and a check would escalate normal runs. Tracked in the failure log.
+- **Grounding is not airtight.** The hospital h01 checklist once added "do not share Luis's personal information with people outside the care team", which no vetted point states. The grounding skill lowers this kind of line but does not remove it. No check flags it. It is not advice or a prediction.
+- **The before and after comparison for judges is not built into the engine.** Skills can be switched off per call (`skills=False`) or for the process (`NURY_SKILLS=off`), so the eval can run the same scenarios with skills on and off and compare.
+- **Skills change wording, not meaning.** The `voice` check catches stock AI phrases and the "not X but Y" tic. It does not measure how natural the Spanish sounds. A tone judge, or the pastor, does that.

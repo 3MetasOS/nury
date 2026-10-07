@@ -80,6 +80,13 @@ def get_playbook(playbook=None):
     return _PB_CACHE[pid]
 
 
+def skills_enabled(flag=None):
+    """Skills are ON by default. Per call: skills=False. Process wide: NURY_SKILLS=off."""
+    if flag is not None:
+        return bool(flag)
+    return os.environ.get("NURY_SKILLS", "on").lower() not in ("off", "0", "false", "no")
+
+
 def with_disclaimer(text, disclaimer):
     t = text.strip()
     if disclaimer in t:
@@ -118,7 +125,8 @@ def _fault_for(stage_id, fault_injection):
 
 def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
               audit: Optional[AuditLog] = None, provoke: Optional[dict] = None,
-              fault_injection: Optional[dict] = None, playbook=None) -> StageResult:
+              fault_injection: Optional[dict] = None, playbook=None,
+              skills: Optional[bool] = None) -> StageResult:
     """Draft one stage, check it, correct it (max 3 attempts), then ask the gate.
 
     gate(result) -> GateDecision. The gate only sees safe drafts and no `attempts`.
@@ -143,7 +151,8 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
     fault = _fault_for(stage_id, fault_injection)
     m = _new_metrics()
     ctx = {d: state.approved[d] for d in stage.deps if d in state.approved}
-    base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields)
+    active = stage.skills if skills_enabled(skills) else []     # skills off: no text, no checks, no events
+    base_ins = g.boundary(pb.boundary) + "\n" + pbm.render_prompt(stage, pb, lang, state, fields, active)
     user_input = pbm.build_input(stage, state)
     vetted_blob = json.dumps(data, ensure_ascii=False) + "\n" + "\n".join(ctx.values())
     ctx_ns = SimpleNamespace(state=state, data=data, fields=fields, lang=lang)
@@ -152,13 +161,15 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         """Safety floor first. Then the playbook's named checks. Neither can be skipped."""
         v = g.unsafe_reasons(txt, pb.extra_banned) + g.language_reasons(txt, lang)
         v += g.url_reasons(txt, g.allowed_urls_in(vetted_blob)) + g.phone_reasons(txt, vetted_blob)
-        for c in stage.checks + [c for sk in stage.skills for c in sk.checks]:
+        for c in stage.checks + [c for sk in active for c in sk.checks]:
             v += CHECKS[c["name"]](c, txt, ctx_ns)
         return v
     audit.log("stage_start", stage=stage_id, deps_used=list(ctx))
-    for sk in stage.skills:
+    if stage.skills and not active:
+        audit.log("skills_off", stage=stage_id, skipped=[sk.name for sk in stage.skills])
+    for sk in active:
         audit.log("skill_applied", name=sk.name, version=sk.version, stage=stage_id)
-    m["skills"] = [{"name": sk.name, "version": sk.version} for sk in stage.skills]
+    m["skills"] = [{"name": sk.name, "version": sk.version} for sk in active]
 
     rec = StageResult(stage_id, stage.title, "error", None, None, disclaimer, m, input_context=ctx)
     violations, draft = [], None
@@ -284,13 +295,13 @@ def compute_outcome(playbook, state: CaseState, results) -> dict:
 
 def _run_pipeline(playbook, state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
                   audit: Optional[AuditLog] = None, provoke: Optional[dict] = None, stages=None,
-                  fault_injection: Optional[dict] = None):
+                  fault_injection: Optional[dict] = None, skills: Optional[bool] = None):
     pb = get_playbook(playbook)
     client = client or GlooClient()
     audit = audit or AuditLog()
     out = []
     for s in (stages or [s.id for s in pb.stages]):
-        r = run_stage(s, state, gate, client, audit, provoke, fault_injection, pb)
+        r = run_stage(s, state, gate, client, audit, provoke, fault_injection, pb, skills)
         out.append(r)
         if r.status not in ("approved", "edited", "skipped"):
             break
@@ -321,7 +332,7 @@ def scripted_gate(decisions: dict):
 
 
 def run_scripted(intake, language="es", decisions=None, fault_injection=None, client=None,
-                 audit: Optional[AuditLog] = None, stages=None, playbook=None):
+                 audit: Optional[AuditLog] = None, stages=None, playbook=None, skills: Optional[bool] = None):
     """Entrypoint for the eval harness. Returns (state, results, audit).
 
     results[i].attempts / .reason_categories / .shown_text / .gate / .input_context / .metrics
@@ -330,7 +341,7 @@ def run_scripted(intake, language="es", decisions=None, fault_injection=None, cl
     state = CaseState(intake, language)
     audit = audit or AuditLog()
     results = run_pipeline(playbook, state, scripted_gate(decisions or {}), client, audit,
-                           stages=stages, fault_injection=fault_injection)
+                           stages=stages, fault_injection=fault_injection, skills=skills)
     return state, results, audit
 
 

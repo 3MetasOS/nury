@@ -427,6 +427,42 @@ class Skills(unittest.TestCase):
         with self.assertRaises(pbm.PlaybookError):
             pbm.load_playbook("detention", self.tmp / "playbooks", self.tmp / "skills")
 
+    def test_skills_switch_off_per_call_and_env(self):
+        import os
+        class Spy(FakeClient):
+            def ask(self, u, instructions=None, **kw):
+                self.seen = getattr(self, "seen", []) + [instructions]
+                return super().ask(u, instructions=instructions, **kw)
+        c = Spy()
+        st, rs, au = run_scripted("intake", client=c, skills=False)
+        self.assertFalse(any("SKILL " in s for s in c.seen))
+        self.assertEqual(au.of_kind("skill_applied"), [])
+        self.assertTrue(au.of_kind("skills_off"))
+        self.assertTrue(all(r.metrics["skills"] == [] for r in rs))
+        self.assertEqual([r.status for r in rs], ["approved"] * 5)
+        # the floor still holds with skills off
+        bad = dict(CANNED, pastoral=PAST + " Su caso va a ser ganado.")
+        r = run_stage("pastoral", CaseState("x"), client=FakeClient(bad), skills=False)
+        self.assertIn("banned_phrase", r.reason_categories)
+        # skill checks are off too (the stock-phrase tic passes when skills are off)
+        tic = dict(CANNED, pastoral=PAST + " No es solo una lista, sino una guía.")
+        self.assertEqual(run_stage("pastoral", CaseState("x"), client=FakeClient(tic), skills=False).status, "approved")
+        self.assertEqual(run_stage("pastoral", CaseState("x"), client=FakeClient(tic)).status, "escalated")
+        # env switch, and per-call True beats the env
+        os.environ["NURY_SKILLS"] = "off"
+        try:
+            c2 = Spy()
+            run_scripted("intake", client=c2)
+            self.assertFalse(any("SKILL " in s for s in c2.seen))
+            c3 = Spy()
+            run_scripted("intake", client=c3, skills=True)
+            self.assertTrue(any("SKILL voice" in s for s in c3.seen))
+        finally:
+            del os.environ["NURY_SKILLS"]
+        c4 = Spy()
+        run_scripted("intake", client=c4)
+        self.assertTrue(any("SKILL voice" in s for s in c4.seen))      # default ON
+
     def test_floor_intact_with_skills_and_skill_checks_add(self):
         # floor and playbook checks still reject; the skill's own check adds a category
         bad = dict(CANNED, pastoral=PAST + " Es un testimonio de fe. Su caso va a ser ganado.")
