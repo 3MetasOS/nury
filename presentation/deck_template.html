@@ -146,6 +146,8 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 @media (max-width:760px){.chain{flex-direction:column}.lane .ar{transform:rotate(90deg)}.ev,.lu,.jevb,.lt{font-size:16px}}
 .appstrip{display:flex;gap:1.2vw;align-items:flex-start;justify-content:center}.appstrip figure{margin:0;display:grid;gap:.8vh;min-width:0}.appstrip img{height:auto;width:100%;max-height:44vh;object-fit:cover;object-position:top;border:1px solid var(--line);border-radius:8px;box-shadow:0 6px 20px rgba(13,16,21,.12)}.appstrip figure:nth-child(1){flex:1.2}.appstrip figure:nth-child(2),.appstrip figure:nth-child(3){flex:1}.appstrip figure:nth-child(4){flex:1.35}.appstrip figcaption{font:600 clamp(11px,1vw,14px)/1.2 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:760px){.appstrip{display:grid;grid-template-columns:1fr 1fr}.appstrip img{max-height:22vh}}
+.shot.wide{width:100%;height:auto;max-height:46vh;object-fit:contain;border:1px solid var(--line);border-radius:8px}
+@media (max-width:760px){.tbl.stack,.tbl.stack tbody,.tbl.stack tr,.tbl.stack td,.tbl.stack th{display:block;width:auto}.tbl.stack tr:first-child{display:none}.tbl.stack tr{margin-bottom:6px}.tbl.stack td:first-child{font-weight:600}}
 .entry .e-see{font-size:clamp(26px,3vw,44px);margin-top:1vh}
 .entry .e-see.hand{opacity:0;animation:rise .8s 5.6s ease-out forwards}
 .prov{font-size:clamp(12px,1.1vw,15px)!important;max-width:60ch}
@@ -331,16 +333,19 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <section class="slide" data-part="backup" data-name="what-broke-and-what-changed">
 <span class="pill">BACKUP</span>
 <h2>What broke and what changed</h2>
-<table class="tbl">
-<tr><th>What broke</th><th>What changed</th></tr>
-<tr><td>The disclaimer never said Nury is an AI assistant.</td><td>Both disclaimers now say it.</td></tr>
-<tr><td>Edited rights text did not reach stages 3 to 5.</td><td>Those stages now read the approved rights text.</td></tr>
-<tr><td>A checklist named a detainee locator outside our vetted sources, three times. The stage escalated.</td><td>The checklist uses only vetted points and names no agency.</td></tr>
-<tr><td>The judge read rejected drafts the pastor never saw.</td><td>Judges now see only what the pastor saw.</td></tr>
-<tr><td>A vague intake ("Something happened to my mom") got comfort instead of a structured case.</td><td>Fix sent to the triage prompt: a bare plea is intake to structure, never to answer.</td></tr>
-<tr><td>A made-up bare domain passed the link check.</td><td>The link check now covers bare domains.</td></tr>
-<tr><td>The checklist still adds some lines no vetted point supports ("memorize the phone number").</td><td>Not advice or a prediction. Accepted and disclosed.</td></tr></table>
-<aside class="notes">Source: evaluations/FAILURE_LOG.md and code/playbooks/detention/PROMPT_NOTES.md. Rows are real. The last row is an open limitation: say so.</aside></section>
+<table class="tbl tight stack">
+<tr><th>What broke</th><th>What we did</th></tr>
+<tr><td>The tone judge never reached its target (3 of 5 against 4).</td><td>Added a warmth line to the pastoral prompts. Tone stays for a person to rate.</td></tr>
+<tr><td>Warm drafts made promises the church had not made.</td><td>New prompt wording and a check. Promise phrases are at zero in later runs.</td></tr>
+<tr><td>A judge scored drafts the pastor never saw.</td><td>Judges now read only what the pastor saw.</td></tr>
+<tr><td>11 of 18 hostile intakes stopped at triage.</td><td>Triage treats the intake as untrusted. None stopped there on the final build.</td></tr>
+<tr><td>A made-up website passed the link check.</td><td>The check now covers bare domains.</td></tr>
+<tr><td>Our first outside-review result was wrong.</td><td>We re-ran it larger and fixed every claim. The reviewers only advise.</td></tr>
+<tr><td>We said 14 checks. It was 20.</td><td>The home page now reads the count from the code.</td></tr>
+<tr><td>A mock scorecard looked like a result.</td><td>Every result now names its source and build.</td></tr>
+<tr><td>We typed commit dates by hand.</td><td>Real clock only. The 41 affected commits are listed. History not rewritten.</td></tr></table>
+<p class="small">These are 9 of the 15 items on the What did not work page. Our own checks found them. No pastor or family did, because none has used Nury.</p>
+<aside class="notes">Source: documents/product/WHAT_DID_NOT_WORK.md (items 1, 2, 3, 5, 7, 8, 10, 11, 15). Numbers: tone 3.04 to 3.32 detention, target 4, judge moves up to 0.75 between identical runs. Open limits: unsupported promises could slip past a phrase check; the Jev gate was smoke-tested on 20 pairs, not calibrated. Say so if asked. Other items on the page: Jev not test-time only (item 9), close call at the gate (4), Scripture by design (6), claims removed (12), credit ran out twice (13), wrong build (14).</aside></section>
 
 <section class="slide" data-part="backup" data-name="jev-checks-every-draft">
 <span class="pill">BACKUP</span>
@@ -348,12 +353,11 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <table class="tbl tight">
 <tr><th>How it works (run time)</th><td>Claude writes. Named rules check. Then one call to Jev asks yes or no questions about the draft. At its line (0.50, or 0.60 for the facts question) it is rejected and rewritten, up to three tries, then the pastor takes over.</td></tr>
 <tr><th>What Jev sees</th><td>Tokens, not names. A leak test sent 15 canaries and found none.</td></tr>
-<tr><th>If Jev is down</th><td>The pastor is not blocked. The draft goes on under the plain-code checks, and the log says so.</td></tr>
-<tr><th>Speed</th><td>About 150 ms a call, about 1 second added to a case. Jev costs about $0.0004 a case ($0.042 per million input tokens).</td></tr>
+<tr><th>Speed and cost</th><td>Jev answered 239 of 239 calls in the final scored runs. The longest took 435 ms, a typical one about 155 ms: about 2 percent of a case's model time. About $0.0003 to $0.0005 a case ($0.042 per million input tokens).</td></tr>
 <tr><th>The lines</th><td>0.50, and 0.60 for the facts question, a line we set after seeing the data. On 20 real draft pairs: safe 0.02 to 0.35, unsafe 0.78 to 0.99. Not a calibration study. Not perfectly repeatable: the same drafts moved by up to 0.12.</td></tr>
 <tr><th>What went wrong live</th><td>In a grief case at 0.50, Jev rejected a safe triage three times (0.85 to 0.88) and the stage escalated. With the crisis type given and the 0.60 line it completed, but triage scored 0.59, one hundredth under the line. False-reject rate over many cases: not measured.</td></tr></table>
-<p class="small">Live on three scenarios. Pastor edits are not checked. TypeSafe's terms and retention for this use have not been reviewed.</p>
-<aside class="notes">Evidence: documents/TECH_CLAIMS.md rows 50 to 55; evaluations/validation/JEV_GATE_VALIDATION.md; code/nury/jev_gate.py. A per-question line (a higher line for the facts question) is being added by hack-jedi and is not built yet: do not claim it. Because Jev also judges at test time, those judges are not independent of this gate. Say so if asked.</aside></section>
+<p class="small">Pastor edits are not checked. TypeSafe's terms and retention for this use have not been reviewed.</p>
+<aside class="notes">Evidence: documents/TECH_CLAIMS.md rows 50 to 55; evaluations/validation/JEV_GATE_VALIDATION.md; code/nury/jev_gate.py. Because Jev also judges at test time, those judges are not independent of this gate. Say so if asked.</aside></section>
 
 <section class="slide" data-part="backup" data-name="does-nury-learn-from-pastors">
 <span class="pill">BACKUP</span>
@@ -388,13 +392,16 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <img class="ill" src="images/window-night.svg" alt="A plain window with the light on at night" width="320" height="220"></div>
 <aside class="notes">Source: BUILD_LOG item 38 and the Privacy section of the root README. Say the limits out loud: it builds trust.</aside></section>
 
-<section class="slide" data-part="backup" data-gated="casefile" data-name="the-case-file">
+<section class="slide" data-part="backup" data-name="cases-export-and-pdf" data-title="Cases, export and PDF">
 <span class="pill">BACKUP</span>
-<h2>The case file</h2>
-<ul><li>Nury saves each approved case.</li>
-<li>Nury adds a map of next steps and questions to bring to an attorney.</li>
-<li>It lists steps and questions. It does not say what will happen.</li></ul>
-<aside class="notes">Gated: show only after Sensei confirms in writing that it is built and tested. Never say predicts or forecasts.</aside></section>
+<h2>Cases, export and PDF</h2>
+<div class="two"><div class="col"><ul><li>Nury saves each approved case.</li>
+<li>Every stage, the people, the documents and a timeline are in one place.</li>
+<li>The pastor exports a family copy and a pastor copy as PDF, or both in a zip.</li>
+<li>The next-steps map lists steps and questions for an attorney. It does not say what will happen.</li></ul>
+<p class="small">PDF needs Chrome or Chromium on the computer. Without it, the pastor gets a print view.</p></div>
+<div class="col"><img class="shot wide" src="images/app/export-menu.png" alt="The Export menu on a saved case: Family copy (PDF), Pastor copy (PDF), Both in a zip, Print family copy, Print pastor copy" width="1280" height="520"></div></div>
+<aside class="notes">Real screen from a recorded run on the sample intake (made-up family). Export routes in code/app/server.py; PDF code in code/app/pdf_export.py. Never say predicts or forecasts.</aside></section>
 
 <section class="slide" data-part="backup" data-gated="network" data-name="listed-does-not-mean-recommended">
 <span class="pill">BACKUP</span>
@@ -415,15 +422,14 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <p class="muted">We read the NASW standards for social work case management (2013) in full. We did not map CMSA's standards (members only) or SAMHSA's sixth principle: we could not verify them.</p>
 <aside class="notes">Backup only; not in the 3-minute talk (Sensei's decision). Source: documents/STANDARDS_ALIGNMENT.md, with every quote checked against the text I read. Say "informed by" or "aligned with"; never compliant, certified or endorsed. Honest limits: CMSA's standards are behind a membership and I read only its public page; SAMHSA's sixth principle (cultural, historical and gender issues) is not on the SAMHSA page I read and its 2014 PDF was blocked; "look, listen, link" and the eight core actions are secondary (Wikipedia), not from WHO or NCTSN. Gaps are in section 3 of the document. In progress, not built: a consent and confidentiality note, and a needs-follow-up flag with a close-with-a-note option; do not claim them until they exist. Q and A: TECH_STORY.md Q8 and Q9.</aside></section>
 
-<section class="slide" data-part="backup" data-name="how-we-differ">
+<section class="slide" data-part="backup" data-name="where-nury-fits">
 <span class="pill">BACKUP</span>
-<h2>How we differ</h2>
-<table class="tbl">
-<tr><th>Entry</th><th>What it does</th><th>Nury</th></tr>
-<tr><td>Rockpool</td><td>Finds repeated church work and automates it.</td><td>Shows up for the crisis, when margin runs out.</td></tr>
-<tr><td>KineticFlow</td><td>Supports the pastor's own workload and rest.</td><td>Equips the pastor to care for others in acute crisis.</td></tr>
-<tr><td>Both</td><td>Routine and planning.</td><td>High-stakes, non-routine, 2 AM. Approval gates after every stage. Vetted sources only.</td></tr></table>
-<aside class="notes">Source: documents/prework/competition/. Both are complementary, not rivals. Do not comment on whether they are competing at the event.</aside></section>
+<h2>Where Nury fits</h2>
+<table class="tbl"><tr><th></th><th>Church tools for routine work</th><th>Nury</th></tr>
+<tr><td>When</td><td>Planned, repeated work and rest.</td><td>The unplanned crisis call, often at 2 AM.</td></tr>
+<tr><td>Job</td><td>Save time on routine work and planning.</td><td>Help the pastor prepare a careful response in the first hours.</td></tr>
+<tr><td>Safeguards</td><td>Built for ordinary work.</td><td>The pastor approves every stage. Vetted sources only. Nothing is sent.</td></tr></table>
+<aside class="notes">Neutral on purpose: no team or product names. The two earlier slides on this topic named other entries and were cut. Claim nothing about any other product.</aside></section>
 
 <section class="slide" data-part="backup" data-name="credits">
 <span class="pill">BACKUP</span>
@@ -432,7 +438,10 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <li>Porch light at night: Henryemix, CC0 1.0. commons.wikimedia.org/wiki/File:Porch_Light.png</li>
 <li>Glowing paper lanterns, Hội An: Peter Hershey, CC0 1.0 (Unsplash, published before June 2017). commons.wikimedia.org/wiki/File:Glowing_Paper_Lanterns_(Unsplash).jpg</li>
 <li>Illustrations (phone, family, shoes by a door, window) and the lantern mark: drawn for this project.</li>
-<li>Fonts: Fraunces and Inter, SIL Open Font License.</li>
+<li>Fonts: Fraunces, Inter and Gochi Hand, SIL Open Font License.</li>
+<li>Gloo AI Studio runs the writer (Claude Sonnet 4.6) and the outside review.</li>
+<li>TypeSafe makes Jev, which we use as a second check and as a test judge. We did not build it.</li>
+<li>ElevenLabs made the narration voice in the film. It is an AI-generated voice.</li>
 <li>Scripture: YouVersion (Berean Standard Bible, Biblia Libre Versión Bíblica; version and copyright shown with each verse) and public-domain Reina-Valera 1909 and World English Bible. The model never writes a verse.</li></ul>
 <p class="muted">No real people or children appear. No agency imagery. Details: branding/IMAGES.md.</p>
 <aside class="notes">Photos are local, compressed files. Full source, author and license for each are in branding/IMAGES.md.</aside></section>
