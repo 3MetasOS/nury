@@ -1,5 +1,7 @@
 # How Nury was built
 
+Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. The planning notes and a small scripted scaffold existed before the event and are kept in `documents/prework` as reference. The first commit of the Nury repository is 2026-10-06 19:36 MDT, and everything in `code/` was written during the event.
+
 Nury is An AI Crisis Response Agent. This page is the technical documentation: how it works, how it is checked, how people add rules and crises, and what has to happen before it is a real product.
 
 Written 2026-10-07 by hack-ninja for the app route `/how-it-was-built`. Sources: `documents/FEATURES.md`, `documents/TECH_CLAIMS.md`, `documents/ARCHITECTURE.md`, `documents/product/ENGINE_WALKTHROUGH.md`, BUILD_LOG, and the code at commit `4cda91d` plus the uncommitted working tree. Every statement below was checked against a file in the repo, and the file is named.

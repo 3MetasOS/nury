@@ -113,6 +113,9 @@ Short: It reads each draft that passes our rules and answers fixed yes or no que
 Honest: It ran live on three scenarios and adds about a second to a package. The lines are 0.50, and 0.60 for the facts question, a line we set after seeing validation data. On 20 real draft pairs safe drafts scored 0.02 to 0.35 and unsafe ones 0.78 to 0.99, but that is a small sample, not a calibration study, and Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes. Live, in a grief case at 0.50, it rejected a safe triage three times (0.85 to 0.88) and the stage escalated, until we told it the crisis type. With the 0.60 line the case completed, but triage scored 0.59, one hundredth under the line. We have not measured the false-reject rate over many cases. Pastor edits are not checked. We do not know Jev's price. TypeSafe's retention and terms for this use are not reviewed. Because Jev also judges at test time, those judges are not independent of the gate.
 
 
+### Q14. "Was this built during the hackathon?"
+Yes. Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. One fact to say before anyone asks: the planning notes and a small scripted scaffold existed before the event. They are kept in `documents/prework` as reference. The first commit of the Nury repository is 2026-10-06 19:36 MDT, and everything in `code/` was written during the event. Do not claim the prework was written during the event. (Note for the speaker: some commit dates after the first were set by hand and are known to be wrong; the build log says so. Do not point judges at commit clock times beyond the first commit and the order of commits.)
+
 ## 6. Rules
 - Use only rows that TECH_CLAIMS.md marks VERIFIED. The judge rows are 35 to 40. Cut the rest.
 - Say "ten checks", "first pass" and "smoke test" where the file does. Do not round up.
