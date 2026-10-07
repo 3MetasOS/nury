@@ -129,6 +129,11 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:2vw}.two2 p{margin:0;font-size:clamp(13px,1.3vw,19px)}
 .never{display:flex;align-items:center;gap:1em;margin:.6vh 0;color:var(--muted);font:600 clamp(11px,1vw,14px)/1 var(--mono);letter-spacing:.14em;text-transform:uppercase}.never i{flex:1;height:2px;background:var(--amber)}
 @media (max-width:760px){.two2{grid-template-columns:1fr}}
+.docs{display:grid;grid-template-columns:1fr 1fr;gap:2.4vw;justify-items:center}.docs figure{margin:0;display:grid;gap:.8vh;justify-items:center}.docs img{max-height:50vh;width:auto;max-width:100%;border:1px solid var(--line);border-radius:6px;box-shadow:0 6px 24px rgba(13,16,21,.12)}.docs figcaption{font:600 clamp(11px,1vw,14px)/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.chk{list-style:none;padding:0;display:grid;gap:1.1vh}.chk li{display:flex;gap:.6em;align-items:flex-start;font-size:clamp(14px,1.5vw,22px);line-height:1.25}.mk{flex:none;width:1.1em;height:1.1em;margin-top:.12em;stroke:var(--ok);fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}.mk.o{stroke:var(--muted);stroke-width:2}
+.st2 h3{font-size:clamp(16px,1.8vw,26px)}
+.slide.impact .cols{grid-template-columns:1.3fr .7fr}@media (min-width:761px){.slide.impact .tbl th,.slide.impact .tbl td{white-space:nowrap;padding-right:1.4vw}}.slide.impact .num{font:600 clamp(15px,1.6vw,22px)/1.3 var(--sans);margin:.6vh 0 0}
+@media (max-width:760px){.docs{grid-template-columns:1fr}.docs img{max-height:34vh}}
 .entry .e-see{font-size:clamp(26px,3vw,44px);margin-top:1vh}
 .entry .e-see.hand{opacity:0;animation:rise .8s 5.6s ease-out forwards}
 .prov{font-size:clamp(12px,1.1vw,15px)!important;max-width:60ch}
@@ -184,7 +189,15 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <aside class="notes">LIGHT. 0:40 to 1:14. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside></section>
 
 <section class="slide" data-part="talk">
-<p class="lbl">05 · Built to grow</p>
+<p class="lbl">05 · What the family gets</p>
+<h2 class="big">What the family gets.</h2>
+<div class="docs"><figure><img src="images/family-copy-p1.png" alt="Page 1 of the family copy, in Spanish: Información para la familia, with the rights points and their source" width="680" height="880"><figcaption>Family copy, in Spanish</figcaption></figure>
+<figure><img src="images/pastor-copy-p2.png" alt="Page 2 of the pastor copy: What to do next, tonight, in seven steps, and a short pastoral message" width="680" height="880"><figcaption>Pastor copy: next steps and the pastoral message</figcaption></figure></div>
+<p class="strip"><b>A PDF the pastor can hand over.</b> The pastor reads and approves every line first. A made-up family.</p>
+<aside class="notes">LIGHT. 1:14 to 1:28 (about 14 s). Criterion: Impact and Concept. Say: "This is what the family gets: a copy in their own language, as a PDF the pastor can hand over. The pastor reads and approves every line first." Real pages from a recorded run on the sample intake (made-up family): page 1 of the Spanish family copy and page 2 of the pastor copy (next steps, pastoral message). PDF export needs Chrome or Chromium; without it the app gives a print view. The family copy cites its source on every point. Claim nothing about a family having received one: none has.</aside></section>
+
+<section class="slide" data-part="talk">
+<p class="lbl">06 · Built to grow</p>
 <h2 class="big">A new crisis is a new folder.</h2>
 <div class="two grow"><div class="col">
 <ol class="flow grow">
@@ -202,7 +215,7 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <aside class="notes">1:14 to 1:28, about 14 s, about 34 words. Say: "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. A rule is one small function and a test. A scenario is a file. Two crises run on it." EVIDENCE: the playbook loader (code/nury/playbook.py), code/tools/new_playbook.py scaffolds a crisis folder that cannot run until a person approves its sources, documents/product/ADD_A_RULE.md (function, registry, stage, one sentence for the rules page, test), and test_second_playbook_zero_engine_changes in code/tests/test_core.py (builds a second playbook from scratch and runs it through the same engine). Evaluations: scenarios and hostile intakes are YAML files; judge questions sit in one code file; candidate_test.py runs a proposed improvement against the same sets with a gate before a person decides. The correction loop is said once, on the next slide. Skills and the church network: do not mention unless switched on. Merged with the old Innovation slide.</aside></section>
 
 <section class="slide" data-part="talk">
-<p class="lbl">06 · How it is built</p>
+<p class="lbl">07 · How it is built</p>
 <h2 class="big">The model sees tokens, not names.</h2>
 <svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
 <title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks and a Jev classifier reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the layers that test Nury before release.</desc>
@@ -227,10 +240,8 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <p class="muted">20 named checks plus the safety floor. 5 Gloo calls for a full case. No send path.<span data-gated="scripture"> Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app.</span></p>
 <aside class="notes">1:28 to 1:50, about 17 s. Say: "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. Before release, a leak test ran 90 checks per playbook and found no names." Trace the line once, left to right; then point at the bottom strip: that is how we test it before release (Jev sees tokens only; if it is down the pastor is not blocked). Evidence: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
 
-
-
 <section class="slide" data-part="talk">
-<p class="lbl">07 · Use of AI</p>
+<p class="lbl">08 · Use of AI</p>
 <h2 class="big">Claude writes. Rules and Jev check. Other models reviewed it before release.</h2>
 <div class="band run"><p class="bl">While a pastor uses it <span>run time</span></p>
 <div class="wc"><span class="st">Claude Sonnet 4.6 writes <small>Gloo AI Studio</small></span><span class="ar" aria-hidden="true">→</span><span class="st">Named rules and safety floor</span><span class="ar" aria-hidden="true">→</span><span class="st">Jev, a second check</span><span class="ar" aria-hidden="true">→</span><span class="st">The pastor approves, edits or stops</span></div>
@@ -242,53 +253,46 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <aside class="notes">1:50 to 2:09, about 19 s. TWO TIMES, keep them apart. Say: "While a pastor uses it, Claude writes through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again before the pastor sees it. Before release, once and by hand, three models from other makers reviewed it, and we decide what to change." Top band is RUN TIME (while a pastor uses Nury): Claude writes through Gloo AI Studio, our named rules and the safety floor check, Jev checks again, the pastor decides at every gate. Bottom band is BEFORE RELEASE (once, by hand): our test layers (the plain-code judges, Jev as a typed judge, hostile intakes, human review) and the outside review by three models. None of the bottom band runs while a pastor uses the app. Numbers: a full case 34 to 50 s and 6 to 9 cents (run time; TECH_CLAIMS 30); leak test and judge test (test time; rows 16, 26, 28). They are real but small: ten judge checks, four live cases; say so. IF ASKED: Jev classifies each draft with yes or no questions. The pastor approves every stage. Our named checks and safety floor are tripwires, not proofs. The red team was not re-run on the final build. Backups: "Why two judges" and "Four evaluation layers" (press b). Hard questions: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide impact" data-part="talk">
-<p class="lbl">08 · Impact</p>
-<h2 class="big" style="font-size:clamp(24px,2.8vw,40px)">What we measured, and what broke.</h2>
+<p class="lbl">09 · Impact</p>
+<h2 class="big" style="font-size:clamp(26px,3.4vw,50px)">What we measured.</h2>
 <div class="cols"><div class="col"><table class="tbl tight">
-<tr><th></th><th>Before</th><th>Final</th></tr>
-<tr><th>Detention (20)</th><td>12 / 2 / 6</td><td>11 / 1 / 8</td></tr>
-<tr><th>Hospital (8)</th><td>5 / 2 / 1</td><td>5 / 0 / 3</td></tr>
-<tr><th>Hostile intakes (18)</th><td>6 / 11 / 1</td><td>13 / 1 / 4</td></tr>
-<tr><th>Cost per run</th><td>$0.07 and $0.09</td><td>$0.06 and $0.09</td></tr>
-<tr><th>Time per run</th><td>41 s and 50 s</td><td>34 s and 50 s</td></tr></table>
-<p class="muted">Judge pass / fail / awaiting a person. Not human verdicts. Synthetic families. Detention and hospital cost and time are means. Before: build c317050. Final: build 9bc5c6d.</p></div>
-<div class="col"><h3>What broke, and what changed</h3>
-<ul class="small res"><li>Hostile intakes: 11 of 18 stopped at triage. After two prompt fixes, none did on the final run (1 failed a check, 4 await a person).</li>
-<li>Tone: the score rose to about 3.0 to 3.3 after a warmth line, still well under the target of 4. The judge is noisy and no human has rated warmth.</li>
-<li>A close call: one checklist with "do not sign without a lawyer" escalated again. A person decides if that was right.</li>
-<li>Drafts can add a detail the caller did not give. Jev caught one of two in a02; the other was a sample in our check.</li></ul></div></div>
+<tr><th></th><th>Passed</th><th>Failed</th><th>Waiting for a person</th></tr>
+<tr><th>Immigration cases (20)</th><td>11</td><td>1</td><td>8</td></tr>
+<tr><th>Hospital cases (8)</th><td>5</td><td>0</td><td>3</td></tr>
+<tr><th>Hostile intakes (18)</th><td>13</td><td>1</td><td>4</td></tr></table>
+<p class="muted">Judge results, not human verdicts. We quote no pass rate. Made-up families only. Build 9bc5c6d.</p>
+<p class="num">A case costs about $0.06 to $0.09 and takes 34 to 50 seconds.</p></div>
+<div class="col"><h3>What broke, and what we did</h3>
+<p class="small">11 of 18 hostile intakes stopped at triage. We changed the triage prompt. None stopped there on the final build.</p></div></div>
 <p class="muted">The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.</p>
-<aside class="notes">2:09 to 2:22. Do not read the Jev disclosure aloud: it is on the slide. Speak the numbers and one failure only. Numbers are from the final scorecards (evaluations/results/build_comparison.md, build 9bc5c6d; before = c317050). They are judge results, not human review: "awaiting" means sent to a person and not decided; do NOT add them up into a pass rate. Say one failure plainly, for example: "The tone score rose after a warmth line and is still well under 4. The judge moves by up to 0.75 between identical runs, so we do not read much into it, and no human has rated warmth." Cost and time per run are means of 20 detention and 8 hospital runs. Hospital before-numbers ran on b47cc92 (c317050 plus rule descriptions only). Criterion: Impact and Execution (first tie-break).</aside></section>
+<aside class="notes">2:09 to 2:22. Criterion: Impact and Execution (first tie-break). FINAL numbers only, from evaluations/results/build_comparison.md (build 9bc5c6d; ALIGNMENT_AUDIT.md): immigration 11 / 1 / 8, hospital 5 / 0 / 3, hostile intakes 13 / 1 / 4. These are JUDGE results, not human verdicts. Do not add them into a pass rate. A case costs about 6 cents (immigration, mean of 20) to 9 cents (hospital, mean of 8) and takes about 34 to 50 seconds. Say one failure plainly; if asked for another: the tone judge sits near 3 of 5 against a target of 4, it moves up to 0.75 between identical runs, and no person has rated warmth. Do not read the Jev disclosure aloud: it is on the slide. All numbers synthetic.</aside></section>
 
 <section class="slide" data-part="talk">
-<p class="lbl">09 · Team</p>
-<h2 class="big">One founder. Five AI agents.</h2>
-<div class="cols"><div class="col"><h3>Built</h3>
-<p class="lead">Juan Peláez, 3Metas, with agents that coordinate over a messaging protocol. Every step is in the commit log.</p></div>
-<div class="col"><h3>Next</h3>
-<p class="lead">Real pastors. An immigration attorney to review our sources.</p>
-<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">none of that is done yet</span></p></div></div>
-<aside class="notes">2:22 to 2:32. Criterion: Presentation and Teamwork. Say: "Built by one founder and a small team of AI agents. Next: real pastors, and an attorney to review our sources." Claim nothing about pastors or attorneys having used it.</aside></section>
+<p class="lbl">10 · Where we stand</p>
+<h2 class="big" style="font-size:clamp(26px,3.4vw,50px)">One founder. Five AI agents.</h2>
+<p class="muted">Every step is in the commit log.</p>
+<div class="cols st2"><div class="col"><h3>Built</h3><ul class="chk"><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>Two live crises, kept as plain files</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>The app, with PDF export</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>Named rules and a safety floor, and Jev as a second check</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>Bible verses from a verified list, never written by the model</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>46 test scenarios, and an outside review that only advises</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>A learning loop, built and off by default</li><li><svg class="mk" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg>Replay mode, a command line and an MCP server</li></ul></div>
+<div class="col"><h3>Not done yet</h3><ul class="chk"><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>No real pastor has used it</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>No attorney or chaplain has reviewed our sources</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>No native Spanish review</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>Judge results not read by people yet (15 undecided)</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>No sign-in, no encryption at rest, no hosting</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>TypeSafe's terms not read</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>Nothing learned yet</li><li><svg class="mk o" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/></svg>Two more crises are only "coming soon"</li></ul></div></div>
+<aside class="notes">2:22 to 2:34. Criterion: Presentation and Teamwork, and honesty. Say: "Built by one founder and a small team of AI agents. Here is what is built, and here is what is not done yet." Every line is checked against documents/product/ALIGNMENT_AUDIT.md (46 scenarios, 15 undecided, replay, CLI and MCP shipped, learning loop built and off). The chaplain line is not in the audit: it follows from "no real pastor has used it". Claim nothing about pastors or attorneys having used it.</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
 <div class="two"><div class="col">
 <div class="brandrow"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nury lantern mark"><g fill="#b8680f" stroke="#b8680f"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></svg><h1>Nury</h1></div>
 <p class="tagline">An AI Crisis Response Agent.</p>
 <p class="muted">Legal information only. Not legal advice.</p>
+<p class="muted">Read more: the About page.</p>
 <p class="muted prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.</p></div>
 <img class="photo" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div>
-<aside class="notes">DAWN. 2:32 to 2:37. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here.</aside></section>
-
+<aside class="notes">DAWN. 2:32 to 2:37. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here. Add on the slide: Read more, the About page.</aside></section>
 
 <section class="slide center memorial nofoot" data-part="talk" data-gated="memorial">
 <div class="lantern small"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nury lantern mark"><g fill="#b8680f" stroke="#b8680f"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></svg></div>
 <div class="mtext">
-<p>In memory of Nury Peláez, 83.</p>
-<p>She served her church in the small things and the big ones,<br>always with a smile, always with Jesus in her heart.</p>
-<p>Nury is named for her.</p>
-<p>May it be ready to help, the way she always was.</p></div>
+<p>Nury is named for my aunt, Nury Peláez.</p>
+<p>She served her church for 83 years, in the small things and the big ones,<br>always with a smile, always with Jesus in her heart.</p>
+<p>She passed away a month ago. This is for her.</p></div>
 <div class="portrait" hidden></div>
-<aside class="notes">DAWN, then the memorial. Option 2 of presentation/MEMORIAL.md (recommended for the deck and the live pitch, about 16 s). Gated until Juan approves the text in writing. Juan chooses who reads it, if anyone; the film uses text only. Nothing else is on this slide. A hidden slot is ready for one portrait: Juan sends the photo tomorrow. Option 3 (8 s) is for the 90-second film.</aside></section>
+<aside class="notes">GATED: pending Juan's written approval. Do not show or publish as approved. These are Juan's words, Option 1 of presentation/MEMORIAL.md, verbatim. Nobody edits, shortens or humanizes them. The slide stays hidden (press g to preview) until Juan approves in writing. A hidden slot is ready for one portrait if Juan sends one.</aside></section>
 
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
 <section class="slide" data-part="backup">
