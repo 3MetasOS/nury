@@ -1,85 +1,83 @@
 # Nury: 3-minute pitch script (deck v2, with the technical story)
 
-Speaker: Juan Peláez (3Metas). Target about 2:53 with the memorial, 3:00 at most, at a calm pace. Slide numbers match `deck.html` (default view, gated items hidden). Press `n` for notes, `g` to reveal gated items for review, `b` to jump to backup.
+Speaker: Juan Peláez (3Metas). Target about 2:53 with the memorial, 3:00 at most, at a calm pace. Slides are named in the deck footer. Press `n` for notes, `g` for the slide index, `G` to show gated items, `b` for backup, `f` for clean mode.
 Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
 `[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
 Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
 Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from `documents/TECH_CLAIMS.md`, VERIFIED rows only.
 
-## Timing table (3-minute version; the arc is night, lantern, light, dawn)
-Revised 2026-10-07 after SCRIPT_REVIEW (hack-sensei approved). Slides 2 and 3 are one slide now. Speaking pace about 2.5 words a second.
-| Slide | Act | Content | Time | Length |
+## Timing table (13 talk slides at 2.5 words a second; the arc is night, lantern, light, dawn)
+Rebuilt 2026-10-07 for the 13-slide talk (The call, The name, One engine, The demo, What the family gets, Built to grow, How it is built, Use of AI, The evaluation system, Impact, Where we stand, Close, Memorial). Total 2:52 with the memorial, 2:36 without. Limit 2:55.
+| # | Slide (title in the deck) | Act | Time | Length |
 |---|---|---|---|---|
-| 1 | Night | 2:07 AM, the call (dark slide) | 0:00 to 0:14 | 14 s |
-| 2 | Lantern | This is Nury, and the name entry (one slide) | 0:14 to 0:26 | 12 s |
-| 3 | Light | Concept and product | 0:26 to 0:40 | 14 s |
-| 4 | Light | The demo: Eric's film plays, Juan speaks before and after | 0:40 to 1:14 | 34 s |
-| 5 | Light | Built to grow (the innovation slide, merged) | 1:14 to 1:28 | 14 s |
-| 6 | Light | How it is built | 1:28 to 1:50 | 22 s |
-| 7 | Light | Use of AI | 1:50 to 2:09 | 19 s |
-| 8 | Light | Impact and execution | 2:09 to 2:22 | 13 s |
-| 9 | Light | Teamwork, and what is next | 2:22 to 2:32 | 10 s |
-| 10 | Dawn | Close | 2:32 to 2:37 | 5 s |
-| 11 | Dawn | Memorial (option 2, about 16 s; gated until Juan approves) | 2:37 to 2:53 | 16 s |
-Total 2:53 with the memorial, 2:37 without. With memorial option 3 (8 s) the total is 2:45. Slide numbers match the rebuilt deck (default view, 11 talk slides).
+| 1 | The call | Night | 0:00 to 0:11 | 11 s |
+| 2 | The name | Lantern | 0:11 to 0:21 | 10 s |
+| 3 | One engine | Light | 0:21 to 0:33 | 12 s |
+| 4 | The demo (Eric's film) | Light | 0:33 to 1:07 | 34 s |
+| 5 | What the family gets | Light | 1:07 to 1:15 | 8 s |
+| 6 | Built to grow | Light | 1:15 to 1:25 | 10 s |
+| 7 | How it is built | Light | 1:25 to 1:39 | 14 s |
+| 8 | Use of AI | Light | 1:39 to 1:53 | 14 s |
+| 9 | The evaluation system | Light | 1:53 to 2:09 | 16 s |
+| 10 | Impact | Light | 2:09 to 2:22 | 13 s |
+| 11 | Where we stand | Light | 2:22 to 2:31 | 9 s |
+| 12 | Close | Dawn | 2:31 to 2:36 | 5 s |
+| 13 | Memorial (Option 1; gated until Juan approves in writing) | Dawn | 2:36 to 2:52 | 16 s |
 
-## 0:00 to 0:14  Slide 1 (night): the call  [90s]
-The slide is dark. Play the phone buzz if the room allows. [90s] It is 2:07 in the morning. A pastor's phone rings. A family. A husband was detained last evening. The pastor has no lawyer on the line, a phone, and a few minutes.
+## 1. The call (night)  [90s]
+The slide is dark. "It is 2:07 in the morning. A pastor's phone rings. A husband was detained last evening. The pastor has a phone and no lawyer on the line." (29 words, 11 s)
 
-## 0:14 to 0:26  Slide 2 (lantern): This is Nury, and the name entry  [90s]
-The slide turns from night to paper and the lantern lights. [90s] "This is Nury." Pause. The entry builds itself. [90s] "A given name from Arabic nur, light. An AI crisis response agent." Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
+## 2. The name (lantern)  [90s]
+The slide turns from paper to light. "This is Nury." Pause. The entry builds itself. Then "see also: lantern" appears on its own. Do not say her name here; it appears once, in the memorial.
 
-## 0:26 to 0:40  Slide 3 (light): concept and product
+## 3. One engine
 "Each crisis is its own workflow, with its own stages. Both live ones have a gate after each. Two more are coming soon. Nothing is sent without the pastor." (29 words, 12 s)
-[ONLY AFTER SENSEI CONFIRMS IN WRITING THAT THE VERSE BANK IS BUILT: The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture.]
-Do not say "the one you saw": the demo comes next. Say nothing more about the coming-soon cards.
+Say nothing more about the coming-soon cards.
 
-## 0:40 to 1:14  Slide 4 (light): the demo  [90s]
-DECIDED (hack-sensei, 2026-10-07): Eric's film plays and Juan stays silent while it plays. It is the reliable choice: no wifi, no credit, and Eric's voice stays consistent. Juan speaks before it starts and right after it ends.
-Play rows 5 to 7 of the film (the tool, the rights brief, the turn: 0:25 to 0:52 in table 1, about 27 s), with Eric's lines. Do not run the live app on stage.
-- Juan BEFORE (about 3 s): "Here is one call, start to finish."
-- The film plays (27 s). Juan says nothing.
-- Juan AFTER (about 4 s): "A draft that failed was held back. Nury never sends. The pastor does."
-The selector screenshot is the first frame the audience sees. If the film fails to play, Juan says the three sentences of the old demo text (types, five stages with a gate after each, rejected draft regenerated) and shows the screenshots; no live app.
+## 4. The demo  [90s]
+Eric's film plays and Juan stays silent while it plays (rows 5 to 7, about 27 s). No wifi, no credit, same voice. Do not run the live app on stage.
+- Before (3 s): "Here is one call, start to finish."
+- The film plays. Juan says nothing.
+- After (4 s): "A draft that failed was held back. Nury never sends. The pastor does."
+The strip of four real app screens is the first thing the audience sees. If the film fails, show the four screens and say the same three lines.
 
-## 1:14 to 1:28  Slide 5 (light): built to grow  [90s]
-EXTENSIBILITY IS A HEADLINE (Juan). One dedicated beat, about 14 s, 37 words at 2.5 words a second: "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. A rule is one small function and a test. A scenario is a file. Two crises run on it."
-On screen: three beats (add a crisis, add a rule, add an evaluation) and the playbook folder as a file tree. This replaces the old Innovation slide.
-Evidence for the Q and A (TECH_STORY Q17): the playbook loader (`code/nury/playbook.py`), `code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md`, and the test `test_second_playbook_zero_engine_changes` (builds a second playbook from scratch and runs it through the same engine).
-The correction loop is said once, on the next slide. Skills and the church network: say nothing unless Sensei confirms in writing.
+## 5. What the family gets
+"This is what the family gets: a copy in their own language, as a PDF the pastor can hand over." (21 words, 8 s) Real pages from a recorded run on the sample intake. Do not say a family has received one.
 
-## 1:28 to 1:50  Slide 6 (light): how it is built  [90s]
-Trace the line once. [90s] "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. Before release, a leak test ran 90 checks per playbook and found no names." (42 words, 17 s)
-Under the diagram: twenty named checks plus the safety floor, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
+## 6. Built to grow  [90s]
+"Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. Rules and tests are files too." (25 words, 10 s)
+Q and A: TECH_STORY Q17; `code/nury/playbook.py`; `documents/product/ADD_A_RULE.md`.
 
-## 1:50 to 2:09  Slide 7 (light): use of AI, and the evaluation system
-[47 words, about 19 s; two times: run time, then before release] While a pastor uses it, Claude writes through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again before the pastor sees it. Before release, once and by hand, three models from other makers reviewed it, and we decide what to change.
-If asked for more, go to the backup slide "The evaluation system in detail" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. In validation all three red-team reviewers caught 8 of 8 injected problems and also flagged safe text, so it advises. The panel was not re-run on the final build. Jev is from TypeSafe, not ours: say "used at run time and at test time, and disclosed as third-party technology".
+## 7. How it is built  [90s]
+"The pastor types. Names become tokens before anything leaves Nury. Only tokens reach Gloo AI Studio. The pastor decides every stage. A leak test ran 90 checks per playbook and found no names." (34 words, 14 s)
 
-## 2:09 to 2:22  Slide 8 (light): impact and execution
-Do NOT read the disclosure aloud: it is on the slide. Speak only the numbers and one failure (about 30 words).
-Say (about 30 words): "We judged 46 synthetic scenarios: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents and takes 34 to 50 seconds. The tone score is still well under the target, and no human has rated warmth."
-Source: evaluations/results/build_comparison.md, build 9bc5c6d. These are judge results, not human review. Do not add the three counts into one pass rate.
-Fallback not needed: the final scorecards landed (2026-10-07 03:56).
-Say one failure, plainly: the tone score. If asked for another: a checklist once named a detainee locator that was not in our vetted sources; we fixed the prompt and the check.
-On the slide, not spoken: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
+## 8. Use of AI
+"While a pastor uses it, Claude writes through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, checks it again. Before release, other models reviewed it." (29 words, 12 s) Keep the two times apart: run time, then before release.
 
-## 2:22 to 2:32  Slide 9 (light): teamwork, and what is next
-"Built by one founder and a small team of AI agents. Next: real pastors, and an attorney to review our sources." (20 words, 8 s) Not done yet.
+## 9. The evaluation system
+"We built two evaluation systems. One runs before release: we test, judge, compare, and a person decides what ships. One runs on every draft: rules, then Jev, then up to three rewrites. Jev works in both." (38 words, 15 s)
+For more, go to the backup "The evaluation system in detail" (press `b`).
 
-## 2:32 to 2:37  Slide 10 (dawn): close  [90s]
-[90s] "The next call will come. Nury is there when the pastor picks up."
+## 10. Impact
+Do not read the disclosure aloud: it is on the slide. "We judged 46 made-up cases: 29 pass, 2 fail, 15 wait for a person. A case costs 6 to 9 cents. Tone is still under target, and no person has rated warmth." (36 words, 14 s; trim "no person has rated warmth" if short.)
+Source: `evaluations/results/build_comparison.md`, build 9bc5c6d. Judge results, not human verdicts. Do not add the counts into a pass rate.
+One failure, plainly: 11 of 18 hostile intakes stopped at triage; we changed the triage prompt.
 
-## 2:37 to 2:53  Slide 11 (dawn): the memorial  [90s]  [ONLY AFTER JUAN APPROVES THE TEXT IN WRITING]
-Option 2 of `MEMORIAL.md` (about 16 s, recommended for the deck and the live pitch). The words are on the slide; Juan chooses whether anyone reads them. Nothing else is on screen. A hidden slot is ready for one portrait (Juan sends it tomorrow). Until Juan approves, the slide is hidden (press `g` to preview) and the pitch ends on slide 11 at about 2:37.
-Do not edit, shorten or humanize the text. Do not add a photo unless Juan provides one.
+## 11. Where we stand
+"One founder and five AI agents built it. Not done yet: no pastor has used it, and no attorney has reviewed our sources." (23 words, 9 s)
+
+## 12. Close (dawn)  [90s]
+"The next call will come. Nury is there when the pastor picks up." (5 s) The slide ends with "Read more: the About page."
+
+## 13. Memorial (dawn)  [90s]  [ONLY AFTER JUAN APPROVES THE TEXT IN WRITING]
+Option 1 of `MEMORIAL.md`, Juan's words, verbatim (about 16 s). The words are on the slide; Juan chooses whether anyone reads them. The slide is hidden until approval (press `G` to preview). Do not edit, shorten or humanize the text. Do not add a photo unless Juan provides one.
 
 ## 90-second cut
-Slides 1, 2, 4, 6, 10 and the memorial: about 10 + 8 + 34 + 12 + 5 + 16 = 85 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
+Slides 1, 2, 4, 7, 12 and the memorial: about 11 + 10 + 34 + 14 + 5 + 16 = 90 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
 
 ## Backup slides (do not speak; use for questions). Press `b`.
-What broke and what changed. Four evaluation layers, with what each cannot do. Why two judges. Privacy that is tested. Informed by case-management practice (not in the talk). How we differ. Credits.
-Gated, hidden until Sensei confirms in writing: the case file, and "listed does not mean recommended" (church network and official list).
+What broke and what changed. Four evaluation layers, with what each cannot do. The evaluation system in detail. Privacy that is tested. Informed by case-management practice (not in the talk). Cases, export and PDF. Where Nury fits. Credits.
+Gated, hidden until Sensei confirms in writing: "listed does not mean recommended" (church network and official list), and the memorial.
 For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, how we know the guardrails work, hallucinated links, personal information, and what Jev adds.
 
 ## Rules for the speaker
