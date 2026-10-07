@@ -86,7 +86,7 @@ export const buildTimeline = (d: Data) => {
 };
 
 // ---- fonts ----
-const useFonts = () => {
+export const useFonts = () => {
   const [h] = useState(() => delayRender('fonts'));
   useEffect(() => {
     const l = document.createElement('link'); l.rel = 'stylesheet';
@@ -171,23 +171,22 @@ const Lock: React.FC = () => {
 // Opener (5 s, no VO): the lantern lights, "This is Nury." (about 1.2 s), then the dictionary entry (about 3.5 s). Text approved by Juan via hack-sensei.
 const Intro: React.FC = () => {
   const f = useCurrentFrame();
-  const lit = interpolate(f, [4, 26], [0.18, 1], {easing: ease, extrapolateRight: 'clamp'});
-  const t1 = interpolate(f, [10, 24, 34, 44], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const e = interpolate(f, [38, 56], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
-  const lift = interpolate(f, [34, 56], [0, -310], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const t = f / FPS;
+  const fadeIn = (a: number, b: number) => interpolate(t, [a, b], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const lit = interpolate(t, [0.1, 1.0], [0.2, 1], {easing: ease, extrapolateRight: 'clamp'});
+  const cap = interpolate(t, [0.2, 0.6, 1.2, 1.5], [0, 1, 1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
+  const move = interpolate(t, [1.2, 1.7], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
     <AbsoluteFill style={{alignItems: 'center', justifyContent: 'center', textAlign: 'center'}}>
-      <Img src={staticFile('logo-mark-paper.svg')} style={{position: 'absolute', top: 440 + lift, width: 150, height: 150, opacity: lit}} />
-      <div style={{position: 'absolute', top: 640, fontFamily: serif, fontWeight: 600, fontSize: 120, color: C.text, opacity: t1}}>This is Nury.</div>
-      <div style={{position: 'absolute', top: 360, left: 0, right: 0, display: 'grid', justifyItems: 'center', gap: 12, opacity: e}}>
-        <div style={{display: 'flex', alignItems: 'baseline', gap: 28}}>
-          <span style={{fontFamily: serif, fontWeight: 600, fontSize: 110, color: C.text}}>Nury</span>
-          <span style={{fontFamily: sans, fontSize: 38, color: C.muted}}>/NOO-ree/</span>
+      <Img src={staticFile('logo-mark-paper.svg')} style={{position: 'absolute', left: 960 - 75 - move * 360, top: 465 - move * 220, width: 150 - move * 70, height: 150 - move * 70, opacity: lit}} />
+      <div style={{position: 'absolute', top: 640, fontFamily: serif, fontWeight: 600, fontSize: 120, color: C.text, opacity: cap}}>This is Nury.</div>
+      <div style={{position: 'absolute', top: 330, left: 0, right: 0, display: 'grid', justifyItems: 'center', gap: 16}}>
+        <div style={{display: 'flex', alignItems: 'baseline', gap: 28, opacity: fadeIn(1.5, 2.2)}}>
+          <span style={{fontFamily: serif, fontWeight: 600, fontSize: 120, color: C.text}}>Nury</span>
+          <span style={{fontFamily: sans, fontSize: 38, color: C.muted}}>/NOO-ree/ <i style={{fontFamily: serif}}>proper noun</i></span>
         </div>
-        <div style={{fontFamily: serif, fontStyle: 'italic', fontSize: 30, color: C.muted}}>proper noun</div>
-        <div style={{fontFamily: serif, fontSize: 40, color: C.text, marginTop: 14, maxWidth: 1200, textWrap: 'balance' as any}}>1. A given name from Arabic <i>nur</i>, “light”.</div>
-        <div style={{fontFamily: serif, fontSize: 40, color: C.text, maxWidth: 1200, textWrap: 'balance' as any}}>2. The crisis-response agent for solo pastors.</div>
-        <div style={{fontFamily: sans, fontSize: 24, color: C.muted, marginTop: 10}}>see also: lantern</div>
+        <div style={{fontFamily: serif, fontSize: 44, color: C.text, marginTop: 22, opacity: fadeIn(2.2, 2.7)}}>1. A given name from Arabic <i>nūr</i>, “light”.</div>
+        <div style={{fontFamily: serif, fontSize: 44, color: C.text, opacity: fadeIn(3.6, 4.1)}}>2. The crisis-response agent for solo pastors.</div>
       </div>
     </AbsoluteFill>
   );

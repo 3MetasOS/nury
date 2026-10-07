@@ -1,6 +1,7 @@
 import React from 'react';
 import {Composition, staticFile} from 'remotion';
 import {Nury, buildTimeline, FPS, type Data} from './Nury';
+import {Night, Lantern, Dawn, Clock} from './LookDev';
 
 const load = async (): Promise<Data> => {
   const j = (p: string) => fetch(staticFile(p)).then((r) => r.json());
@@ -13,6 +14,11 @@ const load = async (): Promise<Data> => {
 };
 
 export const Root: React.FC = () => (
+  <>
+  <Composition id="LookNight" component={Night} width={1920} height={1080} fps={FPS} durationInFrames={30} />
+  <Composition id="LookLantern" component={Lantern} width={1920} height={1080} fps={FPS} durationInFrames={30} />
+  <Composition id="LookDawn" component={Dawn} width={1920} height={1080} fps={FPS} durationInFrames={30} />
+  <Composition id="LookClock" component={Clock} width={1920} height={1080} fps={FPS} durationInFrames={30} />
   <Composition
     id="Nury90"
     component={Nury}
@@ -28,4 +34,5 @@ export const Root: React.FC = () => (
       return {durationInFrames: Math.round(t.total * FPS), props: {data}};
     }}
   />
+  </>
 );
