@@ -13,8 +13,6 @@ HERE = Path(__file__).resolve().parent
 W, H = (int(sys.argv[1]), int(sys.argv[2])) if len(sys.argv) > 2 else (1280, 720)
 os.environ["AGENT_BROWSER_SESSION"] = "nury-anim-test"
 PORT = 18152
-TRACK = os.environ.get("TRACK", "full")
-Q = "?track=short&gated" if TRACK == "short" else "?gated"
 T = Path(tempfile.mkdtemp(prefix="nury_anim_"))
 
 
@@ -41,16 +39,16 @@ bad = 0
 try:
     ab("set", "viewport", str(W), str(H), "1")
     ab("open", "about:blank")
-    ab("open", f"http://127.0.0.1:{PORT}/deck.html{Q}")
+    ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated")
     ab("wait", "1500")
     # ---- keys: no click needed, no scroll, one press = one step, a flood of key events = one step, a click = one step, h shows the help
     def lab(): return ev("document.getElementById('lab').textContent")
     def key(k, shift="false"): ev(f"window.dispatchEvent(new KeyboardEvent('keydown',{{key:'{k}',shiftKey:{shift},bubbles:true,cancelable:true}}));1"); ab("wait", "250")
     keyres = []
-    keyres.append(("Space with no click is step 1 of slide 1", (key(" "), lab())[1].startswith(("1 / ", "short 1 / ")) and "step 1/4" in lab()))
+    keyres.append(("Space with no click is step 1 of slide 1", (key(" "), lab())[1].startswith("1 / ") and "step 1/4" in lab()))
     ev("(()=>{for(let n=0;n<100;n++)window.dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true,cancelable:true}));return 1})()"); ab("wait", "300")
     keyres.append(("a flood of 100 Space events moves at most one step", "step 2/4" in lab() or "step 1/4" in lab()))
-    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html{Q}"); ab("wait", "1200")
+    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated"); ab("wait", "1200")
     ev("document.body.dispatchEvent(new MouseEvent('click',{clientX:innerWidth-10,clientY:300,bubbles:true}));1"); ab("wait", "300")
     c1 = lab()
     key("ArrowRight"); c2 = lab()
@@ -64,7 +62,7 @@ try:
     for nm, ok in keyres:
         bad += 0 if ok else 1
         print(("PASS" if ok else "FAIL"), "keys:", nm)
-    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html{Q}"); ab("wait", "1200")
+    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated"); ab("wait", "1200")
     names = ev("JSON.stringify(deck.vis().map(s=>s.dataset.name))")
     names = json.loads(names) if isinstance(names, str) else names
     total = 0
