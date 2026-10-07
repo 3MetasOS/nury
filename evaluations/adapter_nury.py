@@ -68,6 +68,11 @@ def _run(sc, t0, pbid, ids, fi, kw):
     # and the gate wrapper that protects a name the pastor adds in an edit.
     state, audit = CaseState(sc["intake"], sc["output_language"]), AuditLog()
     client = make_client(intake=sc["intake"])
+    try:   # keep every vetted phone, link and email of the run intact (the family's own numbers are still tokenized)
+        if hasattr(client, "allow_playbook"):
+            client.allow_playbook(get_playbook(pbid))
+    except Exception:
+        pass
     try:   # keep the church contacts' phones and links readable in the model context, as INTERFACE.md says
         from nury import network as net
         if hasattr(client, "allow_network"):

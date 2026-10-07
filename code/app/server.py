@@ -140,6 +140,11 @@ class Session:
         self.revision = revision      # {case_id, step, result, note} when this run revises a saved case
         # One privacy client per session: its token map lives here. The pastor's confirmed list is the list that counts.
         self.client = make_client(protected=protected) if protected is not None else make_client(intake=intake)
+        try:   # every vetted phone, link and email of this run stays intact; the family's own numbers are still tokenized
+            if hasattr(self.client, "allow_playbook"):
+                self.client.allow_playbook(self.pb)
+        except Exception:
+            pass
         try:   # church contacts keep their phones and links readable in the model context (INTERFACE.md, Church network)
             from nury import network as net
             if hasattr(self.client, "allow_network"):
