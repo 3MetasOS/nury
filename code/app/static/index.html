@@ -154,7 +154,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 /* home */
 .home{display:flex;flex-direction:column;gap:24px}
 .colA,.colB{display:contents}
-.respond{order:0;display:flex;flex-direction:column;gap:10px;padding:16px;background:radial-gradient(120% 140% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
+.respond{order:0;display:flex;flex-direction:column;gap:0;padding:16px;background:radial-gradient(120% 140% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
 .respond .cta{width:100%}.respond p{margin:0;color:var(--muted);font-size:15px;line-height:1.4}
 .respond .cta.primary{animation:ring 2.5s ease-out infinite}
 .respond .cta.primary:hover,.respond .cta.primary:focus-visible{animation:none}
@@ -310,7 +310,6 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <section class="respond nvcard" id="respond" aria-labelledby="h-home">
         <h1 id="h-home" class="vh" tabindex="-1">Nury home</h1>
         <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
-        <p id="hero-sub" class="muted">Start a response. Nury drafts, you decide.</p>
       </section>
       <section class="start" id="start" aria-labelledby="h-start">
         <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
