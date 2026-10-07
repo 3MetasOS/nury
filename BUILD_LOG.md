@@ -29,3 +29,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - hack-video: `video/STORYBOARD.md`, 10 shots, 90 s, draft voiceover about 105 words. Tooling: ffmpeg, Chrome capture at 390x844, no paid editor. The unsafe draft text is never shown on screen. Commit 032b777.
 - Decision: "max 3 tries" means 3 attempts total (first draft + 2 regenerations), then escalate. Matches PRODUCT.md and the description.
 - Open: who reads the voiceover (Juan or TTS), needed by Oct 7 17:00. Seeded forced rejection requested from hack-jedi for the demo.
+
+## 5. 2026-10-06 19:46 MDT — Scope and demo decisions (Juan delegated, hack-sensei decided)
+
+- Product stays Nury as locked: five stages, approval gate after each, guardrail loop (3 attempts total, then escalate), vetted sources, no send path. No pivot with under 28 hours left.
+- One flagship crisis only: a detention. No second crisis type unless the harness is finished early.
+- Demo: one shared family and intake (`presentation/SHARED_DEMO.md`), one forced rejection on the Rights brief.
+- Voiceover: TTS first; Juan's recording replaces it only if it arrives before Oct 7 17:00 MDT.
+- 90 s video plays inside the 3-minute pitch. No separate 3-minute video.
+- Skip the MCP endpoint. Keep the honest "what didn't work" section and the failure-mode log; judges weigh them.
