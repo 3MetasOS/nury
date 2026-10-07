@@ -41,6 +41,28 @@ try:
     ab("open", "about:blank")
     ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated")
     ab("wait", "1500")
+    # ---- keys: no click needed, no scroll, one press = one step, a flood of key events = one step, a click = one step, h shows the help
+    def lab(): return ev("document.getElementById('lab').textContent")
+    def key(k, shift="false"): ev(f"window.dispatchEvent(new KeyboardEvent('keydown',{{key:'{k}',shiftKey:{shift},bubbles:true,cancelable:true}}));1"); ab("wait", "250")
+    keyres = []
+    keyres.append(("Space with no click is step 1 of slide 1", (key(" "), lab())[1].startswith("1 / 24") and "step 1/4" in lab()))
+    ev("(()=>{for(let n=0;n<100;n++)window.dispatchEvent(new KeyboardEvent('keydown',{key:' ',bubbles:true,cancelable:true}));return 1})()"); ab("wait", "300")
+    keyres.append(("a flood of 100 Space events moves at most one step", "step 2/4" in lab() or "step 1/4" in lab()))
+    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated"); ab("wait", "1200")
+    ev("document.body.dispatchEvent(new MouseEvent('click',{clientX:innerWidth-10,clientY:300,bubbles:true}));1"); ab("wait", "300")
+    c1 = lab()
+    key("ArrowRight"); c2 = lab()
+    keyres.append(("a click is one step, then ArrowRight one more step: no skipping", "step 1/4" in c1 and "step 2/4" in c2))
+    key("ArrowLeft")
+    keyres.append(("Left goes back one step", "step 1/4" in lab()))
+    key("h")
+    keyres.append(("h shows the one-line help", ev("(()=>{const h=document.getElementById('help');return !h.hidden&&/Space or right arrow: next step/.test(h.textContent)})()") is True))
+    key("h")
+    keyres.append(("the page cannot scroll (overflow hidden)", ev("getComputedStyle(document.documentElement).overflow==='hidden'&&scrollY===0") is True))
+    for nm, ok in keyres:
+        bad += 0 if ok else 1
+        print(("PASS" if ok else "FAIL"), "keys:", nm)
+    ab("open", "about:blank"); ab("open", f"http://127.0.0.1:{PORT}/deck.html?gated"); ab("wait", "1200")
     names = ev("JSON.stringify(deck.vis().map(s=>s.dataset.name))")
     names = json.loads(names) if isinstance(names, str) else names
     total = 0

@@ -297,6 +297,8 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 .v2 .shot2{display:block;width:100%;max-height:50vh;object-fit:contain;border-radius:12px}
 @media (max-width:760px){.v2 .stats,.v2 .pairs,.v2 .cred{grid-template-columns:1fr}}
 
+#help{position:fixed;left:50%;bottom:7vh;transform:translateX(-50%);z-index:30;background:#0d1015;color:#f7f3ea;font:500 clamp(14px,1.3vw,22px)/1.3 var(--sans);padding:.7em 1.2em;border-radius:99px;max-width:92vw;text-align:center}#help[hidden]{display:none}
+@media (min-width:761px){html,body{overflow:hidden}}@media print{html,body{overflow:visible}#help{display:none}}
 /* ===== build steps (engine in the script below): hidden until revealed; opacity only, so a slide never changes layout ===== */
 .pend{opacity:0!important}.pend[data-fx="light"]{opacity:.26!important}
 .slide.memorial.on{animation:slowfade 1.2s ease-out}@keyframes slowfade{from{opacity:0}to{opacity:1}}
@@ -519,6 +521,7 @@ body.clean .foot{visibility:hidden}@media print{#idx{display:none!important}}
 <div class="foot"><span class="fm"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nury lantern mark"><g fill="#b8680f" stroke="#b8680f"><path fill="none" stroke-width="5.6" stroke-linejoin="round" d="M19 26 H45 L42.4 49 H21.6 Z"/><path fill="none" stroke-width="5.6" stroke-linecap="round" d="M14.4 26 H49.6 M16.4 54.2 H47.6"/><circle cx="32" cy="12" r="5.2" fill="none" stroke-width="3.6"/><path fill="none" stroke-width="3.6" d="M32 17.2 V23"/><path stroke="none" d="M32 31.2 C35.4 35 36.8 37.6 36.8 40.4 A4.8 4.8 0 0 1 27.2 40.4 C27.2 37.6 28.6 35 32 31.2 Z"/></g></svg>Nury</span><span id="lab"></span><span id="n"></span></div>
 <div id="idx" hidden role="dialog" aria-label="Slide index"><div class="idxbox"><p class="idxh">Slides <span>(g to close; G gated; Space or Right: next step, then next slide; Left: back one step; a: AUTO; n: notes; f: hide footer)</span></p><ol id="idxl"></ol></div></div>
 <div class="notes" id="notes"></div>
+<div id="help" hidden role="status">Space or right arrow: next step. Left: back. g: index. a: auto. f: clean. n: notes.</div>
 <script>
 const all=[...document.querySelectorAll('.slide')];let i=0;
 const vis=()=>all.filter(s=>document.body.classList.contains('show-gated')||!s.hasAttribute('data-gated'));
@@ -536,15 +539,24 @@ function startIndex(){const h=(location.hash||'').slice(1);if(!h)return 0;const 
 function start(){const h=(location.hash||'').slice(1);go(startIndex(),h?'final':'fresh')}
 function idxRender(){const S=vis(),l=document.getElementById('idxl');l.replaceChildren();S.forEach((s,k)=>{const li=document.createElement('li');const b=document.createElement('button');b.type='button';b.textContent=(k+1)+' · '+(s.hasAttribute('data-gated')?'G · ':'')+title(s)+(s.dataset.part==='backup'?'  (backup)':'');if(k===i)b.className='cur';b.onclick=()=>{document.getElementById('idx').hidden=true;go(k)};li.append(b);l.append(li)})}
 function idxToggle(){const x=document.getElementById('idx');x.hidden=!x.hidden;if(!x.hidden)idxRender()}
-addEventListener('keydown',e=>{const k=e.key;
- if(k==='ArrowRight'||k===' ')anim.next();else if(k==='ArrowLeft')anim.prev();else if(k==='PageDown')go(i+1);else if(k==='PageUp')go(i-1);
+/* keys: captured at window level, so the browser never scrolls or jumps; a repeat or a flood of key events inside 140 ms is one press */
+let lastKey=0;const NAV=[' ','ArrowRight','ArrowLeft','ArrowUp','ArrowDown','PageDown','PageUp','Home','End'];
+const typing=t=>t&&t.closest&&t.closest('input,textarea,select,[contenteditable="true"]');
+function helpToggle(){const h=document.getElementById('help');h.hidden=!h.hidden}
+addEventListener('keydown',e=>{if(e.ctrlKey||e.metaKey||e.altKey||typing(e.target))return;const k=e.key,nav=NAV.includes(k);
+ if(nav)e.preventDefault();
+ const now=performance.now(),press=nav||'aAnNgGfFbBhH'.includes(k);if(press){if(e.repeat||now-lastKey<140)return;lastKey=now}
+ if(k===' '&&e.shiftKey)anim.prev();
+ else if(k==='ArrowRight'||k==='ArrowDown'||k===' '||k==='PageDown')anim.next();else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp')anim.prev();
  else if(k==='a'||k==='A')anim.toggleAuto();
  else if(k==='n'||k==='N')document.body.classList.toggle('show-notes');
+ else if(k==='h'||k==='H')helpToggle();
  else if(k==='g')idxToggle();else if(k==='G'){document.body.classList.toggle('show-gated');go(Math.min(i,vis().length-1))}
- else if(k==='f'||k==='F')document.body.classList.toggle('clean');else if(k==='Escape'){document.getElementById('idx').hidden=true}
+ else if(k==='f'||k==='F')document.body.classList.toggle('clean');else if(k==='Escape'){document.getElementById('idx').hidden=true;document.getElementById('help').hidden=true}
  else if(k==='b'||k==='B'){const S=vis();go(S.findIndex(s=>s.dataset.part==='backup'))}
- else if(k==='Home')go(0);else if(k==='End')go(vis().length-1)});
-addEventListener('click',e=>{if(e.target.closest('a,button,#idx'))return;e.clientX>innerWidth/2?anim.next():anim.prev()});
+ else if(k==='Home')go(0);else if(k==='End')go(vis().length-1)},true);
+addEventListener('click',e=>{if(e.target.closest('a,button,#idx,#help'))return;const now=performance.now();if(now-lastKey<140)return;lastKey=now;e.clientX>innerWidth/2?anim.next():anim.prev()});
+document.body.setAttribute('tabindex','-1');try{document.body.focus({preventScroll:true})}catch(x){}
 /* ===== build steps: Web Animations API, no libraries, works from file:// =====
    Each slide has steps; data-s=N marks what step N reveals. Space or Right = next step, then next slide; Left = back one step;
    'a' = AUTO (all steps play 400 ms apart). Reduced motion, ?clean=1 and print show the final state. Animations use opacity,
@@ -579,7 +591,7 @@ const FX={
  growY:(e,o)=>A(e,[{opacity:1,transform:'scaleY(0)'},{opacity:1,transform:'scaleY(1)'}],Object.assign({duration:220},o)),
  fillpop:(e,o)=>A(e,[{opacity:0,transform:'scale(.2)'},{opacity:1,transform:'none'}],Object.assign({duration:380},o)),
  nodearrow:(e,o)=>[FX.pop(e,o),e.animate([{opacity:0,transform:'translateY(-50%) rotate(45deg) scale(.2)'},{opacity:1,transform:'translateY(-50%) rotate(45deg)'}],{pseudoElement:'::after',duration:320,delay:D(o)+300,easing:EASE,fill:'backwards'})],
- dot:(e,o)=>{const w=e.parentElement.clientWidth;return A(e,[{opacity:0,transform:'translateX(0)'},{opacity:1,transform:'translateX('+w*.04+'px)',offset:.08},{opacity:1,transform:'translateX('+w*.96+'px)',offset:.92},{opacity:0,transform:'translateX('+w+'px)'}],Object.assign({duration:1500,easing:'linear'},o))},
+ dot:(e,o)=>{const n=e.parentElement.querySelectorAll('.nd2'),c=x=>x?x.offsetLeft+x.offsetWidth/2:0,x1=c(n[0]),x3=c(n[2]);return A(e,[{opacity:0,transform:'translateX('+x1+'px)'},{opacity:1,transform:'translateX('+(x1+(x3-x1)*.06)+'px)',offset:.1},{opacity:1,transform:'translateX('+(x3-8)+'px)',offset:.9},{opacity:0,transform:'translateX('+x3+'px)'}],Object.assign({duration:1100,easing:'linear'},o))},
  prog:(e,o)=>A(e,[{opacity:1,transform:'scaleX(0)',transformOrigin:'left'},{opacity:1,transform:'scaleX(1)',transformOrigin:'left',offset:.82},{opacity:0,transform:'scaleX(1)',transformOrigin:'left'}],Object.assign({duration:1100,easing:'linear'},o)),
  bridge:(e,o)=>[A(e,[{opacity:0,transform:'scale(.94)'},{opacity:1,transform:'scale(1.07)',offset:.55},{opacity:1,transform:'none'}],Object.assign({duration:600},o)),ring(e,Object.assign({},o,{delay:D(o)+150,fill:'none'}))]
 };
@@ -600,13 +612,13 @@ const CHOREO={
  'one-engine':[R(1,'.eng .frame','chooser'),R(2,'.stages','rise')],
  'the-demo':[R(1,'.demo2 figure:nth-child(1) .frame','rise'),R(2,'.pulse','ring')],
  'what-the-family-gets':[R(1,'.pages figure:nth-child(1) .frame','slideU'),R(2,'.pages figure:nth-child(2) .frame','slideU'),R(3,'.pages figcaption','fade',110)],
- 'built-to-grow':[R(1,'.tree2 .rt','fade'),R(1,'.tree2 .br','wipeDown',110,200),R(2,'.tree2 .fn, .tree2 .ds','fade',90),R(3,'.tags .tg','pop',130)],
- 'how-it-is-built':[R(1,'.nodes .nd2','nodearrow',150),R(2,'.dotp','dot'),R(2,'.hand','hand',0,500)],
- 'use-of-ai':[R(1,'.lanes2 .ln2:nth-child(1) .nd2','light',140),R(2,'.lanes2 .ln2:nth-child(2)','fade'),R(3,'.lanes2 .ln2:nth-child(2) .nd2','light',140)],
- 'the-evaluation-system':[R(1,'.lanes2 .ln2:nth-child(1) .nd2','light',130),R(1,'.prog','prog'),R(2,'.bridge','bridge'),R(3,'.lanes2 .ln2:nth-child(3) .nd2','light',130),R(3,'[data-count]','count',0,200)],
+ 'built-to-grow':[R(1,'.tree2 .rt','fade'),R(1,'.tree2 .br','wipeDown',110,200),R(1,'.tree2 .fn, .tree2 .ds','fade',90,700),R(2,'.tags .tg:nth-child(1)','pop'),R(3,'.tags .tg:nth-child(n+2)','pop',130)],
+ 'how-it-is-built':[R(1,'.nodes .nd2:nth-child(-n+2)','nodearrow',150),R(1,'.hand','hand',0,700),R(2,'.nodes .nd2:nth-child(3)','nodearrow'),R(2,'.dotp','dot'),R(3,'.nodes .nd2:nth-child(n+4)','nodearrow',150)],
+ 'use-of-ai':[R(1,'.lanes2 .ln2:nth-child(1) .nd2:nth-child(1)','light'),R(2,'.lanes2 .ln2:nth-child(1) .nd2:nth-child(2)','light'),R(3,'.lanes2 .ln2:nth-child(1) .nd2:nth-child(n+3)','light',140),R(4,'.lanes2 .ln2:nth-child(2)','fade'),R(4,'.lanes2 .ln2:nth-child(2) .nd2','light',140,250)],
+ 'the-evaluation-system':[R(1,'.lanes2 .ln2:nth-child(1) .nd2','light',130),R(1,'.prog','prog'),R(2,'.lanes2 .ln2:nth-child(3) .nd2','light',130),R(2,'[data-count]','count',0,200),R(3,'.bridge','bridge')],
  'impact':[R(1,'.mc .bar','wipe',160),R(1,'.mc [data-count]','count',60,150),R(2,'.tags, .strip2, .fine','rise',130)],
- 'what-we-built':[R(1,'.layer.l3','rise'),R(2,'.layer.l2','riseglow'),R(3,'.layer.l1','rise'),R(4,'.layer.l4','rise')],
- 'close':[R(1,'.brandrow','fade'),R(2,'.tagl, .sub','rise',140),R(3,'.tags','pop'),R(4,'.photo2, .fine','fade',120)]
+ 'what-we-built':[R(1,'.layer.l2','riseglow'),R(2,'.layer.l1','rise'),R(3,'.layer.l3','rise'),R(4,'.layer.l4','rise')],
+ 'close':[R(1,'.brandrow','fade'),R(1,'.tagl, .sub','rise',300,350),R(2,'.tags','pop'),R(2,'.photo2, .fine','fade',150,150)]
 };
 const BACKUP=[R(1,'.stack ~ *:not(.pill):not(aside)','rise',90)];
 function init(){all.forEach(s=>{const nm=s.dataset.name;if(PREP[nm])PREP[nm](s);let rules=CHOREO[nm];if(!rules&&s.dataset.part==='backup')rules=BACKUP;
