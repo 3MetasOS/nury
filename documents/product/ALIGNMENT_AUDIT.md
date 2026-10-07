@@ -35,7 +35,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei. Part 1 is the single table of 
 | CLI and MCP | Shipped, read-only, no key: `python -m nury.cli ...` and `python -m nury.mcp_server`, from `code/` | `documents/product/CLI_AND_MCP.md`; commit `fd4b851` |
 | Jev disclosure line (verbatim) | The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules. | `CLAUDE.md` |
 | Provenance sentence (verbatim) | Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. | `README.md`; the app footer |
-| Commit dates | 41 hack-ninja commits (and some hack-video commits) carry hand-typed dates; the first commit (2026-10-06 19:36 MDT) and all others use the real clock | `documents/product/COMMIT_DATES.md` |
+| Commit dates | 93 commits carry hand-typed dates (69 hack-ninja, 24 hack-video); the first commit (2026-10-06 19:36 MDT) and all others use the real clock | `documents/product/COMMIT_DATES.md` |
 | Memorial | Gated. The deck slide and the About block stay hidden until Juan approves the text in writing. The text is Juan's, and nobody edits it | `presentation/MEMORIAL.md` ("DRAFT until Juan approves") |
 
 ## Part 2. Documents checked

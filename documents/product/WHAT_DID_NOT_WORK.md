@@ -129,7 +129,7 @@ Each item says what we tried, what happened, what we changed and what we still d
 
 ### 15. We typed commit dates by hand
 - **Tried.** Following the rule "every meaningful step is a commit dated Oct 6 to 8".
-- **Happened.** Two agents typed dates into `GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE`. 41 commits by hack-ninja carry made-up Oct 8 times. Those times run ahead of the real clock, which read Oct 7, about 03:30. Some of hack-video's commits carry author dates later than the real time. The order of commits is real. The clock times are not.
+- **Happened.** Two agents typed dates into `GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE`. 93 commits carry hand-typed dates: 69 by hack-ninja and 24 by hack-video. Many of those times run ahead of the real clock (for example, Oct 8 times when it was still Oct 7). The order of commits is real. The clock times are not.
 - **Changed.** The rule is now: use the real clock, and never set a date. `documents/product/COMMIT_DATES.md` lists the affected commits. The build log is the better guide to when things happened. We did not rewrite history.
 - **Not known.** We do not know how a reader will weigh it. The first commit of the repository (2026-10-06 19:36 MDT) and every commit not listed use the real clock.
 
