@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 43 live verified, 22 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
+Count: 43 live verified, 23 offline tested, 3 built but not yet checked live, 5 planned, 18 not built.
 
 ## 1. Pastor experience
 
@@ -56,7 +56,7 @@ Count: 43 live verified, 22 offline tested, 3 built but not yet checked live, 5 
 | No agency names on screen | Triage, checklist and pastoral text say "immigration officers", never an agency name. | BUILT, live verified | `checks.no_agency_names`; scored runs | pastor, judge |
 | Hospital medical guardrails | Twelve extra patterns block a prognosis, a diagnosis guess, medical advice, advice on ending care, and promised healing, in English and Spanish. | BUILT, offline tested | `playbooks/hospital/playbook.json` (`extra_banned`); `tests/test_core.py` (Hospital) | pastor, judge |
 | HTTP 403 from Gloo counts as a failed try | If Gloo's guardrails block a request, Nury retries and then escalates with outcome "blocked". | BUILT, offline tested | `gloo_client.GuardrailBlock`; `tests/test_core.py` (GloLayer); no live 403 has happened | developer, judge |
-| No send path | The only outbound call in the product is the Gloo request. Nothing reaches the family except through the pastor. | BUILT, offline tested | `tests/test_core.py` (NoSendPath) | pastor, judge |
+| No send path | The product's outbound calls are the Gloo request and, only when YVP_APP_KEY is set, a passage-id request to YouVersion. Nothing reaches the family except through the pastor. | BUILT, offline tested | `tests/test_core.py` (NoSendPath) | pastor, judge |
 | Fault injection | A switch forces one unsafe draft so the reject-and-regenerate beat can be shown and tested on demand. | BUILT, live verified | `engine.fault_injection`; `UNSAFE_SUFFIX`; slot B check f | judge, developer |
 
 ## 3. Privacy
@@ -129,7 +129,8 @@ Nothing in this section may be claimed in the film, the deck or the description.
 | Feature | What it does | Status | Evidence | For |
 |---|---|---|---|---|
 | **Hosting on a server** | Running Nury for real churches on a server needs sign-in, per-church separation of cases and the church network, and encryption at rest. None of the three exists. | NOT BUILT, next | `code/app/server.py` (no authentication), `nury/casefile.py` (plain files), `nury/network.py` (one shared network) | pastor, judge |
-| Licensed Bible versions | Offering licensed translations through the YouVersion Platform. Its terms need an app key, attribution and cache rules, so Nury does not claim it. | NOT BUILT, next | not designed | pastor |
+| Verse source you can swap | The verse text comes from a provider. The bank (public domain) is the default and the fallback. A YouVersion provider is built against a stub and turns on only when YVP_APP_KEY and a Bible id are set. On any failure Nury uses the bank and logs it. | BUILT, offline tested | `nury/scripture_providers.py`; `tests/test_scripture.py` (stub, not the real service) | pastor, judge |
+| Licensed Bible versions through YouVersion | Real use needs Juan's app key, his choice of Spanish and English versions, and a check of the Platform terms (cache rule and rate limit not found in the public docs). Nothing is claimed until a live check passes. | NOT BUILT, next | no app key yet | pastor |
 | Other traditions' canons | A verse list per tradition. The bank has a `tradition` field, set to none; the loader refuses any other value. | NOT BUILT | `scripture.load_bank` | pastor |
 | Teams and roles | Several pastors or staff sharing a church account with different permissions. | NOT BUILT | not designed; there are no accounts, so everyone who can reach the app sees the same cases and the same church network | pastor |
 | Shared cases | A case owned by a person or a church and opened by the right people. Today there is one shared pool of cases on the server. | NOT BUILT | cases live in one folder on the server; no owner field | pastor |

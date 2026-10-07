@@ -7,10 +7,11 @@
 <script>try{document.documentElement.dataset.theme=localStorage.getItem("nury-theme")==="light"?"light":"dark"}catch(e){document.documentElement.dataset.theme="dark"}</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Fraunces-400-0.woff2) format("woff2")}
+@font-face{font-family:"Fraunces";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/Fraunces-600-1.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/Inter-400-2.woff2) format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/Inter-500-3.woff2) format("woff2")}
 :root{--bg:#0d1015;--surface:#131824;--surface-2:#1a2233;--line:rgba(236,231,220,.10);
 --amber:#e8a33d;--amber-soft:rgba(232,163,61,.13);--amber-ink:#1a1206;--text:#ece7dc;--muted:#a79f8d;
 --green:#8fce9e;--green-soft:rgba(143,206,158,.12);--red:#e0785f;--red-soft:rgba(224,120,95,.12);
@@ -23,12 +24,6 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
 main{max-width:640px;margin:0 auto;padding:16px 16px calc(32px + env(safe-area-inset-bottom))}
-header{display:flex;align-items:baseline;gap:10px;padding:8px 0 16px}
-header h1{font:600 28px var(--serif);margin:0;color:var(--amber-text)}
-header .logo{width:28px;height:28px;flex:none;align-self:center;color:var(--logo)}
-.theme{margin-left:auto;align-self:center;flex:none;min-height:44px;min-width:64px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 14px var(--sans);cursor:pointer}
-.theme:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
-header span{color:var(--muted);font-size:14px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px}
 h2{font:500 20px var(--serif);margin:0 0 8px}
 label{display:block;font-size:14px;color:var(--muted);margin:12px 0 6px}
@@ -128,32 +123,347 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .bar p{margin:0}
 .note{color:var(--muted);font-size:14px}
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:99px;background:var(--surface-2);color:var(--muted);margin-left:8px;vertical-align:middle}
+/* ===== shell and new views (home, cases, crisis detail). Own class names so the flow screens keep their styles. ===== */
+:root{--line-2:rgba(236,231,220,.20);--ember:#e8a33d;--wash:rgba(232,163,61,.16);--scene:rgba(236,231,220,.42)}
+:root[data-theme="light"]{--line-2:rgba(13,16,21,.28);--ember:#b8680f;--wash:rgba(184,104,15,.14);--scene:rgba(13,16,21,.45)}
+[hidden]{display:none!important}
+html{scroll-padding-top:76px}
+h1{font-weight:500}
+.nv h1{font:500 30px/1.15 var(--serif);letter-spacing:-.01em;margin:0}
+.nv h1:focus,.narrow h1:focus{outline:none}
+.nv h2{font:500 22px/1.25 var(--serif);margin:0 0 12px}
+.nv h3{font:500 18px/1.3 var(--serif);margin:0}
+.nv p,.nv ul,.nv ol{margin:0}.nv ul,.nv ol{padding:0;list-style:none}
+.i{width:24px;height:24px;flex:none;display:block}.i.sm{width:18px;height:18px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--amber);color:var(--amber-ink);padding:12px 16px;border-radius:10px;z-index:100;font-weight:600;text-decoration:none}
+.skip:focus{top:8px}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--amber-text);outline-offset:2px}
+/* top bar and tabs */
+.top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top .wrap{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:60px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--amber-text);min-height:48px}
+.brand .i{width:28px;height:28px;color:var(--logo)}.brand b{font:600 24px/1 var(--serif)}
+.brand small{display:none;font-size:13px;color:var(--muted);margin-left:4px;font-weight:400}
+.iconbtn{margin-left:auto;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);cursor:pointer;flex:none}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:0 8px env(safe-area-inset-bottom)}
+.tabs a{flex:1;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 12px/1.2 var(--sans);color:var(--muted);text-decoration:none}
+.tabs a[aria-current="page"]{color:var(--amber-text);box-shadow:inset 0 3px 0 var(--amber)}
+body.task .tabs{display:none}
+main{max-width:1120px;margin:0 auto;padding:16px 16px calc(96px + env(safe-area-inset-bottom))}
+body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+.narrow{max-width:640px;margin:0 auto}
+/* buttons for the new views */
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 20px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);text-decoration:none;cursor:pointer}
+.cta.primary{background:var(--amber);border-color:var(--amber);color:var(--amber-ink)}
+.cta.block{width:100%}.cta:hover{border-color:var(--amber-line)}
+.tile{width:48px;height:48px;border-radius:12px;background:var(--amber-soft);color:var(--amber-text);display:grid;place-items:center;flex:none}
+.tile.lg{width:56px;height:56px;border-radius:14px}
+.scene{display:block;width:100%;height:auto;aspect-ratio:8/3;color:var(--scene)}
+.muted{color:var(--muted)}.sm{font-size:14px}
+.nvcard{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px}
+.sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
+.sec-h h2{margin:0}
+.sec-h a{font-size:14px;font-weight:600;color:var(--amber-text);text-underline-offset:3px;min-height:44px;display:inline-flex;align-items:center}
+/* status chips */
+.scs{display:flex;flex-wrap:wrap;gap:6px}
+.sc{display:inline-flex;align-items:center;gap:4px;min-height:26px;padding:0 9px;border-radius:99px;font:600 13px/1 var(--sans);border:1px solid var(--line-2);color:var(--text);background:transparent;white-space:nowrap}
+.sc .i{width:14px;height:14px}
+.sc.s-saved{color:var(--muted)}.sc.s-v2{background:var(--surface-2)}
+.sc.s-follow{border-style:dashed;border-color:var(--amber-line);color:var(--amber-text)}
+.sc.tag{color:var(--muted);font-weight:500}.sc.on{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
+/* home */
+.home{display:flex;flex-direction:column;gap:24px}
+.colA,.colB{display:contents}
+.hero{order:0;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:24px 20px 8px;background:radial-gradient(120% 120% at 100% 0%,var(--wash),transparent 60%),var(--surface)}
+.hero p{margin-top:8px;color:var(--muted);max-width:44ch}
+.hero .cta{margin-top:20px;width:100%}
+.hero .scene{margin:8px auto 0;max-width:300px}
+.home.has-cases #continue{order:1}.home.has-cases .start{order:2}.home:not(.has-cases) .start{order:1}.home:not(.has-cases) #continue{order:2}
+#stats{order:3}#netcard{order:4}.built{order:5}
+.cardlist{display:grid;gap:12px}
+.case{display:grid;grid-template-columns:48px minmax(0,1fr) auto;gap:12px;align-items:start;min-height:88px;padding:14px 12px 14px 14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
+.case:hover,.pk:hover,.lrow:hover,.stat:hover{border-color:var(--amber-line)}
+.ct{font:500 18px/1.3 var(--serif);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:block;font-size:13px;color:var(--muted);margin:2px 0 8px}
+.cbody{min-width:0;display:block}
+.go{display:flex;align-items:center;gap:2px;align-self:center;color:var(--amber-text);font:600 14px var(--sans)}.go .gl{display:none}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{display:block;min-height:68px;padding:12px 14px;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none;color:var(--text)}
+.stat b{display:block;font:500 26px/1 var(--serif);color:var(--amber-text)}.stat span{font-size:13px;color:var(--muted)}
+.pickgrid{display:grid;gap:12px}
+.pk{display:grid;grid-template-columns:56px minmax(0,1fr) 24px;gap:14px;align-items:center;min-height:96px;padding:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;text-decoration:none;color:var(--text)}
+.pk .t{display:block;font:500 19px/1.3 var(--serif)}.pk .d{display:block;font-size:14px;color:var(--muted);margin-top:2px}.pk .c{color:var(--amber-text)}
+.pk.soon{border-style:dashed;background:transparent;color:var(--muted);min-height:72px;grid-template-columns:56px minmax(0,1fr) auto}
+.pk.soon:hover{border-color:var(--line)}.pk.soon .tile{background:var(--surface-2);color:var(--muted)}.pk.soon .t{font-size:17px}
+.first{display:grid;gap:16px}.first h2{margin:0}
+.steps3{display:grid;gap:10px;counter-reset:s}
+.steps3 li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+.steps3 li::before{counter-increment:s;content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;border:1px solid var(--amber-line);color:var(--amber-text);display:grid;place-items:center;font:600 14px var(--sans)}
+.netcard{display:grid;gap:12px;border:1px solid var(--line);border-radius:16px;padding:16px;background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
+.netcard h2{margin:0}.netcard .scene{max-width:240px;margin:0 auto}
+.built{border-top:1px solid var(--line);padding-top:16px}
+.built .lbl{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.built ul{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+.built li{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:6px 12px;line-height:1.3}
+.linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.foot{margin-top:24px;font-size:13px;color:var(--muted);max-width:70ch}
+.safety{margin-top:14px;font-size:14px;color:var(--muted)}
+/* area bands */
+.band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
+.band .kicker{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.band p{color:var(--muted);max-width:52ch}.band .scene{max-width:260px;margin-top:4px}
+.band.cases{background:repeating-linear-gradient(transparent 0 31px,var(--line) 31px 32px),var(--surface)}
+.band.network{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
+/* cases */
+.tools{display:grid;gap:10px;margin-bottom:12px}
+.search{position:relative}.search .i{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none}
+.search input{width:100%;min-height:52px;padding:0 14px 0 46px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:16px var(--sans)}
+.fgroup{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scrollbar-width:thin}
+.fgroup button{flex:none;min-height:44px;padding:0 16px;border-radius:99px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
+.fgroup button[aria-pressed="true"]{background:var(--amber-soft);color:var(--amber-text);border-color:var(--amber-line)}
+.flabel{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:2px 0 -4px}
+.rows{display:grid;gap:10px}
+.lrow{display:grid;grid-template-columns:40px minmax(0,1fr) 24px;gap:6px 12px;align-items:start;padding:12px;min-height:72px;background:var(--surface);border:1px solid var(--line);border-radius:14px;text-decoration:none;color:var(--text)}
+.lrow .tile{width:40px;height:40px;border-radius:10px;grid-column:1;grid-row:1/4;align-self:start}
+.lrow .cbody{grid-column:2;grid-row:1}.lrow .scs{grid-column:2;grid-row:2}.lrow .when{grid-column:2;grid-row:3;font-size:13px;color:var(--muted)}
+.lrow .chev{grid-column:3;grid-row:1/4;align-self:center;color:var(--amber-text)}
+.count{font-size:14px;color:var(--muted);margin:4px 0 10px}
+.empty{text-align:center;display:grid;gap:10px;justify-items:center;padding:28px 16px}
+.empty .scene{max-width:220px}.empty p{color:var(--muted);max-width:40ch}.empty h2{margin:0}
+.morebtn{margin:14px auto 0;display:flex}
+/* crisis detail */
+.cband{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin:4px 0 20px;display:grid;gap:12px;background:radial-gradient(120% 140% at 0% 0%,var(--wash),transparent 55%),var(--surface)}
+.kick{display:flex;align-items:center;gap:10px;color:var(--amber-text);font:600 13px var(--sans);letter-spacing:.06em;text-transform:uppercase}
+.lead{color:var(--muted);max-width:56ch;margin-top:8px}.cband .scene{max-width:280px}
+.cols{display:grid;gap:28px}
+.dots li{position:relative;padding:6px 0 6px 24px}
+.dots li::before{content:"";position:absolute;left:4px;top:15px;width:8px;height:8px;border-radius:50%;background:var(--ember)}
+.callout{margin-top:12px!important;padding:12px 14px;border:1px dashed var(--amber-line);border-radius:12px;font-size:15px}
+.give{display:grid;gap:10px}.give li{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:start}
+.give .tile{width:44px;height:44px;border-radius:12px}.give b{display:block;font-weight:600}.give .d{font-size:14px;color:var(--muted)}
+.rail{display:flex;align-items:flex-start;margin:4px 0 20px!important;padding:14px 8px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.rail .n{width:44px;flex:none;display:flex;flex-direction:column;align-items:center;gap:6px}
+.rail .n a{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--amber-line);background:var(--bg);color:var(--amber-text);display:grid;place-items:center;text-decoration:none}
+.rail .n span{width:72px;text-align:center;font-size:12px;line-height:1.25;color:var(--muted)}
+.rail .g{flex:1;min-width:14px;height:44px;display:flex;align-items:center;justify-content:center;position:relative}
+.rail .g::before{content:"";position:absolute;left:0;right:0;top:50%;border-top:1.5px dashed var(--amber-line)}
+.rail .g .i{position:relative;width:18px;height:18px;background:var(--surface);color:var(--amber-text)}
+.legend{font-size:13px;color:var(--muted);margin:-8px 0 20px!important;display:flex;gap:8px;align-items:center}.legend .i{width:16px;height:16px;color:var(--amber-text)}
+.flow{display:grid;gap:16px;position:relative}.flow>li{position:relative;padding-left:60px}
+.flow>li:not(:last-child)::before{content:"";position:absolute;left:21px;top:44px;bottom:-16px;border-left:1.5px dashed var(--amber-line);opacity:.8}
+.node{position:absolute;left:0;top:0;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--amber-line);background:var(--bg);display:grid;place-items:center;color:var(--amber-text);z-index:1}
+.node.cap{border-style:dashed}
+.st .step2{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.nv h4{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--amber-text);margin:0 0 4px}
+.two{display:grid;gap:14px;margin-top:12px}.two p{font-size:15px}.two>div+div{border-top:1px solid var(--line);padding-top:12px}
+.gatel{display:flex;align-items:center;gap:8px;margin-top:14px!important;padding-top:12px;border-top:1px solid var(--line);font:600 14px var(--sans);color:var(--amber-text)}.gatel .i{width:20px;height:20px}
+.capcard{padding:4px 0 8px}.capcard p{font-size:15px;color:var(--muted);margin-top:4px}
+.never li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;padding:8px 0;border-bottom:1px solid var(--line);font-size:15px}
+.never li:last-child{border-bottom:0}.never .i{color:var(--amber-text);margin-top:2px}
+.time{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px}.time p{font-size:15px;color:var(--muted)}.time p+p{margin-top:8px}
+.blk{margin-bottom:28px}
+.aside{display:none}
+.startbar{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;gap:12px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line)}
+.startbar .cta{flex:1}.startbar small{flex:none;max-width:112px;font-size:12px;line-height:1.3;color:var(--muted)}
+body:not([data-view="crisis"]) .startbar{display:none}
+/* sheets and toasts */
+dialog.sheet{border:1px solid var(--line-2);background:var(--surface);color:var(--text);padding:0;width:100%;max-width:100%;max-height:90vh;margin:auto 0 0;border-radius:20px 20px 0 0}
+dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
+.sheet-h{position:sticky;top:0;display:flex;align-items:center;gap:12px;padding:12px 12px 12px 20px;background:var(--surface);border-bottom:1px solid var(--line)}
+.sheet-h h2{flex:1;margin:0;font:500 22px/1.25 var(--serif)}
+.sheet-b{padding:16px 20px 28px;overflow:auto;max-height:calc(90vh - 76px)}
+.proof{display:grid;gap:18px;counter-reset:p;list-style:none;padding:0;margin:0}
+.proof li{display:grid;gap:4px;padding-left:40px;position:relative}
+.proof li::before{counter-increment:p;content:counter(p);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;border:1px solid var(--amber-line);color:var(--amber-text);display:grid;place-items:center;font:600 13px var(--sans)}
+.proof h3{font:600 16px/1.35 var(--sans);margin:0}.proof p{font-size:15px;color:var(--muted);margin:0}.proof .lim{color:var(--text)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:10px;border:0;padding:0;margin:0 0 20px}
+.seg legend{font:600 12px var(--sans);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;padding:0}
+.seg label{position:relative;margin:0;font-size:inherit;color:inherit}
+.seg input{position:absolute;opacity:0;inset:0;width:100%;height:100%;margin:0;cursor:pointer}
+.seg span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:56px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);font:600 16px var(--sans)}
+.seg input:checked+span{background:var(--amber-soft);border-color:var(--amber-line);color:var(--amber-text)}
+.seg input:focus-visible+span{outline:2px solid var(--amber-text);outline-offset:2px}
+.leave-b{display:grid;gap:12px;padding:16px 20px 24px}
+@media (min-width:640px){
+  .nv h1{font-size:36px}
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .lrow{grid-template-columns:40px minmax(0,1fr) auto 120px 24px;align-items:center}
+  .lrow .tile,.lrow .cbody,.lrow .scs,.lrow .when,.lrow .chev{grid-column:auto;grid-row:auto;align-self:center}
+  .lrow .when{text-align:right}.go .gl{display:inline}
+  .sheet-b{padding:20px 28px 32px}
+  .two{grid-template-columns:1fr 1fr;gap:20px}.two>div+div{border-top:0;padding-top:0;border-left:1px solid var(--line);padding-left:20px}
+}
+@media (min-width:960px){
+  .brand small{display:inline}
+  .tabs{position:static;border:0;background:none;padding:0;margin-left:24px;gap:4px;z-index:auto}
+  .tabs a{flex:none;flex-direction:row;gap:8px;padding:0 16px;min-height:44px;border-radius:99px;font-size:15px}
+  .tabs a[aria-current="page"]{background:var(--amber-soft);box-shadow:none}
+  body.task .tabs{display:flex}
+  main{padding:24px 24px 56px}.top .wrap{padding:0 24px}
+  .home{display:grid;grid-template-columns:minmax(0,1fr) 392px;gap:24px;align-items:start}
+  .colA,.colB{display:flex;flex-direction:column;gap:24px;min-width:0}
+  .hero{grid-column:1/-1;display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:center;padding:32px 32px 24px}
+  .hero .cta{width:auto;min-width:260px}.hero .scene{margin:0}.built{grid-column:1/-1}
+  .band{grid-template-columns:1fr 280px;align-items:center;padding:24px 28px}.band .scene{margin:0}
+  .cband{grid-template-columns:1fr 300px;align-items:center;padding:28px 32px}.cband .scene{max-width:none}
+  .cols{grid-template-columns:minmax(0,1fr) 340px;gap:40px;align-items:start}
+  .aside{display:grid;gap:14px;position:sticky;top:84px}.aside .nvcard{display:grid;gap:12px}.aside h2{margin:0}
+  .startbar{display:none!important}
+  dialog.sheet{margin:auto;width:640px;border-radius:20px;max-height:86vh}.sheet-b{max-height:calc(86vh - 76px)}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<main>
-<header><svg class="logo" aria-hidden="true" focusable="false" viewBox="0 0 64 64"><g fill="currentColor" stroke="currentColor"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></svg><h1>Nury</h1><span>The crisis-response agent for solo pastors</span><button class="theme" id="theme" type="button" aria-pressed="false">Day</button></header>
+<svg class="sprite" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="i-mark" viewBox="0 0 64 64"><g fill="currentColor" stroke="currentColor"><path fill="none" stroke-width="4.2" stroke-linejoin="round" d="M21 25.4 H43 L40.8 50 H23.2 Z"/><path fill="none" stroke-width="4.2" stroke-linecap="round" d="M16.6 25.4 H47.4 M18.6 53.8 H45.4"/><circle cx="32" cy="12.2" r="4.6" fill="none" stroke-width="2.8"/><path fill="none" stroke-width="2.8" d="M32 16.8 V22"/><path stroke="none" d="M32 31.4 C35.8 35.6 37.4 38.4 37.4 41.2 A5.4 5.4 0 0 1 26.6 41.2 C26.6 38.4 28.2 35.6 32 31.4 Z"/></g></symbol>
+<symbol id="i-lantern" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="3.6" r="1.5"/><path d="M12 5.1V7M7.5 7.5h9M8.6 7.5h6.8l-.8 11H9.4zM7.6 20.5h8.8"/><path style="fill:var(--ember,currentColor);stroke:none" d="M12 11.2c1.5 1.6 2 2.6 2 3.5a2 2 0 0 1-4 0c0-.9.5-1.9 2-3.5z"/></symbol>
+<symbol id="i-cases" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.2h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 11h17"/><circle cx="12" cy="15" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="7" r="2.2"/><circle cx="18" cy="7" r="2.2"/><circle cx="12" cy="18" r="2.2"/><path d="M8.2 7h7.6M7.2 8.9l3.8 7M16.8 8.9l-3.8 7"/><circle cx="12" cy="10.2" r="1.2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h9M17 8h3M4 16h3M11 16h9"/><circle cx="15" cy="8" r="2"/><circle cx="9" cy="16" r="2"/></symbol>
+<symbol id="i-detention" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 21h16M7 21V11a5 5 0 0 1 10 0v10"/><circle cx="12" cy="15.5" r="1.6" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-hospital" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="15" rx="3.5"/><path d="M7.5 12.5h2.2l1.4-3 2 6 1.4-3h2"/></symbol>
+<symbol id="i-sudden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 14h15M6.5 14v5M17.5 14v5M6 14V8.5A1.5 1.5 0 0 1 7.5 7h9A1.5 1.5 0 0 1 18 8.5V14"/><circle cx="12" cy="10.5" r="1.3" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-fire" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 11 12 4l8.5 7M5.5 9.5V20h13V9.5"/><path d="M12 18.5a2.6 2.6 0 0 1-2.6-2.6c0-1.6 1.4-2.4 2.6-4 1.2 1.6 2.6 2.4 2.6 4a2.6 2.6 0 0 1-2.6 2.6z"/></symbol>
+<symbol id="i-audit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h8l4 4v13h-12z"/><path d="M14.5 3.5v4h4M9.5 12h6M9.5 15.5h4"/></symbol>
+<symbol id="i-save" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v10M8 10.5l4 4 4-4M5 18.5h14"/></symbol>
+<symbol id="i-v2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 8.5h9.5v12H9zM6 16.5v-12h9.5"/><circle cx="13.7" cy="14.5" r="1.4" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-protect" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4.5H6v15h3M15 4.5h3v15h-3"/><circle cx="12" cy="12" r="1.8" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 21V4M6 5h11l-2.5 3.5L17 12H6"/></symbol>
+<symbol id="i-progress" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.6" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-triage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+<symbol id="i-brief" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.5C10 5 7 4.5 4 5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5V5c-3-.5-6 0-8 1.5zM12 6.5v13"/></symbol>
+<symbol id="i-resources" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s6-5.2 6-10a6 6 0 0 0-12 0c0 4.8 6 10 6 10z"/><circle cx="12" cy="11" r="2" style="fill:var(--ember,currentColor);stroke:none"/></symbol>
+<symbol id="i-checklist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h10M10 12h10M10 18h10M3.5 6l1.3 1.3L7 5M3.5 12l1.3 1.3L7 11M3.5 18l1.3 1.3L7 17"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5h14a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-8l-4 3.5V16H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></symbol>
+<symbol id="i-gate" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l8 8.5-8 8.5-8-8.5z"/><path d="M8.8 12l2.2 2.2 4.2-4.4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l1-4L16.5 4.5a2 2 0 0 1 3 3L8 19zM14.5 6.5l3 3"/></symbol>
+<symbol id="i-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5h5v5h-5z"/></symbol>
+<symbol id="i-never" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M6 6l12 12"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.2-4.2"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-build" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4l8 4-8 4-8-4zM4 12l8 4 8-4M4 16l8 4 8-4"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3.8"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5z"/></symbol>
+<symbol id="s-home" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M0 104h320" opacity=".6"/><circle cx="238" cy="62" r="36" stroke-dasharray="2 5" opacity=".7"/><circle cx="238" cy="62" r="54" stroke-dasharray="2 7" opacity=".4"/><circle cx="238" cy="14" r="5"/><path d="M238 19v10M217 29h42M226 29h24l-4 52h-16zM222 85h32"/><path style="fill:var(--ember,currentColor);stroke:none" d="M238 46c5 5 6 9 6 12a6 6 0 0 1-12 0c0-3 1-7 6-12z"/><g fill="currentColor" stroke="none" opacity=".7"><circle cx="30" cy="20" r="1.2"/><circle cx="70" cy="44" r="1.2"/><circle cx="112" cy="14" r="1.2"/><circle cx="152" cy="36" r="1.2"/><circle cx="188" cy="18" r="1.2"/></g></symbol>
+<symbol id="s-cases" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 104h240" opacity=".6"/><rect x="70" y="58" width="22" height="46" rx="3"/><rect x="98" y="50" width="22" height="54" rx="3"/><rect x="126" y="62" width="22" height="42" rx="3"/><rect x="154" y="40" width="22" height="64" rx="3"/><rect x="182" y="56" width="22" height="48" rx="3"/><rect x="210" y="64" width="22" height="40" rx="3"/><path d="M70 72h22M98 66h22M126 76h22M154 56h22M182 70h22M210 78h22" opacity=".6"/><circle cx="165" cy="26" r="4" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="165" cy="26" r="9" stroke-dasharray="2 4" opacity=".7"/></symbol>
+<symbol id="s-network" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M40 78L110 44L170 80L230 40L290 70" stroke-dasharray="3 5" opacity=".7"/><circle cx="40" cy="78" r="7"/><circle cx="110" cy="44" r="7"/><circle cx="170" cy="80" r="7"/><circle cx="230" cy="40" r="7"/><circle cx="290" cy="70" r="7"/><circle cx="170" cy="80" r="14" stroke-dasharray="2 4" opacity=".7"/><circle cx="170" cy="80" r="3.2" style="fill:var(--ember,currentColor);stroke:none"/><path d="M0 108h320" opacity=".35"/></symbol>
+<symbol id="s-detention" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><path d="M122 104V54a38 38 0 0 1 76 0v50"/><path d="M134 104V56a26 26 0 0 1 52 0v48" opacity=".5"/><circle cx="160" cy="76" r="4.5" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="160" cy="76" r="12" stroke-dasharray="2 4" opacity=".7"/><path d="M146 104l-14 12M174 104l14 12" opacity=".5"/></symbol>
+<symbol id="s-hospital" viewBox="0 0 320 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M70 104h180" opacity=".6"/><rect x="112" y="24" width="96" height="74" rx="12"/><path d="M126 62h22l8-18 12 36 8-18h22"/><circle cx="232" cy="30" r="4" style="fill:var(--ember,currentColor);stroke:none"/><circle cx="232" cy="30" r="10" stroke-dasharray="2 4" opacity=".7"/></symbol></svg>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+  <a class="brand" href="#/" aria-label="Nury, home"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-mark"/></svg><b>Nury</b><small>the crisis-response agent for solo pastors</small></a>
+  <nav class="tabs" aria-label="Main">
+    <a href="#/" data-nav="home"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-lantern"/></svg><span>Home</span></a>
+    <a href="#/cases" data-nav="cases"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-cases"/></svg><span>Cases</span></a>
+    <a href="/network" data-nav="network"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-network"/></svg><span>Our network</span></a>
+  </nav>
+  <button class="iconbtn" id="open-settings" type="button" aria-label="Settings and display"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-settings"/></svg></button>
+</div></header>
+<main id="main">
+<p class="note" id="load-err" role="alert" hidden></p>
 
-<section id="v-select" class="hidden">
-  <div class="card"><h2>What is happening?</h2>
-    <p class="note" style="margin:0">Choose the kind of crisis. Nury opens the right playbook.</p></div>
-  <div id="picks"></div>
-  <p class="note" id="select-err"></p>
-  <a class="crow hidden" id="net-link" href="/network" style="text-decoration:none"><span><span class="t">Our network</span><span class="d">Contacts your church has vetted.</span></span></a>
-  <div class="cases hidden" id="cases"><h3>Open cases</h3><div id="cases-list"></div></div>
+<section class="nv" id="v-home" hidden>
+  <div class="home" id="home">
+    <section class="hero" aria-labelledby="h-home">
+      <div>
+        <h1 id="h-home" tabindex="-1"></h1>
+        <p id="hero-sub"></p>
+        <a class="cta primary" href="#start" id="hero-btn"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
+      </div>
+      <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-home"/></svg>
+    </section>
+    <div class="colA">
+      <section id="continue" aria-labelledby="h-cont">
+        <div class="sec-h"><h2 id="h-cont"></h2><a href="#/cases" id="see-all">All cases</a></div>
+        <ul class="cardlist" id="cont-list"></ul>
+        <div class="nvcard first" id="first-run" hidden>
+          <h2>No cases yet.</h2>
+          <p class="muted">When a family calls, respond to the crisis here. Save the finished package and it waits here, so you can open it later.</p>
+          <ol class="steps3"><li>Choose the crisis and see how it works.</li><li>Tell Nury what the family said.</li><li>Approve each stage, then save.</li></ol>
+        </div>
+      </section>
+      <section id="stats" aria-labelledby="h-stats" hidden>
+        <div class="sec-h"><h2 id="h-stats">Your cases</h2></div>
+        <div class="stats" id="stats-grid"></div>
+      </section>
+    </div>
+    <div class="colB">
+      <section class="start" id="start" aria-labelledby="h-start">
+        <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
+        <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
+        <div class="pickgrid" id="picks"></div>
+        <p class="safety">If anyone is in immediate danger, call 911 first.</p>
+      </section>
+      <section class="netcard" id="netcard" aria-labelledby="h-net">
+        <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-network"/></svg>
+        <h2 id="h-net">Our network</h2>
+        <p class="muted sm">Contacts your church has vetted. Nury lists them first and labels them as yours.</p>
+        <a class="cta" href="/network"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-network"/></svg>Open our network</a>
+      </section>
+    </div>
+    <section class="built" aria-labelledby="h-built">
+      <span class="lbl" id="h-built">How this was made</span>
+      <ul>
+        <li>Gloo AI Studio, guarded endpoint</li>
+        <li>Claude Sonnet 4.6</li>
+        <li>Tokens, not names, reach the model</li>
+        <li>14 named checks, 3 tries</li>
+        <li>Jev typed judges, a red team, human review</li>
+      </ul>
+      <button class="linkbtn" type="button" id="open-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-build"/></svg>About this build</button>
+    </section>
+  </div>
+  <p class="foot">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
 </section>
 
-<section id="v-detail" class="hidden">
-  <button class="back" id="back-detail">&larr; All crises</button>
-  <div class="card"><h2 id="d-title"></h2><p class="note" id="d-desc" style="margin:0 0 4px"></p></div>
-  <div class="card"><h2>What Nury produces</h2>
-    <ol class="steps-list" id="d-steps"></ol>
-    <p class="note" style="margin:6px 0 0">You decide at every step: approve, edit or stop.</p></div>
-  <p class="note"><b>Nury never sends anything. You do.</b></p>
-  <div class="dock"><button class="btn primary big" id="d-start">Start</button></div>
+<section class="nv" id="v-cases" hidden>
+  <div class="band cases">
+    <div>
+      <span class="kicker"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-cases"/></svg>Cases</span>
+      <h1 id="h-cases" tabindex="-1">Your cases</h1>
+      <p>Every case you saved. Open one to read it, or to record that something changed.</p>
+    </div>
+    <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-cases"/></svg>
+  </div>
+  <div id="cases-body">
+    <div class="tools">
+      <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
+      <div class="flabel" id="fl-c">Crisis</div>
+      <div class="fgroup" role="group" aria-labelledby="fl-c" id="f-crisis"></div>
+      <div class="flabel" id="fl-s">Status</div>
+      <div class="fgroup" role="group" aria-labelledby="fl-s" id="f-status">
+        <button type="button" data-v="all" aria-pressed="true">All</button>
+        <button type="button" data-v="follow" aria-pressed="false">Needs follow-up</button>
+        <button type="button" data-v="v2" aria-pressed="false">Version 2</button>
+      </div>
+    </div>
+    <p class="count" id="count" role="status" aria-live="polite"></p>
+    <ul class="rows" id="rows"></ul>
+    <button class="cta morebtn" type="button" id="more" hidden>Show 20 more</button>
+    <div class="empty" id="no-match" hidden>
+      <h2>No cases match.</h2><p>Try another word, or clear the filters.</p>
+      <button class="cta" type="button" id="clear">Clear filters</button>
+    </div>
+  </div>
+  <div class="nvcard empty" id="cases-empty" hidden>
+    <svg class="scene" aria-hidden="true" focusable="false"><use href="#s-cases"/></svg>
+    <h2>No cases yet.</h2>
+    <p>Finish a crisis and choose Save to case file. It will be here, ready to open.</p>
+    <a class="cta primary" href="#/" id="empty-start"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg>Respond to a crisis</a>
+  </div>
 </section>
 
-<section id="v-intake" class="hidden">
+<section class="nv" id="v-crisis" hidden>
+  <a class="back" href="#/" id="crisis-back"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-back"/></svg>All crises</a>
+  <div id="crisis-page"></div>
+</section>
+<section id="v-intake" class="hidden narrow">
   <button class="back" id="back-intake">&larr; Back</button>
   <div class="card">
     <h2 id="intake-title">What did the family tell you?</h2>
@@ -164,27 +474,25 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <label id="demo-row"><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
     <div class="row two" style="margin-top:12px">
       <button class="btn" id="btn-demo">Use demo intake</button>
-      <button class="btn primary" id="btn-start">Start</button>
+      <button class="btn primary" id="btn-start">Begin</button>
     </div>
     <p class="note" id="intake-err"></p>
   </div>
   <p class="note">Nury drafts. You decide. Nothing reaches the family unless you send it. Nury is an AI assistant. It is not a lawyer, pastor, counselor, or therapist.</p>
 </section>
-
-<section id="v-protect" class="hidden">
+<section id="v-protect" class="hidden narrow">
   <button class="back" id="back-protect">&larr; Back to the call</button>
   <div class="card"><h2>Protect names</h2>
     <p class="note" style="margin:0">Nury hides these names from the AI service. You still see them. Tick every person you want protected. Places stay in the text on purpose.</p>
     <div class="terms" id="terms" role="group" aria-label="Names to protect"></div>
     <p class="note hidden" id="no-terms">No names found. Add any you want protected.</p>
     <div class="addrow"><input id="add-term" placeholder="Add a name" aria-label="Add a name to protect"><select id="add-kind" aria-label="Kind"><option value="person">Person</option><option value="place">Place</option></select><button class="btn" id="b-add">Add</button></div>
-    <div class="row two" style="margin-top:14px"><button class="btn" id="b-protect-back">Back</button><button class="btn primary" id="b-protect-go">Start</button></div>
+    <div class="row two" style="margin-top:14px"><button class="btn" id="b-protect-back">Back</button><button class="btn primary" id="b-protect-go">Begin</button></div>
     <p class="note" id="protect-err"></p></div>
   <p class="note">Phone numbers, emails, addresses, dates and ID numbers are always protected. Nury is an AI assistant.</p>
 </section>
-
-<section id="v-pipe" class="hidden">
-  <button class="back" id="back-pipe">&larr; All crises</button>
+<section id="v-pipe" class="hidden narrow">
+  <button class="back" id="back-pipe">&larr; Home</button>
   <div class="steps" id="steps"></div>
   <p class="stage-of" id="stage-of"></p>
   <div id="strip" class="strip busy" role="status" aria-live="polite"><span class="dot" id="dot"></span><span id="strip-text"></span><span class="elapsed" id="elapsed"></span></div>
@@ -213,12 +521,24 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
   </div>
   <div class="card hidden" id="halt"><h2>I'll handle this manually.</h2><p class="note" id="halt-msg"></p>
     <div id="halt-src" class="hidden"><p class="note" style="margin-bottom:4px">Vetted sources you can use by hand:</p><div id="halt-src-list" class="plain"></div></div>
-    <button class="btn" id="b-new1">Start over</button></div>
+    <button class="btn" id="b-new1">Try again</button></div>
   <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
 </section>
-
-<section id="v-case" class="hidden">
-  <button class="back" id="back-case">&larr; All crises</button>
+<section id="v-pkg" class="hidden narrow">
+  <div class="bar">
+    <p class="note"><b>Package ready.</b> Nury never sends anything. You do.</p>
+    <div class="row two"><button class="btn primary" id="b-copyall">Copy all</button><button class="btn" id="b-download">Download</button></div>
+  </div>
+  <div class="card"><button class="btn" id="b-save" style="min-height:56px">Save to case file</button>
+    <div class="saved hidden" id="saved" role="status"></div>
+    <p class="note" id="save-err" style="margin:8px 0 0"></p></div>
+  <div class="card hidden" id="map-card"><h2>Next steps</h2><img class="mapimg" id="map-img" alt="Next steps map: tonight, this week, questions still open, who to call"></div>
+  <div id="pkg"></div>
+  <button class="btn" id="b-new2">New case</button>
+  <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
+</section>
+<section id="v-case" class="hidden narrow">
+  <button class="back" id="back-case">&larr; Cases</button>
   <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
     <div class="vers hidden" id="case-vers" role="group" aria-label="Versions"></div>
     <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
@@ -240,28 +560,53 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
   <div class="card"><div id="case-page" class="plain"></div></div>
   <p class="note">Read-only.</p>
 </section>
-
-<section id="v-compare" class="hidden">
+<section id="v-compare" class="hidden narrow">
   <button class="back" id="back-compare">&larr; Back to the case</button>
   <div class="card"><h2 id="cmp-title">Compare versions</h2><p class="note" style="margin:0" id="cmp-sub"></p>
     <div class="chips" id="cmp-chips" role="tablist" style="margin-top:10px"></div></div>
   <div class="card"><div id="cmp-body"></div></div>
 </section>
 
-<section id="v-pkg" class="hidden">
-  <div class="bar">
-    <p class="note"><b>Package ready.</b> Nury never sends anything. You do.</p>
-    <div class="row two"><button class="btn primary" id="b-copyall">Copy all</button><button class="btn" id="b-download">Download</button></div>
-  </div>
-  <div class="card"><button class="btn" id="b-save" style="min-height:56px">Save to case file</button>
-    <div class="saved hidden" id="saved" role="status"></div>
-    <p class="note" id="save-err" style="margin:8px 0 0"></p></div>
-  <div class="card hidden" id="map-card"><h2>Next steps</h2><img class="mapimg" id="map-img" alt="Next steps map: tonight, this week, questions still open, who to call"></div>
-  <div id="pkg"></div>
-  <button class="btn" id="b-new2">New case</button>
-  <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
-</section>
 </main>
+<div class="startbar" id="startbar">
+  <button class="cta primary" type="button" id="startbar-btn" data-begin>Begin the response</button>
+  <small>About a minute of drafting. You approve each stage.</small>
+</div>
+
+<dialog class="sheet" id="about" aria-labelledby="about-t">
+  <div class="sheet-h"><h2 id="about-t">How this was made</h2><button class="iconbtn" style="margin-left:0" type="button" data-close aria-label="Close"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button></div>
+  <div class="sheet-b nv">
+    <p class="muted" style="margin-bottom:18px">Nury has one job: help a solo pastor in the first hours of a crisis. Here is what is under it, in plain words.</p>
+    <ol class="proof">
+      <li data-claims="1"><h3>Gloo AI Studio and Claude Sonnet 4.6</h3><p>Every draft goes through Gloo AI Studio's guarded endpoint, using Claude Sonnet 4.6.</p></li>
+      <li data-claims="16,17,18,19"><h3>Tokens, not names</h3><p>Before anything reaches the model, the names you protect, phone numbers, emails, addresses, dates and ID numbers become tokens. The real words come back when the draft returns.</p><p class="lim">This removes direct identifiers only. Context can still hint at who someone is, so check your list of protected names.</p></li>
+      <li data-claims="4,5,6"><h3>14 named checks, then 3 tries</h3><p>Every draft passes 14 named checks and a floor of safety rules. If a draft fails, Nury sends back the reasons, not the draft, and tries again. After three tries it stops and hands the work to you. You never see a rejected draft.</p></li>
+      <li data-claims="3"><h3>Nury sends nothing</h3><p>Nury has no way to email, text or post. The only call that leaves Nury goes to Gloo.</p></li>
+      <li data-claims="25,32,35,36,40"><h3>How we test it</h3><p>Typed judges from Jev answer fixed questions about each run. They are used for testing only, never inside Nury. A red team of three models from other makers (GPT-5.4, Gemini 3.1 Pro and Llama 4 Maverick, through Gloo) reads what a pastor would see. The red team advises. People review what is flagged.</p></li>
+      <li data-claims="10"><h3>A crisis is a folder</h3><p>Each crisis is data: its own prompts, reviewed sources and stages. New crises plug into the same engine and the same safety rules.</p></li>
+      <li data-claims="19,43"><h3>What we have not done yet</h3><p class="lim">No pastor outside our team has used Nury. Every family in testing is made up. No native Spanish speaker has scored the Spanish. Saved cases are not encrypted and there is no sign-in yet. Our scored runs are not fully reviewed by people yet, so we claim no pass rate.</p></li>
+    </ol>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="settings" aria-labelledby="set-t">
+  <div class="sheet-h"><h2 id="set-t">Settings</h2><button class="iconbtn" style="margin-left:0" type="button" data-close aria-label="Close"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button></div>
+  <div class="sheet-b nv">
+    <fieldset class="seg"><legend>Display</legend>
+      <label><input type="radio" name="th" value="dark"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-moon"/></svg>Night</span></label>
+      <label><input type="radio" name="th" value="light"><span><svg class="i" aria-hidden="true" focusable="false"><use href="#i-sun"/></svg>Day</span></label>
+    </fieldset>
+    <button class="cta block" type="button" id="settings-about"><svg class="i" aria-hidden="true" focusable="false"><use href="#i-build"/></svg>About this build</button>
+  </div>
+</dialog>
+
+<dialog class="sheet" id="leave" aria-labelledby="leave-t">
+  <div class="sheet-h"><h2 id="leave-t">Leave this response?</h2></div>
+  <div class="leave-b nv"><p class="muted">What you have not saved will be lost. Nothing was sent.</p>
+    <button class="cta primary block" type="button" id="leave-stay">Stay</button>
+    <button class="cta block" type="button" id="leave-go">Leave without saving</button></div>
+</dialog>
+
 <script>
 const $=id=>document.getElementById(id);
 const LANG={es:"Spanish",en:"English",pt:"Portuguese",fr:"French"};
@@ -291,47 +636,163 @@ function fmt(el,text){
 }
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
-function applyTheme(t){const light=t==="light";document.documentElement.dataset.theme=light?"light":"dark";const b=document.getElementById("theme");
-  if(b){b.textContent=light?"Night":"Day";b.setAttribute("aria-pressed",String(light));b.setAttribute("aria-label",light?"Switch to night mode":"Switch to day mode")}}
-applyTheme(document.documentElement.dataset.theme);
-document.getElementById("theme").onclick=()=>{const n=document.documentElement.dataset.theme==="light"?"dark":"light";applyTheme(n);try{localStorage.setItem("nury-theme",n)}catch(e){}};
+function applyTheme(t){document.documentElement.dataset.theme=t==="light"?"light":"dark"}
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-select","v-detail","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const VIEWS=["v-home","v-cases","v-crisis","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"],NEWV=["v-home","v-cases","v-crisis"];
+const TASKV=["v-crisis","v-intake","v-protect","v-pipe","v-pkg"],NAVOF={"v-home":"home","v-cases":"cases","v-case":"cases","v-compare":"cases"};
+function show(v){VIEWS.forEach(x=>{const el=$(x);if(NEWV.includes(x))el.hidden=x!==v;else el.classList.toggle("hidden",x!==v)});
+  document.body.classList.toggle("task",TASKV.includes(v));document.body.dataset.view=v.replace("v-","");
+  document.querySelectorAll("[data-nav]").forEach(a=>{if(a.dataset.nav===NAVOF[v])a.setAttribute("aria-current","page");else a.removeAttribute("aria-current")});
+  window.scrollTo(0,0)}
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   try{return await r.json()}catch(e){return{error:`The server did not answer properly (HTTP ${r.status}).`}}
 }
-let pbs=[],pb=null;
-const CHEV='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
-async function loadSelect(){
-  show("v-select");$("select-err").textContent="";NAV=null;loadCases();
-  api("/api/features").then(f=>$("net-link").classList.toggle("hidden",!f.network)).catch(()=>{});
-  try{pbs=(await api("/api/playbooks")).playbooks}catch(e){$("select-err").textContent="Could not load the crisis list. Check that the server is running.";return}
-  $("picks").replaceChildren(...pbs.map(p=>{
-    const live=p.status==="live",el=document.createElement(live?"button":"div");
-    el.className="pick"+(live?"":" soon");
-    const wrap=document.createElement("span");
-    const t=document.createElement("span");t.className="t";t.textContent=p.title;wrap.append(t);
-    if(live){const d=document.createElement("span");d.className="d";d.textContent=p.description;wrap.append(d);
-      el.append(wrap);el.insertAdjacentHTML("beforeend",CHEV);el.onclick=()=>detail(p)}
-    else{el.setAttribute("aria-disabled","true");const tag=document.createElement("span");tag.className="tag";tag.textContent="Coming soon";el.append(wrap,tag)}
-    return el}));
-}
 const svgUrl=svg=>"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
 const nice=iso=>{try{return new Date(iso).toLocaleString([],{dateStyle:"medium",timeStyle:"short"})}catch(e){return iso}};
-async function loadCases(){
-  let cs=[];try{cs=(await api("/api/cases")).cases||[]}catch(e){}
-  $("cases").classList.toggle("hidden",!cs.length);
-  $("cases-list").replaceChildren(...cs.map(c=>{const b=document.createElement("button");b.className="crow";
-    const w=document.createElement("span");const t=document.createElement("span");t.className="t";t.textContent=c.title||c.id;
-    const d=document.createElement("span");d.className="d";d.textContent=`${c.playbook} \u00b7 ${nice(c.created)}`;w.append(t,d);b.append(w);
-    b.insertAdjacentHTML("beforeend",CHEV);b.querySelector("svg").style.cssText="margin-left:auto;color:var(--amber-text);flex:none";
-    b.onclick=()=>openCase(c.id);return b}));
-}
+/* ===== shell: data, routing, home, cases, crisis detail, sheets ===== */
+const LANGNAME={es:"Spanish",en:"English"};
+function h(tag,props,...kids){const e=document.createElement(tag);
+  if(props)for(const[k,v]of Object.entries(props)){if(v==null||v===false)continue;if(k==="class")e.className=v;else e.setAttribute(k,v===true?"":v)}
+  kids.flat().forEach(k=>{if(k==null||k===false)return;e.append(k.nodeType?k:document.createTextNode(k))});return e}
+function svgEl(cls,id,label){const t=document.createElement("template");
+  t.innerHTML=`<svg class="${cls}" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;return t.content.firstChild}
+const ic=(n,c)=>svgEl("i"+(c?" "+c:""),n);
+const sceneEl=id=>svgEl("scene",id);
+let pbs=[],pb=null,CASES=[],FEATURES={},filt={q:"",crisis:"all",status:"all"},shown=20;
+async function loadData(){
+  const [p,c,f]=await Promise.all([api("/api/playbooks"),api("/api/cases"),api("/api/features")]);
+  pbs=(p&&p.playbooks)||[];CASES=(c&&c.cases)||[];FEATURES=f||{};
+  const err=$("load-err");err.hidden=!!(p&&p.playbooks);
+  if(!p||!p.playbooks)err.textContent="Could not load the crisis list. Check that the server is running.";
+  return !!(p&&p.playbooks)}
+function relTime(iso){if(!iso)return"";const d=new Date(iso);if(isNaN(d))return"";const m=Math.round((Date.now()-d)/60000);
+  if(m<1)return"just now";if(m<60)return m+" min ago";const hr=Math.round(m/60);if(hr<24)return hr+" h ago";
+  const dd=Math.round(hr/24);if(dd===1)return"yesterday";if(dd<7)return dd+" days ago";return"on "+d.toLocaleDateString([],{month:"short",day:"numeric"})}
+const crisisInfo=c=>{const p=pbs.find(x=>x.id===c.playbook)||{},d=p.detail||{};return{title:p.title||c.playbook,short:d.short||p.title||c.playbook,icon:d.icon||"i-lantern"}};
+function families(){const m=new Map();CASES.forEach(c=>{const g=m.get(c.family_id);if(!g||c.version>g.version)m.set(c.family_id,c)});
+  return [...m.values()].sort((a,b)=>(Number(b.followup)-Number(a.followup))||(a.iso<b.iso?1:a.iso>b.iso?-1:0))}
+const matchStatus=(c,s)=>s==="all"||(s==="follow"&&c.followup)||(s==="v2"&&c.version_count>1);
+function chipsFor(c){const s=h("span",{class:"scs"});
+  const add=(cls,icon,t)=>s.append(h("span",{class:"sc "+cls},ic(icon),t));
+  add("s-saved","i-check","Saved");if(c.version_count>1)add("s-v2","i-v2","Version "+c.version);if(c.followup)add("s-follow","i-flag","Needs follow-up");return s}
+function mkCase(c){const k=crisisInfo(c);
+  return h("li",null,h("a",{class:"case",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
+    h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta"},`${k.short} · saved ${relTime(c.iso)}`),chipsFor(c)),
+    h("span",{class:"go"},h("span",{class:"gl"},"Open"),ic("i-chev"))))}
+function mkRow(c){const k=crisisInfo(c);
+  return h("li",null,h("a",{class:"lrow",href:"#/case/"+encodeURIComponent(c.id)},h("span",{class:"tile"},ic(k.icon)),
+    h("span",{class:"cbody"},h("span",{class:"ct"},c.summary||k.title),h("span",{class:"meta",style:"margin-bottom:0"},k.title)),chipsFor(c),
+    h("time",{class:"when",datetime:c.iso},"saved "+relTime(c.iso)),ic("i-chev","chev")))}
+function renderPicks(){$("picks").replaceChildren(...pbs.map(p=>{const live=p.status==="live",d=p.detail||{},icon=d.icon||"i-lantern";
+  if(live)return h("a",{class:"pk",href:"#/crisis/"+p.id},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title),h("span",{class:"d"},d.card||p.description)),ic("i-chev","c"));
+  return h("div",{class:"pk soon"},h("span",{class:"tile lg"},ic(icon)),h("span",null,h("span",{class:"t"},p.title)),h("span",{class:"sc tag"},"Coming soon"))}))}
+function renderHome(){const fam=families(),n=fam.length;
+  $("home").classList.toggle("has-cases",n>0);
+  $("h-home").textContent=n?"Welcome back.":"Nury is ready.";
+  $("hero-sub").textContent=n?"Pick up a case, or respond to a new one. Nury drafts. You decide.":"When a family calls, respond here. Nury drafts. You decide. Nury never sends anything.";
+  $("cont-list").replaceChildren(...fam.slice(0,3).map(mkCase));
+  $("first-run").hidden=n>0;$("see-all").hidden=n===0;$("cont-list").hidden=n===0;
+  $("h-cont").textContent=n?"Continue where you left off":"Your cases will wait here";
+  $("see-all").textContent=n>3?`See all ${n} cases`:"All cases";
+  $("stats").hidden=n<=3;
+  if(n>3)$("stats-grid").replaceChildren(...[["all","All"],["follow","Needs follow-up"],["v2","Version 2"]].map(([k,l])=>
+    h("a",{class:"stat",href:"#/cases/"+k},h("b",null,String(fam.filter(c=>matchStatus(c,k)).length)),h("span",null,l))));
+  renderPicks()}
+function renderCases(){const fam=families(),n=fam.length;
+  $("cases-empty").hidden=n>0;$("cases-body").hidden=n===0;if(!n)return;
+  const ids=[...new Set(fam.map(c=>c.playbook))];
+  $("f-crisis").replaceChildren(...[["all","All"],...ids.map(id=>[id,crisisInfo({playbook:id}).short])].map(([v,l])=>
+    h("button",{type:"button","data-v":v,"aria-pressed":String(v===filt.crisis)},l)));
+  document.querySelectorAll("#f-status button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.v===filt.status)));
+  const q=filt.q.trim().toLowerCase();
+  const list=fam.filter(c=>(filt.crisis==="all"||c.playbook===filt.crisis)&&matchStatus(c,filt.status)&&(!q||((c.summary||"")+" "+crisisInfo(c).title).toLowerCase().includes(q)));
+  $("rows").replaceChildren(...list.slice(0,shown).map(mkRow));$("rows").hidden=!list.length;$("no-match").hidden=list.length>0;
+  $("more").hidden=list.length<=shown;$("more").textContent=`Show ${Math.min(20,list.length-shown)} more`;
+  $("count").textContent=list.length===n?(n===1?"1 case":n+" cases"):`${list.length} of ${n} cases shown`}
+function showCrisis(id){const p=pbs.find(x=>x.id===id&&x.status==="live");if(!p){go("#/");return}
+  pb=p;show("v-crisis");document.title=p.title+", Nury";
+  const d=p.detail||{},st=p.stages||[],n=st.length,ds=d.stages||[];
+  const langs=(p.languages||[]).map(l=>LANGNAME[l]||l).join(" or ");
+  const never=(d.common_never||[]).map(t=>t.replace("{domain}",d.domain||"legal or medical"));if(d.never_extra)never.push(d.never_extra);
+  const rail=h("ol",{class:"rail","aria-label":`The ${n} stages`}),flow=h("ol",{class:"flow"});
+  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-protect")),h("div",{class:"capcard"},h("h3",null,"First, you and Nury get ready"),
+    h("p",null,"You type what the family said, in your own words, and pick the family’s language. Nury proposes names to protect. You tick the ones to hide. Tokens, not names, go to the model."))));
+  st.forEach((s,i)=>{const x=ds[i]||{},title=s.title,icon=x.icon||"i-triage";
+    rail.append(h("li",{class:"n"},h("a",{href:"#s"+(i+1),"aria-label":`Stage ${i+1}, ${title}`},ic(icon)),h("span",null,x.short||title)));
+    if(i<n-1)rail.append(h("li",{class:"g","aria-hidden":"true"},ic("i-gate")));
+    flow.append(h("li",{class:"st",id:"s"+(i+1)},h("span",{class:"node"},ic(icon)),h("div",{class:"nvcard"},h("p",{class:"step2"},`Stage ${i+1} of ${n}`),h("h3",null,title),
+      h("div",{class:"two"},h("div",null,h("h4",null,"Nury produces"),h("p",null,x.makes||s.line)),h("div",null,h("h4",null,"You decide"),h("p",null,x.decide||"You read it, then approve, edit or stop."))),
+      h("p",{class:"gatel"},ic("i-gate"),"Your gate: Approve, Edit or Stop"))))});
+  flow.append(h("li",null,h("span",{class:"node cap"},ic("i-save")),h("div",{class:"capcard"},h("h3",null,"Then the package is yours"),
+    h("p",null,"Copy it, download it, or save it to a case file. If something changes, record what happened. Nury drafts again as version 2 and keeps version 1 as it was."))));
+  const blk=(id,title,...kids)=>h("section",{class:"blk","aria-labelledby":id},h("h2",{id},title),...kids);
+  const gives=(d.gives||st.map(s=>s.title)).map((g,i)=>h("li",null,h("span",{class:"tile"},ic((ds[i]||{}).icon||"i-triage")),h("span",null,h("b",null,g))));
+  gives.push(h("li",null,h("span",{class:"tile"},ic("i-save")),h("span",null,h("b",null,"A package you copy or download"),h("span",{class:"d"},"Save it to a case file and open it later."))),
+             h("li",null,h("span",{class:"tile"},ic("i-audit")),h("span",null,h("b",null,"An audit log"),h("span",{class:"d"},"Every check and every gate, with reasons only. Open it when you want."))));
+  const left=h("div",null,
+    d.covers&&blk("h-cov","What this covers",h("ul",{class:"dots"},d.covers.map(t=>h("li",null,t))),h("p",{class:"callout"},"If anyone is in immediate danger, call 911 first.")),
+    blk("h-get","What you will get",h("ul",{class:"give"},gives)),
+    blk("h-how","How it works",rail,h("p",{class:"legend"},ic("i-gate"),"Each diamond is a gate. Nothing moves on until you decide."),flow),
+    never.length&&blk("h-never","What Nury will never do",h("ul",{class:"never nvcard"},never.map(t=>h("li",null,ic("i-never"),h("span",null,t))))),
+    blk("h-time","A note on time",h("div",{class:"time"},ic("i-clock"),h("div",null,h("p",null,"Nury drafts all five stages in about a minute."),
+      h("p",null,"That is drafting only. You read each stage and decide at each gate, so the whole crisis takes as long as you need. Nury waits for you.")))),
+    h("p",{class:"sm",style:"margin:0"},h("button",{class:"linkbtn",type:"button","data-about":""},ic("i-build","sm"),"About this build")));
+  const aside=h("aside",{class:"aside","aria-label":"Begin"},h("div",{class:"nvcard"},h("h2",null,"Ready when you are"),
+    h("p",{class:"muted sm"},"You will type what the family said, then confirm the names to protect."),
+    h("button",{class:"cta primary block",type:"button","data-begin":""},"Begin the response"),h("p",{class:"muted sm"},"About a minute of drafting. You approve each stage.")));
+  $("crisis-page").replaceChildren(h("section",{class:"cband","aria-labelledby":"h1c"},
+    h("div",null,h("span",{class:"kick"},ic(d.icon||"i-lantern","sm"),"Crisis"),h("h1",{id:"h1c",tabindex:"-1",style:"margin-top:8px"},p.title),h("p",{class:"lead"},d.lead||p.description),
+      h("div",{class:"scs",style:"margin-top:12px"},h("span",{class:"sc on"},"Available now"),h("span",{class:"sc tag"},`${n} stages`),langs&&h("span",{class:"sc tag"},"Family language: "+langs))),
+    d.scene&&sceneEl(d.scene)),h("div",{class:"cols"},left,aside))}
+/* ---- routing, with a guard so unsaved work is not lost by a tap on a tab ---- */
+let allowLeave=false,lastHash=location.hash||"#/",ignoreHash=false,pendingHash=null;
+function unsaved(){const v=document.body.dataset.view;return v==="pipe"||(v==="pkg"&&$("saved").classList.contains("hidden"))}
+function go(hash){if(location.hash===hash){route(false)}else location.hash=hash}
+async function route(first){clearInterval(window.__navTimer);const hs=location.hash||"#/";let m;
+  const ok=await loadData();
+  document.querySelectorAll("#v-home,#v-cases").forEach(x=>x.hidden=true);
+  let title="Nury",hv="h-home";
+  if((m=hs.match(/^#\/crisis\/([\w-]+)$/))){showCrisis(m[1]);title=(pb?pb.title+", ":"")+"Nury";hv="h1c"}
+  else if((m=hs.match(/^#\/case\/([\w.-]+)$/))){await openCase(decodeURIComponent(m[1]));title="Case, Nury";hv=null}
+  else if(hs.startsWith("#/cases")){const s=hs.split("/")[2];filt={q:"",crisis:"all",status:["all","follow","v2"].includes(s)?s:"all"};shown=20;$("q").value="";
+    show("v-cases");renderCases();title="Your cases, Nury";hv="h-cases"}
+  else{show("v-home");renderHome();title="Nury"}
+  document.title=title;
+  if(!first&&hv){const el=$(hv);if(el){el.setAttribute("tabindex","-1");el.focus({preventScroll:true})}}}
+window.addEventListener("hashchange",()=>{
+  if(ignoreHash){ignoreHash=false;return}
+  if(unsaved()&&!allowLeave){pendingHash=location.hash;ignoreHash=true;location.hash=lastHash;openD($("leave"));return}
+  allowLeave=false;lastHash=location.hash||"#/";route(false)});
+document.addEventListener("click",e=>{
+  const a=e.target.closest('a[href^="#"]');
+  if(a){const hr=a.getAttribute("href");
+    if(hr==="#start"){e.preventDefault();$("start").scrollIntoView({behavior:"smooth"});return}
+    if(hr.startsWith("#/")){e.preventDefault();go(hr);return}
+    if(/^#s\d$/.test(hr)){e.preventDefault();const t=document.getElementById(hr.slice(1));if(t)t.scrollIntoView({behavior:"smooth"});return}}
+  if(e.target.closest("[data-begin]")&&pb){choose(pb);return}
+  if(e.target.closest("[data-about]")){openD($("about"))}});
+/* ---- sheets, settings ---- */
+function openD(d){if(d.open)return;if(d.showModal)d.showModal();else d.setAttribute("open","")}
+document.querySelectorAll("dialog.sheet").forEach(d=>{d.addEventListener("click",e=>{if(e.target===d)d.close()});
+  d.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>d.close())});
+$("open-about").onclick=()=>openD($("about"));
+$("open-settings").onclick=()=>{const t=document.documentElement.dataset.theme;document.querySelectorAll('input[name="th"]').forEach(r=>r.checked=r.value===t);openD($("settings"))};
+$("settings-about").onclick=()=>{$("settings").close();openD($("about"))};
+document.querySelectorAll('input[name="th"]').forEach(r=>r.onchange=()=>{applyTheme(r.value);try{localStorage.setItem("nury-theme",r.value)}catch(e){}});
+$("leave-stay").onclick=()=>$("leave").close();
+$("leave-go").onclick=()=>{$("leave").close();clearInterval(timer);allowLeave=true;const t=pendingHash||"#/";pendingHash=null;location.hash=t};
+/* ---- cases filters ---- */
+$("q").oninput=function(){filt.q=this.value;shown=20;renderCases()};
+$("f-crisis").onclick=e=>{const b=e.target.closest("button");if(b){filt.crisis=b.dataset.v;shown=20;renderCases()}};
+$("f-status").onclick=e=>{const b=e.target.closest("button");if(b){filt.status=b.dataset.v;shown=20;renderCases()}};
+$("clear").onclick=()=>{filt={q:"",crisis:"all",status:"all"};$("q").value="";shown=20;renderCases();$("q").focus()};
+$("more").onclick=()=>{shown+=20;renderCases()};
+
 let curCase=null,curPage="index.md";
 async function openCase(id){
   const c=await api("/api/case/"+encodeURIComponent(id));
-  if(c.error){$("select-err").textContent=c.error;return}
+  if(c.error){const e=$("load-err");e.hidden=false;e.textContent=c.error;go("#/cases");return}
   curCase=c;$("case-title").textContent=c.meta.title||c.meta.id;
   $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
@@ -341,7 +802,7 @@ async function openCase(id){
   $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
     b.textContent=n==="index.md"?"Overview":n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
   const vs=c.versions||[c.meta.id];$("case-vers").classList.toggle("hidden",vs.length<2);
-  $("case-vers").replaceChildren(...vs.map((v,i)=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent="v"+(i+1);b.setAttribute("aria-label","Version "+(i+1));b.onclick=()=>openCase(v);return b}));
+  $("case-vers").replaceChildren(...vs.map((v,i)=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent="v"+(i+1);b.setAttribute("aria-label","Version "+(i+1));b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
   $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
   show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
 }
@@ -349,7 +810,7 @@ function showPage(n){curPage=n;
   document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on)});
   fmt($("case-page"),curCase.pages[n]);window.scrollTo({top:0})}
 $("case-copy").onclick=()=>navigator.clipboard.writeText(curCase.pages[curPage]).then(()=>{$("case-copy").textContent="Copied";setTimeout(()=>$("case-copy").textContent="Copy this page",1500)});
-$("back-case").onclick=()=>{NAV=null;loadSelect()};
+$("back-case").onclick=()=>{NAV=null;go("#/cases")};
 let reviseCtx=null;
 $("b-changed").onclick=()=>{
   const lines=(curCase.pages["04-checklist.md"]||curCase.pages[Object.keys(curCase.pages).find(k=>/^04-/.test(k))]||"").split("\n")
@@ -378,14 +839,6 @@ $("b-compare").onclick=async()=>{
   $("cmp-chips").replaceChildren(...names.map(n=>{const c=document.createElement("button");c.className="chip";c.dataset.p=n;c.textContent=n.replace(/\.md$/,"").replace(/^\d+-/,"");c.onclick=()=>draw(n);return c}));
   draw(names.find(n=>d.pages[n].some(l=>l.t!=="same"))||names[0]);show("v-compare")};
 $("back-compare").onclick=()=>show("v-case");
-function detail(p){
-  pb=p;$("d-title").textContent=p.title;$("d-desc").textContent=p.description||"";
-  $("d-steps").replaceChildren(...(p.stages||[]).map((s,i)=>{const li=document.createElement("li");
-    const n=document.createElement("span");n.className="n";n.textContent=i+1;n.setAttribute("aria-hidden","true");
-    const w=document.createElement("span");const t=document.createElement("span");t.className="t";t.textContent=s.title;
-    const l=document.createElement("span");l.className="l";l.textContent=s.line;w.append(t,l);li.append(n,w);return li}));
-  $("d-start").onclick=()=>choose(p);show("v-detail");window.scrollTo({top:0})}
-$("back-detail").onclick=()=>loadSelect();
 function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
@@ -393,8 +846,8 @@ function choose(p){
   $("intake-err").textContent="";show("v-intake");
 }
 $("btn-demo").onclick=()=>{$("intake").value=pb.demo_intake;$("demo").checked=true};
-$("back-intake").onclick=()=>detail(pb);
-$("back-pipe").onclick=()=>{clearInterval(timer);sid=null;loadSelect()};
+$("back-intake").onclick=()=>go("#/crisis/"+pb.id);
+$("back-pipe").onclick=()=>go("#/");
 let termList=[];
 function drawTerms(){
   $("no-terms").classList.toggle("hidden",termList.length>0);
@@ -427,8 +880,8 @@ async function startRun(protectedList){
   if(r.error){const e=protectedList?$("protect-err"):$("intake-err");e.textContent=r.error;return}
   sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
 }
-const reset=()=>{clearInterval(timer);sid=null;loadSelect()};
-$("b-new1").onclick=reset;$("b-new2").onclick=reset;
+$("b-new1").onclick=()=>{clearInterval(timer);sid=null;show("v-intake")};      // Try again: the same words, ready to begin again
+$("b-new2").onclick=()=>{clearInterval(timer);sid=null;allowLeave=true;go("#/")};
 const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
 $("b-approve").onclick=()=>{lock();decide("approve")};
 $("b-stop").onclick=()=>{lock();decide("stop")};
@@ -484,7 +937,7 @@ async function poll(){
       if(!r||r.error||!r.id){er.setAttribute("role","alert");er.textContent=(r&&r.error)||"Could not save. Try again.";btn.disabled=false;er.scrollIntoView({block:"center",behavior:"smooth"});return}
       btn.textContent="Saved";sv.replaceChildren();
       const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`Saved as ${r.id}${vm?` (version ${vm[1]}, beside the earlier version)`:""}. Nothing was sent to anyone. `));
-      const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a);
+      const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>{allowLeave=true;go("#/case/"+encodeURIComponent(r.id))};a.onkeydown=e=>{if(e.key==="Enter")a.onclick()};sv.append(a);
       sv.classList.remove("hidden");sv.scrollIntoView({block:"center",behavior:"smooth"})};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
@@ -507,7 +960,7 @@ async function poll(){
     const cur=s.stages.find(x=>x.status==="working")||s.stages.find(x=>x.status==="pending");
     $("work-title").textContent=cur?cur.title:"Working"}
 }
-loadSelect();
+route(true);
 </script>
 </body>
 </html>

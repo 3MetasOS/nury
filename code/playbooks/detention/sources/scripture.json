@@ -35,7 +35,8 @@
    "words_en": 12,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/PSA046.htm",
-   "source_url_en": "https://ebible.org/eng-web/PSA046.htm"
+   "source_url_en": "https://ebible.org/eng-web/PSA046.htm",
+   "usfm": "PSA.46.1"
   },
   {
    "source_id": "scr-psa34-18",
@@ -53,7 +54,8 @@
    "words_en": 18,
    "review_note": "Contains 'saves' (salvará). Read as nearness to the broken-hearted, not rescue from the case. Juan: decide.",
    "source_url_es": "https://ebible.org/spaRV1909/PSA034.htm",
-   "source_url_en": "https://ebible.org/eng-web/PSA034.htm"
+   "source_url_en": "https://ebible.org/eng-web/PSA034.htm",
+   "usfm": "PSA.34.18"
   },
   {
    "source_id": "scr-psa23-4",
@@ -72,7 +74,8 @@
    "words_en": 30,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/PSA023.htm",
-   "source_url_en": "https://ebible.org/eng-web/PSA023.htm"
+   "source_url_en": "https://ebible.org/eng-web/PSA023.htm",
+   "usfm": "PSA.23.4"
   },
   {
    "source_id": "scr-isa41-10",
@@ -90,7 +93,8 @@
    "words_en": 38,
    "review_note": "Contains 'I will help you' (siempre te ayudaré). Presence and strength; no outcome of the case. Juan: decide.",
    "source_url_es": "https://ebible.org/spaRV1909/ISA41.htm",
-   "source_url_en": "https://ebible.org/eng-web/ISA41.htm"
+   "source_url_en": "https://ebible.org/eng-web/ISA41.htm",
+   "usfm": "ISA.41.10"
   },
   {
    "source_id": "scr-jos1-9",
@@ -108,7 +112,8 @@
    "words_en": 24,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/JOS01.htm",
-   "source_url_en": "https://ebible.org/eng-web/JOS01.htm"
+   "source_url_en": "https://ebible.org/eng-web/JOS01.htm",
+   "usfm": "JOS.1.9"
   },
   {
    "source_id": "scr-deu31-6",
@@ -126,7 +131,8 @@
    "words_en": 29,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/DEU31.htm",
-   "source_url_en": "https://ebible.org/eng-web/DEU31.htm"
+   "source_url_en": "https://ebible.org/eng-web/DEU31.htm",
+   "usfm": "DEU.31.6"
   },
   {
    "source_id": "scr-mat11-28",
@@ -143,7 +149,8 @@
    "words_en": 17,
    "review_note": "'I will give you rest' (yo os haré descansar). Rest for the weary, not an outcome. Juan: decide.",
    "source_url_es": "https://ebible.org/spaRV1909/MAT11.htm",
-   "source_url_en": "https://ebible.org/eng-web/MAT11.htm"
+   "source_url_en": "https://ebible.org/eng-web/MAT11.htm",
+   "usfm": "MAT.11.28"
   },
   {
    "source_id": "scr-php4-6-7",
@@ -162,7 +169,8 @@
    "words_en": 40,
    "review_note": "'The peace of God will guard your hearts'. Peace, not an outcome. Juan: decide.",
    "source_url_es": "https://ebible.org/spaRV1909/PHP04.htm",
-   "source_url_en": "https://ebible.org/eng-web/PHP04.htm"
+   "source_url_en": "https://ebible.org/eng-web/PHP04.htm",
+   "usfm": "PHP.4.6-7"
   },
   {
    "source_id": "scr-1pe5-7",
@@ -180,7 +188,8 @@
    "words_en": 11,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/1PE05.htm",
-   "source_url_en": "https://ebible.org/eng-web/1PE05.htm"
+   "source_url_en": "https://ebible.org/eng-web/1PE05.htm",
+   "usfm": "1PE.5.7"
   },
   {
    "source_id": "scr-rom8-38-39",
@@ -198,7 +207,8 @@
    "words_en": 47,
    "review_note": "",
    "source_url_es": "https://ebible.org/spaRV1909/ROM08.htm",
-   "source_url_en": "https://ebible.org/eng-web/ROM08.htm"
+   "source_url_en": "https://ebible.org/eng-web/ROM08.htm",
+   "usfm": "ROM.8.38-39"
   }
  ]
 }

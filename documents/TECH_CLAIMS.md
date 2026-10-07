@@ -13,7 +13,7 @@ Status words:
 |---|---|---|---|---|
 | 1 | Every model call goes through Gloo AI Studio's guarded Responses endpoint, using Claude Sonnet 4.6. | `code/nury/gloo_client.py` (POST `/ai/v2/guarded/responses`, model `gloo-anthropic-claude-sonnet-4.6`); first live call in `BUILD_LOG.md` entry 3; every run since. | VERIFIED live | 1 endpoint, 5 Gloo calls for a full package; first call 1.6 s |
 | 2 | When Gloo's guardrails block a request (HTTP 403), Nury treats it as a failed try, regenerates, and after three tries escalates with no draft shown. | `GuardrailBlock` in `gloo_client.py`; handling in `engine.run_stage`; tests `GloLayer` (2 tests) in `code/tests/test_core.py`. No live 403 has happened, so this is proven by test only. | VERIFIED offline test | 3 attempts, then outcome `blocked` |
-| 3 | There is no send path. The only outbound call in the product is the Gloo request. | Test `NoSendPath` scans `code/nury` and `code/app` for mail, FTP, socket, web-browser and SMS libraries and finds none; `requests` is used in one file. | VERIFIED offline test | 1 outbound call site, 0 send paths |
+| 3 | There is no send path. The product's outbound calls are the Gloo request and, only when YVP_APP_KEY is set, a passage-id request to YouVersion (Scripture text). Neither can send anything to the family. | Test `NoSendPath` scans `code/nury` and `code/app` for mail, FTP, socket, web-browser and SMS libraries and finds none; `requests` is used in one file. | VERIFIED offline test | 1 outbound call site, 0 send paths |
 
 ## 2. The correction loop and the safety floor
 
@@ -100,6 +100,8 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 47 | The choice is per case. Two different cases can get different verses, and if none fits no verse is added. | `tests/test_scripture.py` (a scripted model, not a live one) | VERIFIED offline test; live PENDING. Whether a live model matches verse to case well is NOT measured | n/a |
 
 | 48 | Three more deterministic checks come from the red-team panel: the pastor's voice never writes 'call <Name>'; a hospital or detention DO NOT line about signing needs a vetted point, and a hospital line may not direct a care decision; triage carries no advice and no claim about what is critical. | `checks.no_name_after_call`, `do_not_directives`, `triage_facts_only`; `tests/test_panel_fixes.py` (13 tests, each uses the panel's own sentence) | VERIFIED offline test; live PENDING | 13 tests |
+
+| 49 | The verse text comes from a pluggable provider: the verified bank (default, public domain, offline) or YouVersion Platform (only when YVP_APP_KEY is set). The text inserted is the text the provider returned, shown with the version name and copyright. If YouVersion fails, is unavailable for the version, lacks attribution or is over the cap, Nury falls back to the bank and logs it. The only things sent to YouVersion are a passage id such as PSA.46.1 and a version id. Nothing is cached. | `code/nury/scripture_providers.py`; `tests/test_scripture.py` (9 provider tests, a stub for YouVersion) | VERIFIED offline with a stub; the real YouVersion service has NOT been called. Its cache rules and rate limits were not found in the public docs and must be checked when the key exists | 6 failure modes tested |
 
 ## 7. Cost and speed
 

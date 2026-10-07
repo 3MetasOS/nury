@@ -11,6 +11,7 @@ import threading
 import uuid
 import urllib.parse
 import difflib
+import textwrap
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -154,7 +155,7 @@ def cases_overview():
         ver = 1 if c["id"] == fam else int(c["id"].rsplit("-v", 1)[1])
         out.append({"id": c["id"], "family_id": fam, "playbook": c["playbook"], "title": c.get("title") or meta.get("title") or c["id"],
                     "created": c.get("created"), "iso": _iso(c.get("created")), "version": ver, "status": "saved",
-                    "followup": bool(meta.get("needs_follow_up")), "summary": (m.group(1).strip()[:110] if m else "")})
+                    "followup": bool(meta.get("needs_follow_up")), "summary": (textwrap.shorten(m.group(1).strip(), width=110, placeholder="\u2026") if m else "")})
     counts = {}
     for c in out:
         counts[c["family_id"]] = max(counts.get(c["family_id"], 1), c["version"])
@@ -177,7 +178,11 @@ def playbooks():
         p["stages"] = stage_lines(p["id"]) if p["status"] == "live" else []
         det = crisis_detail()
         p["detail"] = dict(det["playbooks"].get(p["id"], {}), common_never=det.get("common_never", [])) if p["id"] in det["playbooks"] else None
-        p["languages"] = (json.loads((PLAYBOOKS_DIR / p["id"] / "playbook.json").read_text(encoding="utf-8")).get("languages", []) if (PLAYBOOKS_DIR / p["id"] / "playbook.json").is_file() else [])
+        pj_file = PLAYBOOKS_DIR / p["id"] / "playbook.json"
+        pj = json.loads(pj_file.read_text(encoding="utf-8")) if pj_file.is_file() else {}
+        langs = pj.get("languages", [])
+        dflt = pj.get("default_family_language")
+        p["languages"] = sorted(langs, key=lambda l: (l != dflt, l))   # the family's default language first
         demo = intake.get("demo")
         if demo:
             p["demo_intake"] = demo

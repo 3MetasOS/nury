@@ -110,7 +110,8 @@ def for_language(bank, lang):
         if v.get(f"text_{lang}") and v.get(f"reference_{lang}"):
             out.append({"id": v["id"], "reference": v[f"reference_{lang}"], "text": v[f"text_{lang}"],
                         "translation": v.get(f"translation_{lang}", ""),
-                        "themes_text": ", ".join(v["themes"]), "origin": v.get("origin", "playbook")})
+                        "themes_text": ", ".join(v["themes"]), "origin": v.get("origin", "playbook"),
+                        "usfm": v.get("usfm", ""), "copyright": v.get(f"copyright_{lang}", "")})
     return out
 
 
@@ -129,6 +130,8 @@ def list_verses(pb, lang, church_root=None, church=True):
 def block(v):
     """The verse block, exactly as the source gives it."""
     ref = f"{v['reference']}, {v['translation']}" if v.get("translation") else v["reference"]
+    if v.get("copyright"):
+        ref += f". {v['copyright']}"
     return f"«{v['text']}»\n— {ref}"
 
 

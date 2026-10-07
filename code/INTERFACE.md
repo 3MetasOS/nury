@@ -170,7 +170,9 @@ scr.SCRIPTURE_NOTE                   # "The verse is Scripture, quoted exactly. 
 result.scripture                     # {"id","reference","translation"} or None;  result.note is SCRIPTURE_NOTE when a verse is in the draft
 ```
 
-The draft is: the message, then `«exact text»` and `— reference, translation`, then the why-lines. `scr.strip_block(text)` returns Nury's own sentences without the verse block: judges and wording checks should look at that, not the quoted verse. Only verses whose `approvals.json` status is `approved` are offered. Church verses go in `network/scripture.json` (need `source_url`, `license`, `translation_es` or `_en`, an id that starts with `church-`, `approved: true`). The audit log gets one `scripture` event with the verse id only.
+The draft is: the message, then `«exact text»` and `— reference, translation`, then the why-lines. `scr.strip_block(text)` returns Nury's own sentences without the verse block: judges and wording checks should look at that, not the quoted verse. Only verses whose `approvals.json` status is `approved` are offered. Church verses go in `network/scripture.json` (need `source_url`, `license`, `translation_es` or `_en`, an id that starts with `church-`, `approved: true`). The audit log gets one `scripture` event with the verse id and the provider (`bank` or `youversion`), and a `scripture_fallback` event with the reasons when YouVersion failed.
+
+Providers (`nury/scripture_providers.py`): `get_passage(entry, lang) -> {id, reference, text, translation, copyright, source}`. The bank is the default and the fallback. Set `YVP_APP_KEY` plus `YVP_BIBLE_ES` and `YVP_BIBLE_EN` (version ids Juan picks) to put YouVersion first. Only a passage id (`PSA.46.1`) and a version id leave the app. Nothing is cached. `run_stage(..., scripture_providers=[...])` injects a chain in tests. `swap_verse` takes a bank entry; it does not call a provider.
 
 ## Rules the seam enforces
 

@@ -14,6 +14,7 @@ from .audit import AuditLog
 from .gloo_client import GlooClient, GuardrailBlock
 from . import playbook as pbm
 from . import scripture as scr
+from . import scripture_providers as scrp
 from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
@@ -151,7 +152,7 @@ def _fault_for(stage_id, fault_injection):
 def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: Optional[GlooClient] = None,
               audit: Optional[AuditLog] = None, provoke: Optional[dict] = None,
               fault_injection: Optional[dict] = None, playbook=None,
-              skills: Optional[bool] = None) -> StageResult:
+              skills: Optional[bool] = None, scripture_providers=None) -> StageResult:
     """Draft one stage, check it, correct it (max 3 attempts), then ask the gate.
 
     gate(result) -> GateDecision. The gate only sees safe drafts and no `attempts`.
@@ -253,6 +254,9 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
             parts, violations = scr.parse_output(text, verses)
             if parts:
                 violations = all_violations(parts["own"])
+                if not violations and parts["verse"]:
+                    got = _fetch_verse(parts["verse"], lang, scripture_providers, ctx_ns, audit, stage_id)
+                    parts = dict(parts, verse=got)
                 if not violations:
                     violations = CHECKS["verse_block_verbatim"]({}, scr.assemble(parts), ctx_ns)
         else:
@@ -268,7 +272,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
                 v = parts["verse"]
                 rec.scripture = {"id": v["id"], "reference": v["reference"], "translation": v["translation"]} if v else None
                 rec.note = scr.SCRIPTURE_NOTE if v else ""
-                audit.log("scripture", stage=stage_id, verse=v["id"] if v else "NONE")
+                audit.log("scripture", stage=stage_id, verse=v["id"] if v else "NONE", provider=v["source"] if v else "none")
             break
         audit.log("draft_rejected", stage=stage_id, attempt=attempt, visible_to_pastor=False,
                   reason_categories=cats, draft=text)
@@ -311,6 +315,17 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         state.approved[stage_id] = rec.final
     state.results[stage_id] = rec
     return rec
+
+
+def _fetch_verse(entry, lang, providers, ctx_ns, audit, stage_id):
+    """The exact text comes from a provider. The bank is the fallback and never fails for an approved verse.
+    What is inserted is what the provider returned, and the verbatim check compares against exactly that."""
+    chain = providers if providers is not None else scrp.default_chain(ctx_ns.scripture_cap)
+    passage, notes = scrp.fetch(entry, lang, chain + ([scrp.BankProvider()] if not any(isinstance(p, scrp.BankProvider) for p in chain) else []))
+    if notes:
+        audit.log("scripture_fallback", stage=stage_id, verse=entry["id"], provider=passage["source"], reasons=notes)
+    ctx_ns.scripture[passage["id"]] = passage
+    return passage
 
 
 def _sources_list(pb, stage_id):

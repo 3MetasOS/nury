@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from nury import checks as ck  # noqa: E402
 from nury import playbook as pbm  # noqa: E402
 from nury import scripture as scr  # noqa: E402
+from nury import scripture_providers as scrp  # noqa: E402
 from nury.audit import AuditLog  # noqa: E402
 from nury.engine import CaseState, GateDecision, run_stage  # noqa: E402
 from test_core import CANNED, TRIAGE, FakeClient  # noqa: E402
@@ -281,6 +282,118 @@ class HospitalBank(Base):
         rec = run_stage("pastoral", st, client=c, playbook=self.pb)
         self.assertEqual(rec.status, "approved", rec.attempts)
         self.assertIn("Padre de misericordias", rec.draft)
+
+
+class StubHTTP:
+    """Stands in for requests. Records every call. mode: ok | 429 | 403 | boom | nocopyright | long | html."""
+    def __init__(self, mode="ok"):
+        self.mode, self.calls = mode, []
+
+    def get(self, url, params=None, headers=None, timeout=None):
+        self.calls.append({"url": url, "params": params, "headers": headers, "timeout": timeout})
+        mode = self.mode
+        if mode == "boom":
+            raise TimeoutError("slow")
+        code = {"429": 429, "403": 403}.get(mode, 200)
+        body = {}
+        if "/passages/" in url:
+            body = {"id": url.rsplit("/", 1)[1], "reference": "Salmos 46:1",
+                    "content": ("palabra " * 60 if mode == "long" else "<b>x</b>" if mode == "html" else "Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.")}
+        else:
+            body = {"id": 7, "abbreviation": "RVR60", "copyright": "" if mode == "nocopyright" else "Sociedades Biblicas Unidas 1960"}
+
+        class R:
+            status_code = code
+            def json(self_):
+                return body
+        return R()
+
+
+class Providers(Base):
+    def go(self, http, verse="psa46_1", intake="intake", lang="es", providers="yv"):
+        chain = [scrp.YouVersionProvider("KEY123", {"es": "7", "en": "9"}, http=http), scrp.BankProvider()] if providers == "yv" else None
+        st = CaseState(intake, lang)
+        st.approved["triage"] = TRIAGE
+        au = AuditLog()
+        rec = run_stage("pastoral", st, client=Pastoral(reply(verse)), audit=au, playbook=self.pb, scripture_providers=chain)
+        return rec, au
+
+    def test_no_key_means_bank_only_and_a_key_adds_youversion_first(self):
+        self.assertEqual([p.name for p in scrp.default_chain(env={})], ["bank"])
+        self.assertEqual([p.name for p in scrp.default_chain(env={"YVP_APP_KEY": "k", "YVP_BIBLE_ES": "7"})], ["youversion", "bank"])
+        self.assertEqual(scrp.default_chain(env={"YVP_APP_KEY": "k", "YVP_BIBLE_ES": "7"})[0].bibles, {"es": "7"})
+
+    def test_youversion_text_is_inserted_with_version_and_copyright_and_checked_against_what_it_returned(self):
+        http = StubHTTP()
+        rec, au = self.go(http)
+        self.assertEqual(rec.status, "approved", rec.attempts)
+        self.assertIn("«Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.»", rec.draft)
+        self.assertIn("— Salmos 46:1, RVR60. Sociedades Biblicas Unidas 1960", rec.draft)
+        self.assertNotIn(self.verse("psa46_1")["text"], rec.draft)
+        self.assertEqual([e["provider"] for e in au.events if e["kind"] == "scripture"], ["youversion"])
+        self.assertEqual(http.calls[0]["headers"]["X-YVP-App-Key"], "KEY123")
+        self.assertTrue(http.calls[0]["url"].endswith("/v1/bibles/7/passages/PSA.46.1"))
+
+    def test_any_failure_falls_back_to_the_bank_and_is_logged(self):
+        for mode in ("429", "403", "boom", "nocopyright", "long", "html"):
+            rec, au = self.go(StubHTTP(mode))
+            self.assertEqual(rec.status, "approved", mode)
+            self.assertIn(self.verse("psa46_1")["text"], rec.draft, mode)
+            self.assertEqual([e["provider"] for e in au.events if e["kind"] == "scripture"], ["bank"], mode)
+            fb = [e for e in au.events if e["kind"] == "scripture_fallback"]
+            self.assertEqual(len(fb), 1, mode)
+            self.assertIn("youversion", fb[0]["reasons"][0])
+
+    def test_a_language_with_no_chosen_version_uses_the_bank(self):
+        http = StubHTTP()
+        chain = [scrp.YouVersionProvider("K", {"en": "9"}, http=http), scrp.BankProvider()]
+        st = CaseState("intake", "es")
+        st.approved["triage"] = TRIAGE
+        rec = run_stage("pastoral", st, client=Pastoral(reply("psa46_1")), playbook=self.pb, scripture_providers=chain)
+        self.assertIn(self.verse("psa46_1")["text"], rec.draft)
+        self.assertEqual(http.calls, [])
+
+    def test_only_a_passage_id_and_a_version_leave_the_app_never_names_or_case_text(self):
+        http = StubHTTP()
+        self.go(http, intake="Pastor, soy Maria Lopez, mi esposo Carlos fue detenido en Mesa. Mi telefono es 303-555-0100.")
+        self.assertEqual(len(http.calls), 2)
+        for c in http.calls:
+            blob = json.dumps(c, ensure_ascii=False)
+            for secret in ("Maria", "Lopez", "Carlos", "Mesa", "303", "detenido"):
+                self.assertNotIn(secret, blob)
+            self.assertEqual(sorted(c["headers"]), ["Accept", "X-YVP-App-Key"])
+            self.assertTrue(c["url"].startswith("https://api.youversion.com/v1/bibles/7"))
+        self.assertEqual(http.calls[0]["params"], {"format": "text"})
+
+    def test_nothing_is_cached(self):
+        http = StubHTTP()
+        self.go(http)
+        self.go(http)
+        self.assertEqual(len(http.calls), 4)
+
+    def test_a_church_verse_is_never_sent_to_youversion(self):
+        Church.put(self)
+        http = StubHTTP()
+        chain = [scrp.YouVersionProvider("K", {"es": "7"}, http=http), scrp.BankProvider()]
+        entry = [e for e in scr.for_language(scr.load_bank(self.pb.dir, str(self.root)), "es") if e["id"] == "church-1"][0]
+        passage, notes = scrp.fetch(entry, "es", chain)
+        self.assertEqual(passage["source"], "bank")
+        self.assertEqual(http.calls, [])
+
+    def test_a_changed_word_after_the_fetch_is_caught_against_what_the_provider_returned(self):
+        http = StubHTTP()
+        rec, au = self.go(http)
+        bad = rec.draft.replace("refugio", "amparo")
+        ctx = SimpleNamespace(scripture={"psa46_1": {"text": "Dios es nuestro refugio y fortaleza, nuestro pronto auxilio en las tribulaciones.",
+                                                     "reference": "Salmos 46:1", "translation": "RVR60",
+                                                     "copyright": "Sociedades Biblicas Unidas 1960"}}, scripture_cap=52)
+        self.assertEqual(ck.verse_block_verbatim({}, rec.draft, ctx), [])
+        self.assertEqual(ck.verse_block_verbatim({}, bad, ctx)[0]["category"], "scripture_altered")
+
+    def test_every_bank_verse_has_a_passage_id_for_youversion(self):
+        for pid in ("detention", "hospital"):
+            for v in json.loads((pbm.PLAYBOOKS_DIR / pid / "sources" / "scripture.json").read_text())["verses"]:
+                self.assertRegex(v["usfm"], r"^[1-3A-Z]{3}\.\d+\.\d+(-\d+)?$", v["id"])
 
 
 class Checks(unittest.TestCase):
