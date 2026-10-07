@@ -617,7 +617,7 @@ Nury writes from vetted sources only. There is no open web at run time.
 
 The rule: Nury lists only contacts the pastor has vetted, labeled as the church's own, plus official vetted lists. It never endorses anyone.
 
-### Scripture
+### Scripture in the pastoral message
 
 Only in the pastoral message. The model never writes Scripture.
 
