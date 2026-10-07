@@ -126,6 +126,9 @@ Each row says in its status whether it is a **result** (measured, with a file) o
 | 58 | Nothing in the loop changes Nury by itself. A candidate is a file with a status; approval needs a named person and a date; the test script runs on a copy and never edits the repository or the candidate; a test reads the scripts' source for any status set past proposed. | `tools/candidates.py`, `tools/candidate_test.py`, `tests/test_learning_loop.py` | VERIFIED offline test | 19 tests |
 | 59 | The loop has NOT been shown to improve Nury. It was built and tested on 30 synthetic sessions; no real pastor has used Nury; the patterns in the example were written into the scripted behavior. The before-and-after gate has not been run live, its thresholds are our choice, and Jev scores drift by up to 0.12. | `documents/product/LEARNING_LOOP.md` section 8 | NOT MEASURED, so not claimed as an improvement | 0 real sessions |
 
+| 60 | A transient Gloo failure is retried up to 3 tries in all, with 1 s then 2 s backoff, never on 402 or 403 or a quota 429; when the tries run out the engine's existing error path is unchanged. A retry is not a draft attempt, so the correction loop is untouched. | `nury/gloo_client.py`; `tests/test_gloo_retry.py` (a script of statuses per error class); one live smoke, which saw no failure to retry | VERIFIED offline test; NOT seen live against a real transient failure | 11 tests |
+| 61 | Cost per stage comes from a data file with a source and a date, not from the code. A model that is not in it has no cost. Jev has no price here: "unknown, not quoted". | `nury/pricing.json`; `tests/test_pricing.py` | VERIFIED offline test. The Gloo price is what the Gloo models API listed on 2026-10-06; it can change | 7 tests |
+
 ## 7. Cost and speed
 
 | # | Claim | Evidence | Status | The number |

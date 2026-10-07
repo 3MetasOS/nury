@@ -233,6 +233,13 @@ fb.prune(days)                   # retention: delete old daily files
 
 Lines go to `data/feedback/feedback-YYYYMMDD.jsonl` (`NURY_FEEDBACK_DIR`; gitignored). Sentence mode holds only the changed sentences, already tokenized, and drops and counts any that still look protected; counts mode holds no sentence. Tools: `tools/learning_report.py` (report and proposed candidates), `tools/candidates.py` (checks `candidates/<id>.md`), `tools/candidate_test.py` (before and after, no-regression gate), `tools/learning_example.py` (the synthetic example). See `documents/product/LEARNING_LOOP.md`.
 
+## Infrastructure: retries, audit hook, prices, CI
+
+- `GlooClient.respond`: up to 3 tries on HTTP 429, 500, 502, 503, 504, a dropped connection or a timeout, with 1 s then 2 s backoff (`NURY_GLOO_RETRY_BASE` changes the base; `Retry-After` is honored up to 10 s). Never on 402, 403, other 4xx, or a 429 about quota or billing. `meta["http_retries"]` counts them. When the tries run out, the last error is raised as before.
+- `AuditLog.subscribe(fn) -> unsubscribe`; every event has `t_ms` (monotonic). A raising subscriber is ignored.
+- `nury/pricing.json` and `nury/pricing.py`: `pricing.cost_usd(model, tokens_in, tokens_out)`; unknown model gives None; Jev is "unknown, not quoted". Stage metrics carry `model`.
+- `code/requirements.txt`, `code/test.sh`, `.github/workflows/ci.yml`, `code/tools/scan_keys.py`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

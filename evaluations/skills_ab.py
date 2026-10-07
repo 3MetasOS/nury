@@ -2,7 +2,11 @@
 
     python3 evaluations/skills_ab.py --dry-run          # plan and cost estimate, no calls
     python3 evaluations/skills_ab.py --fake             # script smoke test with a fake model, no calls
-    python3 evaluations/skills_ab.py                    # live: 7 scenarios x 2 modes = 14 pipelines
+    python3 evaluations/skills_ab.py                    # live: 7 scenarios x 2 modes x 3 repeats = 42 pipelines, about $3
+
+Each arm is repeated at least 3 times (--repeat; fewer is refused unless --allow-single) with the order of the arms alternated,
+and the summary compares the difference between arms with the spread INSIDE an arm. Jev scores drifted by up to 0.12 between two
+passes of the same drafts and the model varies too, so one pass per arm cannot show a small effect. This script has NOT been run live.
 
 Writes evaluations/results/skills_ab/runs.json and summary.md. Privacy is ON for both modes (the final
 configuration). Keys come from the environment. Nothing here prints them.
@@ -84,46 +88,75 @@ def run_one(sc, skills, fake):
             "skill_events": len(au.of_kind("skill_applied")), **text_metrics(st)}
 
 
+METRICS = [("stock_phrase_hits", "stock phrases"), ("dashes", "dashes"), ("unsourced_tip_lines", "unsourced tip lines"), ("words", "words"),
+           ("attempts", "stage attempts"), ("self_corrections", "self-corrections"), ("tokens_in", "tokens in"), ("tokens_out", "tokens out"),
+           ("cost_usd", "cost $"), ("latency_s", "seconds")]
+
+
+def _mean(v):
+    return sum(v) / len(v) if v else 0.0
+
+
 def summarize(runs):
-    rows = []
-    for mode in ("off", "on"):
-        r = [x for x in runs if x["skills"] == mode]
-        n = max(len(r), 1)
-        rows.append((mode, len(r), sum(x["stock_phrase_hits"] for x in r), sum(x["dashes"] for x in r), sum(x["unsourced_tip_lines"] for x in r),
-                     round(sum(x["words"] for x in r) / n), sum(x["attempts"] for x in r), sum(x["self_corrections"] for x in r),
-                     sum(1 for x in r if x["outcome"] != "package_complete"), round(sum(x["tokens_in"] for x in r) / n),
-                     round(sum(x["tokens_out"] for x in r) / n), round(sum(x["cost_usd"] for x in r), 3), round(sum(x["latency_s"] for x in r) / n, 1)))
-    head = "| skills | runs | stock phrases | dashes | unsourced tip lines | avg words | stage attempts | self-corrections | not complete | avg tokens in | avg tokens out | total $ | avg s |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|\n"
-    return head + "\n".join("| " + " | ".join(str(c) for c in row) + " |" for row in rows)
+    """Per metric: the mean with skills off and on, the difference, and the spread INSIDE an arm (max minus min across repeats of
+    the same scenario, averaged). A difference no larger than that spread is within noise and is not evidence."""
+    scen = sorted({r["scenario"] for r in runs})
+    reps = max((r.get("repeat", 0) for r in runs), default=0) + 1
+    rows = ["| metric | skills off | skills on | on minus off | spread inside one arm | reading |", "|---|---|---|---|---|---|"]
+    for key, label in METRICS:
+        off_m, on_m, spreads = [], [], []
+        for sc in scen:
+            o = [r[key] for r in runs if r["scenario"] == sc and r["skills"] == "off"]
+            n = [r[key] for r in runs if r["scenario"] == sc and r["skills"] == "on"]
+            if o and n:
+                off_m.append(_mean(o))
+                on_m.append(_mean(n))
+                spreads += [max(o) - min(o), max(n) - min(n)]
+        d, sp = _mean(on_m) - _mean(off_m), _mean(spreads)
+        reading = "within noise" if abs(d) <= sp + 1e-9 else "outside the noise: read the drafts before believing it"
+        rows.append(f"| {label} | {round(_mean(off_m), 3)} | {round(_mean(on_m), 3)} | {round(d, 3)} | {round(sp, 3)} | {reading} |")
+    incomplete = {m: sum(1 for r in runs if r["skills"] == m and r["outcome"] != "package_complete") for m in ("off", "on")}
+    total = {m: sum(r["cost_usd"] for r in runs if r["skills"] == m) for m in ("off", "on")}
+    head = (f"Scenarios: {len(scen)}. Repeats per arm: {reps}. Pipelines: {len(runs)}. "
+            f"Not complete: off {incomplete['off']}, on {incomplete['on']}. Total cost: off ${round(total['off'], 3)}, on ${round(total['on'], 3)}.\n\n")
+    return head + "\n".join(rows) + "\n"
 
 
-def main():
+def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--fake", action="store_true")
     ap.add_argument("--only", nargs="*", default=SCENARIOS)
-    a = ap.parse_args()
+    ap.add_argument("--repeat", type=int, default=3, help="repeats of each arm; at least 3, because Jev and the model both drift")
+    ap.add_argument("--allow-single", action="store_true", help="allow fewer than 3 repeats (a smoke test, never a result)")
+    a = ap.parse_args(argv)
+    if a.repeat < 3 and not a.allow_single:
+        print("Refused: repeat each arm at least 3 times. One pass per arm cannot tell an effect from noise. (--allow-single for a smoke test.)")
+        return 2
     scs = [load(s) for s in a.only]
     if a.dry_run:
-        n = len(scs) * 2
-        print(f"{n} pipelines ({len(scs)} scenarios x skills off/on), privacy ON, about {n * 5} Gloo calls.")
+        n = len(scs) * 2 * a.repeat
+        print(f"{n} pipelines ({len(scs)} scenarios x skills off/on x {a.repeat} repeats, order alternated), privacy ON, about {n * 5} Gloo calls.")
         print(f"Estimate: about {n * 14000} input and {n * 2200} output tokens = about ${n * (14000 * 3 + 2200 * 15) / 1e6:.2f} at $3 and $15 per 1M.")
         for s in scs:
             print(" ", s["id"], s.get("playbook"), "-", s.get("title"))
         return
     runs = []
-    for sc in scs:
-        for flag in (False, True):
-            r = run_one(sc, flag, a.fake)
-            runs.append(r)
-            print(r["scenario"], r["skills"], r["outcome"], f"attempts={r['attempts']}", f"${r['cost_usd']}", f"{r['latency_s']}s", flush=True)
+    for rep in range(a.repeat):
+        for sc in scs:
+            for flag in ((False, True) if rep % 2 == 0 else (True, False)):      # alternate the order so time of day does not favor one arm
+                r = run_one(sc, flag, a.fake)
+                r["repeat"] = rep
+                runs.append(r)
+                print(r["scenario"], r["skills"], f"rep{rep}", r["outcome"], f"attempts={r['attempts']}", f"${r['cost_usd']}", f"{r['latency_s']}s", flush=True)
     out = OUT if not a.fake else OUT / "fake-selftest"
     out.mkdir(parents=True, exist_ok=True)
     (out / "runs.json").write_text(json.dumps(runs, indent=2, ensure_ascii=False), encoding="utf-8")
     (out / "summary.md").write_text("# Skills off vs on\n\n" + ("**FAKE MODEL SELF-TEST. Not a result.**\n\n" if a.fake else "")
                                     + summarize(runs) + "\n", encoding="utf-8")
     print((out / "summary.md").read_text())
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

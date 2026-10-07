@@ -1,0 +1,28 @@
+{
+  "_about": "Prices the engine uses to compute cost per stage. Data, not code: change a number here, not in the engine. A price that is not in this file is not guessed: cost stays null.",
+  "currency": "USD",
+  "per_tokens": 1000000,
+  "models": {
+    "gloo-anthropic-claude-sonnet-4.6": {
+      "input": 3.0,
+      "output": 15.0,
+      "source": "Gloo models API, the pricing field, read by the team on 2026-10-06 (BUILD_LOG entry 16)",
+      "as_of": "2026-10-06",
+      "notes": "The model Nury runs on. Cache pricing is not used. Recheck before relying on it: prices change."
+    },
+    "gloo-anthropic-claude-sonnet-5.5": {
+      "input": 2.0,
+      "output": 10.0,
+      "source": "Gloo models API, the pricing field, read by the team on 2026-10-06 (BUILD_LOG entry 16)",
+      "as_of": "2026-10-06",
+      "notes": "Listed for comparison. Nury does not run on it."
+    }
+  },
+  "classifiers": {
+    "jev": {
+      "price": null,
+      "status": "unknown, not quoted",
+      "notes": "Jev (the Jev decision API from TypeSafe) bills on its own key. We have not seen its price, so no Jev cost is computed or quoted. Measured size of one pastoral-stage call: about 700 input and 80 output tokens."
+    }
+  }
+}

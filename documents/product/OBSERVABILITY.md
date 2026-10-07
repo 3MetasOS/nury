@@ -62,11 +62,19 @@ Cost per package is only as good as the price in `NURY_PRICE_IN` and `NURY_PRICE
 - `Recorder(playbook, language)` at the start of a run, `stage_done(result, audit.events)` after each stage, `finish(state.outcome)` at the end. Or `record_run(...)` once after a run.
 - `app/ops_api.py` serves `GET /api/ops`. It is read-only and mounted the same way as the network API.
 
+## Infrastructure that feeds it (added with Part B, 2026-10-07)
+
+- **Event hook.** `AuditLog.subscribe(fn)` calls `fn(event)` after each event is recorded. A subscriber that raises is ignored, so it can never break a run. The ledger, a progress bar or a future ops stream can hang off it instead of re-reading the list.
+- **Monotonic time.** Every audit event carries `t_ms`, milliseconds on a monotonic clock since the log was created. Subtract two `t_ms` values for a duration that does not depend on the wall clock.
+- **Price table as data.** `code/nury/pricing.json` holds the model prices (input and output per 1M tokens), with a source and a date. The engine reads it; `NURY_PRICE_IN` and `NURY_PRICE_OUT` still override. A model that is not in the file has no cost (null): nothing is guessed. Each stage's metrics now record the `model` that answered. **Jev has an entry that says "unknown, not quoted": no Jev cost is computed anywhere.**
+- **Gloo retries.** `meta["http_retries"]` says how many times the same request was repeated after a 429, a 5xx or a dropped connection. It is not a draft attempt. The ledger does not yet record it.
+- **CI.** `.github/workflows/ci.yml` runs the offline product and evaluation tests and a scan for key-like strings in tracked files. **It has not run**: there was no runner to try it on. Its actions are pinned to commit hashes and its runner to `ubuntu-24.04`; the Python packages it installs for the evaluation tests (pytest, PyYAML, markdown) are not pinned.
+
 ## What an operator would add next
 
 Not built. Listed so nobody assumes it exists.
 
-- **Alerts.** A threshold on the escalation rate, on `unavailable` Jev decisions (Jev is down and the gate is failing open), on a 402 from Gloo (credit gone), and on cost per package.
+- **Alerts.** A threshold on the escalation rate, on Gloo retries (a rising count means Gloo is flaky), on `unavailable` Jev decisions (Jev is down and the gate is failing open), on a 402 from Gloo (credit gone), and on cost per package.
 - **Retention.** A rule for how long lines are kept and where old files go. Today the file grows without limit.
 - **Rotation and size.** Daily files, and a cap.
 - **Dashboards.** A page that draws the summary over time, not just the latest totals.

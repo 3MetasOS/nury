@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 47 live verified, 33 offline tested, 3 built but not yet checked live, 7 planned, 21 not built.
+Count: 47 live verified, 37 offline tested, 4 built but not yet checked live, 7 planned, 21 not built.
 
 ## 1. Pastor experience
 
@@ -53,6 +53,11 @@ Count: 47 live verified, 33 offline tested, 3 built but not yet checked live, 7 
 | Candidate before and after test | Runs a candidate on a copy of the repository against the core, attacker and case-file sets, prints before and after, and a no-regression gate. Never changes the repository. Live use costs about $10 for all sets and one repeat and has not been run. | BUILT, offline tested (mock agent only) | `tools/candidate_test.py` | developer |
 | Learning loop on synthetic data | A worked example: 30 invented sessions, the real capture code, a report, five proposed candidates. No real pastor has used Nury. | BUILT, offline tested | `documents/product/learning_example/`; `LEARNING_LOOP.md` | developer, judge |
 | Feedback in the app | The server calling `record_gate`, the reason chips, `POST /api/feedback`, and the consent sentence on screen when capture is on. | PLANNED | hack-artisans | pastor |
+| Gloo retries | A transient failure (429, 500, 502, 503, 504, a dropped connection, a timeout) is retried up to 3 tries in all with 1 s then 2 s backoff. Never on 402, 403, other 4xx or a quota 429. A retry is not a draft attempt. | BUILT, offline tested | `nury/gloo_client.py`; `tests/test_gloo_retry.py` (11 tests); a live smoke on detention 01 (a clean call; no failure was injected live) | developer |
+| Audit hook and monotonic times | `AuditLog.subscribe(fn)` and a monotonic `t_ms` on every event. A raising subscriber cannot break a run. | BUILT, offline tested | `nury/audit.py`; `tests/test_audit_hooks.py` | developer |
+| Prices as data | `pricing.json` holds model prices with a source and date; the engine computes cost per stage from it. Unknown models have no cost. Jev is recorded as unknown, not quoted. | BUILT, offline tested | `nury/pricing.json`, `nury/pricing.py`; `tests/test_pricing.py` | developer, judge |
+| CI (offline tests and a key scan) | A workflow that runs the offline tests and fails if a tracked file holds a key-like string. It has not run: there was no runner. | BUILT, not yet checked live | `.github/workflows/ci.yml`, `code/tools/scan_keys.py`; `tests/test_ci.py` | developer |
+| Skills A/B with repeats | The before-and-after script repeats each arm at least 3 times, alternates the order and compares the difference with the spread inside an arm. It has not been run live. | BUILT, offline tested (fake model only) | `evaluations/skills_ab.py`; `evaluations/tests/test_skills_ab.py` | developer |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |

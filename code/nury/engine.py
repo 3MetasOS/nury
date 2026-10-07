@@ -16,6 +16,7 @@ from . import playbook as pbm
 from . import scripture as scr
 from . import scripture_providers as scrp
 from . import jev_gate
+from . import pricing
 from .checks import REGISTRY as CHECKS
 
 MAX_ATTEMPTS = 3          # 3 attempts total: first draft + 2 regenerations, then escalate
@@ -124,16 +125,12 @@ def with_disclaimer(text, disclaimer):
 def _new_metrics():
     return {"attempts": 0, "retries": 0, "self_corrections": 0, "latency_s": 0.0,
             "input_tokens": 0, "output_tokens": 0, "cost_usd": None, "skills": [],
-            "jev_ms": 0, "jev_calls": 0}
+            "jev_ms": 0, "jev_calls": 0, "model": None}
 
 
 def _cost(m):
-    """Cost only if you set NURY_PRICE_IN and NURY_PRICE_OUT (USD per 1M tokens)."""
-    try:
-        pi, po = float(os.environ["NURY_PRICE_IN"]), float(os.environ["NURY_PRICE_OUT"])
-    except (KeyError, ValueError):
-        return None
-    return round((m["input_tokens"] * pi + m["output_tokens"] * po) / 1e6, 6)
+    """Cost from pricing.json for the model that answered (NURY_PRICE_IN and NURY_PRICE_OUT still override). None if unpriced."""
+    return pricing.cost_usd(m.get("model"), m["input_tokens"], m["output_tokens"])
 
 
 def _correction_note(violations):
@@ -247,6 +244,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
             state.results[stage_id] = rec
             return rec
         m["latency_s"] = round(m["latency_s"] + meta["latency_s"], 3)
+        m["model"] = meta.get("model") or m.get("model")
         m["input_tokens"] += meta["input_tokens"]
         m["output_tokens"] += meta["output_tokens"]
         if fault and attempt <= fault.get("times", 1):
