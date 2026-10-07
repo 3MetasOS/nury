@@ -1,5 +1,5 @@
 {
- "status": "pending approval: every entry awaits Juan's decision on a canvas. Nothing here ships until approved.",
+ "status": "decided 2026-10-06 (Juan, via hack-sensei relay): 21 approved, 7 held (Pending Renewal), total 28. See approvals.json.",
  "drafted": "2026-10-06",
  "by": "hack-ninja",
  "state": "Colorado",
@@ -37,7 +37,7 @@
     "Caveat: listed does not mean recommended"
    ],
    "phones": [],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "eoir-recognized-orgs-roster",
@@ -56,7 +56,7 @@
     "Contact details can be out of date"
    ],
    "phones": [],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "eoir-ra-program",
@@ -73,7 +73,7 @@
     "What 'recognized' means"
    ],
    "phones": [],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "rmian",
@@ -108,7 +108,7 @@
    "flags": [
     "Roster recognition expires 12/04/26 (about two months from the report date)."
    ],
-   "decision": "pending approval",
+   "decision": "approved",
    "web": "www.rmian.org",
    "immigration_courts_on_list": [
     "Aurora",
@@ -149,7 +149,7 @@
    "flags": [
     "Gypsum and Eagle are in the mountains. Lakewood is the Denver-area office."
    ],
-   "decision": "pending approval",
+   "decision": "approved",
    "web": "www.connectchurchcolorado.com/immigration",
    "languages_on_list": "Spanish and English",
    "immigration_courts_on_list": [
@@ -186,7 +186,7 @@
    "flags": [
     "Narrow scope: asylum applications and Notices of Appeals only. Probably not useful for a detention call. Text only."
    ],
-   "decision": "pending approval",
+   "decision": "approved",
    "web": "www.coasylum.org",
    "immigration_courts_on_list": [
     "Denver"
@@ -221,7 +221,7 @@
    "flags": [
     "Pro se help only, for detained people. The speed dial '2150#' works only from inside a detention facility. Email is the route for a family member."
    ],
-   "decision": "pending approval",
+   "decision": "approved",
    "web": "www.americanbar.org/groups/public_interest/immigration/",
    "immigration_courts_on_list": [
     "Aurora",
@@ -254,7 +254,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-ilc-boulder",
@@ -282,7 +282,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-cc-central-co",
@@ -311,7 +311,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-hope-immigration",
@@ -339,7 +339,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-immigrant-hope-atlanta",
@@ -368,7 +368,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-lfs-rocky-mountains",
@@ -397,7 +397,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-integrated-community",
@@ -427,7 +427,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-cccs-denver",
@@ -455,7 +455,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-ecdc-acc",
@@ -484,7 +484,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-irc-denver",
@@ -512,7 +512,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-justice-and-mercy",
@@ -540,7 +540,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-ctr-trauma-resilience",
@@ -568,7 +568,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-companeros",
@@ -596,7 +596,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-immigrant-hope-greeley",
@@ -625,7 +625,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-alianza-norco",
@@ -654,7 +654,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-bethany-immigration",
@@ -682,7 +682,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-mountain-dreamers",
@@ -710,7 +710,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-littleton-irc",
@@ -739,7 +739,7 @@
     "Roster marks this recognition as 'Pending Renewal'. The expiration date shown has passed or is near. Confirm status before use.",
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "held"
   },
   {
    "id": "roster-chan",
@@ -767,7 +767,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-cc-southern-co",
@@ -795,7 +795,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   },
   {
    "id": "roster-tri-county-health",
@@ -823,7 +823,7 @@
    "flags": [
     "Roster does not say whether services are free. Do not call it free."
    ],
-   "decision": "pending approval"
+   "decision": "approved"
   }
  ]
 }
