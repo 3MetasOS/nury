@@ -131,7 +131,7 @@ Read on 2026-10-07. Nury is not built on Pi and was not inspired by it: the engi
 - Loop source: https://github.com/earendil-works/pi/blob/main/packages/agent/src/agent-loop.ts
 - Product page: https://pi.dev. README of the coding agent: https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md
 
-**Not verified:** the four default tools (`read`, `write`, `edit`, `bash`). The pages I could read do not list them. Nor did I verify how the extension API is typed, or any detail of Pi's behavior that I did not see in the pages above.
+**Still not verified:** which of Pi's tools are on by default. The source has tool files for `bash`, `edit`, `find`, `grep`, `ls`, `read` and `write` (`packages/coding-agent/src/core/tools/`), but I did not confirm the default set. The `PI_REVIEW.md` review read the source for the loop and the docs for sessions and extensions; it lists what it could not read.
 
 #### 1. What Pi is for
 
@@ -174,7 +174,7 @@ In short: Pi lets the model decide and gives a person the means to steer. Nury d
 
 For a later feature that needs tools, such as a read-only search of a church's saved cases, a harness like this could make sense, behind our floor and our approval gate, with each tool whitelisted and logged. That would need a design review first. It is not planned.
 
-**Not verified:** whether the loop's `finishTurn` callback could carry a correction message and run another turn, which is what our regenerate step does. I saw the callback named in the summary and did not read how it works. I would read the source itself before any decision.
+**Verified from the source** (`documents/product/PI_REVIEW.md`, section 3.1, clone at commit `2db5e35`): the `finishTurn` and `prepareNextTurn` hooks can carry a correction message and run another turn (`packages/agent/src/types.ts` lines 264 and 278; `agent-loop.ts` lines 186 and 286). So it is possible, and not worth it: Pi has no attempt cap, no way to drop a rejected draft and no human gate, so we would write all of that ourselves.
 
 ## 6. How a developer extends it
 

@@ -1,0 +1,6 @@
+# Product runtime: the engine and the app need only the Python standard library and requests.
+# Pinned to the version the tests and live runs used (Python 3.12). Evaluation and docs tools are listed below.
+requests==2.32.5
+
+# Not needed to run the product. Only for the evaluation harness (evaluations/), its tests, and the docs build:
+#   pytest, PyYAML, markdown   (install them yourself when you work on evaluations/ or code/app/build_docs.py)
