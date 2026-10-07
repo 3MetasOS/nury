@@ -103,3 +103,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Commit c16a287. Domain wording moved into `playbook.json` (boundary: who, domain, professional, professional_kind; disclaimer; draft_label; optional extra_banned). The engine keeps the rules as a template.
 - Verified by hack-sensei: no "immigra" in `code/nury/*.py`; 13 tests pass; a hospital test playbook runs with no engine change and asserts no immigration text.
 - Platform claim approved for the pitch, worded as built and tested on a test playbook. No second crisis is claimed as shipped or scored.
+
+## 15. 2026-10-06 20:03 MDT — Rehearsal capture, four app findings, agency-name check
+
+- hack-video: rehearsal capture proven (Playwright + system Chrome, 390x844 phone look at zoom 2, 78 s per full run; raw footage gitignored).
+- Findings routed: (1) demo rejection moves from stage 5 to stage 2; (2) triage and package text lost line breaks; (3) Package view needs Copy/Download visible on one screen; (4) triage said "ICE", against the no-agency-name decision. Do not blur in post; fix at the source.
+- hack-jedi (c316c60): triage prompt bans agency names; named check `no_agency_names` (category agency_name) added to the detention playbook. Live test: an intake saying "ICE" twice produced "immigration officers" with no retry. 15 tests pass. Decision: also apply to checklist and pastoral; not to rights or attorney, because vetted sources may name agencies and we avoid false escalations.
+- Learned: per-call `fault_injection` is safer than the env var in a shared server process.
