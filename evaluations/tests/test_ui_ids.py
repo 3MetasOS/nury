@@ -303,3 +303,12 @@ def test_privacy_off_banner_text_and_hook():
     idx = (STATIC / "index.html").read_text(encoding="utf-8")
     assert 'id="privacy-off"' in idx and "Privacy is off: names go to the model as typed." in idx
     assert '$("privacy-off").hidden=!(pv&&pv.on===false)' in idx and '"/api/privacy"' in idx
+
+
+def test_replay_mode_hooks():
+    idx = (STATIC / "index.html").read_text(encoding="utf-8")
+    for tok in ('id="replay-banner"', 'id="replay-note"', "Use the sample intake", "FEATURES.replay_banner", "s.replay_note", "RECORDED (not a live Jev check)"):
+        assert tok in idx, tok
+    fin = (STATIC / "final.js").read_text(encoding="utf-8")
+    assert 'row("Mode", "Recorded run"' in fin and "fp-rec" in fin
+    assert "readOnly=rp" in idx, "in replay the typing box is read-only; the sample intake is the path"

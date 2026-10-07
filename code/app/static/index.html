@@ -109,6 +109,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .back:hover{color:var(--text)}
 .rej{font-size:14px;color:var(--green);margin:0 0 10px}
 .hidden{display:none!important}
+.replay-banner{margin:0 0 14px;padding:12px 14px;border:1px solid var(--amber-line);border-radius:var(--r);background:var(--amber-soft);color:var(--text);font-weight:500}
 .privacy-off{margin:0 0 14px;padding:12px 14px;border:1px solid var(--red);border-radius:var(--r);background:var(--red-soft);color:var(--text);font-weight:600}
 .dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
@@ -282,6 +283,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
 <main id="main">
 <p class="note" id="load-err" role="alert" hidden></p>
 <p class="privacy-off" id="privacy-off" role="alert" hidden>Privacy is off: names go to the model as typed.</p>
+<p class="replay-banner" id="replay-banner" role="status" hidden></p>
 
 <section class="nv" id="v-home" hidden>
   <div class="home" id="home">
@@ -410,6 +412,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <button class="back" id="back-pipe">&larr; Home</button>
   <div class="steps" id="steps"></div>
   <p class="stage-of" id="stage-of"></p>
+  <p class="note" id="replay-note" role="status" hidden></p>
   <div id="strip" class="strip busy" role="status" aria-live="polite"><span class="dot" id="dot"></span><span id="strip-text"></span><span class="elapsed" id="elapsed"></span></div>
   <div class="card" id="work" aria-busy="true"><h2 id="work-title"></h2>
     <div class="row dock idle" aria-hidden="true">
@@ -580,6 +583,7 @@ async function loadData(){
   const [p,c,f,pv]=await Promise.all([api("/api/playbooks"),api("/api/cases"),api("/api/features"),api("/api/privacy")]);
   $("privacy-off").hidden=!(pv&&pv.on===false);          // with privacy off the page says so, on every screen
   pbs=(p&&p.playbooks)||[];CASES=(c&&c.cases)||[];FEATURES=f||{};
+  {const rb=$("replay-banner");rb.hidden=!FEATURES.replay;rb.textContent=FEATURES.replay?(FEATURES.replay_banner||""):""}      // replay: said at the top of every screen, in the server's own words
   const err=$("load-err");err.hidden=!!(p&&p.playbooks);
   if(!p||!p.playbooks)err.textContent="Could not load the crisis list. Check that the server is running.";
   return !!(p&&p.playbooks)}
@@ -771,6 +775,8 @@ function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
   $("btn-demo").classList.toggle("hidden",!p.demo_intake);$("demo-row").classList.toggle("hidden",!p.demo_intake);
+  {const rp=!!FEATURES.replay;$("intake").readOnly=rp;$("btn-demo").textContent=rp?"Use the sample intake":"Use demo intake";$("btn-demo").classList.toggle("primary",rp);
+   if(rp)$("intake").placeholder="This is a recorded run. Use the sample intake."}
   $("intake-err").textContent="";show("v-intake");
 }
 $("btn-demo").onclick=()=>{$("intake").value=pb.demo_intake;$("demo").checked=true};
@@ -820,8 +826,11 @@ $("b-edit-save").onclick=()=>{const t=$("g-edit").value.trim();if(!t)return;lock
 function unedit(){$("g-draft").classList.remove("hidden");$("g-edit").classList.add("hidden");
   $("g-btns").classList.remove("hidden");$("g-edit-btns").classList.add("hidden")}
 function lock(){document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=true)}
+function logLine(e){const {ts,kind,...rest}=e;
+  if(kind==="jev_recorded")return ts.slice(11,23)+"  RECORDED (not a live Jev check)  "+(rest.stage||"")+"  "+(rest.scores||[]).map(x=>`${x.question} ${x.probability} ${x.decision}`).join("; ");
+  return ts.slice(11,23)+"  "+kind+"  "+JSON.stringify(rest)}
 function renderLog(el,log){
-  el.textContent=log.map(e=>{const {ts,kind,...rest}=e;return ts.slice(11,23)+"  "+kind+"  "+JSON.stringify(rest)}).join("\n")}
+  el.textContent=log.map(logLine).join("\n")}
 async function poll(){
   if(!sid)return;
   const mine=sid,s=await api("/api/session/"+mine);
@@ -835,7 +844,7 @@ async function poll(){
   $("steps").replaceChildren(...s.stages.map(x=>{const d=document.createElement("div");d.className="step "+cls(x);d.title=x.title;return d}));
   const idx=s.stages.findIndex(x=>x.id===P.stage);
   $("stage-of").textContent=idx>=0?`Stage ${idx+1} of ${N}`:"";
-  renderLog($("log"),s.log);
+  renderLog($("log"),s.log);$("replay-note").hidden=!s.replay_note;$("replay-note").textContent=s.replay_note||"";
   const halted0=s.halted||s.error,title=idx>=0?s.stages[idx].title.replace(/^\d+\.\s*/,"").toLowerCase():"draft";
   let text,kind,dot;
   if(halted0){text="Nury stopped. Nothing was sent.";kind="busy";dot="err"}

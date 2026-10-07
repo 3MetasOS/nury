@@ -122,6 +122,7 @@
     pn.textContent = inp.value;
     const w = el("span", "pn-wrap"); w.append(inp, pn);
     row(E.prepared, w, fam ? T.prepared : "");
+    if (s.replay) row("Mode", "Recorded run", fam ? "Modo" : "");
     row(E.lang, fam ? ({ es: "Spanish", pt: "Portuguese", fr: "French" }[lang] || lang) : "English", fam ? T.lang : "");
     head.append(kf); headRoot.append(head);
     // ---- 1 what is happening
@@ -212,6 +213,7 @@
     const foot = el("footer", "fp-foot"); foot.id = "fp-foot";
     foot.textContent = (c.tonight.length || b.length) ? T.foot(inp.value.trim()) : T.footgen(inp.value.trim());
     root.append(foot);
+    if (s.replay) { const rc = el("p", "fp-rec"); rc.append(el("span", "g-en", "Recorded run. The words were written by the model earlier; the checks ran live.")); if (fam && lang === "es") rc.append(el("span", "g-fam", "Ejecución grabada. El modelo escribió las palabras antes; las comprobaciones se hicieron en vivo.")); root.append(rc); }
     const dis = (rights && rights.disclaimer) || (tri && tri.disclaimer) || "";
     if (dis) root.append(el("p", "fp-disc", dis));
     if (window.NuryShell && NuryShell.notes) { NuryShell.notes(root); }
