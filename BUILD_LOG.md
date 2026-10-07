@@ -65,3 +65,11 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Decisions: deterministic checks (regex for prediction, advice and identity claims in EN and ES; URL allowlist; citation per rights bullet; 3 missing facts; checklist headings; under 120 words). A Gloo 403 counts as a failed try. Pastor edits are flagged, not blocked.
 - Failed: first checks too strict (3 false escalations); fixed. The model refused to be provoked into legal advice, so the demo trigger became a deterministic length+outcome violation.
 - Quality gaps: English scripture quote mixed into Spanish; a typo; header "Preparada por el pastor" could read as a pastor claim. Fixes requested.
+
+## 10. 2026-10-06 19:51 MDT — Architecture decided; fault injection; eval adapter live
+
+- Architecture (Juan + hack-sensei): Nury is a crisis-management engine that runs playbooks. A crisis is a folder under `code/playbooks/`; the engine and safety floor are shared. See `documents/ARCHITECTURE.md` (layers, playbook contract, milestones M1–M10). Detention is playbook #1. A second playbook is a stretch after the first real eval run.
+- hack-jedi: attempts = 3 total. `NURY_FORCE_REJECTION=1` forces one rejection on the Rights brief (reject, regenerate, pass). Reason categories in the audit log: banned_phrase, ungrounded_claim, missing_vetted_entry, missing_attorney_referral, format, length, gloo_block. Disclaimer re-appended after a pastor Edit.
+- Learning: fault injection after generation is deterministic and costs no extra Gloo call; better than prompting the model to misbehave.
+- hack-artisans: `evaluations/adapter_nury.py` drives the real core. Scenario 1 ran live. A 20-scenario baseline without Jev is running. Findings sent to jedi: the disclaimer lacks "AI assistant"; a stage-2 edit is not consumed by stages 3–5.
+- Open: JEV_API_KEY from Juan; Gloo token prices for the cost column.
