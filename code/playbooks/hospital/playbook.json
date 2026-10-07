@@ -72,5 +72,9 @@
       "pattern": "\\b(se recuperar[áa]|se salvar[áa]|sobrevivir[áa]|morir[áa]|mejorar[áa]|despertar[áa]|saldr[áa] adelante)\\b",
       "why": "predicts a medical outcome"
     }
-  ]
+  ],
+  "intake": {
+    "placeholder": "Who called, who is in the hospital, which hospital and unit, when, and what the family asks.",
+    "demo": "Rosa called at 11:10 PM, upset, speaking Spanish. Her father Miguel, 68, was taken by ambulance to the emergency room of a hospital in Aurora this evening. The staff would not tell her anything on the phone. Her mother is with her, and her two children, 6 and 9, are with a neighbor. She wants to know what she can ask the hospital tonight."
+  }
 }

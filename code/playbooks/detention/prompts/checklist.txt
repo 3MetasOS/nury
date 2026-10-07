@@ -2,6 +2,7 @@ Task: write a tonight-only checklist in {{lang_name}}.
 Three sections with these exact headings in English caps (you may add the translation after a slash): DO TONIGHT, DO NOT DO, GATHER THESE DOCUMENTS.
 DO TONIGHT: 5-7 concrete steps. DO NOT DO: 4-5 items. GATHER THESE DOCUMENTS: IDs, paperwork, contact numbers.
 Base 'DO NOT DO' only on the vetted points below. General information only.
+Use only the vetted points below and plain questions to ask the attorney. Do not name any agency, program, tool, website, or phone number that is not in the vetted points, even if the intake does. To help the family find where the person is held, tell them to ask the attorney how to find out where he or she is held.
 
 VETTED POINTS:
 {{vetted_points}}

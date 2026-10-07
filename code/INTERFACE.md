@@ -78,6 +78,7 @@ StageResult(stage_id, title,
 - **Source approval.** A playbook with `sources/approvals.json` (hospital) runs only when every source it uses is `approved`. A `rejected` source is removed from the playbook. While any is `pending`, the playbook lists as `soon` and refuses to run. For UI work only, set `NURY_ALLOW_PENDING=1` in your dev shell: it lists and runs as `live`. Never set it for the demo or the eval.
 - **Stage ids differ per playbook.** Take them from `get_playbook(id).stages`. Hospital: `triage, info, resources, checklist, pastoral`. Detention: `triage, rights, attorney, checklist, pastoral`. For the forced rejection use stage index 1 of the playbook: `fault_injection={"stage": pb.stages[1].id, "times": 1, "draft_suffix": UNSAFE_SUFFIX}`. The env switch `NURY_FORCE_REJECTION` still targets `rights` only.
 - Pass the id through: `run_stage(stage_id, state, gate, client, audit, fault_injection=..., playbook="hospital")`, `run_pipeline("hospital", state, ...)`, `run_scripted(..., playbook="hospital")`.
+- `playbook.json` may carry `intake: {placeholder, demo}`. The app reads it for the intake box and the "Use demo intake" button. The detention demo text is the locked text from `presentation/SHARED_DEMO.md`, byte for byte.
 - Hospital extra banned patterns (medical outcome, diagnosis guesses, medical advice, promises of healing) live in `playbooks/hospital/playbook.json` under `extra_banned`, not in the engine.
 
 ## Rules the seam enforces

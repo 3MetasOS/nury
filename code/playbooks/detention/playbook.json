@@ -23,5 +23,9 @@
   },
   "extra_banned": [],
   "order": 1,
-  "status": "live"
+  "status": "live",
+  "intake": {
+    "placeholder": "Who called, who was detained, where, when, and what the family asks.",
+    "demo": "Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration officers outside his workplace in Aurora around 6 PM yesterday. She does not know if the officers showed a warrant. Jose has lived here 14 years. They have two children, 8 and 11, both US citizens. Maria is afraid to leave the house tomorrow. She wants to know what to do tonight."
+  }
 }
