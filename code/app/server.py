@@ -12,25 +12,55 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from nury.audit import AuditLog
-from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, run_stage
+from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, get_playbook, run_stage
 from nury.gloo_client import GlooClient
-from nury.stages import STAGES
+from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
 STATIC = Path(__file__).parent / "static"
 SESSIONS = {}
-DEMO_INTAKE = ("Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration "
+# Fallback until playbook.json carries intake.demo (asked of hack-jedi). The locked text lives in
+# presentation/SHARED_DEMO.md; the app must use it exactly for the detention demo.
+LOCKED_DEMO_FALLBACK = {"detention": ("Maria called at 2:07 AM, very upset, speaking Spanish. Her husband Jose was detained by immigration "
                "officers outside his workplace in Aurora around 6 PM yesterday. She does not know if the officers "
                "showed a warrant. Jose has lived here 14 years. They have two children, 8 and 11, both US citizens. "
-               "Maria is afraid to leave the house tomorrow. She wants to know what to do tonight.")
+               "Maria is afraid to leave the house tomorrow. She wants to know what to do tonight.")}
+GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
+
+
+def playbooks():
+    """Selector data: id, title, description, status, plus intake placeholder and demo text if the playbook has them."""
+    out = []
+    for p in list_playbooks():
+        p = dict(p)
+        p.setdefault("status", "live")
+        intake = {}
+        f = PLAYBOOKS_DIR / p["id"] / "playbook.json"
+        if f.is_file():
+            intake = json.loads(f.read_text(encoding="utf-8")).get("intake", {})
+        p["placeholder"] = intake.get("placeholder", GENERIC_PLACEHOLDER)
+        demo = intake.get("demo") or LOCKED_DEMO_FALLBACK.get(p["id"])
+        if demo:
+            p["demo_intake"] = demo
+        out.append(p)
+    return out
+
+
+def safe_event(e):
+    """Audit event for the pastor's screen: no draft text, no error detail, no quoted matches. Categories only."""
+    out = {k: v for k, v in e.items() if k not in ("draft", "detail", "reasons", "text")}
+    if "violations" in out:
+        out["violations"] = [v.get("category", "violation") if isinstance(v, dict) else "violation" for v in out["violations"]]
+    return out
 
 
 class Session:
-    def __init__(self, intake, language, demo_guardrail):
+    def __init__(self, playbook_id, intake, language, demo_guardrail):
         self.id = uuid.uuid4().hex[:12]
+        self.pb = get_playbook(playbook_id)
         self.state = CaseState(intake, language)
         self.audit = AuditLog()
         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
-        self.fault = {"stage": "rights", "times": 1, "draft_suffix": UNSAFE_SUFFIX} if demo_guardrail else None
+        self.fault = {"stage": self.pb.stages[1].id, "times": 1, "draft_suffix": UNSAFE_SUFFIX} if demo_guardrail else None
         self.current = None        # stage id being worked
         self.waiting = None        # StageResult at the gate
         self.decision = None
@@ -51,9 +81,10 @@ class Session:
     def work(self):
         try:
             client = GlooClient()
-            for s in STAGES:
+            for s in self.pb.stages:
                 self.current = s.id
-                r = run_stage(s.id, self.state, self.gate, client, self.audit, fault_injection=self.fault)
+                r = run_stage(s.id, self.state, self.gate, client, self.audit,
+                              fault_injection=self.fault, playbook=self.pb.id)
                 if r.status not in ("approved", "edited"):
                     self.halted = r.message
                     break
@@ -72,7 +103,7 @@ class Session:
     def view(self):
         ev = list(self.audit.events)
         stages = []
-        for s in STAGES:
+        for s in self.pb.stages:
             res = self.state.results.get(s.id)
             stages.append({"id": s.id, "title": s.title,
                            "status": res.status if res else ("working" if s.id == self.current else "pending"),
@@ -92,8 +123,8 @@ class Session:
                 last_check = [e for e in mine if e["kind"] == "check"]
                 strip = ("passed" if (self.waiting or (last_check and last_check[-1]["passed"]))
                          else f"Draft rejected by guardrail. Regenerating ({min(len(fails) + 1, 3)} of 3).")
-        log = [{k: v for k, v in e.items() if k not in ("draft", "detail")} for e in ev]
-        return {"id": self.id, "stages": stages, "gate": gate, "strip": strip, "halted": self.halted,
+        log = [safe_event(e) for e in ev]
+        return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "halted": self.halted,
                 "error": self.error, "done": self.done, "log": log, "language": self.state.language,
                 "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None}
 
@@ -121,8 +152,8 @@ class H(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(b)))
             self.end_headers()
             self.wfile.write(b)
-        elif p == "/api/demo-intake":
-            self._json({"intake": DEMO_INTAKE})
+        elif p == "/api/playbooks":
+            self._json({"playbooks": playbooks()})
         elif p.startswith("/api/session/"):
             s = SESSIONS.get(p.split("/")[3])
             self._json(s.view() if s else {"error": "no such session"}, 200 if s else 404)
@@ -135,7 +166,14 @@ class H(BaseHTTPRequestHandler):
             intake = (b.get("intake") or "").strip()
             if not intake:
                 return self._json({"error": "Type what the family told you."}, 400)
-            s = Session(intake, b.get("language", "es"), bool(b.get("demo_guardrail")))
+            pid = b.get("playbook") or "detention"
+            chosen = next((p for p in playbooks() if p["id"] == pid), None)
+            if not chosen or chosen["status"] != "live":
+                return self._json({"error": "That crisis is not available yet."}, 400)
+            try:
+                s = Session(pid, intake, b.get("language", "es"), bool(b.get("demo_guardrail")))
+            except PlaybookError:
+                return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s
             self._json({"id": s.id})
         elif p.startswith("/api/session/") and p.endswith("/decision"):

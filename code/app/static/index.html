@@ -25,6 +25,7 @@ textarea,select{width:100%;background:var(--surface-2);color:var(--text);border:
 textarea{min-height:170px;resize:vertical}
 .family{font-family:var(--serif);font-size:18px;line-height:1.6;white-space:pre-wrap}
 .plain{white-space:pre-wrap;line-height:1.6}
+.family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
 .btn.primary{background:var(--amber);color:var(--amber-ink);border-color:var(--amber)}
 .btn.danger{color:var(--red)}
@@ -41,6 +42,21 @@ textarea{min-height:170px;resize:vertical}
 .metrics{font-size:13px;color:var(--muted);margin-top:6px}
 details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px;min-height:44px;display:flex;align-items:center}
 .log{font:12px/1.5 ui-monospace,Menlo,monospace;color:var(--muted);white-space:pre-wrap;word-break:break-word}
+.pick{display:flex;align-items:center;gap:14px;width:100%;min-height:72px;text-align:left;padding:14px 16px;margin-bottom:12px;
+  background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--r);font:inherit;cursor:pointer;
+  transition:border-color .18s cubic-bezier(.16,1,.3,1),background .18s cubic-bezier(.16,1,.3,1)}
+.pick:hover{border-color:rgba(232,163,61,.55);background:var(--surface-2)}
+.pick:focus-visible,.btn:focus-visible,summary:focus-visible,.back:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.pick .t{display:block;font:500 19px/1.3 var(--serif)}
+.pick .d{display:block;font-size:14px;color:var(--muted);margin-top:4px}
+.pick svg{flex:none;margin-left:auto;color:var(--amber)}
+.pick.soon{cursor:default;background:transparent;border-style:dashed;color:var(--muted);min-height:64px}
+.pick.soon:hover{border-color:var(--line);background:transparent}
+.pick.soon .t{font-size:17px}
+.pick.soon .tag{margin:0 0 0 auto;flex:none}
+.back{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font-size:14px;background:none;border:0;padding:0;cursor:pointer;font-family:var(--sans)}
+.back:hover{color:var(--text)}
+.rej{font-size:14px;color:var(--green);margin:0 0 10px}
 .hidden{display:none}
 .dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
 .bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:14px}
@@ -54,14 +70,22 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 <main>
 <header><h1>Nury</h1><span>The crisis-response agent for solo pastors</span></header>
 
-<section id="v-intake">
+<section id="v-select" class="hidden">
+  <div class="card"><h2>What is happening?</h2>
+    <p class="note" style="margin:0">Choose the kind of crisis. Nury opens the right playbook.</p></div>
+  <div id="picks"></div>
+  <p class="note" id="select-err"></p>
+</section>
+
+<section id="v-intake" class="hidden">
+  <button class="back" id="back-intake">&larr; All crises</button>
   <div class="card">
-    <h2>What did the family tell you?</h2>
+    <h2 id="intake-title">What did the family tell you?</h2>
     <label for="intake">Type or paste the call, in your own words.</label>
-    <textarea id="intake" placeholder="Who called, who was detained, where, when, and what the family asks."></textarea>
+    <textarea id="intake"></textarea>
     <label for="lang">Family's language</label>
     <select id="lang"><option value="es">Spanish</option><option value="en">English</option></select>
-    <label><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
+    <label id="demo-row"><input type="checkbox" id="demo"> Demo: show a rejected-and-regenerated draft</label>
     <div class="row two" style="margin-top:12px">
       <button class="btn" id="btn-demo">Use demo intake</button>
       <button class="btn primary" id="btn-start">Start</button>
@@ -72,11 +96,13 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 </section>
 
 <section id="v-pipe" class="hidden">
+  <button class="back" id="back-pipe">&larr; All crises</button>
   <div class="steps" id="steps"></div>
   <div id="strip" class="strip hidden"></div>
   <div class="card" id="work"><h2 id="work-title"></h2><p class="note" id="work-msg"></p></div>
   <div class="card hidden" id="gate">
     <h2 id="g-title"></h2>
+    <p class="rej hidden" id="g-rej"></p>
     <div id="g-draft" class="family"></div>
     <textarea id="g-edit" class="hidden family"></textarea>
     <div class="disc" id="g-disc"></div>
@@ -109,19 +135,42 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 <script>
 const $=id=>document.getElementById(id);
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-intake","v-pipe","v-pkg"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const show=v=>["v-select","v-intake","v-pipe","v-pkg"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   return r.json();
 }
-$("btn-demo").onclick=async()=>{$("intake").value=(await api("/api/demo-intake")).intake;$("demo").checked=true};
+let pbs=[],pb=null;
+const CHEV='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+async function loadSelect(){
+  show("v-select");$("select-err").textContent="";
+  try{pbs=(await api("/api/playbooks")).playbooks}catch(e){$("select-err").textContent="Could not load the crisis list. Check that the server is running.";return}
+  $("picks").replaceChildren(...pbs.map(p=>{
+    const live=p.status==="live",el=document.createElement(live?"button":"div");
+    el.className="pick"+(live?"":" soon");
+    const wrap=document.createElement("span");
+    const t=document.createElement("span");t.className="t";t.textContent=p.title;wrap.append(t);
+    if(live){const d=document.createElement("span");d.className="d";d.textContent=p.description;wrap.append(d);
+      el.append(wrap);el.insertAdjacentHTML("beforeend",CHEV);el.onclick=()=>choose(p)}
+    else{el.setAttribute("aria-disabled","true");const tag=document.createElement("span");tag.className="tag";tag.textContent="Coming soon";el.append(wrap,tag)}
+    return el}));
+}
+function choose(p){
+  pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
+  $("intake-title").textContent="What did the family tell you?";
+  $("btn-demo").classList.toggle("hidden",!p.demo_intake);$("demo-row").classList.toggle("hidden",!p.demo_intake);
+  $("intake-err").textContent="";show("v-intake");
+}
+$("btn-demo").onclick=()=>{$("intake").value=pb.demo_intake;$("demo").checked=true};
+$("back-intake").onclick=()=>loadSelect();
+$("back-pipe").onclick=()=>{clearInterval(timer);sid=null;loadSelect()};
 $("btn-start").onclick=async()=>{
   $("intake-err").textContent="";
-  const r=await api("/api/run",{intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked});
+  const r=await api("/api/run",{playbook:pb.id,intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked});
   if(r.error){$("intake-err").textContent=r.error;return}
   sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
 };
-const reset=()=>{clearInterval(timer);sid=null;show("v-intake")};
+const reset=()=>{clearInterval(timer);sid=null;loadSelect()};
 $("b-new1").onclick=reset;$("b-new2").onclick=reset;
 const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
 $("b-approve").onclick=()=>{lock();decide("approve")};
@@ -169,12 +218,15 @@ async function poll(){
     const key=g.id+JSON.stringify(g.metrics.attempts);
     if(key!==lastGate){lastGate=key;unedit();document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=false);
       $("g-title").textContent=g.title;$("g-draft").textContent=g.draft;$("g-disc").textContent=g.disclaimer;
+      const rj=g.metrics.self_corrections;$("g-rej").classList.toggle("hidden",!rj);
+      $("g-rej").textContent=rj===1?"Rejected once, regenerated, passed.":`Rejected ${rj} times, regenerated, passed.`;
       $("g-draft").className=g.id==="triage"?"plain":"family";
       const m=g.metrics;$("g-metrics").textContent=`Checked ${m.attempts} time${m.attempts>1?"s":""}`+(m.self_corrections?`, ${m.self_corrections} self-correction${m.self_corrections>1?"s":""}`:"")+`, ${m.latency_s} s`}
   }else if(!halted){
     const cur=s.stages.find(x=>x.status==="working")||s.stages.find(x=>x.status==="pending");
     $("work-title").textContent=cur?cur.title:"Working";$("work-msg").textContent="Nury is drafting and checking. A stage takes 5 to 20 seconds."}
 }
+loadSelect();
 </script>
 </body>
 </html>
