@@ -4,7 +4,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei. Sources: the final scored runs
 
 ## 1. What a case costs today
 
-A case is one run through five stages (triage, then four family-facing stages) with the privacy layer, the rules and the Jev gate on.
+A case is one run through the stages of a crisis (both live crises have five: triage, then four family-facing stages) with the privacy layer, the rules and the Jev gate on.
 
 | Set (final build `9bc5c6d`) | Runs | Mean time per run | Tokens in / out | Cost, all runs | Cost per run |
 |---|---|---|---|---|---|
@@ -33,7 +33,7 @@ Two consequences:
 Each item says what happens, how bad it could get, and what stands in the way today.
 
 ### 3.1 The retry loop, worst case
-A stage can make several calls for one draft attempt. From the constants in the code: 5 stages × 3 attempts × 3 calls for privacy repair (the first call plus up to 2 repair calls) × 3 tries for HTTP errors (the first plus up to 2 retries) = **135 Gloo calls**, against 5 in the normal case. Jev adds up to 15 more calls (one per attempt, at most). That is up to 27 times the calls of a clean run. It needs every layer to fail every time, so it is a ceiling, not an expected value. The scored runs show corrections per run well below 1 and a handful of escalations.
+A stage can make several calls for one draft attempt. From the constants in the code: 5 stages (for a live crisis) × 3 attempts × 3 calls for privacy repair (the first call plus up to 2 repair calls) × 3 tries for HTTP errors (the first plus up to 2 retries) = **135 Gloo calls**, against 5 in the normal case. Jev adds up to 15 more calls (one per attempt, at most). That is up to 27 times the calls of a clean run. It needs every layer to fail every time, so it is a ceiling, not an expected value. The scored runs show corrections per run well below 1 and a handful of escalations.
 - **Built:** the attempt limit (3), the repair limit (2), the HTTP retry limit (2) with a bounded wait (3 s without a `Retry-After`, up to 20 s with one), a Jev timeout (8 s) that fails open, and no retry on a 402.
 - **Not built:** a cap on calls or dollars per case.
 

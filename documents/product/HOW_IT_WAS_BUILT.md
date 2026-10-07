@@ -132,7 +132,7 @@ With no Gloo key, the app plays back a recorded run of each playbook's sample in
 
 ## 2. How the engine works
 
-This section explains how Nury's core works. It covers the cycle for one stage, the five-stage run, a real trace, the files, what we chose not to build, and where the design came from. hack-jedi wrote it from the code. We checked the function names, the file line counts and the prework quotes against the repo on 2026-10-07. Line numbers are for `code/nury/engine.py` at the final build and may move. The function names will not. The raw trace file is `documents/product/trace_detention_01.jsonl`.
+This section explains how Nury's core works. It covers the cycle for one stage, the run through a crisis's stages, a real trace, the files, what we chose not to build, and where the design came from. hack-jedi wrote it from the code. We checked the function names, the file line counts and the prework quotes against the repo on 2026-10-07. Line numbers are for `code/nury/engine.py` at the final build and may move. The function names will not. The raw trace file is `documents/product/trace_detention_01.jsonl`.
 
 ### The cycle for one stage
 
@@ -149,7 +149,7 @@ One stage is one call of `run_stage` (`engine.py` line 154). The pastor sees one
 9. **The gate.** A clean draft is shown with a label and the disclaimer (line 302). The pastor approves, edits or stops (line 303). The engine checks and flags an edit but does not block it, because the pastor owns it. The engine saves the approved or edited text, with the disclaimer, for later stages (line 325).
 10. **The audit.** Every step above writes an event (`audit.py`). The audit holds categories, ids, probabilities and timings. It holds no draft text, except the hidden `draft_rejected` event.
 
-### The run across five stages
+### The run across the stages of a crisis
 
 `_run_pipeline` (line 384) runs the stages in order. A stage that is not approved, edited or skipped stops the run. **Chaining:** each stage reads the approved or edited text of the stages before it, so a pastor's edit flows forward. After the last stage, `compute_outcome` (line 356) names one of four outcomes: `package_complete`, `stopped_by_pastor`, `escalated` or `blocked` (Gloo's own guardrail refused). The pastor can always save the case or share the text by hand. Nothing is sent to the family.
 
@@ -275,7 +275,7 @@ Pi describes itself as "a minimal, extensible agent harness that you can make yo
 
 | | Pi (`pi-agent-core`) | Nury (`engine.py`) |
 |---|---|---|
-| Who decides what happens next | The model. After each answer the loop looks for tool calls and runs them. | The engine. The five stages and their order are fixed in the playbook. |
+| Who decides what happens next | The model. After each answer the loop looks for tool calls and runs them. | The engine. The stages and their order are fixed in each crisis's playbook. |
 | Tools | The model calls tools. Tool calls run in sequence or in parallel (per the README). | None. The model writes text only. |
 | Loop shape | Per the loop source summary: an outer loop for follow-up messages and an inner loop "while there are more tool calls or pending messages": call the model, run tool calls, check for new steering messages. | `for attempt in range(1, 4)` inside each stage: write, check, classify, then regenerate or stop. |
 | When it stops | When there are no tool calls and no steering or follow-up messages, on an error or abort, or when a `finishTurn` callback returns `end`. The README also says the loop stops early only if every finalized tool result in a batch sets `terminate: true`. | When a draft passes every layer, after three failed attempts (escalate), or when the pastor stops. |
@@ -299,12 +299,12 @@ In short, Pi lets the model decide and gives a person ways to steer. Nury does t
 - **Shell access.** A coding agent's `bash` is the opposite of a crisis agent's floor.
 - **No deterministic floor.** Pi leaves permission and confirmation to extensions ("Run in a container, or build your own confirmation flow with extensions"). For Nury those checks are the product, so they are in the core, not an add-on.
 - **A model that decides when it is done.** Our stages end when a draft passes the layers or after three attempts, not when the model stops.
-- **Parallel tool execution and mid-run steering.** Neither has a place in a fixed five-stage run with a human gate after each.
+- **Parallel tool execution and mid-run steering.** Neither has a place in a fixed run of stages (five in a live crisis) with a human gate after each.
 - **Language.** Pi is TypeScript. Nury is Python, and a pastor can read it. Moving would be a rewrite for no gain.
 
 ##### 5. Could `pi-agent-core` be the loop under Nury later?
 
-**Maybe, for one narrow case, and no for the main run.** For the five-stage run: no. Our loop is not a tool loop. With no tools, Pi's loop would only wrap one model call. We would add a TypeScript runtime and a bridge to the Python engine for nothing. The parts that matter would all stay ours: the checks, the Jev gate, the correction loop and the human gate.
+**Maybe, for one narrow case, and no for the main run.** For the main run of stages: no. Our loop is not a tool loop. With no tools, Pi's loop would only wrap one model call. We would add a TypeScript runtime and a bridge to the Python engine for nothing. The parts that matter would all stay ours: the checks, the Jev gate, the correction loop and the human gate.
 
 A harness like this could make sense for a later feature that needs tools. One example is a read-only search of a church's saved cases. The harness would sit behind our floor and our approval gate, with each tool whitelisted and logged. That would need a design review first. It is not planned.
 

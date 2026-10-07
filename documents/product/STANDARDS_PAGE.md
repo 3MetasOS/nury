@@ -29,7 +29,7 @@ The National Association of Social Workers published *NASW Standards for Social 
 | 3 Knowledge | Vetted sources only: a reviewed rights file, an official list, approved hospital sources. Every point is cited. | No attorney or other professional has reviewed the sources. | Citation chips; `code/playbooks/*/sources/` |
 | 4 Cultural and Linguistic Competence | Family output in Spanish or English. A language check blocks mixed-language drafts. | One language pair. No native-speaker review. The pastor's screens are English only. | Family-language output |
 | 5 Assessment | The triage stage: situation, people, place, language, urgency with a reason, and three missing facts. | It does not capture the family's goals or strengths. No ongoing assessment. | Stage 1, Triage |
-| 6 Service Planning, Implementation, and Monitoring | A five-stage plan and a next-steps map with four lanes (tonight, this week, questions open, who to call). Versions v1 to v2. The pastor can record what happened and a result. | No case status, follow-up date or measurable objectives. No check on what the family did. | Next-steps map; "What happened?" updates |
+| 6 Service Planning, Implementation, and Monitoring | A staged plan (five stages in a live crisis) and a next-steps map with four lanes (tonight, this week, questions open, who to call). Versions v1 to v2. The pastor can record what happened and a result. | No case status, follow-up date or measurable objectives. No check on what the family did. | Next-steps map; "What happened?" updates |
 | 7 Advocacy and Leadership | Nothing, by design. Nury gives legal information only and never advocates. It lists official and church contacts. | This is a decision, not a gap. | Attorney resources stage |
 | 8 Interdisciplinary and Interorganizational Collaboration | The pastor's church network and the official Department of Justice list, labeled, never ranked or endorsed. | One pastor's own contacts only. No shared cases, teams or roles. | Network page; "listed does not mean recommended" |
 | 9 Practice Evaluation and Improvement | Four evaluation layers, scorecards and judge validation. | That evaluates the tool, not any case. Nothing tracks whether a family was helped. | Evaluation layers |
@@ -49,7 +49,7 @@ The National Association of Social Workers published *NASW Standards for Social 
 
 Source: NASW, *NASW Standards for Social Work Case Management*, 2013. Copyright National Association of Social Workers. Read from the copy at https://ovcsupport.org/wp-content/uploads/2019/06/standards-case-management.pdf.
 
-## The six case-management functions and the five stages
+## The six case-management functions and Nury's stages
 
 The NASW document names six core functions: "engagement with clients", "assessment of client priorities, strengths, and challenges", "development and implementation of a care plan", "monitoring of service delivery", "evaluation of outcomes" and "closure (including termination or transition follow-up)".
 
