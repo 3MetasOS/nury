@@ -28,7 +28,7 @@ Anyone with the repository can add a crisis, a rule or a scenario. See `document
 
 **Writer.** Claude Sonnet 4.6, through Gloo AI Studio's guarded endpoint, with Gloo's guardrails. Claude writes each stage. It never writes a verse of Scripture.
 
-**Checks.** Twenty named rules and a safety floor read every draft before the pastor does. When it is reachable, Jev, a classifier from TypeSafe, checks the draft a second time with fixed yes or no questions. A draft that fails is held back and regenerated, up to three tries, and then Nury steps aside for the pastor. These checks are tripwires, not proofs. The pastor approves every stage.
+**Checks.** Twenty named rules and a safety floor read every draft before the pastor does. Jev, a classifier from TypeSafe, checks the draft a second time with fixed yes or no questions. A draft that fails is held back and regenerated, up to three tries, and then Nury steps aside for the pastor. These checks are tripwires, not proofs. The pastor approves every stage.
 
 **Scripture.** The model picks a verse from a list a person approved. The engine inserts the exact text, from YouVersion or from a bank of public-domain Bibles. The version name and its copyright show with every verse.
 

@@ -5,7 +5,7 @@
 
 Nury helps a pastor who gets a crisis call. The pastor types what the family said. Nury drafts five short stages for the pastor to read, edit or stop. Nothing reaches the family except through the pastor.
 
-A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again when it is reachable. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.
+A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.
 
 The model never writes a Bible verse. It picks one from a list a person approved, and the app inserts the exact words.
 
@@ -734,6 +734,7 @@ This is a suggested order, not a plan we have committed to.
 - The effect of the skills is not measured.
 - The triage can restate the family's own words. The checks can then refuse it three times, and the pastor gets no case summary. We saw this on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran, but that is not a rate.
 - Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
+- If Jev cannot answer within 8 seconds, or no key is set, Nury keeps going with its own rules and records that the second check did not run. A vendor outage never blocks a pastor. This is a design choice and a limit.
 - A case without a stated state uses the church's home state when one is set.
 - The tone score did not rise after the promises fix. The tone judge moves by up to 0.75 between identical runs. One sample near its 3.0 line proves little.
 - The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood. No native speaker has read the Spanish.

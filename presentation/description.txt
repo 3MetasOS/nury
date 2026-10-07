@@ -10,7 +10,7 @@ After every stage, the pastor can Approve, Edit, or Stop. Nothing reaches the fa
 
 Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never endorses anyone. Nury is not a pastor, counselor, or lawyer.
 
-Each draft passes our rules and, when Jev is reachable, a Jev classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval.
+Each draft is checked by our rules and by Jev, a classifier. A draft that fails is held back and regenerated, up to three tries, then Nury steps aside for the pastor. Nothing moves on without the pastor's approval.
 
 Nury runs on Gloo's guarded endpoint. 46 scenarios, judged: 29 pass, 2 fail, 15 undecided.
 
