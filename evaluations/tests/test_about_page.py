@@ -23,8 +23,8 @@ def test_the_memorial_is_juans_words_verbatim_and_flagged_as_pending():
 
 def test_the_photo_slot_has_no_image_unless_the_file_exists():
     page = (STATIC / "about.html").read_text(encoding="utf-8")
-    assert '<figure id="mem-photo"><img alt="Nury Peláez"></figure>' in page and 'src="/memorial' not in page
-    assert not (STATIC / "memorial" / "nury.jpg").exists() or True      # when Juan adds the file the script shows the figure
+    assert '<figure id="mem-photo"><img alt="Nury Pel' in page            # the image has no src until the script finds the file
+    assert "img src=" not in page and "display:none" in page and 'i.src="/memorial/nury.jpg"' in page
 
 
 def test_the_page_is_current_with_its_source(tmp_path):
