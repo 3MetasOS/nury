@@ -307,7 +307,7 @@ def test_privacy_off_banner_text_and_hook():
 
 def test_replay_mode_hooks():
     idx = (STATIC / "index.html").read_text(encoding="utf-8")
-    for tok in ('id="replay-banner"', 'id="replay-note"', "Use the sample intake", "FEATURES.replay_banner", "s.replay_note", "RECORDED (not a live Jev check)"):
+    for tok in ('id="replay-line-intake"', 'id="replay-line-run"', 'href="/run-your-own"', 'id="replay-note"', "Use the sample intake", "s.replay_note", "RECORDED (not a live Jev check)"):
         assert tok in idx, tok
     fin = (STATIC / "final.js").read_text(encoding="utf-8")
     assert 'row("Mode", "Recorded run"' in fin and "fp-rec" in fin

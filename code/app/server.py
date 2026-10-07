@@ -561,7 +561,7 @@ class H(BaseHTTPRequestHandler):
             p = "/how-it-was-built.html"
         elif p in ("/observability", "/observability/"):
             p = "/observability.html"
-        elif p.rstrip("/") in ("/standards", "/what-did-not-work", "/economics", "/pattern"):
+        elif p.rstrip("/") in ("/standards", "/what-did-not-work", "/economics", "/pattern", "/run-your-own"):
             p = p.rstrip("/") + ".html"
         elif p in ("/build-log", "/build-log/"):
             p = "/build-log.html"

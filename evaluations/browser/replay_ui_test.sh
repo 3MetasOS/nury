@@ -17,16 +17,18 @@ for c in json.load(sys.stdin)['cases']:
 for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="$TH-$W"
  agent-browser set viewport $W $H >/dev/null 2>&1
  open "http://127.0.0.1:$PORT/#/"; ev "try{localStorage.setItem('nury-theme','$TH')}catch(e){};1" >/dev/null; agent-browser eval "location.reload();1" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
- check "$T replay OFF: no banner, typing allowed, the demo button keeps its name" "$(ev "(()=>{const b=document.getElementById('replay-banner');return b.hidden&&b.textContent===''})()")" "true"
+ check "$T replay OFF (key present): Home shows no mode message and every replay line is hidden" "$(ev "(()=>[...document.querySelectorAll('.replay-line')].every(e=>e.hidden)&&!/saved example|Recorded run/.test(document.body.innerText))()")" "true"
  ev "location.hash='#/crisis/detention';1" >/dev/null; agent-browser wait 800 >/dev/null 2>&1; ev "(()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0);b.click();return 1})()" >/dev/null; agent-browser wait 700 >/dev/null 2>&1
+ check "$T replay OFF (key present): the intake screen shows no replay line" "$(ev "(()=>document.getElementById('replay-line-intake').hidden&&!/saved example/.test(document.getElementById('v-intake').innerText))()")" "true"
+ check "$T replay OFF (key present): the run screen shows no replay line" "$(ev "(()=>{show('v-pipe');const r=document.getElementById('replay-line-run').hidden&&!/saved example/.test(document.getElementById('v-pipe').innerText);show('v-intake');return r})()")" "true"
  check "$T replay OFF: the intake box is editable and says 'Use demo intake'" "$(ev "!document.getElementById('intake').readOnly&&document.getElementById('btn-demo').textContent==='Use demo intake'")" "true"
  open "http://127.0.0.1:$PORT3/#/"; agent-browser eval "location.reload();1" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
- check "$T replay ON: a calm banner with the server's exact sentence is at the top of Home" "$(ev "(()=>{const b=document.getElementById('replay-banner');return !b.hidden&&b.textContent===\"$BAN\"&&b.getBoundingClientRect().top<200})()")" "true"
- check "$T replay ON: the features say so" "$(ev "(async()=>{const f=await (await fetch('/api/features')).json();return f.replay===true&&f.replay_banner===\"$BAN\"})()")" "true"
+ check "$T replay ON: Home itself shows no mode message (no banner, no line)" "$(ev "(()=>!/saved example|Recorded run|recorded run/.test(document.body.innerText)&&!document.getElementById('replay-banner'))()")" "true"
+ check "$T replay ON: the features say so" "$(ev "(async()=>{const f=await (await fetch('/api/features')).json();return f.replay===true})()")" "true"
  check "$T replay ON: contrast scan clean on Home" "$(scan)" '"[]"'
  ev "location.hash='#/crisis/detention';1" >/dev/null; agent-browser wait 800 >/dev/null 2>&1; ev "(()=>{const b=[...document.querySelectorAll('[data-begin]')].find(x=>x.getBoundingClientRect().height>0);b.click();return 1})()" >/dev/null; agent-browser wait 700 >/dev/null 2>&1
  read -r -d '' J <<'JS'
-(()=>{const b=document.getElementById('replay-banner'),d=document.getElementById('btn-demo');return !b.hidden&&document.getElementById('intake').readOnly&&d.textContent==='Use the sample intake'&&d.classList.contains('primary')&&d.getBoundingClientRect().height>=44&&d.getBoundingClientRect().bottom<innerHeight&&(d.compareDocumentPosition(document.getElementById('intake'))&Node.DOCUMENT_POSITION_FOLLOWING)>0})()
+(()=>{const b=document.getElementById('replay-line-intake'),d=document.getElementById('btn-demo');const a=b.querySelector('a');return !b.hidden&&/Demo with a saved example. The safety checks run live. To write your own case, connect a Gloo key: how to./.test(b.textContent)&&a&&a.getAttribute('href')==='/run-your-own'&&document.getElementById('intake').readOnly&&d.textContent==='Use the sample intake'&&d.classList.contains('primary')&&d.getBoundingClientRect().height>=44&&d.getBoundingClientRect().bottom<innerHeight&&(d.compareDocumentPosition(document.getElementById('intake'))&Node.DOCUMENT_POSITION_FOLLOWING)>0})()
 JS
  check "$T replay ON: the banner stays on the intake; the box is read-only; the visible path is 'Use the sample intake'" "$(ev "$J")" "true"
  ev "document.getElementById('btn-demo').scrollIntoView({block:'center'});1" >/dev/null; click "#btn-demo"
@@ -39,13 +41,13 @@ JS
  # the screens that show a run: banner, replay note, the recorded Jev label
  ev "(()=>{window.__realApi=window.__realApi||api;window.api=async(p,b)=>{if(p.startsWith('/api/session/'))return{id:'x',playbook:{id:'detention',title:'Immigration detention or raid'},replay:true,replay_banner:'x',replay_note:'Your edit is carried forward as you wrote it. The later stages are the recorded ones, so they do not react to it.',stages:[{id:'triage',title:'1. Triage',status:'working'}],gate:null,log:[{ts:'2026-10-07T00:00:00.000+00:00',kind:'jev_recorded',stage:'triage',label:'recorded',scores:[{attempt:1,question:'assumes_facts',probability:0.12,decision:'pass'}]}],strip:null,halted:null,error:null,sources_list:[],done:false,package:null,map_svg:null,progress:{phase:'writing',stage:'triage',attempt:1,elapsed_s:2}};return await window.__realApi(p,b)};sid='x';show('v-pipe');poll();return 1})()" >/dev/null; agent-browser wait 1400 >/dev/null 2>&1
  read -r -d '' J <<'JS'
-(()=>{const n=document.getElementById('replay-note'),l=document.getElementById('log').textContent;return !document.getElementById('replay-banner').hidden&&!n.hidden&&/carried forward as you wrote it/.test(n.textContent)&&/RECORDED \(not a live Jev check\).*assumes_facts 0.12 pass/.test(l)&&!/jev_gate/.test(l)})()
+(()=>{const n=document.getElementById('replay-note'),l=document.getElementById('log').textContent;const rl=document.getElementById('replay-line-run');return !rl.hidden&&!!rl.querySelector('a[href="/run-your-own"]')&&!n.hidden&&/carried forward as you wrote it/.test(n.textContent)&&/RECORDED \(not a live Jev check\).*assumes_facts 0.12 pass/.test(l)&&!/jev_gate/.test(l)})()
 JS
  check "$T replay ON: the run page shows the banner, the replay note, and Jev's scores under a 'recorded' label, not as a live check" "$(ev "$J")" "true"
  # the final page in a recorded run
  open "http://127.0.0.1:$PORT3/#/"
  ev "(async()=>{$STUB; await window.__finalStub('$ES',{addVerse:true}); const a=window.api; window.api=async(p,b)=>{const r=await a(p,b); if(p.startsWith('/api/session/')&&!p.endsWith('/save')){r.replay=true;r.replay_banner='x'} return r}; return 1})()" >/dev/null; ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 1500 >/dev/null 2>&1
- check "$T replay ON: the final page keeps its content and adds 'Recorded run' to the key facts and a footer line" "$(ev "(()=>{const k=document.querySelector('.keyfacts').textContent;return /Recorded run/.test(k)&&!!document.querySelector('.fp-rec')&&/Recorded run/.test(document.getElementById('final-body').textContent)&&document.querySelectorAll('#final-body section.fp-sec').length===4&&!document.getElementById('replay-banner').hidden})()")" "true"
+ check "$T replay ON: the final page keeps its content and adds 'Recorded run' to the key facts and a footer line" "$(ev "(()=>{const k=document.querySelector('.keyfacts').textContent;return /Recorded run/.test(k)&&!!document.querySelector('.fp-rec')&&/Recorded run/.test(document.getElementById('final-body').textContent)&&document.querySelectorAll('#final-body section.fp-sec').length===4})()")" "true"
  rm -f /tmp/dl/replay-$T.pdf; agent-browser pdf /tmp/dl/replay-$T.pdf >/dev/null 2>&1
  PR=$(python3 - "/tmp/dl/replay-$T.pdf" <<'PY'
 import sys,subprocess
@@ -55,6 +57,17 @@ PY
 )
  check "$T replay ON: the print view says it was a recorded run" "$PR" "ok"
  agent-browser screenshot $SHOTS/replay-final-$T.png >/dev/null 2>&1
+done; done
+# the Run your own page, 390 and 1280, Night and Day
+for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844; T="$TH-$W"
+ agent-browser set viewport $W $H >/dev/null 2>&1
+ open "http://127.0.0.1:$PORT3/run-your-own"; ev "try{localStorage.setItem('nury-theme','$TH')}catch(e){};1" >/dev/null; agent-browser eval "location.reload();1" >/dev/null 2>&1; agent-browser wait 1500 >/dev/null 2>&1
+ read -r -d '' J <<'JS'
+(()=>{const m=document.getElementById('main');const li=[...m.querySelectorAll('ol.steps li')];const a=m.querySelector('a[href="https://platform.ai.gloo.com"]');return document.title==='Run your own case, Nury'&&m.querySelector('h1').textContent==='Run your own case'&&li.length===3&&/GLOO_API_KEY/.test(li[1].textContent)&&/python3 -m app.server/.test(li[2].textContent)&&!!a&&/JEV_API_KEY[\s\S]*skipped/.test(m.textContent)&&/YVP_APP_KEY[\s\S]*public-domain/.test(m.textContent)&&/Try it in 2 minutes/.test(m.textContent)&&!m.querySelector('.lockup,.lk,img')&&!!document.querySelector('header .lk')&&!!document.querySelector('footer .lockup')&&document.documentElement.scrollWidth<=innerWidth})()
+JS
+ check "$T /run-your-own: three steps, the optional keys, header and footer, no logo in the body, no sideways scroll" "$(ev "$J")" "true"
+ check "$T /run-your-own: contrast scan clean" "$(scan)" '"[]"'
+ agent-browser screenshot --full $SHOTS/run-your-own-$T.png >/dev/null 2>&1
 done; done
 ev "try{localStorage.setItem('nury-theme','dark')}catch(e){};1" >/dev/null
 [ $FAIL = 0 ] && echo "ALL PASS" || { echo "SOME FAILED"; exit 1; }
