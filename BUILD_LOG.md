@@ -178,3 +178,10 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - First two skills: `voice` (humanizer ideas, plain words, natural Spanish) and `grounding` (every line from the vetted points or a plain question to the professional). The ad-hoc checklist sentence moves into `grounding`.
 - Evidence: `skill_applied` audit events; before/after eval with skills off and on; a stock-AI-phrase check and a Jev tone score.
 - Owners: hack-jedi (build, before the 06:00 freeze), hack-artisans (eval), hack-ninja (claim only after I confirm).
+
+## 26. 2026-10-06 20:40 MDT — Detention checklist grounding (hack-jedi, commit 0a222f5)
+
+- Rule added to the checklist prompt: every line comes from the vetted points or is a plain question for the attorney; the only other lines are the family's own documents and contact numbers. Counts changed to "up to 7" and "up to 5" because fixed counts pushed the model to pad. Three tips are named as banned.
+- Live on scenarios 1, 18, 20 (stages 1–4): no escalation, every stage passed on attempt 1; the checklist is 319–347 words (was 378–420). "Don't share on social media" is gone; DO NOT DO has 4 items, all from vetted points. Scenario 18's earlier failure no longer appears.
+- Known limitation (accepted by hack-sensei): "memorize the phone number" and "leave copies of documents with someone you trust" still appear in all three runs despite an explicit ban. They are neither legal advice nor predictions. No hard check, because it would escalate normal runs.
+- Honest testing gap: the final prompt ran stages 1–4, not all five. A full five-stage run happens after the skill system lands, before the freeze.
