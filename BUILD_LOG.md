@@ -286,3 +286,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Source: the U.S. Department of Justice pro bono legal service providers list (justice.gov, updated October 2026) and its recognized-organizations roster. Read at build time; quotes verbatim; no entry marked free (the roster does not say so); no private attorney marked. 28 canvas entries.
 - Decision (Juan, relayed by hack-sensei): approve the pro bono providers and the roster entries; hold the 7 marked "Pending Renewal" (status held, not used, to revisit). An entry on both lists counts once. Listed does not mean recommended: Nury never endorses anyone.
 - Next: hack-ninja records the approvals file; hack-jedi wires only approved entries.
+
+## 41. 2026-10-06 21:18 MDT — Official list decision recorded (hack-ninja)
+
+- Counts: 28 entries = 25 providers (18 approved, 7 held as Pending Renewal) + 3 official source pages (approved). The 18 approved providers are the 4 pro bono providers plus 14 roster-only organizations; RMIAN and Connect Immigration appear on both lists and count once. 21 approved entries in all; no entry counted twice.
+- Nury uses only approved entries; held entries are never used or shown. It never says "free" (the roster does not say so) and always carries "listed does not mean recommended".
+- Next: hack-jedi wires approved entries after the church network v1.
