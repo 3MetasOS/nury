@@ -110,3 +110,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Findings routed: (1) demo rejection moves from stage 5 to stage 2; (2) triage and package text lost line breaks; (3) Package view needs Copy/Download visible on one screen; (4) triage said "ICE", against the no-agency-name decision. Do not blur in post; fix at the source.
 - hack-jedi (c316c60): triage prompt bans agency names; named check `no_agency_names` (category agency_name) added to the detention playbook. Live test: an intake saying "ICE" twice produced "immigration officers" with no retry. 15 tests pass. Decision: also apply to checklist and pastoral; not to rights or attorney, because vetted sources may name agencies and we avoid false escalations.
 - Learned: per-call `fault_injection` is safer than the env var in a shared server process.
+
+## 16. 2026-10-06 20:05 MDT — Gloo prices confirmed
+
+- Read from the Gloo models API (`pricing` field): gloo-anthropic-claude-sonnet-4.6 costs $3.00 per 1M input tokens and $15.00 per 1M output tokens. The scorecard cost column uses these.
+- Note for the model-selection evidence in EVAL_DESIGN: gloo-anthropic-claude-sonnet-5.5 lists $2.00 in / $10.00 out per 1M. We keep sonnet-4.6 for the run; no model switch this late. A cheap-vs-flagship comparison is optional if time allows.
