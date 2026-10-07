@@ -615,6 +615,8 @@ Nury writes from vetted sources only. There is no open web at run time.
 - **Official list.** The Department of Justice list of recognized legal service providers, read for Colorado only: 18 approved providers, shown with the line "listed does not mean recommended". Seven held entries are never shown. Other states show no official section. BUILT, live. Update cadence: NOT BUILT. Someone has to re-read the list when it changes.
 - **Church network.** The pastor's own contacts, saved by the app, matched by state, language and kind, and listed first under the church's own name. Nury never ranks or endorses one. The pastor's private note on a contact never reaches a model or a message. BUILT, live. `code/nury/network.py`.
 
+- **The church's home.** The church network file has an optional `home` (a city and a state). When a case does not name a state, Nury uses the home state to choose local contacts and the state's official list. With no home set, it lists nationwide contacts only. In the fictional demo network the home is Aurora, CO. You set it by editing the network file; the app has no form for it (the route `POST /api/network/home` exists). `code/nury/network.py`, `code/nury/engine.py`.
+
 The rule: Nury lists only contacts the pastor has vetted, labeled as the church's own, plus official vetted lists. It never endorses anyone.
 
 ### Scripture in the pastoral message
@@ -716,6 +718,7 @@ This is a suggested order, not a plan we have committed to.
 - The effect of the skills is not measured.
 - The triage can restate the family's own words and be refused three times by the checks, and then the pastor gets no case summary. We saw it on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran. That is not a rate.
 - Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
+- A case without a stated state uses the church's home state when one is set.
 - The tone score did not rise after the promises fix. The tone judge moves by up to 0.75 between identical runs; one sample near its 3.0 line proves little.
 - The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood, and the Spanish has not been read by a native speaker.
 - No real pastor has used Nury. A native Spanish speaker has not scored the Spanish.

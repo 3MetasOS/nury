@@ -105,6 +105,7 @@ If one evaluation test (`test_built_page_is_current_with_its_source`) fails, a d
 - Nothing has been learned. The learning loop is built and off.
 - There is no sign-in and no encryption at rest. One shared pool of cases and one shared church network are visible to anyone who can reach the app. A hosted version needs all of that, plus separation between churches.
 - A native Spanish speaker has not read the Spanish.
+- A case without a stated state uses the church's home state when one is set (set by editing the network file; the app has no form for it).
 - The triage can restate the family's own words and be refused three times by the checks, and then the pastor gets no case summary. We saw it on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran. That is not a rate.
 - Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.
 - The scores on this page ran on build 9bc5c6d. The shipped build differs only in the crisis card titles and in the title text inside one context string given to the Jev gate. Three pipelines on the shipped build (detention 01 and 14, attacker a02) completed with no draft rejected: a smoke check, not a rate.
