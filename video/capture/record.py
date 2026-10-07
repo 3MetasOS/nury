@@ -14,7 +14,7 @@ FULL = "--full-selector" in sys.argv
 args = [a for a in sys.argv[1:] if not a.startswith("--")]
 base = args[0] if args else "http://127.0.0.1:8099/"
 out = Path(args[1] if len(args) > 1 else "capture/raw"); out.mkdir(parents=True, exist_ok=True)
-HOLD = 3.5  # seconds the viewer can read each gate before Approve
+HOLD = 5.0  # seconds the viewer can read each READY gate (all three buttons bright) before Approve
 
 with sync_playwright() as p:
     b = p.chromium.launch(channel="chrome", headless=True)
@@ -37,7 +37,16 @@ with sync_playwright() as p:
     page.check("#demo"); page.wait_for_timeout(800)
     page.click("#btn-start"); mark("start")
     for i in range(1, 6):
-        page.wait_for_selector("#gate:not(.hidden)", timeout=240_000)
+        # wait for the real gate; note the first time the guardrail strip shows a rejection (shot 7 needs it on stage 2)
+        t_end = time.time() + 240; seen_reject = False
+        while time.time() < t_end:
+            if page.locator("#gate:not(.hidden)").count(): break
+            if not seen_reject and "Draft rejected" in (page.inner_text("#strip") if page.locator("#strip:not(.hidden)").count() else ""):
+                seen_reject = True; mark("reject"); mark(f"strip: rejected, stage {i}")
+            page.wait_for_timeout(150)
+        else: raise TimeoutError(f"gate {i} never appeared")
+        # READY state: Approve, Edit and Stop all enabled
+        page.wait_for_function("[...document.querySelectorAll('#gate .btn')].filter(b=>b.offsetParent).every(b=>!b.disabled)", timeout=20_000)
         mark(f"gate{i} shown: {page.inner_text('#g-title')[:40]!r}")
         strip = page.locator("#strip:not(.hidden)")
         if strip.count(): mark(f"strip: {strip.inner_text()[:80]!r}")

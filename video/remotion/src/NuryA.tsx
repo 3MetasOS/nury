@@ -6,15 +6,15 @@ import {C, serif, sans, ease, FPS, Fade, End, Memorial, Tech, useFonts, type Dat
 import {OffthreadVideo, Freeze} from 'remotion';
 
 const INK = '#0d1015', GREY = '#d9d4c8', PAPER = '#f7f3ea';
-type S = {id: string; dur: number; kind: string; trim?: number; from?: [string, number]; to?: [string, number]; label?: string; start?: number};
+type S = {id: string; dur: number; hold?: string; kind: string; trim?: number; from?: [string, number]; to?: [string, number]; label?: string; start?: number};
 const BASE: S[] = [
   {id: 'hook', kind: 'night', dur: 3},
   {id: 'persona', kind: 'persona', dur: 7, trim: 1},
   {id: 'stakes', kind: 'stakes', dur: 7, trim: 1, from: ['selector', 3.7], to: ['start', 0.3]},
   {id: 'nury', kind: 'name', dur: 8},
-  {id: 'tool', kind: 'clip', dur: 10, trim: 2, from: ['selector', 0], to: ['approve1', 0.4], label: '1  Triage\nApprove / Edit / Stop'},
+  {id: 'tool', kind: 'clip', dur: 10, trim: 2, hold: 'gate1', from: ['selector', 0], to: ['approve1', 0.4], label: '1  Triage\nApprove / Edit / Stop'},
   {id: 'rights', kind: 'clip', dur: 7, trim: 2, from: ['gate2', 0], to: ['approve2', 0.4], label: '2  Rights brief.\nVetted sources only.'},
-  {id: 'turn', kind: 'clip', dur: 10, from: ['approve1', 1], to: ['gate2', 1], label: 'Rejected.\nRegenerating (2 of 3).\nPassed.'},
+  {id: 'turn', kind: 'clip', dur: 10, hold: 'reject', from: ['approve1', 1], to: ['gate2', 1], label: 'Rejected.\nRegenerating (2 of 3).\nPassed.'},
   {id: 'tech', kind: 'tech', dur: 12},
   {id: 'stages', kind: 'clip', dur: 8, trim: 2, from: ['approve2', 0.4], to: ['approve5', 0.4], label: '3  Attorneys\n4  Checklist\n5  Message'},
   {id: 'copy', kind: 'clip', dur: 6, from: ['approve5', 0.4], to: ['end', 0], label: 'Nury does not send.\nThe pastor does.\n\nLegal information only.'},
@@ -38,16 +38,28 @@ export const buildA = (d: Data) => {
 // The real app, LARGE: the phone window is 645x900 (83% of the frame height) and the video is zoomed 1.55x so the strip, the card and the gate text can be read.
 // Caption is a quiet line on the right. `y` = how far down the app (0 to 1) the window starts.
 const AppClip: React.FC<{s: any; marks: Marks; y?: number}> = ({s, marks, y = 0.0}) => {
-  const a = marks[s.from[0]] + s.from[1], b = marks[s.to[0]] + s.to[1], srcLen = b - a;
-  const rate = Math.min(4, Math.max(0.85, srcLen / s.dur)), play = Math.floor((srcLen / rate) * FPS);
+  const a = marks[s.from[0]] + s.from[1], b = marks[s.to[0]] + s.to[1];
+  const m = s.hold && marks[s.hold] != null ? Math.min(Math.max(marks[s.hold] - (s.holdLead ?? 0.4), a), b) : null; // hold = a mark: from there, play in real time
   const f = useCurrentFrame();
   const W = 645, H = 900, VH = W * 1688 / 780;
   const slide = interpolate(f, [0, 20], [18, 0], {easing: ease, extrapolateRight: 'clamp'});
-  const vid = <OffthreadVideo src={staticFile('run.mp4')} startFrom={Math.round(a * FPS)} playbackRate={rate} muted style={{width: W, height: VH, marginTop: -y * VH}} />;
+  const seg = (from: number, to: number, durS: number, rate: number) => {
+    const play = Math.floor(((to - from) / rate) * FPS), full = Math.round(durS * FPS);
+    const v = <OffthreadVideo src={staticFile('run.mp4')} startFrom={Math.round(from * FPS)} playbackRate={rate} muted style={{width: W, height: VH, marginTop: -y * VH}} />;
+    return play >= full ? v : (<><Sequence durationInFrames={Math.max(1, play)}>{v}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{v}</Freeze></Sequence></>);
+  };
+  let body: React.ReactNode;
+  if (m != null && b - m < s.dur - 1 && m > a + 0.5) {
+    const d2 = Math.min(b - m, s.dur - 1), d1 = s.dur - d2;
+    body = (<>
+      <Sequence durationInFrames={Math.round(d1 * FPS)}>{seg(a, m, d1, Math.min(8, Math.max(0.85, (m - a) / d1)))}</Sequence>
+      <Sequence from={Math.round(d1 * FPS)}>{seg(m, m + d2, d2, 1)}</Sequence>
+    </>);
+  } else body = seg(a, b, s.dur, Math.min(4, Math.max(0.85, (b - a) / s.dur)));
   return (
     <AbsoluteFill>
       <div style={{position: 'absolute', left: 330, top: 90, width: W, height: H, borderRadius: 30, overflow: 'hidden', boxShadow: '0 40px 90px rgba(70,45,10,.30), 0 8px 24px rgba(70,45,10,.16), 0 0 0 1px rgba(13,16,21,.16)', transform: `translateY(${slide}px)`}}>
-        {play >= s.dur * FPS ? vid : (<><Sequence durationInFrames={Math.max(1, play)}>{vid}</Sequence><Sequence from={Math.max(1, play)}><Freeze frame={Math.max(1, play) - 1}>{vid}</Freeze></Sequence></>)}
+        {body}
       </div>
       {s.label && (
         <div style={{position: 'absolute', left: 1060, top: 0, bottom: 0, width: 640, display: 'grid', alignContent: 'center'}}>
@@ -92,8 +104,8 @@ const Persona: React.FC<{dur: number}> = ({dur}) => {
   const reach = interpolate(t, [dur * 0.35, dur * 0.7], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const lift = interpolate(t, [dur * 0.72, dur * 0.95], [0, 1], {easing: ease, extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const push = interpolate(t, [0, dur], [1, 1.05]);
-  const px = 790, py = 560 - lift * 120;               // phone position
-  const hx = 1500 - reach * 640, hy = 760 - reach * 140 - lift * 120; // the hand slides in from the right edge
+  const px = 960, py = 560 - lift * 120;               // phone position
+  const hx = 1700 - reach * 640, hy = 760 - reach * 140 - lift * 120; // the hand slides in from the right edge
   return (
     <AbsoluteFill style={{background: '#07090c', transform: `scale(${push})`, transformOrigin: '50% 60%'}}>
       <div style={{position: 'absolute', left: 1180, top: 60, width: 560, height: 620, borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(232,163,61,.38), transparent 68%)', filter: 'blur(10px)'}} />
@@ -102,14 +114,14 @@ const Persona: React.FC<{dur: number}> = ({dur}) => {
         <rect x="0" y="696" width="1920" height="6" fill="rgba(232,163,61,.24)" />
         <path d="M1340 700 L1340 500 L1296 420 L1444 420 L1400 500 L1400 700 Z" fill="#171c25" />
         <ellipse cx="1370" cy="420" rx="86" ry="22" fill="#e8a33d" opacity=".92" />
-        <rect x="1050" y="640" width="62" height="64" rx="8" fill="#10151c" stroke="rgba(236,231,220,.2)" />
-        <path d="M1112 655 q26 4 0 36" stroke="rgba(236,231,220,.2)" strokeWidth="6" fill="none" />
+        <rect x="700" y="640" width="62" height="64" rx="8" fill="#10151c" stroke="rgba(236,231,220,.2)" />
+        <path d="M762 655 q26 4 0 36" stroke="rgba(236,231,220,.2)" strokeWidth="6" fill="none" />
         {/* the hand: a shadow shape with a warm rim from the lamp side, forearm entering from the lower right */}
         {(() => {
           const ex = hx + 30, ey = hy + 18; // wrist / palm centre
           const fingers = [[-88, -36], [-96, -10], [-90, 16], [-78, 40]]; // fingertip offsets from the palm
           const draw = (col: string, extra: number) => (<g stroke={col} fill={col} strokeLinecap="round">
-            <line x1="2000" y1="1180" x2={ex + 40} y2={ey + 10} strokeWidth={96 + extra} />
+            <line x1="1930" y1="1110" x2={ex + 40} y2={ey + 10} strokeWidth={122 + extra} />
             <circle cx={ex} cy={ey} r={54 + extra / 2} stroke="none" />
             {fingers.map(([dx, dy], i) => <line key={i} x1={ex - 10} y1={ey + (i - 1.5) * 18} x2={ex + dx} y2={ey + dy} strokeWidth={26 + extra} />)}
             <line x1={ex + 10} y1={ey + 36} x2={ex - 46} y2={ey + 78} strokeWidth={28 + extra} />
