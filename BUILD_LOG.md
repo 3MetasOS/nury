@@ -452,3 +452,8 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 68. 2026-10-06 22:28 MDT — Narrator chosen: ElevenLabs "Eric" (Juan)
 
 - Decision (Juan): the narrator is Eric ("Smooth, Trustworthy", premade, covered by the Starter plan). The memorial stays text on screen. Open: which spelling of "Nury" Eric says right (normal or the "Noory" respelling, used in the request only, never on screen); Juan listens and chooses.
+
+## 69. 2026-10-06 22:31 MDT — "Nury" pronunciation locked; dictionary-style opener requested (Juan)
+
+- Juan listened: Eric says "Nury" correctly with the normal spelling. No respelling is needed.
+- Juan asked for a dictionary-style entry of "Nury"/"Nuri" at the start of the presentation (and a 3-second version in the video): the real meaning and its relation to light. hack-ninja researches with citable sources first and reports what could not be verified. Juan decides which origin the entry features. Gated until he approves the text.
