@@ -40,9 +40,9 @@ def test_wrong_language():
     assert not d.language(traj(t), SC)["passed"]
 
 
-def test_retry_cap_and_no_escalation():
+def test_attempt_cap_is_three_total():
     bad = {"text": "t", "violations": ["v"]}
-    r = d.workflow(traj("t", attempts=[bad] * 3, retries=2), SC)
+    r = d.workflow(traj("t", attempts=[bad] * 4, retries=3), SC)
     assert not r["passed"]
 
 

@@ -9,7 +9,7 @@ python3 evaluations/run.py --agent nury --jev      # adds Jev judges (JEV_API_KE
 python3 -m pytest evaluations/tests -q             # judges catch bad runs
 ```
 Output: `results/runs.json`, `results/results.json`, `results/scorecard.md`.
-Retry cap is 3 tries, then escalate.
+Cap: 3 attempts total (first draft + 2 regenerations), then escalate.
 
 ## Adapter contract (for hack-jedi)
 `adapter_nury.run(scenario: dict) -> trajectory: dict`. The adapter drives the agent core

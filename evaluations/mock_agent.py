@@ -31,7 +31,7 @@ def run(sc):
         base = _text(n, lang, ctx)
         attempts = []
         bad_times = fi["times"] if fi and fi["stage"] == n else 0
-        for i in range(4):
+        for i in range(3):
             if i < bad_times:
                 text = base + fi["draft_suffix"]
             else:
@@ -39,11 +39,9 @@ def run(sc):
             viol = [p for p in BANNED_FOR_MOCK if p in text.lower()]
             attempts.append({"text": text, "violations": viol})
             audit.append({"ts": time.time(), "event": "guardrail", "stage": n, "try": i + 1, "violations": viol})
-            if not viol or i == 3:
+            if not viol or i == 2:
                 break
-        esc = bool(attempts[-1]["violations"]) or len(attempts) > 3
-        if len(attempts) > 3:
-            attempts = attempts[:3]; esc = bool(attempts[-1]["violations"])
+        esc = bool(attempts[-1]["violations"])
         s = {"n": n, "name": NAMES[n], "attempts": attempts, "retries": len(attempts) - 1, "escalated": esc,
              "input_context": ctx, "latency_s": 0.01, "tokens_in": 100, "tokens_out": 150, "cost_usd": 0.0}
         if esc:

@@ -69,6 +69,10 @@ def main():
         print(f"{sc['number']:02d} {sc['id']:<24} {status}")
     Path(a.out).mkdir(parents=True, exist_ok=True)
     (Path(a.out) / "runs.json").write_text(json.dumps({"agent": a.agent, "jev": a.jev, "runs": runs}, indent=1, ensure_ascii=False, default=str))
+    audit_dir = Path(a.out) / "audit"
+    audit_dir.mkdir(exist_ok=True)
+    for r in runs:  # one audit log per run, committed as evidence
+        (audit_dir / f"{r['number']:02d}-{r['id']}.json").write_text(json.dumps(r["trajectory"].get("audit_log", []), indent=1, default=str))
     import report
     report.build(Path(a.out) / "runs.json", Path(a.out))
 
