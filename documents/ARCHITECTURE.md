@@ -56,5 +56,18 @@ The app opens on a **crisis selector**, not on intake. Each card is a playbook.
 - Hospital playbook rules: information only, no medical advice, no diagnosis or prognosis, no claim to be clergy or a clinician, vetted sources only, same approval gates and correction loop. Sources are drafted by hack-jedi from official public pages (build-time reading only; the runtime has no open web) and **approved by Juan** before they ship.
 - API: `GET /api/playbooks` returns id, title, one-line description and status (`live` or `soon`). The selector reads it. The UI never hardcodes a crisis.
 
+## Nury skills (our own light skill system, decided by Juan 2026-10-06)
+A **skill** is a small, versioned instruction module that a playbook stage can include by name. It is not a Claude Code skill; it is plain text that the engine adds to the stage prompt. A new crisis picks skills up by name.
+```
+code/skills/<name>/SKILL.md     the instructions (EN and ES sections), version in the header
+code/skills/<name>/checks.json  optional named checks that go with the skill
+stages.json                     "skills": ["voice", "grounding"] on a stage
+```
+- **Safety floor wins.** A skill can add rules and checks. It can never remove or override the floor, the disclaimer or a playbook's banned patterns. The loader refuses a skill that tries.
+- **Evidence.** The audit log records a `skill_applied` event (name, version, stage) every time. The scorecard shows which skills ran.
+- **First two skills.** `voice` (distilled from the humanizer ideas: plain words, no stock phrases, no inflated language, natural Spanish for the family) on the pastoral and checklist stages. `grounding` (every line comes from the vetted points, or is a plain question for the professional) on checklist and resources stages.
+- **Proof.** Deterministic check for stock AI phrases, a Jev tone score, and a before/after comparison for the judges.
+- No extra model call. Skills change the prompt, not the number of calls.
+
 ## Rules that stay
 Vetted sources only. No open web. No send path. Nury is not a pastor. Humanitarian, never political. Keys from the environment only.
