@@ -342,3 +342,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - `documents/architecture/diagrams.html` now has ten tabs: Context, Layers, Playbook, Run flow, Correction, Privacy, Sources, Skills, Case file, Evals. Items not yet checked live are labeled "built, live check pending" (DOJ list, church network, revision, red-team panel, attacker runs); privacy, skills and the case file are marked as live-measured. Checked by hack-sensei at 390 px: no horizontal scroll, 11 SVGs.
 - Smaller items: the ABA email-only reason is recorded in PROMPT_NOTES and in a code comment; the network screen shows a visible notice when no church place is set; `save_case` writes `intake.md` (the pastor's words, exactly), so revisions append below it; the owed live checks narrowed to about 6 pipelines ($0.45).
+
+## 50. 2026-10-06 21:37 MDT — Nury hub: one page linking every artifact (hack-sensei)
+
+- `documents/hub/build.py` builds `documents/hub/index.html`, a single self-contained page with a side menu (and a search box) over 34 artifacts: Start here (concepts, journey, glossary, crew), README, product, judging notes, architecture decisions, the ten diagram tabs, case file sample, build log, interface, prompt notes, interim scorecards, failure log, judge and panel validation, eval design, live cost log, hospital and official-list source canvases, description, deck, scripts, storyboard, Remotion comparison and status. Re-run `python3 documents/hub/build.py` to refresh. A copy sits in hack-sensei's Canvas tab as `hub.html`.
+- Checked in a real browser: all 34 pages found; at 390 px no horizontal scroll and the menu slides in; at 1280 px the diagrams page renders inside the hub. Canvases inside the hub are reading copies; their buttons work only in the owning agent's Canvas tab.
+- The logo in the sidebar is a placeholder lantern until hack-ninja's brand kit lands (`branding/`).
