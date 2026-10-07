@@ -148,7 +148,7 @@ detention 01 and hospital h01, YouVersion on: **$0.1765** (cap $0.30). Both pack
 
 | Run | What | Gloo cost (est.) | Jev |
 |---|---|---|---|
-| G1 | validation drafts: detention 01 and hospital h01 (gate off) | $0.19 | 30 classify calls, median 156 ms, max 271 ms |
+| G1 | validation drafts: detention 01 and hospital h01 (gate off) | $0.19 | 30 classify calls, median 156 ms, max 271 ms (the re-run of the same drafts, run G5 validation: median 147 ms, max 212 ms) |
 | G2 | detention 01, 14, h01 with the gate on, first code (14 crashed my script after escalating: 3 Jev rejects at triage) | $0.11 | 5 calls for 01 |
 | G3 | detention 14 twice (escalation diagnosis; then after crisis context: completes, 2 regenerations) | $0.02 + $0.10 | 3 + 7 calls |
 | G4 | final code: detention 01, hospital h01 | $0.17 | 5 + 5 calls, 859 ms and 764 ms total |
