@@ -91,7 +91,7 @@ A guide only works if the pastor stays in charge: Nury drafts, the pastor leads.
 The next step is an immigration attorney reviewing our vetted sources, and a native Spanish speaker reading the family copies. Then comes real use with pastors, carefully, with a consent process in place. We want to finish calibrating the Jev check and measure how often it rejects a safe draft. Nury is built to learn: the learning loop is built and off by default, and a person approves anything it proposes. Sudden loss and house fire are the next two crises, each added as a folder.
 
 ## Built with
-Gloo AI Studio (guarded endpoint) and Claude Sonnet 4.6 · Jev decision API from TypeSafe · YouVersion API (Scripture text) · ElevenLabs (AI-generated narration voice for the film) · Python (plain, no agent framework) · plain HTML and JavaScript (the app and the deck) · Remotion (the film).
+Gloo AI Studio (guarded endpoint) with Claude Sonnet 4.6 · Jev decision API from TypeSafe (run-time second check and test judges) · YouVersion API (Scripture text) · Python, standard library only, no agent framework · plain HTML, CSS and JavaScript · an MCP server (read-only) · built with Claude Code and a crew of AI agents, all commits in the build log.
 
 ## Disclosure (verbatim)
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
