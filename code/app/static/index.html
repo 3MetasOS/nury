@@ -109,6 +109,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 .back:hover{color:var(--text)}
 .rej{font-size:14px;color:var(--green);margin:0 0 10px}
 .hidden{display:none!important}
+.btn.replay-first{display:block;width:100%;margin:8px 0 6px}
 .replay-banner{margin:0 0 14px;padding:12px 14px;border:1px solid var(--amber-line);border-radius:var(--r);background:var(--amber-soft);color:var(--text);font-weight:500}
 .privacy-off{margin:0 0 14px;padding:12px 14px;border:1px solid var(--red);border-radius:var(--r);background:var(--red-soft);color:var(--text);font-weight:600}
 .dock{position:sticky;bottom:0;background:linear-gradient(transparent,var(--surface) 18%);padding:18px 0 calc(8px + env(safe-area-inset-bottom));margin-top:6px}
@@ -775,6 +776,7 @@ function choose(p){
   $("intake-title").textContent="What did the family tell you?";
   $("btn-demo").classList.toggle("hidden",!p.demo_intake);$("demo-row").classList.toggle("hidden",!p.demo_intake);
   {const rp=!!FEATURES.replay;$("intake").readOnly=rp;$("btn-demo").textContent=rp?"Use the sample intake":"Use demo intake";$("btn-demo").classList.toggle("primary",rp);
+   if(rp){$("intake-title").after($("btn-demo"));$("btn-demo").classList.add("replay-first")}else{$("btn-start").before($("btn-demo"));$("btn-demo").classList.remove("replay-first")}   // replay: the one path (the sample) comes first, above the typing box
    if(rp)$("intake").placeholder="This is a recorded run. Use the sample intake."}
   $("intake-err").textContent="";show("v-intake");
 }

@@ -56,17 +56,17 @@ def cell(x, audit=False):
 
 
 def main():
-    cur, old = HERE / "results", HERE / "results/before_final2"
-    rows = ["# Build comparison: c317050 against the final build", "",
+    cur, old, mid = HERE / "results", HERE / "results/before_final2", HERE / "results/before_final3"
+    rows = ["# Build comparison: c317050, 8a28a18 and the final build 07f020c", "",
             "Pass / fail / awaiting review are judge results, not human verdicts. Tone range is the Jev warm, plain and human score (target 4, fail below 3). Reading level is advisory and was first recorded in the final build. A column names the core commit it ran on.", "",
             "| Set | Build | Core | Pass / fail / awaiting | Escalations | Tone range | Cost | Mean time per run | Reading level |", "|---|---|---|---|---|---|---|---|---|"]
     for name, rel in SETS:
-        for label, base, audit in (("before", old, False), ("final", cur, True)):
+        for label, base, audit in (("c317050", old, False), ("8a28a18", mid, True), ("final", cur, True)):
             x = load(base, rel)
             c = cell(x, audit)
             rows.append(f"| {name} | {label} | " + (" | ".join(c) if isinstance(c, list) else f"{c} | | | | | | ") + " |")
     cf = []
-    for label, base in (("before", old), ("final", cur)):
+    for label, base in (("c317050", old), ("8a28a18", mid), ("final", cur)):
         f = base / "casefile.json"
         if f.exists():
             d = json.loads(f.read_text()); ok = sum(1 for c in d["checks"] if c["pass"])

@@ -1,21 +1,21 @@
 [
  {
-  "ts": "2026-10-07T09:35:27.669+00:00",
-  "t_ms": 4.7,
+  "ts": "2026-10-07T10:58:26.982+00:00",
+  "t_ms": 1.4,
   "kind": "stage_start",
   "stage": "triage",
   "deps_used": []
  },
  {
-  "ts": "2026-10-07T09:35:27.669+00:00",
-  "t_ms": 4.8,
+  "ts": "2026-10-07T10:58:26.982+00:00",
+  "t_ms": 1.4,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 1
  },
  {
-  "ts": "2026-10-07T09:35:35.503+00:00",
-  "t_ms": 7838.5,
+  "ts": "2026-10-07T10:58:33.641+00:00",
+  "t_ms": 6660.7,
   "kind": "check",
   "stage": "triage",
   "attempt": 1,
@@ -23,19 +23,19 @@
   "violations": [
    {
     "category": "banned_phrase",
-    "reason": "promises an outcome (matched 'guaranteed')"
+    "reason": "predicts an outcome (matched 'will be released')"
    }
   ],
   "reason_categories": [
    "banned_phrase"
   ],
   "tokens_in": 7670,
-  "tokens_out": 229,
-  "latency_s": 7.832
+  "tokens_out": 210,
+  "latency_s": 6.658
  },
  {
-  "ts": "2026-10-07T09:35:35.503+00:00",
-  "t_ms": 7838.5,
+  "ts": "2026-10-07T10:58:33.641+00:00",
+  "t_ms": 6660.7,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 1,
@@ -43,18 +43,18 @@
   "reason_categories": [
    "banned_phrase"
   ],
-  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a guaranteed prediction about release or deportation. The caller's children and mother are at home waiting for news.\n\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: Not stated\n\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and is currently in custody; minor children are at home without their father.\n\nMISSING FACTS:\n1. What is the date and location of the facility where Daniel Ortega is being held, and has the caller received any paperwork from immigration officers?\n2. What is the nature of the old case \u2014 was there a prior order, a prior hearing, or a prior removal?\n3. Does Daniel Ortega have any legal representation, and has the caller been able to speak with him since the detention?"
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a definite promise about whether he will be released or deported.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: high \u2014 detention occurred (timing not stated), minor children are at home without their father, and an old immigration case may be a factor\nMISSING FACTS:\n1. When and where was Daniel Ortega detained, and what facility are immigration officers holding him in now?\n2. What are the details of the old immigration case \u2014 when did it happen, what was it about, and was it ever resolved?\n3. Does Daniel Ortega have any current immigration paperwork, such as a pending application or a valid status document?"
  },
  {
-  "ts": "2026-10-07T09:35:35.503+00:00",
-  "t_ms": 7838.5,
+  "ts": "2026-10-07T10:58:33.641+00:00",
+  "t_ms": 6660.7,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 2
  },
  {
-  "ts": "2026-10-07T09:35:41.784+00:00",
-  "t_ms": 14119.8,
+  "ts": "2026-10-07T10:58:39.450+00:00",
+  "t_ms": 12469.7,
   "kind": "check",
   "stage": "triage",
   "attempt": 2,
@@ -68,13 +68,13 @@
   "reason_categories": [
    "banned_phrase"
   ],
-  "tokens_in": 7716,
-  "tokens_out": 182,
-  "latency_s": 6.278
+  "tokens_in": 7719,
+  "tokens_out": 206,
+  "latency_s": 5.808
  },
  {
-  "ts": "2026-10-07T09:35:41.784+00:00",
-  "t_ms": 14119.8,
+  "ts": "2026-10-07T10:58:39.450+00:00",
+  "t_ms": 12469.7,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 2,
@@ -82,94 +82,62 @@
   "reason_categories": [
    "banned_phrase"
   ],
-  "draft": "SITUATION: Daniel Ortega was detained during a traffic stop and is currently held by immigration officers. The caller asks for a promise about whether he will be released or deported.\n\nPEOPLE: Daniel Ortega (detained adult male); wife (caller); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: en\n\nURGENCY: High \u2014 detained during a traffic stop, children at home asking for him, wife seeking immediate answers tonight\n\nMISSING FACTS:\n1. How long ago was Daniel Ortega detained, and does the family know where immigration officers are holding him?\n2. What is the nature of the old case the caller mentioned?\n3. Does the family have an immigration attorney or any legal documents related to Daniel Ortega's status?"
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller is asking for a definite promise about whether he will be released or deported so she can inform her children and mother.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children; caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home asking about his return.\nMISSING FACTS:\n1. What is the location of the facility where immigration officers are currently holding Daniel Ortega?\n2. What were the details of the old case \u2014 when did it occur, and what was the outcome?\n3. Does Daniel Ortega have any current legal representation, and has the family been able to speak with him since he was detained?"
  },
  {
-  "ts": "2026-10-07T09:35:41.784+00:00",
-  "t_ms": 14119.9,
+  "ts": "2026-10-07T10:58:39.450+00:00",
+  "t_ms": 12469.7,
   "kind": "gloo_call",
   "stage": "triage",
   "attempt": 3
  },
  {
-  "ts": "2026-10-07T09:35:48.490+00:00",
-  "t_ms": 20826.3,
-  "kind": "jev_gate_start",
-  "stage": "triage",
-  "attempt": 3,
-  "questions": [
-   "assumes_facts"
-  ]
- },
- {
-  "ts": "2026-10-07T09:35:48.724+00:00",
-  "t_ms": 21060.2,
-  "kind": "jev_gate",
-  "stage": "triage",
-  "attempt": 3,
-  "question": "assumes_facts",
-  "probability": 0.67,
-  "decision": "reject"
- },
- {
-  "ts": "2026-10-07T09:35:48.724+00:00",
-  "t_ms": 21060.3,
-  "kind": "jev_call",
-  "stage": "triage",
-  "attempt": 3,
-  "ms": 234,
-  "usage": {
-   "input_tokens": 840,
-   "output_tokens": 23
-  }
- },
- {
-  "ts": "2026-10-07T09:35:48.724+00:00",
-  "t_ms": 21060.3,
+  "ts": "2026-10-07T10:58:45.276+00:00",
+  "t_ms": 18295.8,
   "kind": "check",
   "stage": "triage",
   "attempt": 3,
   "passed": false,
   "violations": [
    {
-    "category": "jev_assumes_facts",
-    "reason": "a classifier judged that it states a fact the pastor did not give (for example a number, a name, a place, a time, a document, or who did what); say only what the intake says, and write \"not stated\" where it does not say"
+    "category": "banned_phrase",
+    "reason": "predicts an outcome (matched 'will be released')"
    }
   ],
   "reason_categories": [
-   "jev_assumes_facts"
+   "banned_phrase"
   ],
   "tokens_in": 7719,
-  "tokens_out": 194,
-  "latency_s": 6.698
+  "tokens_out": 198,
+  "latency_s": 5.825
  },
  {
-  "ts": "2026-10-07T09:35:48.725+00:00",
-  "t_ms": 21060.3,
+  "ts": "2026-10-07T10:58:45.276+00:00",
+  "t_ms": 18295.8,
   "kind": "draft_rejected",
   "stage": "triage",
   "attempt": 3,
   "visible_to_pastor": false,
   "reason_categories": [
-   "jev_assumes_facts"
+   "banned_phrase"
   ],
-  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained by immigration officers during a traffic stop. The caller asks for a promise about the outcome of his case.\n\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\n\nLOCATION: Not stated\n\nFAMILY LANGUAGE: en\n\nURGENCY: High \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home asking about him.\n\nMISSING FACTS:\n1. What is the date and location of the traffic stop where immigration officers detained Daniel Ortega?\n2. Where is Daniel Ortega currently being held, and has the family received any paperwork from immigration officers since his detention?\n3. What is the nature of the old case the caller mentioned \u2014 does the family have any documents related to it?"
+  "draft": "SITUATION: The caller's husband, Daniel Ortega, was detained during a traffic stop and has an old immigration case; the caller asks for a definite promise about whether he will be released or deported.\nPEOPLE: Daniel Ortega (detained husband); caller (wife); children (number not stated); caller's mother\nLOCATION: Not stated\nFAMILY LANGUAGE: en\nURGENCY: high \u2014 Daniel Ortega was detained during a traffic stop and minor children are at home without him\nMISSING FACTS:\n1. What is the date and location of the traffic stop where Daniel Ortega was detained by immigration officers?\n2. What are the details of Daniel Ortega's old immigration case \u2014 when did it occur and what was the outcome?\n3. Has the family been given any paperwork or case number by immigration officers since the detention?"
  },
  {
-  "ts": "2026-10-07T09:35:48.725+00:00",
-  "t_ms": 21060.3,
+  "ts": "2026-10-07T10:58:45.276+00:00",
+  "t_ms": 18295.8,
   "kind": "escalated",
   "stage": "triage",
   "attempts": 3,
   "reason_categories": [
    "banned_phrase",
    "banned_phrase",
-   "jev_assumes_facts"
+   "banned_phrase"
   ]
  },
  {
-  "ts": "2026-10-07T09:35:48.725+00:00",
-  "t_ms": 21060.4,
+  "ts": "2026-10-07T10:58:45.276+00:00",
+  "t_ms": 18295.9,
   "kind": "outcome",
   "outcome": "escalated",
   "failed_stage": "triage"

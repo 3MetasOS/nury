@@ -49,7 +49,7 @@ JS
   check "$T notes: every note is aria-hidden decoration and sits in the normal flow" "$(ev "[...document.querySelectorAll('.hnote')].every(n=>n.getAttribute('aria-hidden')==='true'&&getComputedStyle(n).position!=='absolute')")" "true"
   agent-browser eval "document.getElementById('hero-btn').click();1" >/dev/null 2>&1; agent-browser wait 600 >/dev/null 2>&1
   read -r -d '' J <<'JS'
-(()=>{const n=document.querySelector('#chooser .hnote');if(!n)return false;const s=getComputedStyle(n);const rot=s.transform!=='none';return /Gochi/.test(s.fontFamily)&&(innerWidth>=640?rot:!rot)&&/sounds like your call/.test(n.textContent)})()
+(async()=>{const ok=()=>{const n=document.querySelector('#chooser .hnote');if(!n)return false;const s=getComputedStyle(n);const rot=s.transform!=='none';return /Gochi/.test(s.fontFamily)&&(innerWidth>=640?rot:!rot)&&/sounds like your call/.test(n.textContent)};for(let i=0;i<30;i++){if(ok())return true;await new Promise(r=>setTimeout(r,100))}return ok()})()
 JS
   check "$T notes: the crisis chooser shows its note in Gochi Hand, rotated on laptop and a plain caption on phone" "$(ev "$J")" "true"
   agent-browser eval "document.getElementById('chooser').close();1" >/dev/null 2>&1

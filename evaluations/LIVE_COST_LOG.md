@@ -193,3 +193,17 @@ Gate on, YouVersion on, privacy and leak check on, Jev judges on. Gloo cost is t
 | | **Total** | **$4.2838** (cap $6.0) |
 
 The c317050 results are in `results/before_final2/`. An earlier start on fe1fd7b (2 minutes, killed by the HOLD) is logged above as an aborted start.
+
+## Slot J: the final scored sets on 07f020c (hack-artisans, 2026-10-07, 04:41 to 05:14)
+Run from a clean checkout of 07f020c (`git worktree add /tmp/nury_final 07f020c`), core last commit 6ea102d, clean at the start and the end. One Gloo key and one Jev key; the Jev price is public ($0.042 per million input tokens, output free) and is in the per-run figures. The 8a28a18 results are in `results/before_final3/`.
+
+| Step | Set | Model and Jev cost |
+|---|---|---|
+| J1 | detention 20 | $1.2549 |
+| J2 | hospital 8 | $0.6438 |
+| J3 | attacker 18 | $1.4219 |
+| J4 | network 3 (re-run at 05:10; see note) | $0.2750 |
+| J5 | case-file 5 | $0.59 |
+| | **Total** | **$4.19** (cap $5.5) |
+
+Note on J4: the network scenario folder is gitignored, so the first network step in the clean checkout found no scenarios and ran for one second. It was re-run from the main repo's folder against the same 07f020c code. Two jedi recording runs on the same keys (04:44 to 04:46) overlapped detention scenarios 05 to 10; no error, no slow single-attempt stage in those files (retries are not logged, COR-13).
