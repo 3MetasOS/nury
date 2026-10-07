@@ -73,3 +73,12 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Learning: fault injection after generation is deterministic and costs no extra Gloo call; better than prompting the model to misbehave.
 - hack-artisans: `evaluations/adapter_nury.py` drives the real core. Scenario 1 ran live. A 20-scenario baseline without Jev is running. Findings sent to jedi: the disclaimer lacks "AI assistant"; a stage-2 edit is not consumed by stages 3–5.
 - Open: JEV_API_KEY from Juan; Gloo token prices for the cost column.
+
+## 11. 2026-10-06 19:53 MDT — Pastor app built (hack-artisans)
+
+- Commit 3f9bce2, `code/app/`: stdlib server plus one static page. Run from `code/`: `python3 -m app.server` (PORT env, default 8080).
+- Mobile-first, three views (Intake, Pipeline, Package), 56 px Approve/Edit/Stop buttons, inline edit, collapsible audit log, copy buttons. "Use demo intake" loads the locked Maria/Aurora text. "Demo guardrail" triggers the rejected-and-regenerated beat; the strip reads "Draft rejected by guardrail. Regenerating (2 of 3)." then "Passed".
+- Rejected drafts and Gloo error detail are stripped server-side. Verified over the API: 5 gates, pastoral stage self-corrected once, package complete, no draft text in the output.
+- Bug fixed: the strip said 3 of 3 on attempt 2.
+- hack-sensei check: server starts and serves the page (HTTP 200); the page says Nury never sends; a scan of tracked files finds no API key.
+- Not done: manual continue after an escalation; no browser screenshots yet. The 20-scenario baseline must re-run after hack-jedi's edits before any number is quoted.
