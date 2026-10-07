@@ -486,7 +486,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <aside class="crail">
       <div class="card"><figure class="dfig hidden" id="case-strip"></figure>
         <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
-        <div id="case-scs" class="scs" style="margin-top:6px"></div></div>
+        <div id="case-scs" class="scs" style="margin-top:6px"></div><p class="mono" id="case-id" style="margin:12px 0 0;text-transform:none;letter-spacing:0;font-size:12px"></p></div>
       <div class="card"><button class="btn" id="b-changed" style="min-height:56px" data-note="tell Nury what happened; it keeps the first draft" data-arrow="left" data-rot="-1.2">Something changed</button>
         <button class="btn hidden" id="b-compare" style="min-height:56px;margin-top:10px">Compare drafts</button></div>
       <div class="card hidden" id="revise">
@@ -772,14 +772,19 @@ async function openCase(id,tabName){
   $("case-vers").replaceChildren(...vs.map((v,i)=>({v,i})).reverse().map(({v,i})=>{const b=document.createElement("button");b.className="chip"+(v===c.meta.id?" on":"");b.textContent=i===0?"First draft":(vs.length>2?`Updated draft ${i}`:"Updated draft");b.setAttribute("aria-label",b.textContent);b.onclick=()=>go("#/case/"+encodeURIComponent(v));return b}));
   $("b-compare").classList.toggle("hidden",vs.length<2);$("revise").classList.add("hidden");
   {const m=CASES.find(x=>x.id===c.meta.id)||{};const sc=$("case-scs");sc.replaceChildren();const add=(cls,icon,t)=>sc.append(h("span",{class:"sc "+cls},ic(icon),t));add("s-saved","i-check","Saved");if(vs.length>1)add("s-v2","i-v2",(n=>n===1?"Updated":n===2?"Updated twice":`Updated ${n} times`)(vs.length-1));if(c.meta.needs_follow_up)add("s-follow","i-flag","Needs follow-up")}
+  $("case-id").textContent="Case id "+c.meta.id;
   show("v-case");const want=tabName&&names.find(n=>slugOf(n)===tabName);showPage(want||(c.pages["index.md"]!==undefined?"index.md":names[0]),true);
 }
 const slugOf=n=>n==="index.md"?"overview":n.replace(/\.md$/,"").replace(/^\d+-/,"");
 /* tabs switch in place: no reload, no jump to the top; the hash carries the tab so Back and refresh keep it */
 function pickTab(n){if(!curCase)return;const hash="#/case/"+encodeURIComponent(curCase.meta.id)+"/"+slugOf(n);showPage(n);if(location.hash!==hash){ignoreHash=true;history.pushState(null,"",hash);ignoreHash=false;lastHash=hash}}
+/* the Overview is shown with today's title, without the raw id line and without the Pages list (the tabs are the list); the saved files are not changed */
+function overview(t){const title=crisisInfo({playbook:curCase.meta.playbook}).title;
+  let s=t.replace(/^# .*$/m,"# "+title).replace(/^Case [^\n]*·[^\n]*\n\n?/m,"");
+  return s.replace(/^## Pages\n[\s\S]*?(?=^---|^## |$(?![\s\S]))/m,"")}
 function showPage(n,first){curPage=n;
   document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on);b.tabIndex=on?0:-1;if(on){$("case-page").setAttribute("aria-labelledby",b.id);if(!first)b.scrollIntoView({inline:"center",block:"nearest"})}});
-  fmt($("case-page"),curCase.pages[n]);
+  fmt($("case-page"),n==="index.md"?overview(curCase.pages[n]):curCase.pages[n]);
   const bar=$("case-chips").parentElement.getBoundingClientRect();if(!first&&(bar.top<0||bar.bottom>innerHeight))$("case-chips").parentElement.scrollIntoView({block:"nearest"})}
 $("case-chips").onkeydown=e=>{const t=[...document.querySelectorAll("#case-chips .chip")],i=t.indexOf(document.activeElement);if(i<0)return;
   let k=null;if(e.key==="ArrowRight")k=(i+1)%t.length;else if(e.key==="ArrowLeft")k=(i-1+t.length)%t.length;else if(e.key==="Home")k=0;else if(e.key==="End")k=t.length-1;
