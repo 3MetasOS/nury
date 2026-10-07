@@ -10,7 +10,7 @@
  ],
  "playbooks": {
   "detention": {
-   "icon": "i-detention",
+   "icon": "i-crossroads",
    "scene": "s-detention",
    "domain": "legal",
    "lead": "A family member was detained or taken in a raid. You take the call. Nury drafts what you need to help: a case summary, a rights brief, attorney resources, a checklist and a message.",
