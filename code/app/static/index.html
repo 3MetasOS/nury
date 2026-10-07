@@ -191,7 +191,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     </div>
     <div class="row two dock hidden" id="g-edit-btns">
       <button class="btn" id="b-cancel">Cancel</button>
-      <button class="btn primary" id="b-save">Save and approve</button>
+      <button class="btn primary" id="b-edit-save">Save and approve</button>
     </div>
   </div>
   <div class="card hidden" id="halt"><h2>I'll handle this manually.</h2><p class="note" id="halt-msg"></p>
@@ -282,7 +282,7 @@ let sid=null,timer=null,lastGate=null;
 const show=v=>["v-select","v-intake","v-protect","v-pipe","v-pkg","v-case","v-compare"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
-  return r.json();
+  try{return await r.json()}catch(e){return{error:`The server did not answer properly (HTTP ${r.status}).`}}
 }
 let pbs=[],pb=null;
 const CHEV='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
@@ -410,7 +410,7 @@ $("b-stop").onclick=()=>{lock();decide("stop")};
 $("b-edit").onclick=()=>{$("g-edit").value=rawDraft;$("g-draft").classList.add("hidden");
   $("g-edit").classList.remove("hidden");$("g-btns").classList.add("hidden");$("g-edit-btns").classList.remove("hidden")};
 $("b-cancel").onclick=()=>unedit();
-$("b-save").onclick=()=>{const t=$("g-edit").value.trim();if(!t)return;lock();decide("edit",t)};
+$("b-edit-save").onclick=()=>{const t=$("g-edit").value.trim();if(!t)return;lock();decide("edit",t)};
 function unedit(){$("g-draft").classList.remove("hidden");$("g-edit").classList.add("hidden");
   $("g-btns").classList.remove("hidden");$("g-edit-btns").classList.add("hidden")}
 function lock(){document.querySelectorAll("#gate .btn").forEach(b=>b.disabled=true)}
@@ -452,12 +452,15 @@ async function poll(){
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
     $("b-download").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([whole],{type:"text/plain;charset=utf-8"}));a.download="nury-package.txt";a.click();URL.revokeObjectURL(a.href)};
     $("map-card").classList.toggle("hidden",!s.map_svg);if(s.map_svg)$("map-img").src=svgUrl(s.map_svg);
-    const sv=$("saved");sv.classList.add("hidden");$("save-err").textContent="";$("b-save").disabled=false;$("b-save").textContent="Save to case file";
-    $("b-save").onclick=async()=>{$("b-save").disabled=true;const r=await api(`/api/session/${sid}/save`,{});
-      if(r.error){$("save-err").textContent=r.error;$("b-save").disabled=false;return}
-      $("b-save").textContent="Saved";sv.classList.remove("hidden");sv.replaceChildren();
-      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`${vm?`Saved as version ${vm[1]}, beside the earlier version, on this computer in `:"Saved on this computer in "}${r.path}. It stays here. Nothing was sent. `));
-      const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a)};
+    const sv=$("saved"),er=$("save-err"),btn=$("b-save");sv.classList.add("hidden");er.textContent="";er.removeAttribute("role");btn.disabled=false;btn.textContent="Save to case file";
+    btn.onclick=async()=>{
+      btn.disabled=true;er.textContent="";sv.classList.add("hidden");
+      let r;try{r=await api(`/api/session/${sid}/save`,{})}catch(e){r={error:"Could not reach the server. Nothing was saved."}}
+      if(!r||r.error||!r.id){er.setAttribute("role","alert");er.textContent=(r&&r.error)||"Could not save. Try again.";btn.disabled=false;er.scrollIntoView({block:"center",behavior:"smooth"});return}
+      btn.textContent="Saved";sv.replaceChildren();
+      const vm=r.id.match(/-v(\d+)$/);sv.append(document.createTextNode(`Saved as ${r.id}${vm?` (version ${vm[1]}, beside the earlier version)`:""}. Nothing was sent to anyone. `));
+      const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a);
+      sv.classList.remove("hidden");sv.scrollIntoView({block:"center",behavior:"smooth"})};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
   $("halt").classList.toggle("hidden",!halted);
