@@ -87,3 +87,13 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Juan supplied the Jev key; stored in the gitignored `.env` as JEV_API_KEY. Not in any tracked file, commit, or message. Used at eval time only; product runtime stays pure Gloo.
 - Learning: the key appeared once in the session transcript. Rotate it after the hackathon.
+
+## 13. 2026-10-06 19:56 MDT — Playbook refactor (hack-jedi, M2)
+
+- Commit 25594f0. `code/playbooks/detention/` (playbook.json, stages.json, prompts, sources, outcomes.json), `nury/playbook.py` loader, `nury/checks.py` named checks. Outcomes: package_complete, stopped_by_pastor, escalated, blocked. Link AND phone allowlist on every stage. The loader refuses a playbook that drops the AI/not-a-lawyer disclaimer or whose stage 1 is not triage.
+- Live run with forced rejection: stage 2 rejected once (banned_phrase), then passed; package_complete. 13 offline tests pass. A test builds a second "hospital" playbook in a temp dir and runs it.
+- Fixes: pastor-byline pattern blocked; label "Borrador de Nury para revisión del pastor"; Spanish language check.
+- `PROMPT_NOTES.md`: prompt v1 vs shipped, 8 problems and fixes (judge evidence).
+- Decision: no path variants in detention without vetted source text; the mechanism and a test exist.
+- Learned: the model refuses to be provoked into advice, so faults are injected after generation.
+- Gap found by hack-sensei: the engine floor still hardcodes "immigrant family" and "immigration attorney". Domain wording moves into playbook fields. The platform claim stays off the pitch until fixed.
