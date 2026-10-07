@@ -64,6 +64,19 @@ VO runs about 105 words. At a calm 150 wpm that is about 42 s of speech across 9
 - Budget: 00:30 script in hand, 03:00 rough cut, 06:00 final cut, 07:30 upload to Google Drive, 08:00 give hack-sensei the link. Hard deadline 09:00 MDT.
 - Keep raw takes and the ffmpeg script in `video/` so a re-cut needs no new recording.
 
+## Update Oct 6: crisis selector shot (Juan's decision, see documents/ARCHITECTURE.md "Crisis selector and live tracks")
+The app now opens on a crisis selector. Detention is the demo. Add a 4 s shot after shot 1. On-screen caption only, no new VO (locked VO stays).
+
+| # | Time | Visual | VO | On-screen text |
+|---|---|---|---|---|
+| 1b | 0:07-0:11 | Selector view. Cursor rests on the Detention card, amber highlight, tap. Other cards stay as the app draws them: hospital emergency available, two "Coming soon" cards labeled and not clickable. | (silence, pad only) | "The pastor picks the crisis." |
+
+Re-time to keep 90 s: shots 2 to 11 each shift 4 s later. Take the 4 s from silence: shot 2 runs 0:11-0:16 (was 7 s), shot 3 0:16-0:24 (was 9 s), shot 7 0:56-1:02. VO lines keep their order and all still fit (longest speech line is 7.5 s).
+Rules for this shot:
+- Never open or run the hospital track in the video unless hack-sensei confirms it is scored.
+- Say nothing about the "Coming soon" crises. The video shows them as the app labels them.
+- `capture/record.py` needs one new click (Detention card) before "Use demo intake". Selector ids are unknown until hack-artisans pushes. Re-capture only on hack-sensei's word.
+
 ## Open questions
 1. Show a redacted reason on the guardrail strip (for example "reason: advice, not information")? Only if the app already has the category. Needs hack-jedi.
 2. Who reads the VO? Juan, or TTS?
