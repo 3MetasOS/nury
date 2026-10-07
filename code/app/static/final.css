@@ -3,7 +3,7 @@
 .final{margin:8px 0 24px}
 .fp-head{padding:8px 0 4px}
 .fp-kick{margin:0 0 10px}
-.fp-lock{margin:0 0 18px}
+.fp-lock{display:none}   /* the page already has the header lockup; the print view shows one logo at the top */
 .fp-h1{font:600 clamp(1.2rem,3.6vw,1.75rem)/1.25 var(--serif);letter-spacing:-.005em;margin:0 0 20px;color:var(--text);text-wrap:balance;max-width:34ch}
 .keyfacts{display:grid;grid-template-columns:1fr;gap:0;margin:0;border:1px solid var(--line-2);border-radius:var(--r);background:var(--surface)}
 .keyfacts>div{display:grid;grid-template-columns:128px minmax(0,1fr);gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
@@ -63,7 +63,7 @@ details.full>summary,details.more>summary{cursor:pointer;min-height:48px;display
   .top,.sitefoot,.tabs,.fp-actions,.hnote,#pkg-extra,.bar,.skip,.edmark,#b-new2,.donot .grp,details.full,details.more{display:none!important}
   :root,:root[data-theme="dark"]{--bg:#fff;--surface:#fff;--surface-2:#fff;--text:#000;--muted:#333;--line:#bbb;--line-2:#888;--amber-text:#000;--amber:#000;--amber-ink:#fff;--amber-line:#888;--logo:#000}
   body{background:#fff;color:#000;padding:0;font-size:10pt}main{padding:0;max-width:none}#v-pkg{max-width:none}
-  .fp-head{padding:0}.fp-lock{margin:0 0 6pt}.lockup .lk .i{width:18pt;height:18pt}.lockup .lk b{font-size:15pt}.lockup .tg{font-size:8pt}.fp-h1{font-size:16pt;margin:0 0 8pt;line-height:1.15;max-width:none}
+  .fp-head{padding:0}.fp-lock{display:block;margin:0 0 6pt}.lockup .lk .i{width:18pt;height:18pt}.lockup .lk b{font-size:15pt}.lockup .tg{font-size:8pt}.fp-h1{font-size:16pt;margin:0 0 8pt;line-height:1.15;max-width:none}
   .keyfacts{grid-template-columns:repeat(4,1fr);border-color:#888}.keyfacts>div{display:block;padding:4pt 6pt;border:0;border-left:1px solid #ccc}.keyfacts>div:first-child{border-left:0}.keyfacts dd{font-size:9.5pt}.keyfacts input{display:none}.pn-print{display:inline}
   .fp-sec{margin-top:10pt;break-inside:avoid}.fp-sec h2{font-size:13pt;margin:0 0 5pt}
   .lines{gap:3pt}.lines li{padding:0 0 3pt;gap:0;font-size:10pt;line-height:1.35}.lines .cite{font-size:7pt}

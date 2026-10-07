@@ -246,3 +246,12 @@ def test_the_build_log_scan_catches_secrets_and_personal_data():
     for bad in ("call 303-555-0101 now", "mail ana@example.com", "GLOO_API_KEY=abc123xyz", "token sk-abcdefghij1234", "Authorization: Bearer abcdefghij12345"):
         assert build_docs.scan_log(bad), bad
     assert build_docs.scan_log("an invented address x@invented.org is allowed") == []
+
+
+def test_only_home_and_the_footer_carry_a_second_logo_lockup():
+    """The header already shows the logo and tagline; a second lockup under it is clutter. Home (hero) and the footer keep one; the print view of the final page shows one."""
+    for f in STATIC.glob("*.html"):
+        n = f.read_text(encoding="utf-8").count('class="lockup"')
+        assert n == (1 if f.name == "index.html" else 0), f"{f.name} has {n} in-page lockups"
+    css = (STATIC / "final.css").read_text(encoding="utf-8")
+    assert ".fp-lock{display:none}" in css and ".fp-lock{display:block" in css.split("@media print")[1], "screen: no logo in the final page body; print: one"
