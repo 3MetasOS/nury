@@ -14,6 +14,16 @@ When a family calls a pastor in crisis, the pastor picks the kind of crisis and 
 
 After every stage the pastor can Approve, Edit or Stop. Later stages build on the pastor's edits. Nothing reaches the family except through the pastor: Nury has no way to send a message. Nury is not a pastor, a counselor, a doctor or a lawyer, and it gives information, never advice.
 
+## Built to grow
+
+**Crises are workflows.** A crisis is a defined workflow, kept as a folder of plain files: its stages, its prompts, its vetted sources and its possible outcomes. Two are live and two more are listed as coming soon. Adding another means adding a folder, not changing the engine. A script scaffolds the folder from a template, in a state that cannot run until a person approves its sources, and a test checks that the scaffold loads.
+
+**Rules can be added.** Every draft is checked by named rules. A new rule is one small function, a line that registers it and names it in a stage, one plain sentence for the rules page, and a test. It then shows up in the registry and on the rules page.
+
+**Evaluations can be added.** Scenarios and hostile intakes are plain files, and the judge questions sit in one code file. A new crisis brings its own scenarios. A proposed improvement is a file too: a script runs it against the same sets before and after, with a gate, and only then does a person decide whether to adopt it.
+
+Anyone with the repository can add a crisis, a rule or a scenario. See `documents/product/ADD_A_RULE.md` and the playbook folder (`code/playbooks/`) in the README. A person still approves the sources and the release.
+
 ## How it was made
 
 **Writer.** Claude Sonnet 4.6, through Gloo AI Studio's guarded endpoint, with Gloo's guardrails. Claude writes each stage. It never writes a verse of Scripture.
