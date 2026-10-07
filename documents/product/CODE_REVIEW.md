@@ -152,6 +152,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Variables are filled by sequential str.replace, and the unfilled-variable check runs after the substitution.
 - **How it fails:** A church contact named 'Ayuda {{vetted_points}} Legal' makes the attorney stage raise PlaybookError ('unfilled prompt variables') out of run_stage; the run ends with a bare error. Any {{word}} in any source value does the same, and a value that holds another variable's name is expanded by a later replace. With SEC-01 one cross-site request can leave the attorney stage broken until the contact is deleted.
 - **Proposed fix:** Fill all variables in one regex pass (re.sub with a dict lookup) and check the TEMPLATE for unknown variables before filling.
+- **Status:** done in f4af33b
 - **Effort:** 20 minutes · **Risk that the fix touches behavior:** prompt (rendering only: same text for every normal input)
 
 #### COR-03
@@ -162,6 +163,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** One unreadable case.json makes list_cases raise. case.json is written with a plain write_text, so a crash while writing leaves exactly such a file.
 - **How it fails:** cases_overview(), versions_of() and next_version_id() call list_cases with no guard, so one bad case breaks /api/cases, the home page's cases card and every revision save.
 - **Proposed fix:** Skip and count a case that does not parse; write case.json through a temp file and os.replace.
+- **Status:** done in f4af33b
 - **Effort:** 15 minutes · **Risk that the fix touches behavior:** none
 
 #### COR-05
@@ -172,6 +174,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** network.json is replaced with write_text (truncate, then write), with no lock, and an import goes through a fixed temp file name (.import.json).
 - **How it fails:** A run that reads the network during a write sees an empty or partial file and fails. Two adds at once lose one (read, change, write). Two imports share one temp file.
 - **Proposed fix:** Write to a temp file and os.replace under a lock; use a unique temp name for imports.
+- **Status:** done in f4af33b
 - **Effort:** 25 minutes · **Risk that the fix touches behavior:** none
 
 #### COR-07
@@ -302,6 +305,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** build_log() turns BUILD_LOG.md into HTML with python-markdown, which passes raw HTML through. Only a secret and personal-data scan runs first.
 - **How it fails:** Agents paste message text into BUILD_LOG.md. One entry containing <script> or <img onerror=...> would run in every judge's browser on /build-log. Today the page holds only the two template scripts (checked), so nothing is exploitable now.
 - **Proposed fix:** Escape '<' outside code blocks before converting, or run the output through an allowlist sanitizer; add a test that fails on a script tag in the built page.
+- **Status:** done in cbc75db
 - **Effort:** 20 minutes · **Risk that the fix touches behavior:** none
 
 #### COR-04
@@ -312,6 +316,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** save_case checks d.exists() and then mkdir(parents=True).
 - **How it fails:** Two saves of the same revision at once: the second raises FileExistsError, which the server does not catch (it catches CaseError), so the connection drops.
 - **Proposed fix:** Catch FileExistsError and raise CaseError.
+- **Status:** done in f4af33b
 - **Effort:** 5 minutes · **Risk that the fix touches behavior:** none
 
 #### COR-09
@@ -332,6 +337,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** The docstring says the client loads .env on import; it loads in GlooClient.__init__. nonet pops the Jev and YouVersion keys and sets NURY_JEV_GATE=off, but nothing blocks the network.
 - **How it fails:** A test that builds a real GlooClient on a machine with a .env would reach Gloo (or YouVersion). Tests stay offline by habit, not by construction.
 - **Proposed fix:** Patch socket.socket.connect to raise in nonet.py; fix the docstring.
+- **Status:** done in f4af33b
 - **Effort:** 10 minutes · **Risk that the fix touches behavior:** none
 
 #### COR-11
@@ -524,6 +530,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Following the README on a fresh clone does not give a green product suite.
 - **How it fails:** Clean clone, new virtual environment, pip install -r code/requirements.txt, code/test.sh: exit 1, 1 failure of 270. test_a_mock_run_on_the_attacker_set_ends_in_a_pass_and_never_edits_the_candidate_file runs evaluations/run.py, which imports PyYAML; requirements.txt does not install it (it says the evaluation tools are 'not needed to run the product'). The README says the product tests are 'offline, no keys, no network' and need nothing else. CI installs pytest, PyYAML and markdown first, so CI would hide it. After pip install PyYAML the suite passes (270 tests, exit 0).
 - **Proposed fix:** Skip that test when yaml is missing, or list PyYAML in a requirements-dev.txt that the README names.
+- **Status:** done in dba209c
 - **Effort:** 5 minutes · **Risk that the fix touches behavior:** none
 
 #### QA-02
@@ -544,6 +551,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** ruff: 38 blind excepts and 10 try-except-pass in code/nury and code/app. The product has no logging at all: only two print statements (start-up line and officiallist). log_message is silenced on purpose to keep intake text out of logs.
 - **How it fails:** When something fails in a live demo, nothing records the type of the error, the stage or the time. The pastor sees 'KeyError' or nothing. The privacy reason for silencing request logs is right, but an error-type log (no text, no names) would be safe.
 - **Proposed fix:** A small logger that writes the exception class, route and a run id (no text) to stderr.
+- **Status:** done in 6ea102d (the silent handlers now log the class; no logger for the rest)
 - **Effort:** 40 minutes · **Risk that the fix touches behavior:** none
 
 #### QA-08
@@ -554,6 +562,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** The workflow has never run (it says so). It installs the extra packages before the tests (hiding QA-01), runs no linter, no type check and no dependency audit, and pins no dev dependency versions. Actions are pinned to commit SHAs, permissions are read-only and no secret is set: all good.
 - **How it fails:** A first run may fail on the stale built-page test (test_ui_ids.py) whenever a document changes without a rebuild; that is the guard doing its job but it will surprise the first contributor.
 - **Proposed fix:** Run it once on a branch; add ruff and pip-audit steps; add requirements-dev.txt.
+- **Status:** done in dba209c (CI installs from pinned files; no linter added)
 - **Effort:** 40 minutes · **Risk that the fix touches behavior:** none
 
 #### QA-04
@@ -574,6 +583,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** vulture and ruff: unused import inspect, unused PLAIN, _first_sentence and _usage in rules_info.py; 4 unused imports and 1 unused variable elsewhere; server.py:306 returns r['id'] on both sides of a conditional ('version': r['id'] if not self.revision else r['id']); engine.DEMO_PROVOKE (engine.py:442) and Case.set_manual (engine.py:42) are not called from anywhere in code/, evaluations/ or tools.
 - **How it fails:** No effect on behavior. Noise for a reader.
 - **Proposed fix:** ruff --fix for the imports; delete the three helpers; simplify the conditional.
+- **Status:** done in 6ea102d and d6e8b1a (unused imports, one conditional, two helpers; engine.DEMO_PROVOKE and set_manual stay: INTERFACE.md documents them)
 - **Effort:** 15 minutes · **Risk that the fix touches behavior:** none
 
 #### QA-06
@@ -628,6 +638,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Row 9 says nothing Nury shows can contain an invented link, phone number, bare web address or email.
 - **How it fails:** Verified exceptions: SEC-05 (look-alike and unlisted domains) and SEC-06 (phone numbers without separators or outside the US). The checks catch the common forms; they are tripwires.
 - **Proposed fix:** Reword: 'The checks refuse any link, phone number or email that is not in the vetted sources, in the common forms. Look-alike domains and unseparated digits are known gaps.'
+- **Status:** done in e45567c
 - **Effort:** 5 minutes · **Risk that the fix touches behavior:** none
 
 #### HON-02
@@ -638,6 +649,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Row 34 says the pastoral draft is rejected for a promised action 'unless the pastor wrote that action in the intake'.
 - **How it fails:** The code (COR-08) also allows it when any intake word shares the first five letters of the promised verb.
 - **Proposed fix:** Reword to 'unless the intake contains a word that starts like the action' or fix COR-08.
+- **Status:** done in e45567c
 - **Effort:** 5 minutes · **Risk that the fix touches behavior:** none
 
 #### HON-04
@@ -668,6 +680,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** After the plain-language prompts (8a28a18), 5 of 6 detention fails in the final set are one judge: warm_plain_human, which reads only the pastoral message. Detention 09, 13, 14, 20 scored 2.79, 2.85, 2.6, 2.81 (c317050 build: 3.07 to 3.17).
 - **How it fails:** I tried one voice line on the pastoral prompt (6 live scenarios, 0.43 dollars): 2.99, 2.98, 2.71, 2.95, 2.6 and 2.83 for hospital h01; three went up 0.2 to 0.35, two down 0.14 and 0.2. The c317050 and current pastoral messages are nearly the same text, and scenario 01 scored 2.7 then 2.99 with near-identical wording, so most of the movement may be the judge's own variation (one draw of a probability near its 3.0 line) plus the model's new draw each run. I did not measure that noise. 'Plain language made it colder' is therefore not proven, and neither is 'the line did nothing'. The new messages do repeat one stock sentence across families ('Sabemos lo que estan viviendo hoy. El miedo es real, y la incertidumbre duele.'), which fits the judge's 'templated' pole.
 - **Proposed fix:** Say in the scorecard note that this judge is a single sample near its line (range 2.6 to 3.17 on the same scenarios across three builds). To settle it: run the same prompt 3 times on 09 and 14 (about 0.3 dollars); if the noise is small, try 'use one concrete detail from the case summary and speak as the pastor (me, not nosotros)' (about 0.45 dollars).
+- **Status:** done in dde6746 (warmth line adopted; noise measured: the judge moves up to 0.75 between identical runs)
 - **Effort:** 30 minutes · **Risk that the fix touches behavior:** prompt (pastoral only)
 
 #### HON-03
@@ -678,6 +691,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Row 62 says a16 'still escalates in 3 of 4 runs at a later stage' and '3 of 4 complete'.
 - **How it fails:** That predates e4d19b6 and the plain-language run: a16 completed in 3 of 3 valid runs after the later-stage line and again in the final candidate (1 correction). All four attacker scenarios (a02, a05, a14, a16) completed.
 - **Proposed fix:** Update the row with the new run (see PLAIN_LANGUAGE_SAMPLES.md and LIVE_COST_LOG.md).
+- **Status:** done in e45567c
 - **Effort:** 10 minutes · **Risk that the fix touches behavior:** none
 
 #### HON-06
@@ -698,6 +712,7 @@ Grouped by lens, most severe first inside each group.
 - **What is wrong:** Row 33 says 264 product tests and 77 evaluation tests (341). Today: 270 product tests (before the patch; 293 with it) and 84 evaluation tests.
 - **How it fails:** Counts that are typed into documents go stale every time a test is added. This is the second time.
 - **Proposed fix:** Quote 'about 270 and 84 on 2026-10-07' with the date, or generate the number into the page at build time.
+- **Status:** done in e45567c
 - **Effort:** 10 minutes · **Risk that the fix touches behavior:** none
 
 #### HON-07
