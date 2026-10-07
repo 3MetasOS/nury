@@ -595,5 +595,50 @@ class Emails(unittest.TestCase):
         self.assertEqual(r.status, "approved")
 
 
+class GloLayer(unittest.TestCase):
+    """HTTP 403 from the guarded endpoint is a failed try, not a crash (GuardrailBlock)."""
+
+    def _blocker(self, times):
+        from nury.gloo_client import GuardrailBlock
+
+        class C(FakeClient):
+            n = 0
+
+            def ask(self, u, instructions=None, **kw):
+                C.n += 1
+                if C.n <= times:
+                    raise GuardrailBlock("blocked by Gloo guardrails")
+                return super().ask(u, instructions=instructions, **kw)
+        return C()
+
+    def test_403_counts_as_a_failed_try_then_regenerates(self):
+        au = AuditLog()
+        r = run_stage("triage", CaseState("intake"), client=self._blocker(1), audit=au)
+        self.assertEqual((r.status, r.metrics["attempts"], r.metrics["self_corrections"]), ("approved", 2, 1))
+        self.assertEqual(r.reason_categories, ["gloo_block"])
+        self.assertEqual(len(au.of_kind("gloo_block")), 1)
+
+    def test_three_403s_escalate_and_the_outcome_is_blocked(self):
+        st, rs, au = run_scripted("intake", client=self._blocker(3))
+        self.assertEqual((rs[0].status, rs[0].metrics["attempts"]), ("escalated", 3))
+        self.assertEqual(st.outcome["outcome"], "blocked")
+        self.assertIsNone(rs[0].draft)
+
+
+class NoSendPath(unittest.TestCase):
+    def test_the_only_outbound_call_in_the_product_is_the_gloo_request(self):
+        """No send path: scan the product code for any way to reach the family or the web."""
+        import re as _re
+        root = Path(__file__).resolve().parent.parent
+        banned = _re.compile(r"\b(smtplib|ftplib|telnetlib|http\.client|urllib\.request|webbrowser|twilio|sendgrid|socket\.socket)\b")
+        uses_requests = []
+        for f in list((root / "nury").glob("*.py")) + list((root / "app").glob("*.py")):
+            src = f.read_text(encoding="utf-8")
+            self.assertIsNone(banned.search(src), f"{f.name} has a way to send")
+            if _re.search(r"\brequests\.(get|post|put|delete|request)\b", src):
+                uses_requests.append(f.name)
+        self.assertEqual(uses_requests, ["gloo_client.py"])
+
+
 if __name__ == "__main__":
     unittest.main()
