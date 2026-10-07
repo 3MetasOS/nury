@@ -259,7 +259,7 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
   ];
   const retake = (k: string) => (data.voice as any)?.retakes === true && (k === 'L3' || k === 'L9') ? k + '_retake' : k; // voice.json {retakes:true} = slower L3 and L9
   const voice = planVoice(data, scenes).map((x) => <Snd key={x.k} f={retake(x.k)} at={x.start} v={1} dir="arc/" />);
-  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full package: 34 to 50 s, 6 to 9 cents'];
+  const caps = ['Leak test: 90 checks per playbook, 0 found', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', data.tech?.package ?? 'A full case: 34 to 50 s, 6 to 9 cents'];
   return (
     <AbsoluteFill>
       <Grade k={[[0, INK], [st('nury'), INK], [st('nury') + 1.2, '#4a2f14'], [st('nury') + 2.3, '#dfa04c'], [st('nury') + 3.6, '#f3e6cc'], [st('tool') + 4, '#f5ecd9'], [st('dawn'), PAPER]]} />
