@@ -234,12 +234,40 @@ _PROVIDENCE = re.compile(
     r"|\bdios (?:est[aá]|estaba) (?:castigando|probando|ense[nñ]ando)\b|\bcastigo de dios\b|\bdios (?:permiti[oó]|quiso|envi[oó]|escogi[oó])\b", re.I)
 
 
+_KNOWS = re.compile(
+    r"\bgod (?:knows|sees|understands|feels|wants|intends|wishes)\b|\bdios (?:sabe|ve|conoce|entiende|siente|quiere|desea|pretende)\b", re.I)
+_KNOWS_PRONOUN = re.compile(r"\b(?:he|[ée]l) (?:knows|sees|understands|feels|wants|intends|conoce|sabe|ve|entiende|siente|quiere)\b", re.I)
+_GOD_WORD = re.compile(r"\b(?:god|dios|lord|se[nñ]or|jes[uú]s|jesus|christ|cristo)\b", re.I)
+_VERB_STEMS = {"knows": ("know", "knew"), "sees": ("see", "saw"), "understands": ("understand",), "feels": ("feel", "felt"),
+               "wants": ("want",), "intends": ("intend",), "wishes": ("wish",), "sabe": ("sab",), "conoce": ("conoc",),
+               "ve": ("ve", "ver", "vio", "ven"), "entiende": ("entend", "entiend"), "siente": ("sient",),
+               "quiere": ("quier", "quer"), "desea": ("dese",), "pretende": ("pretend",)}
+
+
+def _verse_has_verb(verb, ctx):
+    """True when the verse the model chose uses this verb. Only then may Nury's lines say it."""
+    verse = _fold(getattr(ctx, "chosen_verse", "") or "")
+    words = re.findall(r"[a-z]+", verse)
+    for stem in _VERB_STEMS.get(_fold(verb), ()):
+        if any(w == stem or (len(stem) > 2 and w.startswith(stem)) for w in words):
+            return True
+    return False
+
+
 def no_providence_claims(p, text, ctx):
     """Nury's own sentences may say God is with the family. They may not say what God will do for the case,
-    why it happened, or that it is God's plan or punishment. Applies to the why-lines and the message,
-    never to the quoted verse."""
-    hits = sorted({m.group(0).lower() for m in _PROVIDENCE.finditer(text)})
-    return [g.R("providence_claim", f"claims to know what God will do or why this happened: {hits[:3]}")] if hits else []
+    why it happened, that it is God's plan or punishment, or what God knows, sees, feels, wants or intends
+    beyond what the chosen verse itself says. Applies to the why-lines and the message, never to the quoted verse."""
+    hits = {m.group(0).lower() for m in _PROVIDENCE.finditer(text)}
+    for rx, needs_god in ((_KNOWS, False), (_KNOWS_PRONOUN, True)):
+        for m in rx.finditer(text):
+            if needs_god and not _GOD_WORD.search(text):
+                continue
+            verb = m.group(0).split()[-1]
+            if not _verse_has_verb(verb, ctx):
+                hits.add(m.group(0).lower())
+    hits = sorted(hits)
+    return [g.R("providence_claim", f"claims to know what God will do, knows or wants, or why this happened: {hits[:3]}")] if hits else []
 
 
 def _fold_words(t):

@@ -253,6 +253,7 @@ def run_stage(stage_id, state: CaseState, gate: Callable = approve_all, client: 
         if stage.scripture:
             parts, violations = scr.parse_output(text, verses)
             if parts:
+                ctx_ns.chosen_verse = parts["verse"]["text"] if parts["verse"] else ""
                 violations = all_violations(parts["own"])
                 if not violations and parts["verse"]:
                     got = _fetch_verse(parts["verse"], lang, scripture_providers, ctx_ns, audit, stage_id)

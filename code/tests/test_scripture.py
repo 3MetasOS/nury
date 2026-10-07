@@ -435,6 +435,40 @@ class Providers(Base):
                 self.assertRegex(v["usfm"], r"^[1-3A-Z]{3}\.\d+\.\d+(-\d+)?$", v["id"])
 
 
+class Knowledge(Base):
+    LINE = "Este versículo les recuerda que pueden llevar su angustia a Dios en oración. Él conoce el miedo que sienten esta noche."
+
+    def test_the_live_sentence_about_what_god_knows_is_rejected_and_regenerated(self):
+        seq = iter([reply("php4_6_7", self.LINE), reply("php4_6_7", "Este versículo habla de llevar su angustia a Dios en oración y de una paz que está con ustedes.")])
+        rec, _, _ = self.run_past(Pastoral(lambda i, u: next(seq)))
+        self.assertEqual(rec.status, "approved")
+        self.assertEqual(rec.attempts[0]["violations"][0]["category"], "providence_claim")
+        self.assertEqual(rec.metrics["attempts"], 2)
+
+    def test_knows_sees_wants_in_both_languages_are_rejected_when_the_verse_does_not_say_it(self):
+        for why in ("God knows your fear.", "God sees you tonight.", "Dios sabe lo que viven.", "Dios quiere que tengan paz.",
+                    "Dios entiende su dolor.", "He knows what you carry. God is near."):
+            rec, _, _ = self.run_past(Pastoral(reply("psa46_1", why)))
+            self.assertEqual(rec.status, "escalated", why)
+            self.assertIn("providence_claim", rec.reason_categories)
+
+    def test_presence_phrases_and_a_patients_he_knows_are_allowed(self):
+        for why in ("Este versículo habla de la presencia de Dios.", "Dios está con ustedes esta noche.",
+                    "This verse says God is present in trouble, not distant from it."):
+            self.assertEqual(ck.no_providence_claims({}, why, SimpleNamespace(chosen_verse="")), [], why)
+        self.assertEqual(ck.no_providence_claims({}, "He knows his family loves him.", SimpleNamespace(chosen_verse="")), [])
+
+    def test_a_verb_the_chosen_verse_itself_uses_is_allowed(self):
+        v = SimpleNamespace(chosen_verse="O Lord, you have searched me and you know me.")
+        self.assertEqual(ck.no_providence_claims({}, "This verse says God knows us.", v), [])
+        self.assertTrue(ck.no_providence_claims({}, "This verse says God wants us calm.", v))
+
+    def test_the_prompt_tells_the_model_to_say_what_the_verse_says(self):
+        c = Pastoral(reply("NONE", "", MSG))
+        self.run_past(c)
+        self.assertIn("not what God knows, sees, feels, wants or intends", c.last)
+
+
 class Checks(unittest.TestCase):
     def test_no_providence_claims_catches_both_languages_and_allows_presence(self):
         c = SimpleNamespace(scripture={})

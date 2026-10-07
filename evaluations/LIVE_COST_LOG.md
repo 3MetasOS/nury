@@ -135,3 +135,8 @@ Earlier runs (before the credit ran out) are in `FAILURE_LOG.md` and the commit 
 | | **Slot F total** (YouVersion calls: read only, no Gloo cost; none metered) | **$0.8719** |
 
 Cap was $2.50. Prompt rounds: 1 (WHY now speaks to the family).
+
+### Slot F, run F4: the 'what God knows' rule (hack-jedi, 2026-10-07)
+
+detention 01, 10, 14 and hospital h01, h03, YouVersion on, all five stages each: **$0.4627** (cap $0.60). All packages complete; one non-pastoral regeneration (hospital resources, ungrounded claim). The WHY lines now say only what the verse says. Slot F total with F4: **$1.3346** of the $2.50 cap.
+
