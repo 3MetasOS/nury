@@ -29,8 +29,8 @@ textarea{min-height:170px;resize:vertical}
 .bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
 .ln{margin:6px 0}
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
-.band.casehd{margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0 0 8px;font:600 clamp(1.5rem,5vw,2rem)/1.15 var(--serif)}.chrow{display:flex;flex-wrap:wrap;gap:6px 8px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere}
-.casehd .vers{margin-top:8px}
+.band.casehd{margin:6px 0 12px;grid-template-columns:minmax(0,1fr);align-items:center}.casehd .cb-l{min-width:0}.casehd h2{margin:0;font:600 clamp(1.45rem,5vw,1.45rem)/1.15 var(--serif);white-space:nowrap}.cb-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;min-height:36px}.chrow{display:flex;flex-wrap:wrap;gap:6px}.chrow .cid{font-family:var(--mono);font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.casehd .vers{margin-top:8px}.casehd .hnote{margin-top:4px}
 .cb-r{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cb-r #b-changed{width:auto;flex:none;min-height:36px;height:36px;padding:0 16px;font-size:14px;border-radius:10px}
 .bgrp{display:inline-flex;border-radius:10px;overflow:hidden;outline:1px solid var(--line-2);outline-offset:-1px;background:var(--surface-2);height:36px}
 .bgrp .btn.sm{border:0;border-radius:0;background:transparent;height:36px;min-height:36px;padding:0 14px;font-size:14px;margin:0;width:auto;flex:1 1 auto;justify-content:center}.bgrp .btn.sm:hover{background:var(--amber-soft)}
@@ -38,7 +38,7 @@ textarea{min-height:170px;resize:vertical}
 .casehd .hnote{max-width:none;width:auto}.casehd .hnote .hn-t{white-space:normal}
 .bgrp .btn.sm{white-space:nowrap}@media (max-width:959px){.bgrp .btn.sm{padding:0 8px}.cb-r{flex-direction:column;align-items:stretch}.cb-r #b-changed{width:100%}.bgrp{width:100%}.bgrp .btn.sm{flex:1 1 0}}
 @media (min-width:960px){.casehd .hnote .hn-t{white-space:nowrap}}
-@media (min-width:960px){.band.casehd{grid-template-columns:minmax(0,1fr) auto;gap:16px 24px}.cb-r{justify-content:flex-end;flex-wrap:nowrap}}
+@media (min-width:960px){.band.casehd{grid-template-columns:minmax(0,1fr) auto;gap:8px 20px;align-items:start;padding:16px 24px}.cb-r{justify-content:flex-end;flex-wrap:nowrap;align-self:start;margin-top:0}.casehd .cb-row{flex-wrap:nowrap}.casehd .chrow .sc{font-size:12px;padding:0 6px;min-height:24px;white-space:nowrap}.casehd .chrow{flex-wrap:nowrap}.casehd .chrow .sc .i{display:none}.bgrp .btn.sm{padding:0 8px;gap:5px}.cb-r #b-changed{padding:0 10px}.casehd h2{font-size:1.35rem}}
 .chd{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:10px 16px;margin:0 0 6px}.chd-t{min-width:0;flex:1 1 320px}.chd h2{margin:6px 0 4px;font:600 clamp(1.4rem,5vw,1.8rem)/1.2 var(--serif)}
 .chd-a{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.chd-m{flex:1 1 100%;margin:0}.chd-m:empty{display:none}
 .btn.sm{width:auto;flex:none;min-height:36px;height:36px;padding:0 12px;font-size:14px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;text-decoration:none}
@@ -496,9 +496,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <a class="back" id="back-case" href="#/cases">&larr; Cases</a>
   <div class="band cases casehd">
     <div class="cb-l">
-      <h2 id="case-title" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5"></h2>
-      <div class="chrow" id="case-meta"></div>
-      <div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div>
+      <div class="cb-row" data-note="something changed? tell Nury; the first draft stays" data-arrow="up" data-rot="-0.5"><h2 id="case-title"></h2><div class="chrow" id="case-meta"></div></div>
     </div>
     <div class="cb-r chd-a">
       <button class="btn primary" id="b-changed" type="button">Something changed</button>
@@ -524,7 +522,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <div class="row two" style="margin-top:14px"><button class="btn" id="rv-cancel">Cancel</button><button class="btn primary" id="rv-go">Draft again</button></div>
     <p class="note" id="rv-err"></p></div>
   <div class="cmain" id="case-card"><div class="card" id="case-card-i"><div id="case-page" class="plain" role="tabpanel" tabindex="0"></div></div></div>
-  <div hidden><figure id="case-strip"></figure><div id="case-scs"></div><div id="case-map"><img id="case-map-img" alt=""></div></div>
+  <div hidden><div class="vers hidden" id="case-vers" role="group" aria-label="Drafts"></div><figure id="case-strip"></figure><div id="case-scs"></div><div id="case-map"><img id="case-map-img" alt=""></div></div>
   <div class="aboutsaved"><p class="mono">About saved cases</p>
     <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
     </div>
@@ -785,7 +783,7 @@ async function openCase(id,tabName){
     if(await apply(on))toast(on?"Marked as needs follow-up.":"Follow-up cleared.",()=>apply(!on))};
   {const st=c.meta.status==="complete"?"Package complete":String(c.meta.status||"").replace(/^./,x=>x.toUpperCase());const vsn=(c.versions||[c.meta.id]).length;
    $("case-meta").replaceChildren(h("span",{class:"sc tag"},shortWhen(c.meta.created)),h("span",{class:"sc tag"},st+(c.meta.edited&&c.meta.edited.length?", edited by the pastor":"")),h("span",{class:"sc s-saved"},ic("i-check"),"Saved"),
-     vsn>1?h("span",{class:"sc s-v2"},ic("i-v2"),vsn===2?"Updated":vsn===3?"Updated twice":`Updated ${vsn-1} times`):"",h("span",{class:"sc tag cid"},c.meta.id))}
+     vsn>1?h("span",{class:"sc s-v2"},ic("i-v2"),vsn===2?"Updated":vsn===3?"Updated twice":`Updated ${vsn-1} times`):"",h("span",{class:"sc tag cid",title:c.meta.id,"aria-label":"Case id "+c.meta.id},"\u2026"+c.meta.id.slice(-4)))}
   $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
   const rank=n=>n==="index.md"?0:/^\d+-/.test(n)?1:["people.md","documents.md","timeline.md","intake.md","changes.md","log.md"].indexOf(n)+2;
   const names=Object.keys(c.pages).sort((a,b)=>rank(a)-rank(b)||a.localeCompare(b));NAV={pages:c.pages,open:showPage};
