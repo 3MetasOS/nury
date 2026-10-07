@@ -86,7 +86,7 @@ td:first-child code{white-space:nowrap}
       <h1 id="top" tabindex="-1">How Nury was built</h1>
     </div>
     <aside class="inshort" aria-labelledby="inshort-l"><p class="mono" id="inshort-l">In short</p><p>Nury helps a pastor who gets a crisis call. The pastor types what the family said. Nury drafts five short stages for the pastor to read, edit or stop. Nothing reaches the family except through the pastor.</p>
-<p>A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again when it is reachable. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.</p>
+<p>A model writes each draft. Plain rules check it. Jev, a classifier from TypeSafe, checks it again. A draft that fails is held back and rewritten, up to three tries. Then Nury steps aside for the pastor, who approves every stage.</p>
 <p>The model never writes a Bible verse. It picks one from a list a person approved, and the app inserts the exact words.</p>
 <p>We tested Nury with scenarios we wrote, hostile intakes, judges and people. Other models reviewed it from outside, and they only advise. Crises, rules and tests are plain files, so people can add more.</p>
 <p>The limits: no real pastor has used Nury, nothing has been learned yet, and there is no sign-in. The checks are tripwires, not proofs.</p>
@@ -1232,6 +1232,7 @@ td:first-child code{white-space:nowrap}
 <li>The effect of the skills is not measured.</li>
 <li>The triage can restate the family's own words. The checks can then refuse it three times, and the pastor gets no case summary. We saw this on a hospital prognosis request and on hostile intake a02, before the last two prompt lines. It is fixed on the sample we ran, but that is not a rate.</li>
 <li>Drafts can add a detail the caller did not give. Two of six drafts for hostile intake a02 added 'two children and a mother at home'. Jev's facts question caught one. The other was a sample in our own check. We have no rate.</li>
+<li>If Jev cannot answer within 8 seconds, or no key is set, Nury keeps going with its own rules and records that the second check did not run. A vendor outage never blocks a pastor. This is a design choice and a limit. In the scored runs of the final build, Jev answered all 239 gate calls (detention, hospital, hostile intakes and network) and none failed open. The longest call took 435 ms of the 8,000 ms allowed. The fail-open path was tested with stand-ins (a timeout, an error, a garbled answer), not seen against a real outage.</li>
 <li>A case without a stated state uses the church's home state when one is set.</li>
 <li>The tone score did not rise after the promises fix. The tone judge moves by up to 0.75 between identical runs. One sample near its 3.0 line proves little.</li>
 <li>The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood. No native speaker has read the Spanish.</li>
