@@ -273,7 +273,7 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
           </>)}
           {s.kind === 'name' && <NameCard />}
           {s.kind === 'tool' && (<Fade dur={s.dur}>
-            <Sequence durationInFrames={Math.round(3.6 * FPS)}><AppClip s={{dur: 3.6, from: ['selector', 0.3], to: ['crisis', 0.2], label: 'Pick the crisis.', aside: {text: 'both are live', at: 1.0, x: 1130, y: 600, arrow: 'left'}}} marks={data.uimarks ?? data.marks} file={data.uimarks ? 'ui.mp4' : 'run.mp4'} y={data.uimarks ? 0.27 : 0} /></Sequence>
+            <Sequence durationInFrames={Math.round(3.6 * FPS)}><AppClip s={{dur: 3.6, from: ['selector', 0.3], to: ['crisis', 0.2], label: 'Pick the crisis.', aside: {text: 'Two live. A new crisis is a new folder.', at: 1.0, x: 1130, y: 600, arrow: 'left'}}} marks={data.uimarks ?? data.marks} file={data.uimarks ? 'ui.mp4' : 'run.mp4'} y={data.uimarks ? 0.27 : 0} /></Sequence>
             <Sequence from={Math.round(3.6 * FPS)}><AppClip s={{dur: s.dur - 3.6, hold: 'gate1', from: ['start', 0.3], to: ['approve1', 0.4], label: 'Triage', aside: {text: 'you decide', at: 1.8, x: 1130, y: 760, arrow: 'down-left'}}} marks={data.marks} /></Sequence>
           </Fade>)}
           {s.kind === 'stages' && (data.marks.edit != null ? (() => {
