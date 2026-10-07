@@ -140,3 +140,6 @@ Cap was $2.50. Prompt rounds: 1 (WHY now speaks to the family).
 
 detention 01, 10, 14 and hospital h01, h03, YouVersion on, all five stages each: **$0.4627** (cap $0.60). All packages complete; one non-pastoral regeneration (hospital resources, ungrounded claim). The WHY lines now say only what the verse says. Slot F total with F4: **$1.3346** of the $2.50 cap.
 
+### Slot F, run F5: smoke check on the 'a pastor' boundary line (hack-jedi, 2026-10-07)
+
+detention 01 and hospital h01, YouVersion on: **$0.1765** (cap $0.30). Both packages complete on the first attempt at every stage; verse php4_6_7 (VBL) from youversion in both. Slot F total: **$1.5111** of the $2.50 cap.
