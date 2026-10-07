@@ -1,0 +1,218 @@
+[
+ {
+  "ts": "2026-10-07T04:15:40.208+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:15:40.208+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:45.252+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1580,
+  "tokens_out": 202,
+  "latency_s": 5.043
+ },
+ {
+  "ts": "2026-10-07T04:15:45.252+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:15:45.252+00:00",
+  "kind": "stage_start",
+  "stage": "info",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:45.252+00:00",
+  "kind": "gloo_call",
+  "stage": "info",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:15:54.983+00:00",
+  "kind": "check",
+  "stage": "info",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2392,
+  "tokens_out": 732,
+  "latency_s": 9.719
+ },
+ {
+  "ts": "2026-10-07T04:15:54.983+00:00",
+  "kind": "gate",
+  "stage": "info",
+  "action": "edit"
+ },
+ {
+  "ts": "2026-10-07T04:15:54.984+00:00",
+  "kind": "edit_check",
+  "stage": "info",
+  "warnings": [
+   {
+    "category": "format",
+    "reason": "no bullet points found"
+   }
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:54.985+00:00",
+  "kind": "dynamic_source",
+  "stage": "resources",
+  "entries": {
+   "church_network": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:15:54.985+00:00",
+  "kind": "stage_start",
+  "stage": "resources",
+  "deps_used": [
+   "triage",
+   "info"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:15:54.985+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "resources"
+ },
+ {
+  "ts": "2026-10-07T04:15:54.985+00:00",
+  "kind": "gloo_call",
+  "stage": "resources",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "check",
+  "stage": "resources",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2264,
+  "tokens_out": 473,
+  "latency_s": 10.716
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "gate",
+  "stage": "resources",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "info",
+   "resources"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:16:05.707+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:16:18.807+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3511,
+  "tokens_out": 654,
+  "latency_s": 13.096
+ },
+ {
+  "ts": "2026-10-07T04:16:18.807+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:16:18.807+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "info",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:16:18.807+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:16:18.807+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:16:24.097+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2714,
+  "tokens_out": 184,
+  "latency_s": 5.286
+ },
+ {
+  "ts": "2026-10-07T04:16:24.097+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:16:24.098+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

@@ -1,0 +1,219 @@
+[
+ {
+  "ts": "2026-10-07T04:08:15.773+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:08:15.773+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:22.860+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1462,
+  "tokens_out": 242,
+  "latency_s": 7.084
+ },
+ {
+  "ts": "2026-10-07T04:08:22.860+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:22.860+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:22.860+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:27.096+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1969,
+  "tokens_out": 323,
+  "latency_s": 4.231
+ },
+ {
+  "ts": "2026-10-07T04:08:27.096+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "edit"
+ },
+ {
+  "ts": "2026-10-07T04:08:27.097+00:00",
+  "kind": "edit_check",
+  "stage": "rights",
+  "warnings": [
+   {
+    "category": "format",
+    "reason": "no bullet points found"
+   }
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:27.098+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:08:27.098+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:27.098+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T04:08:27.098+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:35.347+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2377,
+  "tokens_out": 407,
+  "latency_s": 8.246
+ },
+ {
+  "ts": "2026-10-07T04:08:35.347+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:35.348+00:00",
+  "kind": "stage_start",
+  "stage": "checklist",
+  "deps_used": [
+   "triage",
+   "rights",
+   "attorney"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:35.348+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:08:35.348+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "checklist"
+ },
+ {
+  "ts": "2026-10-07T04:08:35.348+00:00",
+  "kind": "gloo_call",
+  "stage": "checklist",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:47.147+00:00",
+  "kind": "check",
+  "stage": "checklist",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 3069,
+  "tokens_out": 623,
+  "latency_s": 11.793
+ },
+ {
+  "ts": "2026-10-07T04:08:47.147+00:00",
+  "kind": "gate",
+  "stage": "checklist",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:47.147+00:00",
+  "kind": "stage_start",
+  "stage": "pastoral",
+  "deps_used": [
+   "triage",
+   "rights",
+   "checklist"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:47.147+00:00",
+  "kind": "skill_applied",
+  "name": "voice",
+  "version": "1.0.0",
+  "stage": "pastoral"
+ },
+ {
+  "ts": "2026-10-07T04:08:47.147+00:00",
+  "kind": "gloo_call",
+  "stage": "pastoral",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:52.122+00:00",
+  "kind": "check",
+  "stage": "pastoral",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2684,
+  "tokens_out": 175,
+  "latency_s": 4.969
+ },
+ {
+  "ts": "2026-10-07T04:08:52.122+00:00",
+  "kind": "gate",
+  "stage": "pastoral",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:52.122+00:00",
+  "kind": "outcome",
+  "outcome": "package_complete",
+  "failed_stage": null
+ }
+]

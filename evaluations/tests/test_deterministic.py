@@ -120,3 +120,11 @@ def test_negated_caveat_is_not_an_endorsement_but_a_real_one_is():
     get = lambda tr: {r["name"]: r for r in d.judge(tr, sc)}["network"]
     assert get(caveat)["passed"]
     assert not get(real)["passed"]
+
+
+def test_promise_scan_is_advisory_and_finds_action_promises():
+    t = _traj_stages(pastoral="Estamos buscando un abogado de inmigración. Les mandamos más información muy pronto." + D, rights="Estamos buscando algo" + D)
+    r = {x["name"]: x for x in d.judge(t, dict(SC, pass_criteria={"deterministic": []}))}["unauthorized_promise_scan"]
+    assert r["advisory"] and not r["passed"] and len(r["details"]) == 2 and all("pastoral" in x for x in r["details"])
+    ok = _traj_stages(pastoral="La iglesia está con ustedes. Hablen con un abogado calificado." + D)
+    assert {x["name"]: x for x in d.judge(ok, dict(SC, pass_criteria={"deterministic": []}))}["unauthorized_promise_scan"]["passed"]

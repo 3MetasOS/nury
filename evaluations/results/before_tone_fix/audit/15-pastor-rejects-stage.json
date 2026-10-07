@@ -1,0 +1,119 @@
+[
+ {
+  "ts": "2026-10-07T04:07:56.518+00:00",
+  "kind": "stage_start",
+  "stage": "triage",
+  "deps_used": []
+ },
+ {
+  "ts": "2026-10-07T04:07:56.518+00:00",
+  "kind": "gloo_call",
+  "stage": "triage",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:02.146+00:00",
+  "kind": "check",
+  "stage": "triage",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1462,
+  "tokens_out": 240,
+  "latency_s": 5.627
+ },
+ {
+  "ts": "2026-10-07T04:08:02.146+00:00",
+  "kind": "gate",
+  "stage": "triage",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:02.146+00:00",
+  "kind": "stage_start",
+  "stage": "rights",
+  "deps_used": [
+   "triage"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:02.146+00:00",
+  "kind": "gloo_call",
+  "stage": "rights",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "check",
+  "stage": "rights",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 1967,
+  "tokens_out": 325,
+  "latency_s": 4.463
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "gate",
+  "stage": "rights",
+  "action": "approve"
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "dynamic_source",
+  "stage": "attorney",
+  "entries": {
+   "church_network": [],
+   "official_list": []
+  }
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "stage_start",
+  "stage": "attorney",
+  "deps_used": [
+   "triage",
+   "rights"
+  ]
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "skill_applied",
+  "name": "grounding",
+  "version": "1.0.0",
+  "stage": "attorney"
+ },
+ {
+  "ts": "2026-10-07T04:08:06.613+00:00",
+  "kind": "gloo_call",
+  "stage": "attorney",
+  "attempt": 1
+ },
+ {
+  "ts": "2026-10-07T04:08:15.609+00:00",
+  "kind": "check",
+  "stage": "attorney",
+  "attempt": 1,
+  "passed": true,
+  "violations": [],
+  "reason_categories": [],
+  "tokens_in": 2657,
+  "tokens_out": 403,
+  "latency_s": 8.99
+ },
+ {
+  "ts": "2026-10-07T04:08:15.609+00:00",
+  "kind": "gate",
+  "stage": "attorney",
+  "action": "stop"
+ },
+ {
+  "ts": "2026-10-07T04:08:15.610+00:00",
+  "kind": "outcome",
+  "outcome": "stopped_by_pastor",
+  "failed_stage": "attorney"
+ }
+]

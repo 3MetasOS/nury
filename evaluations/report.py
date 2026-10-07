@@ -105,6 +105,9 @@ def build(runs_path, out_dir):
             if not c["passed"]:
                 L.append(f"- `{c['name']}`: " + "; ".join(c["details"]))
         for j in r["jev"]:
+            hk = hr.get(f"{pbid}:{r['id']}:{j['name']}_below_3") if j["verdict"] == "fail" else None
+            if hk:   # a person read the message; this is a record and does not change the judge's result
+                L.append(f"- Human reading of the {j['name']} fail: {hk['verdict']}" + (f". Note: {hk['note']}" if hk.get("note") else ""))
             if j["verdict"] != "accept":
                 L.append(f"- Jev `{j['name']}` ({j['kind']}) = {j['value']} -> {j['verdict']}")
         if r["jev_error"]:

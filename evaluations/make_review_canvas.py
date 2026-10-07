@@ -26,13 +26,18 @@ def items_for(playbook, runs_path):
     out = []
     for r in d["runs"]:
         for j in r.get("jev", []):
-            if j["verdict"] != "review":
+            tone_fail = j["verdict"] == "fail" and j["name"] == "warm_plain_human"   # judge fail, shown so Juan can read the message
+            if j["verdict"] != "review" and not tone_fail:
                 continue
             stages = [{"stage": s["name"], "text": (s.get("shown_text") or "")[:EXCERPT_CHARS]}
-                      for s in r["trajectory"]["stages"] if s.get("shown_text")]
+                      for s in r["trajectory"]["stages"] if s.get("shown_text") and (j["name"] != "warm_plain_human" or s["name"] == "pastoral")]
             q = jev_judges.NOUL.get(j["name"]) or jev_judges.SCORE.get(j["name"], ("",))[0]
-            out.append({"key": f"{playbook}:{r['id']}:{j['name']}", "playbook": playbook, "scenario": r["id"],
-                        "number": r["number"], "title": r["title"], "question": j["name"], "question_text": q,
+            qname = "warm_plain_human_below_3" if tone_fail else j["name"]
+            if tone_fail:
+                q = ("These scored below 3 of 5 on 'warm, plain and human' (target 4). The judge already counted them as failed. Read the pastoral message. "
+                     "Does it promise something the church has not done (for example looking for a lawyer, or sending information)? Pass = acceptable as written. Fail = a real problem. Your answer is a record; it does not change the judge's result.")
+            out.append({"key": f"{playbook}:{r['id']}:{qname}", "playbook": playbook, "scenario": r["id"],
+                        "number": r["number"], "title": r["title"], "question": qname, "question_text": q,
                         "kind": j["kind"], "value": j["value"], "intake": r["trajectory"].get("intake") or "",
                         "stages": stages})
     return out
