@@ -293,7 +293,7 @@ def test_diagrams_are_drawn_from_data_and_have_text_alternatives():
     assert "function flow(stages" in js and "function strip(stages" in js and 'role: "img"' in js and "aria-label" in js
     assert "innerHTML" not in js, "server text goes in with textContent"
     idx = (STATIC / "index.html").read_text(encoding="utf-8")
-    assert "NuryDiagram.flow(st," in idx and "NuryDiagram.strip(stg)" in idx and 'id="case-strip"' in idx
+    assert "NuryDiagram.flow(st," in idx and 'class:"stg"' in idx, "the case page draws its stages as five links (live HTML), the crisis page as a drawn flow"
     how = (STATIC / "how-it-was-built.html").read_text(encoding="utf-8")
     assert how.count('class="adg"') == 2, "architecture and loop"
     assert 'class="adg"' not in (STATIC / "network.html").read_text(encoding="utf-8"), "the network page has notes, not a diagram"
