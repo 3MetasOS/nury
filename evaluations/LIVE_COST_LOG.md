@@ -112,4 +112,15 @@ Core (code/nury, code/playbooks) last commit `00fe7b1` (22:31:02), clean at star
 - Slot D2 spend: $3.1940 ($1.2315 + $0.6830 + $1.2795 discarded). Jev calls are billed by TypeSafe, not the Gloo wallet (assumption).
 - Running total since the credit came back: slot A $0.2251 + slot C $0.9984 (+ about $0.16 browser estimate) + slot D $2.0148 + slot D2 $3.1940 = $6.4323 metered.
 
+## Slot E: red-team panel (3 non-Claude reviewers)
+
+| Step | Job | Result | Cost |
+|---|---|---|---|
+| 1 | Panel validation, second pass (16 scenario texts x 3 reviewers = 48 calls) | all 3 reviewers answer; 1 of 48 calls failed; each catches 8 of 8 injected problems | $1.2244 (gpt-5.4 $0.351, gemini-3.1-pro $0.854, llama-4-maverick $0.019) |
+| 2 | Panel on FINAL detention 20 (core 00fe7b1) | 45 corroborated findings in 19 scenarios | $1.4906 |
+| 2 | Panel on FINAL hospital 8 | 10 corroborated findings in 6 scenarios | $0.6731 |
+| | **Slot E total** | | **$3.3881** |
+
+The validation pass cost about twice my estimate ($0.6) because gemini-3.1-pro spends many hidden reasoning tokens. Total spend since credit returned: slot A $0.2251 + C $0.9984 + D $2.0148 + D2 $3.1940 + E $3.3881 = $9.8204 metered (plus about $0.16 browser estimate). The red-team budget in the brief was under $5: panel runs $3.39, so $1.61 would remain for the attacker (slot F, about $1.1).
+
 Earlier runs (before the credit ran out) are in `FAILURE_LOG.md` and the commit messages; the merged estimate is in `LIVE_CHECKS_OWED.md`.

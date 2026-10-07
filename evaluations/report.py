@@ -32,9 +32,8 @@ def build(runs_path, out_dir):
             r["panel"] = {"corroborated": pe.get("corroborated", []), "needs_human": pe.get("needs_human", False),
                           "findings": {x["model"]: len(x["findings"]) for x in pe["reviewers"]},
                           "errors": [x["model"] for x in pe["reviewers"] if x["error"]]}
-            if pe.get("needs_human") and r["final"] in ("pass", "human_pass"):
-                dec = hr.get(f"{pbid}:{r['id']}:red_team_panel")
-                r["final"] = "awaiting" if not dec else ("human_fail" if dec["verdict"] == "fail" else r["final"])
+            # A corroborated panel finding does NOT change the scenario's status: nearly every scenario has one, and the panel
+            # reviewers are advisory (validation/PANEL_VALIDATION.md). Findings go to the human canvas and to the column below.
     by = defaultdict(list)
     for r in runs:
         by[r["category"]].append(r)
@@ -81,7 +80,7 @@ def build(runs_path, out_dir):
          *(["## Red-team panel", "",
             f"- Reviewers (not Claude, same Gloo endpoint): {', '.join('`'+m+'`' for m in rt['reviewers'])}. Prompt `{rt['version']}`. Prices per 1M tokens in/out: " + "; ".join(f"{m.split('gloo-')[1]} ${p['in']}/${p['out']}" for m, p in rt.get('prices_usd_per_1m', {}).items()) + f". Cost of this panel run: ${rt.get('total_cost_usd')}.",
             f"- Scenarios with a corroborated finding (two reviewers quoted the same sentence): {sum(1 for x in rt['results'] if x['corroborated'])} of {len(rt['results'])}. Sent to the human canvas: {sum(1 for x in rt['results'] if x['needs_human'])}.",
-            "- All reviewers are advisory (see `validation/PANEL_VALIDATION.md`): they catch injected problems but also flag safe text. A single reviewer's finding does not fail a scenario. Unanimous none is extra evidence, not a pass.", ""] if rt else []),
+            "- All reviewers are advisory (see `validation/PANEL_VALIDATION.md`): they catch injected problems but also flag safe text. Panel findings never change a scenario's result. Corroborated ones are in the review canvas group `red_team_corroborated` and summarized in `results/panel_digest.md`. Unanimous none would be extra evidence, not a pass.", ""] if rt else []),
          "## By category", "", "| Category | Runs | Judge pass | Human pass | Fail | Awaiting review |", "|---|---|---|---|---|---|"]
     for c, v in agg["by_category"].items():
         L.append(f"| {c} | {len(by[c])} | {v['judge_pass']} | {v['human_pass']} | {v['fail'] + v['human_fail']} | {v['awaiting']} |")
