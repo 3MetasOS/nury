@@ -307,8 +307,11 @@ def _check_saveable(pb, state):
 
 # ---------- public API ----------
 
-def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[str] = None) -> dict:
-    """Write cases/<id>/. Returns {id, path, files}. Refuses unless every stage is approved or edited."""
+def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[str] = None, privacy=None) -> dict:
+    """Write cases/<id>/. Returns {id, path, files}. Refuses unless every stage is approved or edited.
+
+    privacy: the PrivacyClient used for the run. Its token map is saved as privacy-map.json (real values,
+    local only, never sent anywhere)."""
     pb = get_playbook(playbook)
     _check_saveable(pb, state)
     now = datetime.now(timezone.utc)
@@ -321,9 +324,10 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     files = {"index.md": _index_md(pb, state, cid, created, stages), **pages,
              "people.md": _people_md(state), "documents.md": _documents_md(state),
              "timeline.md": _timeline_md(audit), "log.md": _log_md(audit), "nextsteps.svg": svg}
+    pmap = privacy.map() if privacy is not None and hasattr(privacy, "map") else None
     manifest = {"id": cid, "playbook": pb.id, "title": pb.title, "created": created, "language": state.language,
                 "status": "complete", "edited": [s.id for s in stages if state.results.get(s.id) and state.results[s.id].status == "edited"],
-                "files": sorted(list(files) + ["case.json"])}
+                "files": sorted(list(files) + ["case.json"] + (["privacy-map.json"] if pmap else []))}
     files_all = dict(files)
     _guard(files_all, state, audit)
     d = Path(root) / cid
@@ -333,6 +337,9 @@ def save_case(state, audit, playbook=None, root=DEFAULT_ROOT, case_id: Optional[
     for name, text in files.items():
         (d / name).write_text(text, encoding="utf-8")
     (d / "case.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    if pmap:
+        (d / "privacy-map.json").write_text(json.dumps({"note": "Real values behind the tokens Nury used. Local only. Never sent.", "map": pmap},
+                                                       indent=2, ensure_ascii=False), encoding="utf-8")
     return {"id": cid, "path": str(d), "files": manifest["files"]}
 
 

@@ -23,3 +23,7 @@ Open `diagrams.html` in a browser. It is one page with six tabs, drawn as inline
 Every box names a file or folder you can open. If code changes shape, change the diagram in the same commit. The SVG is plain markup, so edit `diagrams.html` directly.
 
 The same page is published as a canvas for Juan. This file is the source.
+
+## Privacy
+
+Nury sends no direct identifiers to a model. Names the pastor protected, phones, emails, street addresses, dates, A-numbers, case numbers and ID numbers are swapped for tokens before the request leaves the device, and swapped back when the reply arrives. The map stays on the pastor's machine and in the saved case. Honest limit: this removes direct identifiers. Context can still hint at who a person is. The proof is a leak test that captures the exact request body for all five stages of both playbooks, including a rejected draft and a pastor edit that adds a new name, and finds none of the canary names or numbers. Details: `code/INTERFACE.md`, section Privacy.

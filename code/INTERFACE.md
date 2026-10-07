@@ -109,6 +109,28 @@ Layout: `cases/<id>/` holds `index.md`, one page per stage (`01-<stage id>.md` .
 - **Map.** Four lanes: Tonight (checklist DO TONIGHT), This week (the documents or bring list), Questions still open (triage MISSING FACTS), Who to call (vetted entries whose link or phone appears in the approved resources text). Steps and questions only. SVG viewBox is 400 wide, dark theme with amber, text escaped.
 - Works for any playbook; the hospital case has no immigration text.
 
+## Privacy (`nury/privacy.py`)
+
+Nury sends no direct identifiers to a model. `PrivacyClient` wraps the Gloo client; the engine takes it as `client=`, so the core is unchanged. Outbound, protected names, phones, emails, street addresses, dates, A-numbers, case numbers and ID numbers become stable tokens (`[PERSON_1]`, `[PHONE_1]`, `[ADDRESS_1]`, `[DOB_1]`, `[ANUMBER_1]`, `[CASE_1]`...). Cities and states stay. The map stays in memory and in the case file; it is never sent. Inbound, the reply is detokenized, so the pastor sees real names.
+
+```python
+from nury.privacy import propose_terms, make_client, PrivacyClient
+cands = propose_terms(intake_text)   # [{"term", "kind": "person"|"place", "count", "suggested": bool}] for the pastor to confirm
+client = make_client(protected=[{"term": "Maria", "kind": "person"}, "Jose"])      # the pastor's final list
+client = make_client(intake=intake_text)                                          # evals: protect every suggested person
+gate = client.wrap_gate(gate)        # a name the pastor ADDS in an edit is protected before the next stage
+run_pipeline("detention", state, gate, client, audit)
+client.map()                         # {"[PERSON_1]": "Maria", ...}   local only
+client.add_term("Saint Luke's", "place")                                          # the pastor can add terms any time
+cf.save_case(state, audit, "detention", root, privacy=client)                    # writes privacy-map.json, real values, local
+```
+
+- **On by default.** `make_client(...)` returns the plain Gloo client only when `NURY_PRIVACY=off` or `enabled=False` (for A/B).
+- **Detection.** Phones, emails, addresses, dates, IDs: deterministic patterns, run on the user text only (vetted phones and links in the rules stay as they are). Names: only the protected list counts. A full name also protects each part.
+- **Tokens vs the correction loop.** The checks and the gates see detokenized text. A mangled token (`[PERSON 1]`, `PERSON_1`) is repaired. A token the map does not know makes the client ask again (up to 2 more calls, counted in `meta["privacy"]["extra_calls"]` and in the stage's tokens and latency); if it still fails the token becomes `[?]`, a visible gap at the gate.
+- **Events.** `client.events` has kinds and tokens only, never real values.
+- **Honest limit.** Direct identifiers are removed. Context ("14 years", "his workplace", a rare job) can still hint at who a person is. A name the pastor did not protect is not removed.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

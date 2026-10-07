@@ -6,18 +6,23 @@ There is no send path: nothing here contacts the family.
 """
 import json
 import os
+import re
 import threading
 import uuid
+import urllib.parse
 from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 from nury.audit import AuditLog
+from nury import casefile as cf
 from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome, get_playbook, run_stage
 from nury.gloo_client import GlooClient
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
 STATIC = Path(__file__).parent / "static"
+CASES_ROOT = str(Path(__file__).resolve().parents[1] / "cases")   # local only, gitignored
+CASE_ID = re.compile(r"^[A-Za-z0-9._-]{1,80}$")
 SESSIONS = {}
 GENERIC_PLACEHOLDER = "Who called, who is affected, where, when, and what the family asks."
 
@@ -98,6 +103,18 @@ class Session:
             self.error = type(e).__name__
         self.current, self.done = None, True
 
+    def save(self):
+        """Save the approved package to a local case folder. Raises cf.CaseError unless every stage is approved or edited."""
+        r = cf.save_case(self.state, self.audit, playbook=self.pb.id, root=CASES_ROOT)
+        self.case_id = r["id"]
+        return {"id": r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
+
+    def map_svg(self):
+        try:
+            return cf.nextsteps_svg(self.pb, self.state, "Next steps")
+        except Exception:
+            return None
+
     def decide(self, action, text=None):
         with self.cv:
             if self.waiting is None:
@@ -163,7 +180,9 @@ class Session:
         log = [safe_event(e) for e in ev]
         return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
                 "error": self.error, "sources_list": self.sources_list, "done": self.done, "log": log, "language": self.state.language,
-                "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None}
+                "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None,
+                "map_svg": self.map_svg() if self.done and not self.halted else None,
+                "case_id": getattr(self, "case_id", None)}
 
 
 class H(BaseHTTPRequestHandler):
@@ -189,6 +208,30 @@ class H(BaseHTTPRequestHandler):
             self.send_header("Content-Length", str(len(b)))
             self.end_headers()
             self.wfile.write(b)
+        elif p == "/api/cases":
+            self._json({"cases": cf.list_cases(CASES_ROOT)})
+        elif p.startswith("/api/case/") and p.endswith("/export"):
+            cid = urllib.parse.unquote(p.split("/")[3])
+            if not CASE_ID.match(cid):
+                return self._json({"error": "bad id"}, 400)
+            try:
+                z = Path(cf.export_zip(cid, CASES_ROOT)).read_bytes()
+            except Exception:
+                return self._json({"error": "case not found"}, 404)
+            self.send_response(200)
+            self.send_header("Content-Type", "application/zip")
+            self.send_header("Content-Disposition", f'attachment; filename="{cid}.zip"')
+            self.send_header("Content-Length", str(len(z)))
+            self.end_headers()
+            self.wfile.write(z)
+        elif p.startswith("/api/case/"):
+            cid = urllib.parse.unquote(p.split("/")[3])
+            if not CASE_ID.match(cid):
+                return self._json({"error": "bad id"}, 400)
+            try:
+                self._json(cf.load_case(cid, CASES_ROOT))
+            except Exception:
+                self._json({"error": "case not found"}, 404)
         elif p == "/api/playbooks":
             self._json({"playbooks": playbooks()})
         elif p.startswith("/api/session/"):
@@ -213,6 +256,14 @@ class H(BaseHTTPRequestHandler):
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s
             self._json({"id": s.id})
+        elif p.startswith("/api/session/") and p.endswith("/save"):
+            s = SESSIONS.get(p.split("/")[3])
+            if not s:
+                return self._json({"error": "no such session"}, 404)
+            try:
+                self._json(s.save())
+            except cf.CaseError:
+                self._json({"error": "Nothing was saved. Every stage must be approved or edited first."}, 400)
         elif p.startswith("/api/session/") and p.endswith("/decision"):
             s = SESSIONS.get(p.split("/")[3])
             act = b.get("action")

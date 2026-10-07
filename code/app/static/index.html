@@ -31,6 +31,17 @@ textarea{min-height:170px;resize:vertical}
 .hd{font:600 16px var(--sans);color:var(--amber);margin:16px 0 6px}
 .bul{margin:6px 0;padding-left:22px}.bul li{margin:5px 0}
 .ln{margin:6px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0 10px;margin:0 -2px;-webkit-overflow-scrolling:touch}
+.chip{flex:none;min-height:44px;padding:0 14px;border-radius:99px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:600 14px var(--sans);cursor:pointer}
+.chip.on{background:var(--amber-soft);color:var(--amber);border-color:rgba(232,163,61,.5)}
+.chip:focus-visible,a.lnk:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+a.lnk{color:var(--amber);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.mapimg{width:100%;height:auto;display:block;border-radius:10px;background:#0b0e14}
+.saved{background:var(--green-soft);color:var(--green);border-radius:10px;padding:12px;margin-top:10px;font-size:15px}
+.cases h3{font:500 16px var(--serif);color:var(--muted);margin:22px 0 8px}
+.crow{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 16px;margin-bottom:10px;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--r);font:inherit;cursor:pointer}
+.crow:hover{border-color:rgba(232,163,61,.55)}.crow:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+.crow .t{display:block;font:500 17px/1.3 var(--serif)}.crow .d{display:block;font-size:13px;color:var(--muted);margin-top:2px}
 .disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
@@ -96,6 +107,7 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <p class="note" style="margin:0">Choose the kind of crisis. Nury opens the right playbook.</p></div>
   <div id="picks"></div>
   <p class="note" id="select-err"></p>
+  <div class="cases hidden" id="cases"><h3>Open cases</h3><div id="cases-list"></div></div>
 </section>
 
 <section id="v-intake" class="hidden">
@@ -149,11 +161,25 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
   <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
 </section>
 
+<section id="v-case" class="hidden">
+  <button class="back" id="back-case">&larr; All crises</button>
+  <div class="card"><h2 id="case-title"></h2><p class="note" id="case-meta" style="margin:0"></p>
+    <div class="row two"><a class="btn" id="case-export" style="display:flex;align-items:center;justify-content:center;text-decoration:none">Export zip</a><button class="btn" id="case-copy">Copy this page</button></div></div>
+  <div class="card hidden" id="case-map"><h2>Next steps</h2><img class="mapimg" id="case-map-img" alt="Next steps map"></div>
+  <div class="chips" id="case-chips" role="tablist"></div>
+  <div class="card"><div id="case-page" class="plain"></div></div>
+  <p class="note">Read-only. This case stays on this computer.</p>
+</section>
+
 <section id="v-pkg" class="hidden">
   <div class="bar">
     <p class="note"><b>Package ready.</b> Nury never sends anything. You do.</p>
     <div class="row two"><button class="btn primary" id="b-copyall">Copy all</button><button class="btn" id="b-download">Download</button></div>
   </div>
+  <div class="card"><button class="btn" id="b-save" style="min-height:56px">Save to case file</button>
+    <div class="saved hidden" id="saved" role="status"></div>
+    <p class="note" id="save-err" style="margin:8px 0 0"></p></div>
+  <div class="card hidden" id="map-card"><h2>Next steps</h2><img class="mapimg" id="map-img" alt="Next steps map: tonight, this week, questions still open, who to call"></div>
   <div id="pkg"></div>
   <button class="btn" id="b-new2">New case</button>
   <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
@@ -162,11 +188,19 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
 <script>
 const $=id=>document.getElementById(id);
 const LANG={es:"Spanish",en:"English",pt:"Portuguese",fr:"French"};
-function inline(p,str){str.split(/(\*\*[^*]+\*\*)/).forEach(x=>{if(/^\*\*[^*]+\*\*$/.test(x)){const b=document.createElement("strong");b.textContent=x.slice(2,-2);p.append(b)}else if(x)p.append(document.createTextNode(x))})}
+let NAV=null;
+function inline(p,str){str.split(/(\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\))/).forEach(x=>{
+  let m;
+  if(/^\*\*[^*]+\*\*$/.test(x)){const b=document.createElement("strong");b.textContent=x.slice(2,-2);p.append(b)}
+  else if((m=x.match(/^\[([^\]]+)\]\(([^)]+)\)$/))){
+    if(NAV&&NAV.pages[m[2]]){const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent=m[1];const go=()=>NAV.open(m[2]);a.onclick=go;a.onkeydown=e=>{if(e.key==="Enter")go()};p.append(a)}
+    else p.append(document.createTextNode(m[1]))}   // links never leave the page; no send path, no navigation
+  else if(x)p.append(document.createTextNode(x))})}
 function fmt(el,text){
   el.replaceChildren();let list=null;
   for(const raw of text.split("\n")){
     const line=raw.replace(/\s+$/,"");
+    if(/^!\[[^\]]*\]\([^)]*\)\s*$/.test(line))continue;   // map image is shown by the page, not as text
     const li=line.match(/^\s*[-*\u2022]\s+(.*)$/);
     if(li){if(!list){list=document.createElement("ul");list.className="bul";el.append(list)}const e=document.createElement("li");inline(e,li[1]);list.append(e);continue}
     list=null;if(!line.trim())continue;
@@ -181,7 +215,7 @@ function fmt(el,text){
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-select","v-intake","v-pipe","v-pkg"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const show=v=>["v-select","v-intake","v-pipe","v-pkg","v-case"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   return r.json();
@@ -189,7 +223,7 @@ async function api(path,body){
 let pbs=[],pb=null;
 const CHEV='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
 async function loadSelect(){
-  show("v-select");$("select-err").textContent="";
+  show("v-select");$("select-err").textContent="";NAV=null;loadCases();
   try{pbs=(await api("/api/playbooks")).playbooks}catch(e){$("select-err").textContent="Could not load the crisis list. Check that the server is running.";return}
   $("picks").replaceChildren(...pbs.map(p=>{
     const live=p.status==="live",el=document.createElement(live?"button":"div");
@@ -201,6 +235,35 @@ async function loadSelect(){
     else{el.setAttribute("aria-disabled","true");const tag=document.createElement("span");tag.className="tag";tag.textContent="Coming soon";el.append(wrap,tag)}
     return el}));
 }
+const svgUrl=svg=>"data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg);
+const nice=iso=>{try{return new Date(iso).toLocaleString([],{dateStyle:"medium",timeStyle:"short"})}catch(e){return iso}};
+async function loadCases(){
+  let cs=[];try{cs=(await api("/api/cases")).cases||[]}catch(e){}
+  $("cases").classList.toggle("hidden",!cs.length);
+  $("cases-list").replaceChildren(...cs.map(c=>{const b=document.createElement("button");b.className="crow";
+    const w=document.createElement("span");const t=document.createElement("span");t.className="t";t.textContent=c.title||c.id;
+    const d=document.createElement("span");d.className="d";d.textContent=`${c.playbook} \u00b7 ${nice(c.created)}`;w.append(t,d);b.append(w);
+    b.insertAdjacentHTML("beforeend",CHEV);b.querySelector("svg").style.cssText="margin-left:auto;color:var(--amber);flex:none";
+    b.onclick=()=>openCase(c.id);return b}));
+}
+let curCase=null,curPage="index.md";
+async function openCase(id){
+  const c=await api("/api/case/"+encodeURIComponent(id));
+  if(c.error){$("select-err").textContent=c.error;return}
+  curCase=c;$("case-title").textContent=c.meta.title||c.meta.id;
+  $("case-meta").textContent=`${c.meta.playbook} \u00b7 ${nice(c.meta.created)} \u00b7 ${c.meta.status}${c.meta.edited&&c.meta.edited.length?" \u00b7 edited by the pastor":""}`;
+  $("case-export").href="/api/case/"+encodeURIComponent(id)+"/export";$("case-export").setAttribute("download",id+".zip");
+  $("case-map").classList.toggle("hidden",!c.svg);if(c.svg)$("case-map-img").src=svgUrl(c.svg);
+  const names=Object.keys(c.pages);NAV={pages:c.pages,open:showPage};
+  $("case-chips").replaceChildren(...names.map(n=>{const b=document.createElement("button");b.className="chip";b.setAttribute("role","tab");b.dataset.p=n;
+    b.textContent=n.replace(/\.md$/,"").replace(/^\d+-/,"").replace(/-/g," ");b.onclick=()=>showPage(n);return b}));
+  show("v-case");showPage(c.pages["index.md"]!==undefined?"index.md":names[0]);
+}
+function showPage(n){curPage=n;
+  document.querySelectorAll("#case-chips .chip").forEach(b=>{const on=b.dataset.p===n;b.classList.toggle("on",on);b.setAttribute("aria-selected",on)});
+  fmt($("case-page"),curCase.pages[n]);window.scrollTo({top:0})}
+$("case-copy").onclick=()=>navigator.clipboard.writeText(curCase.pages[curPage]).then(()=>{$("case-copy").textContent="Copied";setTimeout(()=>$("case-copy").textContent="Copy this page",1500)});
+$("back-case").onclick=()=>{NAV=null;loadSelect()};
 function choose(p){
   pb=p;$("intake").value="";$("intake").placeholder=p.placeholder;$("demo").checked=false;
   $("intake-title").textContent="What did the family tell you?";
@@ -265,6 +328,13 @@ async function poll(){
     const whole=s.stages.map(x=>x.title+"\n\n"+x.final+"\n\n"+x.disclaimer).join("\n\n----------\n\n");
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
     $("b-download").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([whole],{type:"text/plain;charset=utf-8"}));a.download="nury-package.txt";a.click();URL.revokeObjectURL(a.href)};
+    $("map-card").classList.toggle("hidden",!s.map_svg);if(s.map_svg)$("map-img").src=svgUrl(s.map_svg);
+    const sv=$("saved");sv.classList.add("hidden");$("save-err").textContent="";$("b-save").disabled=false;$("b-save").textContent="Save to case file";
+    $("b-save").onclick=async()=>{$("b-save").disabled=true;const r=await api(`/api/session/${sid}/save`,{});
+      if(r.error){$("save-err").textContent=r.error;$("b-save").disabled=false;return}
+      $("b-save").textContent="Saved";sv.classList.remove("hidden");sv.replaceChildren();
+      sv.append(document.createTextNode(`Saved on this computer in ${r.path}. It stays here. Nothing was sent. `));
+      const a=document.createElement("a");a.className="lnk";a.tabIndex=0;a.textContent="Open the case";a.onclick=()=>openCase(r.id);a.onkeydown=e=>{if(e.key==="Enter")openCase(r.id)};sv.append(a)};
     renderLog($("log2"),s.log);show("v-pkg");return}
   const halted=s.halted||s.error;
   $("halt").classList.toggle("hidden",!halted);
