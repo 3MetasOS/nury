@@ -334,5 +334,5 @@ def ops_view(since=None, root=None, limit=50):
         "runs": [{"t": r["ts"], "crisis": r["playbook"], "stages": r["stages"], "attempts": r["attempts"], "cost": r.get("cost_usd"),
                   "latency_s": round((r.get("latency_s") or 0) + (r.get("jev_ms") or 0) / 1000, 3),
                   "outcome": _OUTCOME.get(r["outcome"], "error")}
-                 for r in sorted(runs, key=lambda r: r["ts"], reverse=True)[:limit]],
+                 for _, r in sorted(enumerate(runs), key=lambda ir: (ir[1]["ts"], ir[0]), reverse=True)[:limit]],
     }
