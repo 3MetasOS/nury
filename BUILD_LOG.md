@@ -153,3 +153,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - Sources (read at build time only; nothing from a blocked page used): HIPAA 45 CFR 164.510(b), 42 CFR 482.13, 45 CFR 92.201, 988 Lifeline, BLS healthcare social workers, Association of Professional Chaplains.
 - Decision (Juan, relayed in chat): approve sources 1–5, reject source 6 (weak: only a search-result summary was readable).
 - Learning: hack-jedi's tests caught three gaps in its own hospital patterns before the live run (Spanish outcome predictions, "probably has a stroke", medication advice). The checklist model first wrote an unsourced reason; the prompt now requires every step to come from a vetted point or a plain question.
+
+## 22. 2026-10-06 20:34 MDT — Progress feedback in the app (hack-artisans)
+
+- Engine-driven progress (no timers): a five-step tracker (waiting, working, checking, ready, done), a live status line ("Nury is working on triage…", the locked rejection wording, "Passed", "Ready for your review"), seconds per stage, buttons disabled while a stage runs, a halt card ("Nury stopped. Nothing was sent."). Reduced-motion respected.
+- hack-sensei check in a real browser: status line and seconds counter appear mid-run.
+- Honest gaps: the "checking" state lasts milliseconds and never shows a frame; the escalation path was only code-reviewed, not seen in a browser. A test-only way to force escalation was requested.
