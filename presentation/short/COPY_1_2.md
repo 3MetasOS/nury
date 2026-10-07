@@ -24,13 +24,13 @@ Story: a crisis rings the phone, the pastor needs help, so we built Nury, and th
 - Tagline, below the logo: An AI Crisis Response Agent.
 - The entry line: A given name from Arabic nur, light.
 - Two tags: noun · /NOO-ree/
-- One handwritten line: The pastor will never be alone.
+- One handwritten line: The pastor is never alone.
 
 Removed (do not show): the full sentence "So we built Nury." (the headline line "So we built:" stays), "Comfort · Faith · Action", "Tonight, and what comes next.", "see also: lantern".
 
 **Presenter notes (talking points; say them in your own words):**
 - A crisis rings the phone. The pastor needs help. So Nury exists.
-- The pastor will never be alone.
+- The pastor is never alone.
 - Nury prepares information for the pastor to review: the pastor approves, edits or stops.
 - The name: Arabic nur, light. Say only that. Do not say her name here; the two memory lines on the closing frame stand on their own.
 - Do not say "weeks", "follow-up program" or "we stay with the family": follow-up is backlog.
