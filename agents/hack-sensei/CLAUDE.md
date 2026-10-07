@@ -21,3 +21,13 @@ Route work to the crew over AMP. Own root CLAUDE.md and BUILD_LOG.md. Report to 
 - Oct 7, 18:00 description and 3-minute deck final.
 - Oct 7, 21:00 submission. Hard stop.
 - Oct 8, 09:00 finalist video, only if top 25.
+
+## Skills (required, decided by Juan)
+Load each skill before the work it covers. Do not skip.
+- **agent-browser** (Vercel; CLI `agent-browser` is installed): use it to validate every web page we ship or show: the pastor app, the deck, the video capture target. Check layout at phone width, buttons, text, console errors. Report what you saw.
+- **humanizer**: run it on every human-readable text you write: description, pitch and video scripts, UI copy, reports to Juan. Carve-outs, keep VERBATIM: the Jev disclosure line, the locked VO in `presentation/SHARED_DEMO.md`, disclaimers, guardrail and safety wording, prompts under `code/playbooks/`.
+- **impeccable**: use it for all UI and visual work: the app, the deck, the video look.
+- **canvas-actions**: make every document Juan must read or evaluate (reports, description, deck review, scorecard, judging notes) as a canvas he can open in the AI Maestro dashboard. Keep the repo file as the source; the canvas is the reading copy.
+- **agent-messaging**: AMP, as before.
+
+All four of agent-browser, humanizer, impeccable, canvas-actions apply to hack-sensei.
