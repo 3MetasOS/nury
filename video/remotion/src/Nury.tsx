@@ -90,8 +90,8 @@ export const Aside: React.FC<{text: string; x: number; y: number; arrow?: 'left'
 );
 
 export type TechOpts = {redteam?: boolean; redteamNames?: boolean};
-export const Tech: React.FC<{tests: number | string; captions?: string[]; times?: number[]; evalAt?: number; opts?: TechOpts}> = ({tests, captions, times, evalAt: evalAtProp, opts}) => {
-  const f = useCurrentFrame(); const sec = f / FPS;
+export const Tech: React.FC<{tests: number | string; captions?: string[]; times?: number[]; evalAt?: number; opts?: TechOpts; timeScale?: number}> = ({tests, captions, times, evalAt: evalAtProp, opts, timeScale = 1}) => {
+  const f = useCurrentFrame(); const sec = f / FPS / timeScale; // timeScale below 1 plays the beat faster (a shorter scene)
   const caps = captions ?? ['Leak test: canary names and numbers, zero in any request', 'Judge test: unsafe 0.89 to 0.98, safe 0.02 to 0.24', `${tests} tests pass, offline`];
   const ci = sec < 3.6 ? 0 : sec < 7.2 ? 1 : 2; // each caption about 3.6 s
   const X0 = 145, W = 270, GAP = 70, Y = 250, H = 170;

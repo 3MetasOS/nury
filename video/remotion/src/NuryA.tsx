@@ -15,8 +15,8 @@ const BASE: S[] = [
   {id: 'tool', kind: 'tool', dur: 10, trim: 2},
   {id: 'rights', kind: 'clip', dur: 7, trim: 2, from: ['gate2', 0], to: ['approve2', 0.4], label: 'Rights brief', sub: 'Vetted sources only.', aside: {text: 'every point cited', at: 1.5, x: 1130, y: 640, arrow: 'left'}},
   {id: 'turn', kind: 'clip', dur: 10, hold: 'reject', from: ['approve1', 1], to: ['gate2', 1], label: 'Rejected.\nRegenerated.\nPassed.', sub: 'The pastor never sees the rejected draft.'},
-  {id: 'tech', kind: 'tech', dur: 12},
-  {id: 'stages', kind: 'clip', dur: 8, trim: 2, from: ['approve2', 0.4], to: ['approve5', 0.4], label: 'Contacts.\nChecklist.\nMessage.'},
+  {id: 'tech', kind: 'tech', dur: 9},
+  {id: 'stages', kind: 'stages', dur: 11, trim: 2, min: 9, from: ['approve2', 0.4], to: ['approve5', 0.4], label: 'Contacts.\nChecklist.\nMessage.'},
   {id: 'copy', kind: 'clip', dur: 6, from: ['approve5', 0.4], to: ['end', 0], label: 'Legal information only.'},
   {id: 'dawn', kind: 'dawn', dur: 4},
   {id: 'memorial', kind: 'memorial', dur: 8},
@@ -26,8 +26,8 @@ const BASE: S[] = [
 const LEN: Record<string, number> = {L1: 2.23, L2: 2.0, E1: 1.25, L3: 0.88, L4: 1.76, E4: 2.14, E5: 1.39, L5: 2.04, E6: 1.39, L6: 2.28, E7: 1.63, L7: 2.88, L8: 2.04, E8: 2.18, L9: 1.44, E9: 1.39, L10: 2.51, L11: 1.81};
 const PLAN: [string, string, number][] = [ // line, scene, seconds after the scene starts
   ['L1', 'persona', 0.5], ['L2', 'persona', 5.6], ['E1', 'stakes', 2.9], ['L3', 'nury', 0.6], ['L4', 'nury', 4.0], ['E4', 'tool', 1.0], ['E5', 'tool', 6.5],
-  ['L5', 'rights', 1.0], ['E6', 'rights', 3.8], ['L6', 'turn', 1.3], ['E7', 'turn', -1], ['L7', 'tech', 0.5], ['L8', 'tech', 7.0],
-  ['E8', 'stages', 0.2], ['L9', 'stages', 3.2], ['E9', 'stages', 5.6], ['L10', 'copy', 0.5], ['L11', 'dawn', 0.5]];
+  ['L5', 'rights', 1.0], ['E6', 'rights', 3.8], ['L6', 'turn', 1.3], ['E7', 'turn', -1], ['L7', 'tech', 0.5], ['L8', 'tech', 4.2],
+  ['E8', 'stages', 0.2], ['L9', 'stages', 3.6], ['E9', 'stages', 6.2], ['L10', 'copy', 0.5], ['L11', 'dawn', 0.5]];
 export const planVoice = (d: Data, scenes: any[]) => {
   const by: Record<string, any> = Object.fromEntries(scenes.map((s) => [s.id, s]));
   const trimOn = (d.memorial?.option ?? 3) === 2 && d.memorial?.approved === true; // table 2 drops E9
@@ -276,8 +276,14 @@ export const NuryA: React.FC<{data: Data}> = ({data}) => {
             <Sequence durationInFrames={Math.round(3.6 * FPS)}><AppClip s={{dur: 3.6, from: ['selector', 0.3], to: ['crisis', 0.2], label: 'Pick the crisis.', aside: {text: 'both are live', at: 1.0, x: 1130, y: 600, arrow: 'left'}}} marks={data.uimarks ?? data.marks} file={data.uimarks ? 'ui.mp4' : 'run.mp4'} y={data.uimarks ? 0.27 : 0} /></Sequence>
             <Sequence from={Math.round(3.6 * FPS)}><AppClip s={{dur: s.dur - 3.6, hold: 'gate1', from: ['start', 0.3], to: ['approve1', 0.4], label: 'Triage', aside: {text: 'you decide', at: 1.8, x: 1130, y: 760, arrow: 'down-left'}}} marks={data.marks} /></Sequence>
           </Fade>)}
+          {s.kind === 'stages' && (data.marks.edit != null ? (() => {
+            const m = data.marks, k = s.dur / 11, seg = (from: [string, number], to: [string, number], d: number, label: string) => ({dur: d, from, to, label});
+            const parts = [seg(['gate3', 0.15], ['gate3', 2.35], 2.2 * k, 'Contacts.'), seg(['gate4', 0.3], ['gate4', 1.5], 1.2 * k, 'Checklist.'), seg(['gate5', 0.1], ['gate5', 2.4], 2.3 * k, 'A warm message.'), seg(['edit', -0.5], ['approve5', 0.9], 5.3 * k, 'His to edit.')];
+            let t0 = 0;
+            return (<Fade dur={s.dur}>{parts.map((p, i) => { const at = t0; t0 += p.dur; return <Sequence key={i} from={Math.round(at * FPS)} durationInFrames={Math.round(p.dur * FPS)}><AppClip s={p} marks={m} /></Sequence>; })}</Fade>);
+          })() : <Fade dur={s.dur}><AppClip s={s} marks={data.marks} /></Fade>)}
           {s.kind === 'clip' && <Fade dur={s.dur}><AppClip s={s} marks={data.marks} y={s.id === 'stages' || s.id === 'copy' ? 0.0 : 0.0} /></Fade>}
-          {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} opts={{redteam: data.tech?.redteam === true, redteamNames: data.tech?.redteamNames === true}} /></Fade>}
+          {s.kind === 'tech' && <Fade dur={s.dur}><Tech tests={86} captions={caps} times={[0.2, 1.0, 2.4, 3.6, 5.0]} evalAt={6.4} timeScale={0.75} opts={{redteam: data.tech?.redteam === true, redteamNames: data.tech?.redteamNames === true}} /></Fade>}
           {s.kind === 'dawn' && <Fade dur={s.dur}><End /></Fade>}
           {s.kind === 'memorial' && <Fade dur={s.dur} slow><Memorial m={data.memorial} /></Fade>}
         </Sequence>

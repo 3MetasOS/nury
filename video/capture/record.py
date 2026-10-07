@@ -26,7 +26,7 @@ with sync_playwright() as p:
     page.evaluate("[...document.querySelectorAll(\"a[href$='/crisis/detention']\")].find(a => a.offsetParent).click()"); page.wait_for_timeout(2200); mark("crisis")
     if "Immigration detention" not in page.inner_text("body"): raise RuntimeError("not on the Detention page: stop before any Gloo call")
     vis("Begin the response").click(); page.wait_for_timeout(1800); mark("intake_empty")
-    vis("Use demo intake").click(); page.wait_for_timeout(2200); mark("intake")
+    vis("Use (demo|the sample) intake").click(); page.wait_for_timeout(2200); mark("intake")
     if "Maria" not in page.input_value("#intake") and "Maria" not in page.inner_text("body"): raise RuntimeError("the intake is not the Detention demo (Maria): stop before any Gloo call")
     page.check("#demo"); page.wait_for_timeout(700)
     if DRY:
@@ -51,7 +51,19 @@ with sync_playwright() as p:
         mark(f"gate{i} shown: {prev_title[:40]!r}")
         strip = page.locator("#strip:not(.hidden)")
         if strip.count(): mark(f"strip: {strip.inner_text()[:80]!r}")
-        page.wait_for_timeout(int(HOLD * 1000)); page.click("#b-approve"); mark(f"approve{i}"); page.wait_for_timeout(600)
+        page.wait_for_timeout(int(HOLD * 1000))
+        if i == 5:  # the pastor changes ONE word in the editor, then Save and approve (E9 'He changes one word.' needs this on screen)
+            SWAPS = [("sabemos", "entendemos"), ("difícil", "duro"), ("comprensible", "natural"), ("noche", "madrugada"), ("pronto", "mañana"), ("miedo", "temor"),
+                     ("ayudar", "apoyar"), ("estamos", "seguimos"), ("caminar", "andar"), ("fuerte", "firme"), ("sola", "solitaria"), ("prometer", "asegurar")]
+            page.click("#b-edit"); page.wait_for_timeout(1400); mark("edit")
+            hit = page.evaluate("""(sw) => { const t = document.querySelector('#g-edit'); const v = t.value;
+              for (const [a, b] of sw) { const m = new RegExp('\\\\b' + a + '\\\\b', 'i').exec(v); if (m) { t.focus(); t.setSelectionRange(m.index, m.index + a.length); return [m[0], b]; } } return null; }""", SWAPS)
+            if hit:
+                word = hit[1] if hit[0][0].islower() else hit[1].capitalize()
+                page.keyboard.type(word, delay=110); mark(f"edit_word: {hit[0]} -> {word}"); page.wait_for_timeout(1800)
+                page.click("#b-edit-save"); mark("edit_done"); mark("approve5"); page.wait_for_timeout(600); continue
+            mark("edit_skipped: no known word in the draft"); page.click("#b-cancel"); page.wait_for_timeout(600)
+        page.click("#b-approve"); mark(f"approve{i}"); page.wait_for_timeout(600)
     page.wait_for_selector("#v-pkg:not(.hidden), #b-copyall", timeout=60_000); mark("package"); page.wait_for_timeout(4000); mark("end")
     n = cast.stop(out / "run.mp4"); b.close()
 (out / "marks.txt").write_text("\n".join(marks) + "\n"); print(n, "frames\n" + "\n".join(marks))
