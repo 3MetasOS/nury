@@ -18,6 +18,7 @@ from nury.audit import AuditLog
 from nury import casefile as cf
 from nury.engine import UNSAFE_SUFFIX, CaseState, GateDecision, compute_outcome, get_playbook, run_stage
 from nury.gloo_client import GlooClient
+from nury.privacy import PrivacyClient, make_client, privacy_enabled, propose_terms
 from nury.playbook import PLAYBOOKS_DIR, PlaybookError, list_playbooks
 
 STATIC = Path(__file__).parent / "static"
@@ -54,9 +55,11 @@ def safe_event(e):
 
 
 class Session:
-    def __init__(self, playbook_id, intake, language, demo_guardrail):
+    def __init__(self, playbook_id, intake, language, demo_guardrail, protected=None):
         self.id = uuid.uuid4().hex[:12]
         self.pb = get_playbook(playbook_id)
+        # One privacy client per session: its token map lives here. The pastor's confirmed list is the list that counts.
+        self.client = make_client(protected=protected) if protected is not None else make_client(intake=intake)
         self.state = CaseState(intake, language)
         self.audit = AuditLog()
         # Per-session fault, never the process-wide env var: it would hit every concurrent session.
@@ -86,10 +89,11 @@ class Session:
 
     def work(self):
         try:
-            client = GlooClient()
+            client = self.client
+            gate = client.wrap_gate(self.gate) if hasattr(client, "wrap_gate") else self.gate   # protects names added in an Edit
             for s in self.pb.stages:
                 self.current = s.id
-                r = run_stage(s.id, self.state, self.gate, client, self.audit,
+                r = run_stage(s.id, self.state, gate, client, self.audit,
                               fault_injection=self.fault, playbook=self.pb.id)
                 self.results.append(r)
                 if r.status not in ("approved", "edited"):
@@ -105,7 +109,8 @@ class Session:
 
     def save(self):
         """Save the approved package to a local case folder. Raises cf.CaseError unless every stage is approved or edited."""
-        r = cf.save_case(self.state, self.audit, playbook=self.pb.id, root=CASES_ROOT)
+        r = cf.save_case(self.state, self.audit, playbook=self.pb.id, root=CASES_ROOT,
+                         privacy=self.client if isinstance(self.client, PrivacyClient) else None)
         self.case_id = r["id"]
         return {"id": r["id"], "path": os.path.relpath(r["path"], Path(CASES_ROOT).parent.parent)}
 
@@ -232,6 +237,8 @@ class H(BaseHTTPRequestHandler):
                 self._json(cf.load_case(cid, CASES_ROOT))
             except Exception:
                 self._json({"error": "case not found"}, 404)
+        elif p == "/api/privacy":
+            self._json({"on": privacy_enabled()})
         elif p == "/api/playbooks":
             self._json({"playbooks": playbooks()})
         elif p.startswith("/api/session/"):
@@ -242,7 +249,9 @@ class H(BaseHTTPRequestHandler):
 
     def do_POST(self):
         p, b = self.path, self._body()
-        if p == "/api/run":
+        if p == "/api/propose-terms":
+            self._json({"on": privacy_enabled(), "terms": propose_terms(b.get("intake") or "") if privacy_enabled() else []})
+        elif p == "/api/run":
             intake = (b.get("intake") or "").strip()
             if not intake:
                 return self._json({"error": "Type what the family told you."}, 400)
@@ -251,7 +260,9 @@ class H(BaseHTTPRequestHandler):
             if not chosen or chosen["status"] != "live":
                 return self._json({"error": "That crisis is not available yet."}, 400)
             try:
-                s = Session(pid, intake, b.get("language", "es"), bool(b.get("demo_guardrail")))
+                prot = b.get("protected")
+                prot = [{"term": str(t.get("term", "")).strip(), "kind": t.get("kind", "person")} for t in prot if str(t.get("term", "")).strip()] if isinstance(prot, list) else None
+                s = Session(pid, intake, b.get("language", "es"), bool(b.get("demo_guardrail")), prot)
             except PlaybookError:
                 return self._json({"error": "That crisis is not available yet."}, 400)
             SESSIONS[s.id] = s

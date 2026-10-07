@@ -42,6 +42,12 @@ a.lnk{color:var(--amber);text-decoration:underline;text-underline-offset:3px;cur
 .crow{display:flex;align-items:center;gap:12px;width:100%;min-height:64px;padding:12px 16px;margin-bottom:10px;text-align:left;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:var(--r);font:inherit;cursor:pointer}
 .crow:hover{border-color:rgba(232,163,61,.55)}.crow:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
 .crow .t{display:block;font:500 17px/1.3 var(--serif)}.crow .d{display:block;font-size:13px;color:var(--muted);margin-top:2px}
+.terms{margin:8px 0 4px}
+.term{display:flex;align-items:center;gap:12px;min-height:52px;padding:6px 4px;border-bottom:1px solid var(--line);cursor:pointer}
+.term input{width:22px;height:22px;accent-color:var(--amber);flex:none}
+.term .n{font:500 18px var(--serif)}.term .k{margin-left:auto;font-size:12px;color:var(--muted);flex:none}
+.addrow{display:flex;gap:8px;margin-top:12px}.addrow input{flex:1;min-width:0;background:var(--surface-2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px;font:inherit}
+.addrow select{width:auto;flex:none}.addrow .btn{width:auto;min-height:48px}
 .disc1{margin:2px 0 10px;font-size:13px;color:var(--muted)}
 .family,.plain{overflow-wrap:anywhere}
 .btn{min-height:56px;padding:0 18px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);font:600 17px var(--sans);width:100%;cursor:pointer}
@@ -126,6 +132,18 @@ details{margin-top:10px}summary{cursor:pointer;color:var(--muted);font-size:14px
     <p class="note" id="intake-err"></p>
   </div>
   <p class="note">Nury drafts. You decide. Nothing reaches the family unless you send it. Nury is an AI assistant. It is not a lawyer, pastor, counselor, or therapist.</p>
+</section>
+
+<section id="v-protect" class="hidden">
+  <button class="back" id="back-protect">&larr; Back to the call</button>
+  <div class="card"><h2>Protect names</h2>
+    <p class="note" style="margin:0">Nury hides these names from the AI service. You still see them. Tick every person you want protected. Places stay in the text on purpose.</p>
+    <div class="terms" id="terms" role="group" aria-label="Names to protect"></div>
+    <p class="note hidden" id="no-terms">No names found. Add any you want protected.</p>
+    <div class="addrow"><input id="add-term" placeholder="Add a name" aria-label="Add a name to protect"><select id="add-kind" aria-label="Kind"><option value="person">Person</option><option value="place">Place</option></select><button class="btn" id="b-add">Add</button></div>
+    <div class="row two" style="margin-top:14px"><button class="btn" id="b-protect-back">Back</button><button class="btn primary" id="b-protect-go">Start</button></div>
+    <p class="note" id="protect-err"></p></div>
+  <p class="note">Phone numbers, emails, addresses, dates and ID numbers are always protected. Nury is an AI assistant.</p>
 </section>
 
 <section id="v-pipe" class="hidden">
@@ -215,7 +233,7 @@ function fmt(el,text){
 const oneLine=d=>(d||"").split(/(?<=\.)\s/)[0];
 let rawDraft="";
 let sid=null,timer=null,lastGate=null;
-const show=v=>["v-select","v-intake","v-pipe","v-pkg","v-case"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
+const show=v=>["v-select","v-intake","v-protect","v-pipe","v-pkg","v-case"].forEach(x=>$(x).classList.toggle("hidden",x!==v));
 async function api(path,body){
   const r=await fetch(path,body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
   return r.json();
@@ -274,12 +292,36 @@ function choose(p){
 $("btn-demo").onclick=()=>{$("intake").value=pb.demo_intake;$("demo").checked=true};
 $("back-intake").onclick=()=>loadSelect();
 $("back-pipe").onclick=()=>{clearInterval(timer);sid=null;loadSelect()};
+let termList=[];
+function drawTerms(){
+  $("no-terms").classList.toggle("hidden",termList.length>0);
+  $("terms").replaceChildren(...termList.map((t,i)=>{const l=document.createElement("label");l.className="term";
+    const c=document.createElement("input");c.type="checkbox";c.checked=t.on;c.onchange=()=>{t.on=c.checked};
+    const n=document.createElement("span");n.className="n";n.textContent=t.term;
+    const k=document.createElement("span");k.className="k";k.textContent=t.kind==="place"?"place":"person"+(t.count?` \u00b7 ${t.count}\u00d7`:"");
+    l.append(c,n,k);return l}))}
 $("btn-start").onclick=async()=>{
   $("intake-err").textContent="";
-  const r=await api("/api/run",{playbook:pb.id,intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked});
-  if(r.error){$("intake-err").textContent=r.error;return}
-  sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
+  if(!$("intake").value.trim()){$("intake-err").textContent="Type what the family told you.";return}
+  const r=await api("/api/propose-terms",{intake:$("intake").value});
+  if(!r.on){startRun(null);return}                      // privacy off for this run: no step
+  termList=(r.terms||[]).map(t=>({term:t.term,kind:t.kind,count:t.count,on:!!t.suggested}));
+  $("protect-err").textContent="";$("add-term").value="";drawTerms();show("v-protect");
 };
+$("b-add").onclick=()=>{const v=$("add-term").value.trim();if(!v)return;
+  const have=termList.find(t=>t.term.toLowerCase()===v.toLowerCase());
+  if(have){have.on=true}else termList.push({term:v,kind:$("add-kind").value,count:0,on:true});
+  $("add-term").value="";drawTerms()};
+$("add-term").onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();$("b-add").click()}};
+$("back-protect").onclick=()=>show("v-intake");$("b-protect-back").onclick=()=>show("v-intake");
+$("b-protect-go").onclick=()=>startRun(termList.filter(t=>t.on).map(t=>({term:t.term,kind:t.kind})));
+async function startRun(protectedList){
+  const body={playbook:pb.id,intake:$("intake").value,language:$("lang").value,demo_guardrail:$("demo").checked};
+  if(protectedList)body.protected=protectedList;
+  const r=await api("/api/run",body);
+  if(r.error){const e=protectedList?$("protect-err"):$("intake-err");e.textContent=r.error;return}
+  sid=r.id;show("v-pipe");lastGate=null;poll();timer=setInterval(poll,1000);
+}
 const reset=()=>{clearInterval(timer);sid=null;loadSelect()};
 $("b-new1").onclick=reset;$("b-new2").onclick=reset;
 const decide=(action,text)=>api(`/api/session/${sid}/decision`,{action,text});
