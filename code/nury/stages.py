@@ -74,10 +74,10 @@ def _check_triage(text, state, data):
     out = []
     for label in ("SITUATION", "PEOPLE", "LOCATION", "FAMILY LANGUAGE", "URGENCY", "MISSING FACTS"):
         if label not in text.upper():
-            out.append(f"missing label {label}")
+            out.append(g.R("format", f"missing label {label}"))
     tail = text.upper().split("MISSING FACTS", 1)[-1]
     if len(re.findall(r"^\s*\d[.)]", tail, re.M)) != 3:
-        out.append("MISSING FACTS must list exactly 3 numbered items")
+        out.append(g.R("format", "MISSING FACTS must list exactly 3 numbered items"))
     return out
 
 
@@ -104,12 +104,12 @@ def _check_rights(text, state, data):
     lines = [l for l in text.splitlines()
              if re.match(r"\s*[-•*]\s+\w", l) and not l.strip().startswith("**")]
     if not lines:
-        out.append("no bullet points found")
+        out.append(g.R("format", "no bullet points found"))
     for l in lines:
         if not any(n.lower() in l.lower() for n in names):
-            out.append(f"bullet without a source citation: {l.strip()[:60]!r}")
+            out.append(g.R("ungrounded_claim", f"bullet without a source citation: {l.strip()[:60]!r}"))
     if not g._ATTORNEY_WORDS.search(text[-400:]):
-        out.append("must end by urging an attorney")
+        out.append(g.R("missing_attorney_referral", "must end by urging an attorney"))
     return out
 
 
@@ -135,7 +135,7 @@ def _check_attorney(text, state, data):
     out = g.url_reasons(text, _allowed_urls(data))
     for e in data["attorneys"]["national"] + data["attorneys"].get("local", []):
         if e.get("url") and _norm(e["url"]) not in _norm(text):
-            out.append(f"missing vetted link: {e['url']}")
+            out.append(g.R("missing_vetted_entry", f"missing vetted link: {e['url']}"))
     return out
 
 
@@ -155,7 +155,7 @@ def _build_checklist(state, data):
 
 def _check_checklist(text, state, data):
     up = text.upper()
-    out = [f"missing section {h}" for h in ("DO TONIGHT", "DO NOT DO", "GATHER THESE DOCUMENTS") if h not in up]
+    out = [g.R("format", f"missing section {h}") for h in ("DO TONIGHT", "DO NOT DO", "GATHER THESE DOCUMENTS") if h not in up]
     return out + g.url_reasons(text, _allowed_urls(data))
 
 
@@ -173,7 +173,7 @@ def _build_pastoral(state, data):
 
 def _check_pastoral(text, state, data):
     n = g.word_count(text)
-    return [f"too long: {n} words (limit 119)"] if n >= 120 else []
+    return [g.R("length", f"too long: {n} words (limit 119)")] if n >= 120 else []
 
 
 STAGES = [

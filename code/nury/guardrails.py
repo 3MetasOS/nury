@@ -56,9 +56,15 @@ _URL = re.compile(r"https?://[^\s)>\]\"']+|www\.[^\s)>\]\"']+", re.I)
 _ATTORNEY_WORDS = re.compile(r"abogad|attorney|lawyer|legal aid|asistencia legal", re.I)
 
 
+def R(category, reason):
+    """One violation. Categories: banned_phrase, ungrounded_claim, missing_vetted_entry,
+    missing_attorney_referral, format, length."""
+    return {"category": category, "reason": reason}
+
+
 def unsafe_reasons(text):
     low = text.lower()
-    return [f"{why} (matched {m.group(0)!r})"
+    return [R("banned_phrase", f"{why} (matched {m.group(0)!r})")
             for pat, why in _UNSAFE_PATTERNS
             if (m := re.search(pat, low))]
 
@@ -74,7 +80,7 @@ def url_reasons(text, allowed_urls):
         n = _norm_url(u)
         if not any(n == a or n.startswith(a) or a.startswith(n) for a in allowed):
             bad.append(u)
-    return [f"link not in vetted sources: {u}" for u in bad]
+    return [R("ungrounded_claim", f"link not in vetted sources: {u}") for u in bad]
 
 
 def word_count(text):
