@@ -366,3 +366,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Logo C finalized in `branding/`: mark, lockups on ink and paper, favicon, and a heavier-stroke small mark for sizes under 24 px (tested at 16, 24 and 32 px). `BRAND.md` covers C only; A and B moved to `branding/archive/`. `APP_SNIPPETS.md` gives hack-artisans the header and favicon snippets. The deck carries the logo.
 - Hub: the sidebar now shows the real mark, and two pages were added (Brand kit; Logo and lockups). 36 pages. Checked in a real browser at 1280 px.
+
+## 54. 2026-10-06 21:52 MDT — Deck v2 direction (Juan's asks, hack-sensei's decisions)
+
+- Juan asked for photos of children and detainees from immigration raids. Decision: no real detainee or child photos. Reasons: news photos are copyrighted; the children cannot consent and Nury promises to protect identities; raid imagery makes the entry read as political, against the code of conduct and our humanitarian rule. Instead: licensed photos with no identifiable people (Unsplash, Pexels, Wikimedia Commons) and our own lantern-style illustrations, each with its license recorded in `branding/IMAGES.md` and a credits slide.
+- Decision: the deck (and, pending Juan's confirmation, the video) moves to the light paper palette from the brand kit; the dark look stays inside the app for night use. Deck restructured around the five judging criteria, with the honest "what broke and what changed" slide.
+- Answer to "did the team use impeccable": yes (deck, app, end card, diagrams). The dark look came from the original brief, not from the skill.
