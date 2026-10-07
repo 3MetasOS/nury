@@ -64,6 +64,7 @@ def build(runs_path, out_dir):
     (out / "results.json").write_text(json.dumps({"aggregate": agg, "runs": slim}, indent=1, ensure_ascii=False))
     L = (["MOCK SELF-TEST, NOT A RESULT", ""] if d["agent"] == "mock" else []) + [f"# Nury Evaluation Scorecard: {d.get('playbook', 'detention')} playbook", "",
          f"Agent: `{agg['agent']}`. Jev judges: {'on' if agg['jev_used'] else 'off (deterministic only)'}.",
+         (lambda h: f"Build id (repo head when this scorecard was built): `{h}`." if h else "Build id: not available.")(__import__("subprocess").run(["git", "rev-parse", "--short", "HEAD"], cwd=Path(__file__).resolve().parent.parent, capture_output=True, text=True).stdout.strip()),
          (lambda c: (f"Core (code/nury and code/playbooks): last commit `{c['start']['core_last_commit']}`"
                      + (", uncommitted changes at start" if c["start"]["core_dirty"] else ", clean at start")
                      + ("; CHANGED during the run" if c["start"]["core_last_commit"] != c["end"]["core_last_commit"] else "; unchanged during the run")
