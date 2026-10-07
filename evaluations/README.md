@@ -38,3 +38,14 @@ Needed from the core:
 ## Judges
 - `judges/deterministic.py`: banned phrases (project list + office claims), disclaimers, URL/phone allowlist, language, workflow contract, completeness. No AI.
 - `judges/jev_judges.py`: typed Jev noul/score/choice on the full trajectory. Eval time only. `JEV_API_KEY` from env. Accept at >=80% confident-correct, fail at <=20%, middle goes to human review.
+
+## Test-only switches (never set for the demo, the eval or a recording)
+- `NURY_TEST_ESCALATE=1` (app server env): with the demo box ticked, stage 2 fails all three tries so the escalation screen can be viewed once.
+- `fault_injection` in a scenario file: appends an unsafe phrase to the first drafts of one stage (scenarios 5, 6, h06).
+
+## Review and scoring
+- `make_review_canvas.py` builds the human-review page from stored runs, grouped by Jev question. `--interim` labels it INTERIM.
+- `record_review.py <playbook>:<scenario>:<question> <pass|fail> [note]` records one decision and rebuilds that playbook's scorecard.
+- The scorecard prints judge pass, human pass, fail and awaiting review. It prints no total while any item is open.
+- `rejudge.py` re-runs the Jev judges on stored trajectories without new agent calls.
+- Safety judges never see rejected draft text, only violation categories. See `validation/JUDGE_VALIDATION.md`.

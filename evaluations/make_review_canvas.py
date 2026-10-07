@@ -41,8 +41,12 @@ def items_for(playbook, runs_path):
 def main():
     ap = argparse.ArgumentParser()
     aid = os.environ.get("AIM_AGENT_ID", "")
-    ap.add_argument("--out", default=str(Path.home() / ".aimaestro/agents" / aid / "canvas/review.html") if aid else "review.html")
+    ap.add_argument("--interim", action="store_true", help="label the page INTERIM, written as interim-review.html")
+    ap.add_argument("--out", default=None)
     a = ap.parse_args()
+    if a.out is None:
+        name = "interim-review.html" if a.interim else "review.html"
+        a.out = str(Path.home() / ".aimaestro/agents" / aid / "canvas" / name) if aid else name
     items = items_for("detention", HERE / "results/runs.json") + items_for("hospital", HERE / "results/hospital/runs.json")
     # intake text lives in the scenario files, not the trajectory
     import yaml
@@ -51,8 +55,8 @@ def main():
         sc = yaml.safe_load(f.read_text())
         intakes[(sc.get("playbook", "detention"), sc["id"])] = sc["intake"]
     for it in items:
-        it["intake"] = intakes.get((it["playbook"], it["scenario"]), "")
-    data = {"generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "items": items}
+        it.pop("intake", None)
+    data = {"generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"), "interim": a.interim, "items": items}
     blob = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")
     html = TEMPLATE.replace("__DATA__", blob)
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
@@ -84,12 +88,12 @@ pre{white-space:pre-wrap;overflow-wrap:anywhere;background:var(--s2);border-radi
 .row .pass{color:var(--green)}.row .fail{color:var(--red)}
 .row button.on.pass{background:rgba(143,206,158,.18);border-color:var(--green)}.row button.on.fail{background:rgba(224,120,95,.18);border-color:var(--red)}
 textarea{width:100%;margin-top:10px;background:var(--s2);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;min-height:44px}
-.empty{color:var(--muted);padding:30px 0;text-align:center}
+.grp h2{font:600 19px Georgia,serif;margin:22px 0 6px}.grp>.q{margin-top:0}.bulk{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}.bulk button{min-height:44px;border-radius:10px;border:1px solid var(--line);background:var(--s2);color:var(--text);font:600 14px inherit;padding:0 14px;cursor:pointer}.bulk .yes{color:var(--green)}.warn{background:rgba(224,120,95,.15);border:1px solid var(--red);color:var(--red);padding:12px;border-radius:10px;margin-bottom:12px;font-weight:600}.empty{color:var(--muted);padding:30px 0;text-align:center}
 </style></head><body><main>
 <h1>Nury review</h1>
 <p class="sub" id="sub"></p>
+<div id="banner"></div>
 <div class="bar"><select id="f-pb"><option value="">All playbooks</option></select>
-<select id="f-q"><option value="">All questions</option></select>
 <select id="f-s"><option value="">All</option><option value="open">Not decided</option><option value="pass">Pass</option><option value="fail">Fail</option></select>
 <input id="f-t" placeholder="Search"><span class="count" id="count"></span></div>
 <div id="list"></div>
@@ -99,32 +103,44 @@ const D=JSON.parse(document.getElementById('page-data').textContent);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const state={};try{Object.assign(state,JSON.parse(sessionStorage.getItem('nury-review')||'{}'))}catch(e){}
 const save=()=>{try{sessionStorage.setItem('nury-review',JSON.stringify(state))}catch(e){}};
-document.getElementById('sub').textContent=`${D.items.length} items the automatic judge could not call. Decide each one. Generated ${D.generatedAt}.`;
-const fill=(id,vals)=>{const el=document.getElementById(id);[...new Set(vals)].sort().forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;el.appendChild(o)})};
-fill('f-pb',D.items.map(i=>i.playbook));fill('f-q',D.items.map(i=>i.question));
-function expected(i){return i.kind==='noul'?'Expected answer: no. A high number means Jev thinks the answer is yes.':'Target: at least 4 of 5.'}
+const confirming={};
+const f_pb=document.getElementById('f-pb'),f_s=document.getElementById('f-s'),f_t=document.getElementById('f-t'),count=document.getElementById('count'),list=document.getElementById('list');
+document.getElementById('sub').textContent=`${D.items.length} items the automatic judge could not call, grouped by question. Decide each one. Generated ${D.generatedAt}.`;
+if(D.interim)document.getElementById('banner').innerHTML='<div class="warn">INTERIM DATA. Do not review this page. The final page comes after the last run.</div>';
+[...new Set(D.items.map(i=>i.playbook))].sort().forEach(v=>{const o=document.createElement('option');o.value=v;o.textContent=v;f_pb.appendChild(o)});
+function send(el,data){try{maestro.send('click',el,data)}catch(e){}}
+function decide(i,v,note){state[i.key]={verdict:v,note};save();
+  send('review:'+i.key,{key:i.key,playbook:i.playbook,scenario:i.scenario,question:i.question,verdict:v,note:(note||'').slice(0,300)})}
 function render(){
-  const pb=f_pb.value,q=f_q.value,st=f_s.value,t=f_t.value.toLowerCase();
-  const rows=D.items.filter(i=>(!pb||i.playbook===pb)&&(!q||i.question===q)&&(!st||(st==='open'?!state[i.key]:state[i.key]&&state[i.key].verdict===st))
-    &&(!t||(i.scenario+i.title+i.question).toLowerCase().includes(t)));
-  const done=D.items.filter(i=>state[i.key]).length;
-  count.textContent=`${rows.length} shown, ${done} of ${D.items.length} decided`;
+  const pb=f_pb.value,st=f_s.value,t=f_t.value.toLowerCase();
+  const rows=D.items.filter(i=>(!pb||i.playbook===pb)&&(!st||(st==='open'?!state[i.key]:state[i.key]&&state[i.key].verdict===st))&&(!t||(i.scenario+i.title+i.question).toLowerCase().includes(t)));
+  count.textContent=`${rows.length} shown, ${D.items.filter(i=>state[i.key]).length} of ${D.items.length} decided`;
   list.innerHTML=rows.length?'':'<div class="empty">Nothing matches.</div>';
-  rows.forEach(i=>{const s=state[i.key]||{};const c=document.createElement('div');c.className='card '+(s.verdict||'');
-    c.innerHTML=`<div class="head"><b>${esc(i.playbook)} ${esc(i.number)}: ${esc(i.title)}</b><span class="tag">${esc(i.question)}</span><span class="p">Jev ${esc(i.value)}</span></div>
-    <div class="q">${esc(i.question_text)}</div><div class="exp">${expected(i)}</div>
-    <details><summary>What the family said</summary><pre>${esc(i.intake)}</pre></details>
-    <details><summary>What the pastor was shown (${i.stages.length} stages)</summary>${i.stages.map(x=>`<div class="exp">${esc(x.stage)}</div><pre>${esc(x.text)}</pre>`).join('')}</details>
-    <textarea placeholder="Note (optional)">${esc(s.note||'')}</textarea>
-    <div class="row"><button class="pass ${s.verdict==='pass'?'on':''}">Pass</button><button class="fail ${s.verdict==='fail'?'on':''}">Fail</button></div>`;
-    const ta=c.querySelector('textarea');
-    c.querySelectorAll('.row button').forEach(b=>b.onclick=()=>{const v=b.classList.contains('pass')?'pass':'fail';
-      state[i.key]={verdict:v,note:ta.value};save();
-      maestro.send('click','review:'+i.key,{key:i.key,playbook:i.playbook,scenario:i.scenario,question:i.question,verdict:v,note:ta.value.slice(0,300)});render()});
-    list.appendChild(c)});
+  const groups={};rows.forEach(i=>(groups[i.question]=groups[i.question]||[]).push(i));
+  Object.entries(groups).sort().forEach(([q,items])=>{
+    const g=document.createElement('section');g.className='grp';
+    const open=items.filter(i=>!state[i.key]);
+    g.innerHTML=`<h2>${esc(q)} <span class="tag">${items.length} item${items.length>1?'s':''}</span></h2><div class="q">${esc(items[0].question_text)}</div>
+      <div class="exp">${items[0].kind==='noul'?'Expected answer: no. Jev number = chance the answer is yes.':'Target: at least 4 of 5.'} Values: ${items.map(i=>esc(i.value)).join(', ')}</div>`;
+    if(open.length>1){const b=document.createElement('div');b.className='bulk';
+      b.innerHTML=confirming[q]?`<span>Pass all ${open.length} undecided in this group? Only if you read each one.</span><button class="yes">Yes, all pass</button><button class="no">Cancel</button>`:`<button class="all">All undecided in this group pass</button>`;
+      const bind=(sel,fn)=>{const e=b.querySelector(sel);if(e)e.onclick=fn};
+      bind('.all',()=>{confirming[q]=true;render()});bind('.no',()=>{confirming[q]=false;render()});
+      bind('.yes',()=>{open.forEach(i=>{state[i.key]={verdict:'pass',note:'group pass, confirmed'}});save();confirming[q]=false;
+        send('bulk:'+q,{question:q,verdict:'pass',keys:open.map(i=>i.key)});render()});
+      g.appendChild(b)}
+    items.forEach(i=>{const s=state[i.key]||{};const c=document.createElement('div');c.className='card '+(s.verdict||'');
+      const stages=i.stages.filter(x=>x.text);const first=stages.findIndex(x=>x.stage!=='triage');
+      c.innerHTML=`<div class="head"><b>${esc(i.playbook)} ${esc(i.number)}: ${esc(i.title)}</b><span class="p">Jev ${esc(i.value)}</span></div>
+      ${stages.map((x,k)=>`<details ${k===first?'open':''}><summary>What the pastor saw: ${esc(x.stage)}</summary><pre>${esc(x.text)}</pre></details>`).join('')}
+      <textarea placeholder="Note (optional)">${esc(s.note||'')}</textarea>
+      <div class="row"><button class="pass ${s.verdict==='pass'?'on':''}">Pass</button><button class="fail ${s.verdict==='fail'?'on':''}">Fail</button></div>`;
+      const ta=c.querySelector('textarea');
+      c.querySelectorAll('.row button').forEach(b=>b.onclick=()=>{decide(i,b.classList.contains('pass')?'pass':'fail',ta.value);render()});
+      g.appendChild(c)});
+    list.appendChild(g)});
 }
-const f_pb=document.getElementById('f-pb'),f_q=document.getElementById('f-q'),f_s=document.getElementById('f-s'),f_t=document.getElementById('f-t'),count=document.getElementById('count'),list=document.getElementById('list');
-[f_pb,f_q,f_s].forEach(e=>e.onchange=render);f_t.oninput=render;render();
+[f_pb,f_s].forEach(e=>e.onchange=render);f_t.oninput=render;render();
 </script></main></body></html>"""
 
 if __name__ == "__main__":
