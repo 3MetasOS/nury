@@ -116,6 +116,8 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 .diagram{max-height:48vh}
 .slide.impact{gap:1.2vh;padding-top:3.5vh;padding-bottom:7vh}.impact .tight th,.impact .tight td{padding:.35vh 1vw .35vh 0}
 .slide.memorial{padding:4vh 6.5vw 8vh;gap:2.4vh}
+.tree{font:600 clamp(12px,1.45vw,22px)/1.6 var(--mono);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2.4vh 2vw;margin:0;color:var(--ink);white-space:pre;overflow:auto}
+.two.grow{grid-template-columns:1fr 1fr}.flow.grow li{font-size:clamp(20px,2.4vw,34px)}.flow.grow span{font-size:clamp(15px,1.7vw,24px)}
 .entry .e-see{font-size:clamp(26px,3vw,44px);margin-top:1vh}
 .entry .e-see.hand{opacity:0;animation:rise .8s 5.6s ease-out forwards}
 .prov{font-size:clamp(12px,1.1vw,15px)!important;max-width:60ch}
@@ -177,7 +179,25 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <aside class="notes">LIGHT. 0:40 to 1:14. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "A draft that failed was held back. Nury never sends. The pastor does." (softened from "never saw the unsafe draft" to match limit L1) No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside></section>
 
 <section class="slide" data-part="talk">
-<p class="lbl">05 · How it is built</p>
+<p class="lbl">05 · Built to grow</p>
+<h2 class="big">A new crisis is a new folder.</h2>
+<div class="two grow"><div class="col">
+<ol class="flow grow">
+<li><b>Add a crisis</b><span>A folder of plain files. The engine does not change.</span></li>
+<li><b>Add a rule</b><span>One small function and a test.</span></li>
+<li><b>Add an evaluation</b><span>Scenarios are files too.</span></li></ol>
+<p class="small" data-gated="skills">Playbooks share small skills, like voice and grounding. A stage includes them by name.</p>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">two crises run on it</span></p></div>
+<div class="col"><pre class="tree" role="img" aria-label="The detention playbook folder: playbook.json, stages.json, outcomes.json, a prompts folder and a sources folder">playbooks/detention/
+├─ playbook.json   the crisis
+├─ stages.json     five stages
+├─ outcomes.json   outcomes
+├─ prompts/        one per stage
+└─ sources/        vetted only</pre></div></div>
+<aside class="notes">1:14 to 1:28, about 14 s, about 34 words. Say: "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. A rule is one small function and a test. A scenario is a file. Two crises run on it." EVIDENCE: the playbook loader (code/nury/playbook.py), code/tools/new_playbook.py scaffolds a crisis folder that cannot run until a person approves its sources, documents/product/ADD_A_RULE.md (function, registry, stage, one sentence for the rules page, test), and test_second_playbook_zero_engine_changes in code/tests/test_core.py (builds a second playbook from scratch and runs it through the same engine). Evaluations: scenarios and hostile intakes are YAML files; judge questions sit in one code file; candidate_test.py runs a proposed improvement against the same sets with a gate before a person decides. The correction loop is said once, on the next slide. Skills and the church network: do not mention unless switched on. Merged with the old Innovation slide.</aside></section>
+
+<section class="slide" data-part="talk">
+<p class="lbl">06 · How it is built</p>
 <h2 class="big">The model sees tokens, not names.</h2>
 <svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
 <title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks and a Jev classifier reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the layers that test Nury before release.</desc>
@@ -200,18 +220,9 @@ ul.lead{list-style:none;padding:0;gap:1.6vh}
 <text x="548" y="400" class="bs" text-anchor="middle">Plain code checks  ·  Jev (TypeSafe)  ·  red team: GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick  ·  a person</text>
 </svg>
 <p class="muted">20 named checks plus the safety floor. 5 Gloo calls for a full package. No send path.<span data-gated="scripture"> Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app.</span></p>
-<aside class="notes">1:14 to 1:36, about 17 s. Say: "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The leak test ran 90 checks per playbook and found no names." Trace the line once, left to right; then point at the bottom strip: that is how we test it before release (Jev sees tokens only; if it is down the pastor is not blocked). Evidence: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
+<aside class="notes">1:28 to 1:50, about 17 s. Say: "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The leak test ran 90 checks per playbook and found no names." Trace the line once, left to right; then point at the bottom strip: that is how we test it before release (Jev sees tokens only; if it is down the pastor is not blocked). Evidence: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
 
-<section class="slide" data-part="talk">
-<p class="lbl">06 · Innovation</p>
-<h2 class="big">A crisis is a folder.</h2>
-<div class="cols"><div class="col"><h3>One engine, many playbooks</h3>
-<p class="lead">Add a playbook. The engine does not change. Detention and hospital both run on it.</p>
-<p class="small" data-gated="skills">Playbooks share small skills, like voice and grounding. A stage includes them by name.</p></div>
-<div class="col"><h3>Drafts correct themselves</h3>
-<p class="lead">Rejected, rewritten, up to three tries. Nothing moves on without the pastor's approval.</p>
-<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">a test builds a new crisis</span></p></div></div>
-<aside class="notes">1:36 to 1:50. Criterion: Innovation. Say: "Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital both run on it, and a test builds a new crisis from scratch." The correction loop is said once, on the how-it-is-built slide. Do not mention skills or the church network unless they are switched on.</aside></section>
+
 
 <section class="slide" data-part="talk">
 <p class="lbl">07 · Use of AI</p>

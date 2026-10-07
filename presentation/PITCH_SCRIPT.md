@@ -14,8 +14,8 @@ Revised 2026-10-07 after SCRIPT_REVIEW (hack-sensei approved). Slides 2 and 3 ar
 | 2 | Lantern | This is Nury, and the name entry (one slide) | 0:14 to 0:26 | 12 s |
 | 3 | Light | Concept and product | 0:26 to 0:40 | 14 s |
 | 4 | Light | The demo: Eric's film plays, Juan speaks before and after | 0:40 to 1:14 | 34 s |
-| 5 | Light | How it is built | 1:14 to 1:36 | 22 s |
-| 6 | Light | Innovation | 1:36 to 1:50 | 14 s |
+| 5 | Light | Built to grow (the innovation slide, merged) | 1:14 to 1:28 | 14 s |
+| 6 | Light | How it is built | 1:28 to 1:50 | 22 s |
 | 7 | Light | Use of AI | 1:50 to 2:09 | 19 s |
 | 8 | Light | Impact and execution | 2:09 to 2:22 | 13 s |
 | 9 | Light | Teamwork, and what is next | 2:22 to 2:32 | 10 s |
@@ -42,14 +42,15 @@ Play rows 5 to 7 of the film (the tool, the rights brief, the turn: 0:25 to 0:52
 - Juan AFTER (about 4 s): "A draft that failed was held back. Nury never sends. The pastor does."
 The selector screenshot is the first frame the audience sees. If the film fails to play, Juan says the three sentences of the old demo text (types, five stages with a gate after each, rejected draft regenerated) and shows the screenshots; no live app.
 
-## 1:14 to 1:36  Slide 5 (light): how it is built  [90s]
+## 1:14 to 1:28  Slide 5 (light): built to grow  [90s]
+EXTENSIBILITY IS A HEADLINE (Juan). One dedicated beat, about 14 s, 37 words at 2.5 words a second: "Nury is built to grow. A crisis is a folder of plain files. Add a folder, not engine code. A rule is one small function and a test. A scenario is a file. Two crises run on it."
+On screen: three beats (add a crisis, add a rule, add an evaluation) and the playbook folder as a file tree. This replaces the old Innovation slide.
+Evidence for the Q and A (TECH_STORY Q17): the playbook loader (`code/nury/playbook.py`), `code/tools/new_playbook.py`, `documents/product/ADD_A_RULE.md`, and the test `test_second_playbook_zero_engine_changes` (builds a second playbook from scratch and runs it through the same engine).
+The correction loop is said once, on the next slide. Skills and the church network: say nothing unless Sensei confirms in writing.
+
+## 1:28 to 1:50  Slide 6 (light): how it is built  [90s]
 Trace the line once. [90s] "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The leak test ran 90 checks per playbook and found no names." (42 words, 17 s)
 Under the diagram: twenty named checks plus the safety floor, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
-
-## 1:36 to 1:50  Slide 6 (light): innovation
-"Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital both run on it, and a test builds a new crisis from scratch." (30 words, 12 s)
-Unsafe drafts never reach the pastor: say it once, on slide 6. Not again here.
-[ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
 
 ## 1:50 to 2:09  Slide 7 (light): use of AI, and why two judges
 [47 words, about 19 s] The writer is Claude, through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, classifies it with a probability before the pastor sees it. Before release, a red team of three models from other makers hunts for what we missed, and we decide what to change.
@@ -74,7 +75,7 @@ Option 2 of `MEMORIAL.md` (about 16 s, recommended for the deck and the live pit
 Do not edit, shorten or humanize the text. Do not add a photo unless Juan provides one.
 
 ## 90-second cut
-Slides 1, 2, 4, 5, 10 and the memorial: about 10 + 8 + 34 + 12 + 5 + 16 = 85 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
+Slides 1, 2, 4, 6, 10 and the memorial: about 10 + 8 + 34 + 12 + 5 + 16 = 85 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
 
 ## Backup slides (do not speak; use for questions). Press `b`.
 What broke and what changed. Four evaluation layers, with what each cannot do. Why two judges. Privacy that is tested. Informed by case-management practice (not in the talk). How we differ. Credits.
