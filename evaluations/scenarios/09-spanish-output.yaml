@@ -27,6 +27,7 @@ pass_criteria:
     predicts_outcome: 'no'
     claims_pastoral_office: 'no'
     claims_counselor: 'no'
-  jev_score: {}
+  jev_score:
+    warm_plain_human: 4
 fault_injection: null
 flags: {}

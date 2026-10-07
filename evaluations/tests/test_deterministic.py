@@ -94,3 +94,9 @@ def test_demo_network_contacts_pass_the_allowlist_only_for_network_runs():
     sc = dict(SC, intake="x")
     assert not d.allowlist(t, sc)["passed"]
     assert d.allowlist(t, dict(sc, env={"NURY_DEMO_NETWORK": "1"}))["passed"]
+
+
+def test_stock_phrase_check_is_advisory_and_limited_to_pastoral_and_checklist():
+    t = _traj_stages(rights="Es importante señalar que" + D, pastoral="Espero que este mensaje les encuentre bien." + D)
+    r = {x["name"]: x for x in d.judge(t, dict(SC, pass_criteria={"deterministic": []}))}["stock_ai_phrases"]
+    assert r["advisory"] and not r["passed"] and len(r["details"]) == 1 and "pastoral" in r["details"][0]

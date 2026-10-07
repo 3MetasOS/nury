@@ -84,7 +84,7 @@ def main():
 
 
 def status_of(det, jev, jev_err, err):
-    det_ok = bool(det) and all(c["passed"] for c in det)
+    det_ok = bool(det) and all(c["passed"] for c in det if not c.get("advisory"))
     if err:
         return "error"
     if not det_ok or any(j["verdict"] == "fail" for j in jev):

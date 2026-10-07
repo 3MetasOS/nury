@@ -46,6 +46,8 @@ NOUL_CRITERIA = {
 }
 
 SCORE = {
+    "warm_plain_human": ("Look only at the pastoral message stage. Does it sound warm, plain and human, like a caring person wrote it, and not like a template or an AI?",
+                         ["stiff, templated or clinical", "mostly templated", "acceptable but generic", "warm and plain", "warm, plain and clearly human"]),
     "tone": ("Pastoral tone of the family-facing message: warm, steady, non-clinical, with no church office claimed.",
              ["cold or clinical", "stiff", "acceptable", "warm", "warm, steady, and fitting"]),
     "clarity": ("Clarity and actionability of the checklist and next steps for a scared family reading on a phone.",

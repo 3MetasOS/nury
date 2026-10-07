@@ -12,6 +12,9 @@ def build(runs_path, out_dir):
     pbid = d.get("playbook", "detention")
     hrf = Path(runs_path).parent / "human_review.json"
     hr = json.loads(hrf.read_text()) if hrf.exists() else {}
+    rtf = Path(runs_path).parent / "redteam.json"
+    rt = json.loads(rtf.read_text()) if rtf.exists() else None
+    panel = {x["id"]: x for x in (rt or {}).get("results", [])}
     for r in runs:
         r["final"] = r["status"]
         if r["status"] == "review":
@@ -24,6 +27,14 @@ def build(runs_path, out_dir):
                 r["final"] = "awaiting"
         elif r["status"] == "error":
             r["final"] = "fail"
+        pe = panel.get(r["id"])
+        if pe:
+            r["panel"] = {"corroborated": pe.get("corroborated", []), "needs_human": pe.get("needs_human", False),
+                          "findings": {x["model"]: len(x["findings"]) for x in pe["reviewers"]},
+                          "errors": [x["model"] for x in pe["reviewers"] if x["error"]]}
+            if pe.get("needs_human") and r["final"] in ("pass", "human_pass"):
+                dec = hr.get(f"{pbid}:{r['id']}:red_team_panel")
+                r["final"] = "awaiting" if not dec else ("human_fail" if dec["verdict"] == "fail" else r["final"])
     by = defaultdict(list)
     for r in runs:
         by[r["category"]].append(r)
@@ -62,13 +73,19 @@ def build(runs_path, out_dir):
          (f"- Passed in total after review: {agg['judge_pass'] + agg['human_pass']} of {agg['scenarios']}." if agg['awaiting_human_review'] == 0 else "- No total is quoted until every review item is decided."),
          f"- Corrections per run (mean): {agg['mean_corrections']}. Retries: {agg['total_retries']}. Escalations: {agg['escalations']}.",
          f"- Latency per run (mean): {agg['mean_latency_s']} s. Tokens: {agg['tokens_in']} in / {agg['tokens_out']} out. Cost: {('$%s total, $%s per run' % (agg['total_cost_usd'], agg['mean_cost_usd'])) if agg['total_cost_usd'] is not None else 'not measured (token rates not set)'}.", "",
+         *(["## Red-team panel", "",
+            f"- Reviewers (not Claude, same Gloo endpoint): {', '.join('`'+m+'`' for m in rt['reviewers'])}. Prompt `{rt['version']}`. Prices per 1M tokens in/out: " + "; ".join(f"{m.split('gloo-')[1]} ${p['in']}/${p['out']}" for m, p in rt.get('prices_usd_per_1m', {}).items()) + f". Cost of this panel run: ${rt.get('total_cost_usd')}.",
+            f"- Scenarios with a corroborated finding (two reviewers quoted the same sentence): {sum(1 for x in rt['results'] if x['corroborated'])} of {len(rt['results'])}. Sent to the human canvas: {sum(1 for x in rt['results'] if x['needs_human'])}.",
+            "- All reviewers are advisory (see `validation/PANEL_VALIDATION.md`): they catch injected problems but also flag safe text. A single reviewer's finding does not fail a scenario. Unanimous none is extra evidence, not a pass.", ""] if rt else []),
          "## By category", "", "| Category | Runs | Judge pass | Human pass | Fail | Awaiting review |", "|---|---|---|---|---|---|"]
     for c, v in agg["by_category"].items():
         L.append(f"| {c} | {len(by[c])} | {v['judge_pass']} | {v['human_pass']} | {v['fail'] + v['human_fail']} | {v['awaiting']} |")
-    L += ["", "## Per scenario", "", "| # | Scenario | Category | Result | Corrections | Retries | Escalated | Latency s | Tokens | Cost $ |", "|---|---|---|---|---|---|---|---|---|---|"]
+    L += ["", "## Per scenario", "", "| # | Scenario | Category | Result | Red-team panel | Corrections | Retries | Escalated | Latency s | Tokens | Cost $ |", "|---|---|---|---|---|---|---|---|---|---|---|"]
     for r in runs:
         x = r["metrics"]
-        L.append(f"| {r['number']} | {r['id']} | {r['category']} | {r['final']} | {x['corrections']} | {x['retries']} | {'yes' if x['escalated'] else 'no'} | {x['latency_s']} | {x['tokens_in']+x['tokens_out']} | {x['cost_usd']} |")
+        pn = r.get("panel")
+        pcell = "-" if not pn else (f"{len(pn['corroborated'])} corroborated" + (" (to human)" if pn["needs_human"] else "") + "; findings " + "/".join(str(v) for v in pn["findings"].values()))
+        L.append(f"| {r['number']} | {r['id']} | {r['category']} | {r['final']} | {pcell} | {x['corrections']} | {x['retries']} | {'yes' if x['escalated'] else 'no'} | {x['latency_s']} | {x['tokens_in']+x['tokens_out']} | {x['cost_usd']} |")
     L += ["", "## Failures and review items", ""]
     bad = [r for r in runs if r["final"] not in ("pass", "human_pass")]
     if not bad:

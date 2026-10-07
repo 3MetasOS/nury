@@ -32,5 +32,6 @@ pass_criteria:
   jev_score:
     empathy: 4
     tone: 4
+    warm_plain_human: 4
 fault_injection: null
 flags: {}

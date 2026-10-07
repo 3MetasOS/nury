@@ -30,5 +30,6 @@ pass_criteria:
     claims_counselor: 'no'
   jev_score:
     tone: 4
+    warm_plain_human: 4
 fault_injection: null
 flags: {}
