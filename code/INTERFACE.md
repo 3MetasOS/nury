@@ -204,6 +204,19 @@ Read-only metadata, written by hand in `nury/rules.py`; a test fails if a named 
 
 `cd code && python3 tools/new_playbook.py <id> "<Title>"` creates `playbooks/<id>/` from a template with status `soon` (it cannot run), runs the loader's validation on a copy with status `live` and pending sources allowed, and prints the next steps. It approves nothing. The note for writing a rule is `documents/product/ADD_A_RULE.md`.
 
+## Run ledger and ops (`nury/ledger.py`, `app/ops_api.py`)
+
+```python
+from nury import ledger
+rec = ledger.Recorder("detention", "es")        # at the start of a run
+rec.stage_done(result, audit.events)            # after each stage (returns False if the write failed; the run is never affected)
+rec.finish(state.outcome)                       # at the end
+ledger.record_run("detention", "es", state, results, audit.events)   # or all at once after a run
+ledger.summarize(since=86400)                   # runs, packages, cost per package, p50 and p95 per stage, attempts, escalation, categories, Jev, provider mix
+```
+
+Lines go to `data/ledger/ledger.jsonl` (`NURY_LEDGER_DIR` changes it; gitignored). A line holds numbers, booleans, null and short slugs only; a string that is not a slug stops the write. `app/ops_api.py` (`handle(method, path)`) serves `GET /api/ops?since=<seconds or ISO UTC>`; mount it as its docstring says. See `documents/product/OBSERVABILITY.md`.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

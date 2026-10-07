@@ -11,7 +11,7 @@ Status words:
 
 "Live verified" means it ran, not that it scored well. Pass rates and the effect of the skills are not claimed here; see `documents/TECH_CLAIMS.md`.
 
-Count: 47 live verified, 27 offline tested, 3 built but not yet checked live, 6 planned, 20 not built.
+Count: 47 live verified, 29 offline tested, 3 built but not yet checked live, 6 planned, 20 not built.
 
 ## 1. Pastor experience
 
@@ -46,6 +46,8 @@ Count: 47 live verified, 27 offline tested, 3 built but not yet checked live, 6 
 | Rules registry | Every floor rule, named check and Jev question has a plain-English description, a kind, the file it lives in and the stages that use it. Read-only. | BUILT, offline tested | `nury/rules.py`; `tests/test_rules.py`; the app route `GET /api/rules` is hack-artisans' | pastor, judge, developer |
 | New-crisis scaffold | One command creates a playbook folder from a template, status soon, runs the loader's validation, and prints what is left: prompts, sources and their approval, scenarios, tests, then the status flip. | BUILT, offline tested | `tools/new_playbook.py`; `tests/test_new_playbook.py` | developer |
 | How to add a rule | A written note with two worked examples (a data rule and a code check) whose code is run by a test. | BUILT, offline tested | `documents/product/ADD_A_RULE.md`; `tests/test_add_a_rule_doc.py` | developer |
+| Run ledger | An append-only JSONL record, one line per stage and per run: attempts, rule categories fired, Jev decisions and probabilities, tokens, cost, latency, provider, outcome. Never text, names or case ids; a string that is not a short slug stops the write. | BUILT, offline tested | `nury/ledger.py`; `tests/test_ledger.py` (leak test with canaries) | developer, judge |
+| Ops summary | `ledger.summarize()` and a read-only `GET /api/ops`: cost per package, latency p50 and p95 per stage, attempts, escalation and rejection rates, Jev decisions by question, provider mix. The app has to call the recorder and mount the route (hack-artisans). | BUILT, offline tested | `app/ops_api.py`; `tests/test_ledger.py` | developer |
 | Verse bank in public-domain text | 12 verses (10 for detention, 12 for hospital), Reina-Valera 1909 in Spanish and World English Bible in English, both public domain, with source URL and licence recorded. A verse ships only after Juan approves it. | BUILT, offline tested | `playbooks/*/sources/scripture.json`, `approvals.json`; the review canvas | pastor, judge |
 | Church's own verses | The church adds verses to `network/scripture.json` with the exact text, a source URL, a licence and a translation name. The loader refuses a verse without them. There is no screen for this yet. | BUILT, offline tested | `scripture.load_bank`; `tests/test_scripture.py` | pastor |
 | Swap the verse at the gate | The engine can swap in any other approved verse (exact source text) and leave the why-lines alone. The selector in the app is not built. | PLANNED | `scripture.swap_verse`, `scripture.list_verses`; no screen yet | pastor |
