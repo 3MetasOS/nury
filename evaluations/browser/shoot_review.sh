@@ -6,7 +6,7 @@ ev(){ agent-browser eval "$1" 2>&1 | tail -1; }
 open(){ agent-browser open "$1" >/dev/null 2>&1; agent-browser wait 1600 >/dev/null 2>&1; }
 shot(){ agent-browser screenshot --full "$OUT/$1-$TH-$W.png" >/dev/null 2>&1; }
 CASE=$(curl -s localhost:$PORT/api/cases | python3 -c "import sys,json;print(json.load(sys.stdin)['cases'][0]['id'])")
-for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844
+for TH in dark light; do for W in 390 768 1280; do H=800; [ $W = 390 ] && H=844; [ $W = 768 ] && H=1024
   agent-browser set viewport $W $H >/dev/null 2>&1
   open "http://127.0.0.1:$PORT/#/"; ev "try{localStorage.setItem('nury-theme','$TH')}catch(e){};1" >/dev/null; open "http://127.0.0.1:$PORT/#/"
   shot home
@@ -20,6 +20,10 @@ for TH in dark light; do for W in 390 1280; do H=800; [ $W = 390 ] && H=844
   open "http://127.0.0.1:$PORT/how-it-was-built"; shot how
   open "http://127.0.0.1:$PORT/observability"; shot observability
   open "http://127.0.0.1:$PORT/improvement"; shot self-improvement
+  FS="$(cat $HERE/finalstub.js | tr '\n' ' ')"; ESC=$(curl -s localhost:$PORT/api/cases | python3 -c "import sys,json,urllib.request
+cs=json.load(sys.stdin)['cases']
+print(next(c['id'] for c in cs if json.load(urllib.request.urlopen('http://localhost:$PORT/api/case/'+c['id']))['meta']['language']=='es'))")
+  open "about:blank"; open "http://127.0.0.1:$PORT/#/"; ev "(async()=>{$FS; return await window.__finalStub('$ESC',{addVerse:true})})()" >/dev/null; ev "sid='x';show('v-pkg');poll();1" >/dev/null; agent-browser wait 1300 >/dev/null 2>&1; shot final
   open "http://127.0.0.1:$PORT2/#/"; ev "$(cat $HERE/gatestub.js)" >/dev/null; ev "window.__phase='ready';sid='x';show('v-pipe');poll();1" >/dev/null; agent-browser wait 1300 >/dev/null 2>&1; shot gate
 done; done
 ev "try{localStorage.setItem('nury-theme','dark')}catch(e){};1" >/dev/null

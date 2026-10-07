@@ -22,10 +22,10 @@
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 :focus-visible{outline:2px solid var(--amber-text);outline-offset:2px}
 .top{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
-.top .wrap{max-width:1120px;margin:0 auto;padding:0 16px;display:flex;align-items:center;gap:12px;min-height:60px}
-.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--amber-text);min-height:48px}
+.top .wrap{max-width:1120px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:12px;min-height:76px}
+.brand{display:grid;justify-items:start;gap:0;text-decoration:none;color:var(--amber-text)}
 .brand .i{width:28px;height:28px;color:var(--logo)}.brand b{font:600 24px/1 var(--serif)}
-.brand small{display:none;font-size:13px;color:var(--muted);margin-left:4px;font-weight:400}
+.brand .lk{display:flex;align-items:center;gap:10px}.brand .tg{display:block;white-space:nowrap;font:500 12px/1.2 var(--sans);color:var(--muted);margin-top:2px}
 .iconbtn{margin-left:auto;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--text);cursor:pointer;flex:none}
 .tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;background:var(--surface);border-top:1px solid var(--line);padding:0 8px env(safe-area-inset-bottom)}
 .tabs a{flex:1;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font:600 12px/1.2 var(--sans);color:var(--muted);text-decoration:none}
@@ -49,16 +49,15 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 .nv h3{font:500 18px/1.3 var(--serif);margin:0}
 .nv p,.nv ul,.nv ol{margin:0}.nv ul,.nv ol{padding:0;list-style:none}
 .muted{color:var(--muted)}
-.top .tools{margin-left:auto;display:flex;gap:8px}.top .tools .iconbtn{margin-left:0}
+.top .tools{margin-left:auto;align-self:center;display:flex;align-items:center;gap:8px}.top .tools .iconbtn{margin-left:0;width:36px;height:36px;border-radius:10px;background:transparent}.top .tools .iconbtn .i{width:20px;height:20px}
 .iconbtn:hover,.iconbtn[aria-pressed="true"]{border-color:var(--amber-line)}
 @media (min-width:640px){.sheet-b{padding:20px 28px 32px}}
 @media (min-width:960px){
-  .brand small{display:inline}
   .tabs{position:static;border:0;background:none;padding:0;margin-left:24px;gap:4px;z-index:auto}
-  .tabs a{flex:none;flex-direction:row;gap:8px;padding:0 16px;min-height:44px;border-radius:99px;font-size:15px}
+  .tabs a{flex:none;flex-direction:row;gap:8px;padding:0 14px;min-height:36px;border-radius:99px;font-size:15px}
   .tabs a[aria-current="page"]{background:var(--amber-soft);box-shadow:none}
   body.task .tabs{display:flex}
-  .top .wrap{padding:0 24px}
+  .top .wrap{padding:12px 24px}
   dialog.sheet{margin:auto;width:640px;border-radius:20px;max-height:86vh}.sheet-b{max-height:calc(86vh - 76px)}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -75,17 +74,25 @@ body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);
 .fnav a{display:inline-flex;align-items:center;min-height:44px;color:var(--text);font:600 15px var(--sans);text-decoration:none;border-bottom:1px solid transparent}
 .fnav a:hover{border-bottom-color:var(--amber-text)}
 .fnav a[aria-current="page"]{color:var(--amber-text);border-bottom-color:var(--amber-text)}
-.sitefoot .fr{display:flex}
 .sitefoot .fine{margin:0;max-width:62ch;font-size:13px;line-height:1.5;color:var(--muted)}
 .linkbtn{background:none;border:0;padding:0;min-height:44px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
-@media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:minmax(0,1fr) auto;align-items:center}.sitefoot .fine{grid-column:1/-1}.sitefoot .fr{justify-content:flex-end}}
+@media (min-width:960px){.sitefoot .wrap{padding:28px 24px 36px;grid-template-columns:minmax(0,1fr) auto;align-items:center}.sitefoot .fine{grid-column:1/-1}}
 body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
 @media (min-width:960px){body{padding-bottom:0}}
 /* hand-written notes: in the flow, never over text. Decoration: the label beside the control says the same thing. */
 .hnote{display:flex;align-items:center;gap:6px;width:max-content;max-width:100%;margin:6px 0 2px;color:var(--note-ink);font:400 21px/1.15 "Gochi Hand","Bradley Hand","Segoe Print",cursive;transform:rotate(var(--rot,-1.5deg));transform-origin:left center;pointer-events:none;user-select:none}
 .hnote .hn-a{width:34px;height:30px;flex:none;fill:none;stroke:var(--amber-text);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .hnote .hn-t{background:linear-gradient(transparent 60%,var(--hl) 60% 90%,transparent 90%);padding:0 4px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
-html[data-notes="off"] .hnote{display:none}
-@media (max-width:639px){.hnote{transform:none;font-size:17px;margin:4px 0 0}.hnote .hn-a{display:none}.hnote.no-phone{display:none}}
+@media (max-width:639px){.hnote{transform:none;font-size:17px;margin:4px 0 0}.hnote .hn-a{display:none}}
 @media (prefers-reduced-motion:reduce){.hnote{transform:none}}
-@media print{.hnote,.sitefoot .fr{display:none!important}}
+@media print{.hnote{display:none!important}}
+
+/* the logo lockup: the mark and Nury, and the tagline always BELOW them (Juan's brand rule). Never beside. */
+.lockup{display:grid;grid-template-columns:auto;justify-items:start;gap:4px;margin:0}
+.lockup .lk{display:flex;align-items:center;gap:10px;color:var(--amber-text);text-decoration:none}
+.lockup .lk .i{width:28px;height:28px;color:var(--logo)}.lockup .lk b{font:600 24px/1 var(--serif)}
+.lockup .tg{display:block;font:500 13px/1.3 var(--sans);color:var(--muted)}
+
+@media (max-width:639px){.brand .tg{font-size:11px}}
+.sitefoot .prov{margin:0;font:400 19px/1.3 "Gochi Hand","Bradley Hand","Segoe Print",cursive;color:var(--text)}
+.sitefoot .prov a{color:var(--amber-text);text-underline-offset:3px;margin-left:6px;white-space:nowrap}

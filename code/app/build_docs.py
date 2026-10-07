@@ -66,6 +66,56 @@ def build():
 
 TEMPLATE = (Path(__file__).resolve().parent / "docs_template.html").read_text(encoding="utf-8") if (Path(__file__).resolve().parent / "docs_template.html").is_file() else ""
 
+LOG_SRC = ROOT / "BUILD_LOG.md"
+LOG_OUT = Path(__file__).resolve().parent / "static" / "build-log.html"
+# anything that looks like a secret, a personal address or a phone number stops the build, and is reported
+LEAKS = {"email": re.compile(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"), "phone": re.compile(r"\(?\b\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}\b"),
+         "key assignment": re.compile(r"\b(?:GLOO|JEV|YVP)_[A-Z_]*(?:KEY|TOKEN)\s*=\s*\S+"), "sk key": re.compile(r"\bsk-[A-Za-z0-9]{10,}"),
+         "bearer": re.compile(r"Bearer\s+[A-Za-z0-9._-]{10,}"), "40-char hex": re.compile(r"\b[0-9a-f]{40}\b")}
+ALLOWED_LEAKS = {"x@invented.org"}   # an invented example address in an entry about test data
+
+
+def scan_log(text):
+    hits = []
+    for name, rx in LEAKS.items():
+        for m in rx.finditer(text):
+            if m.group(0) not in ALLOWED_LEAKS:
+                hits.append((name, m.group(0)[:40]))
+    return hits
+
+
+def build_log():
+    text = LOG_SRC.read_text(encoding="utf-8")
+    hits = scan_log(text)
+    if hits:
+        raise SystemExit(f"BUILD_LOG.md looks like it holds a secret or personal data; not published: {hits[:5]}")
+    parts = re.split(r"(?m)^## (\d+)\. (.+)$", text)
+    entries = []
+    for i in range(1, len(parts), 3):
+        num, title, body = int(parts[i]), parts[i + 1].strip(), parts[i + 2]
+        html_body = markdown.markdown(body.strip(), extensions=["tables", "fenced_code", "sane_lists"])
+        html_body = html_body.replace("<table>", '<div class="tw" tabindex="0" role="region" aria-label="Table, scrolls sideways if needed"><table>').replace("</table>", "</table></div>").replace("<pre>", '<pre tabindex="0">')
+        m = re.match(r"(\d{4}-\d{2}-\d{2}(?: \d{2}:\d{2})?(?: [A-Z]{3})?)\s+\u2014\s+(.*)$", title)
+        when, what = (m.group(1), m.group(2)) if m else ("", title)
+        entries.append((num, when, what, html_body))
+    entries.sort(key=lambda e: -e[0])
+    seen = {}
+    ids = []
+    for n, *_ in entries:               # BUILD_LOG.md can hold two entries with one number (parallel edits): keep every id unique
+        seen[n] = seen.get(n, 0) + 1
+        ids.append(f"e{n}" if seen[n] == 1 else f"e{n}-{seen[n]}")
+    items = "".join(
+        f'<details class="ent" id="{ids[i]}"><summary><span class="num mono">#{n}</span><span class="when mono">{html.escape(w)}</span><span class="what">{html.escape(t)}</span></summary><div class="eb">{b}</div></details>\n'
+        for i, (n, w, t, b) in enumerate(entries))
+    first = next((e for e in entries if e[0] == 1), None)
+    tpl = (Path(__file__).resolve().parent / "log_template.html").read_text(encoding="utf-8")
+    page = tpl.replace("@@ENTRIES@@", items).replace("@@COUNT@@", str(len(entries))).replace("@@FIRST@@", html.escape(first[1] if first else ""))
+    LOG_OUT.write_text(page, encoding="utf-8")
+    return len(page), len(entries)
+
+
 if __name__ == "__main__":
     n, t = build()
     print(f"wrote {OUT} ({n} bytes, {t} sections)")
+    n, e = build_log()
+    print(f"wrote {LOG_OUT} ({n} bytes, {e} entries)")

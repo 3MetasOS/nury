@@ -4,12 +4,11 @@
 (function () {
   const IC = (id, cls) => `<svg class="i${cls ? " " + cls : ""}" aria-hidden="true" focusable="false"><use href="/icons.svg#${id}"/></svg>`;
   const root = document.documentElement;
-  try { root.dataset.notes = localStorage.getItem("nury-notes") === "off" ? "off" : "on"; } catch (e) { root.dataset.notes = "on"; }
 
   const header = `
 <a class="skip" href="#main">Skip to content</a>
 <header class="top" data-shell="header"><div class="wrap">
-  <a class="brand" href="/#/" aria-label="Nury, home">${IC("i-mark")}<b>Nury</b><small>An AI Crisis Response Agent</small></a>
+  <a class="brand" href="/#/" aria-label="Nury, An AI Crisis Response Agent, home"><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></a>
   <nav class="tabs" aria-label="Main">
     <a href="/#/" data-nav="home">${IC("i-lantern")}<span>Home</span></a>
     <a href="/#/cases" data-nav="cases">${IC("i-cases")}<span>Cases</span></a>
@@ -22,13 +21,14 @@
   // The footer is the same component on every page. The three pages for judges and reviewers live here, not in the header.
   const footer = `
 <footer class="sitefoot" data-shell="footer"><div class="wrap">
+  <div class="lockup" data-lockup><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>
   <p class="fl mono">For judges and reviewers</p>
   <nav class="fnav" aria-label="For judges and reviewers">
     <a href="/how-it-was-built" data-nav="how">How this was built</a>
     <a href="/observability" data-nav="ops">Observability</a>
     <a href="/self-improvement" data-nav="improve">Self-improvement</a>
   </nav>
-  <div class="fr"><button class="linkbtn" id="notes-toggle" type="button" aria-pressed="false"></button></div>
+  <p class="prov">Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. <a href="/build-log">See the build log</a></p>
   <p class="fine">Nury is an AI assistant. It is not a lawyer, doctor, pastor, counselor or therapist. Nury never sends anything. You do.</p>
 </div></footer>`;
 
@@ -58,29 +58,16 @@
     return n;
   }
   // Any element with data-note="text" gets one note after it (data-note-at="before" puts it before, "in" puts it inside).
-  // data-arrow = up | down | left | right (where the arrow points), data-rot = degrees, data-note-phone="skip" hides it on a phone.
+  // data-arrow = up | down | left | right (where the arrow points), data-rot = degrees. One note, one text, at every width.
   function notes(scope) {
     (scope || document).querySelectorAll("[data-note]").forEach(el => {
       if (el.dataset.noted) return;
       el.dataset.noted = "1";
       const n = noteEl(el.dataset.note, el.dataset.arrow || "up", el.dataset.rot || "-1.5");
-      if (el.dataset.notePhone === "skip") n.classList.add("no-phone");
       if (el.dataset.noteAt === "in") el.appendChild(n);
       else if (el.dataset.noteAt === "before") el.parentNode.insertBefore(n, el); else el.parentNode.insertBefore(n, el.nextSibling);
     });
   }
-  function paintNotes() {
-    const off = root.dataset.notes === "off", t = document.getElementById("notes-toggle");
-    if (!t) return;
-    t.setAttribute("aria-pressed", String(off));
-    t.textContent = off ? "Show the hand-written notes" : "Hide the hand-written notes";
-  }
-  function toggleNotes() {
-    root.dataset.notes = root.dataset.notes === "off" ? "on" : "off";
-    try { localStorage.setItem("nury-notes", root.dataset.notes); } catch (e) {}
-    paintNotes();
-  }
-
   function setActive(name) {
     document.querySelectorAll("[data-shell] [data-nav]").forEach(a => {
       if (a.dataset.nav === name) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
@@ -92,8 +79,7 @@
     document.body.insertAdjacentHTML("beforeend", footer);
     const fn = document.querySelector(".sitefoot .fl");
     fn.dataset.note = "psst, for judges"; fn.dataset.arrow = "down"; fn.dataset.rot = "-2";
-    document.getElementById("notes-toggle").onclick = toggleNotes;
-    paintNotes(); notes(); setActive(document.body.dataset.nav || (window.__navNow || ""));
+    notes(); setActive(document.body.dataset.nav || (window.__navNow || ""));
   });
 
   // The consent note grows a fifth sentence only when feedback capture is on (it is then true). Same text on every page.
@@ -101,5 +87,5 @@
     if (!f || !f.feedback || !f.consent_sentence) return;
     document.querySelectorAll("[data-consent]").forEach(n => { if (!n.dataset.fb) { n.dataset.fb = "1"; n.textContent = n.textContent.trim() + " " + f.consent_sentence; } });
   }).catch(() => {});
-  window.NuryShell = { setActive, setTheme, paint, notes, toggleNotes };
+  window.NuryShell = { setActive, setTheme, paint, notes, lockup: () => `<div class="lockup" data-lockup><span class="lk">${IC("i-mark")}<b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>` };
 })();

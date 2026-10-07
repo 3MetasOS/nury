@@ -74,12 +74,14 @@ td:first-child code{white-space:nowrap}
 <main id="main" class="nv">
   <div class="doc">
     <div class="hero-doc">
-      <h1 id="top" tabindex="-1">How Nury was built</h1>
+      <div class="lockup" data-lockup><span class="lk"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-mark"/></svg><b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>
+      <h1 style="margin-top:18px" id="top" tabindex="-1">How Nury was built</h1>
       <p class="consent" data-consent>Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.</p>
     </div>
     <details class="toc" id="toc"><summary>Contents</summary><nav aria-label="On this page"><ol><li><a href="#1-what-nury-is-and-how-a-run-works">1. What Nury is and how a run works</a></li><li><a href="#2-how-the-engine-works">2. How the engine works</a></li><li><a href="#3-the-evaluation-system">3. The evaluation system</a></li><li><a href="#4-the-rules">4. The rules</a></li><li><a href="#5-how-people-add-rules">5. How people add rules</a></li><li><a href="#6-the-workflows-playbooks">6. The workflows (playbooks)</a></li><li><a href="#7-how-people-add-a-workflow">7. How people add a workflow</a></li><li><a href="#8-skills-sources-scripture-privacy-and-the-case-file">8. Skills, sources, Scripture, privacy and the case file</a></li><li><a href="#9-from-hackathon-to-real-product">9. From hackathon to real product</a></li><li><a href="#honest-limits-in-one-place">Honest limits, in one place</a></li></ol></nav></details>
     <article id="doc">
 
+<p>Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log. The planning notes and a small scripted scaffold existed before the event and are kept in <code>documents/prework</code> as reference. The first commit of the Nury repository is 2026-10-06 19:36 MDT, and everything in <code>code/</code> was written during the event.</p>
 <p>Nury is An AI Crisis Response Agent. This page is the technical documentation: how it works, how it is checked, how people add rules and crises, and what has to happen before it is a real product.</p>
 <p>Written 2026-10-07 by hack-ninja for the app route <code>/how-it-was-built</code>. Sources: <code>documents/FEATURES.md</code>, <code>documents/TECH_CLAIMS.md</code>, <code>documents/ARCHITECTURE.md</code>, <code>documents/product/ENGINE_WALKTHROUGH.md</code>, BUILD_LOG, and the code at commit <code>4cda91d</code> plus the uncommitted working tree. Every statement below was checked against a file in the repo, and the file is named.</p>
 <p><strong>How to read the status labels.</strong></p>
@@ -698,6 +700,7 @@ td:first-child code{white-space:nowrap}
 <li>No send path.</li>
 <li>Hospital adds twelve more banned patterns in <code>playbooks/hospital/playbook.json</code>: no prognosis, no diagnosis guess, no medical advice, no advice on ending care, no promised healing. These are data, so a playbook can add its own.</li>
 </ul>
+<p><strong>Plain-language rules in the family-facing prompts.</strong> The eight prompts a family reads (rights brief, attorney resources, checklist and pastoral message for detention; information, resources, checklist and pastoral message for hospital) carry plain-language rules: short sentences, a 6th to 8th grade reading level, the verb first, the key fact first, and Spanish written plainly in its own right, not word for word from English. The guard lines, the checks and triage did not change. <span class="st st-built-live">BUILT, live</span> (commit <code>8a28a18</code>). The engine also records a reading-level number for each family stage in the audit log (Flesch-Kincaid for English, the INFLESZ scale for Spanish). That number is advisory: it never rejects a draft. Before-and-after samples are in <code>documents/product/PLAIN_LANGUAGE_SAMPLES.md</code>. The limits: one sample per scenario, not a rate; the earlier run is not a paired comparison; the formula is a tripwire, not proof that a family understood; no native Spanish speaker has read the Spanish. <code>code/nury/readability.py</code>, <code>documents/product/readability_check.py</code>.</p>
 <p><strong>Data rules.</strong> Plain settings in a playbook's JSON: banned patterns (<code>extra_banned</code>), required labels, required headings, word limits, the pattern a stage must end with. Section 5 shows where each one lives.</p>
 <p><strong>Named checks.</strong> Functions in code that a stage lists by name. The registry holds <strong>20</strong>, and the same 20 were in the scored build. Each stage applies the ones listed for it, plus the safety floor. Six of them were added last: three about Scripture and three added after the red team's findings. An earlier version of this page said "14"; that figure came from an older build.</p>
 <p>The list below is read from the app's registry when this page loads. It shows each check's name, a plain explanation, and which stages use it.</p>
@@ -1185,6 +1188,7 @@ td:first-child code{white-space:nowrap}
 <li>The test-time Jev judges are not independent of the run-time gate.</li>
 <li>The effect of the skills is not measured.</li>
 <li>The tone score did not rise after the promises fix.</li>
+<li>The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood, and the Spanish has not been read by a native speaker.</li>
 <li>No real pastor has used Nury. A native Spanish speaker has not scored the Spanish.</li>
 <li>There is no sign-in and no encryption. Nury is a demo on synthetic families, not a service for real ones.</li>
 </ul>

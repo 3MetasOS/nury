@@ -9,6 +9,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
 <link rel="stylesheet" href="/shell.css">
+<link rel="stylesheet" href="/final.css">
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 var(--sans);-webkit-text-size-adjust:100%}
@@ -181,8 +182,8 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .linkbtn{background:none;border:0;padding:0;min-height:48px;display:inline-flex;align-items:center;gap:8px;color:var(--amber-text);font:600 15px var(--sans);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .judges{display:flex;flex-wrap:wrap;align-items:center;gap:2px 20px;margin-top:6px}
 .judges a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);font:500 14px var(--sans);text-decoration:underline;text-underline-offset:3px}.judges a:hover{color:var(--amber-text)}
-.gnotes{display:grid;grid-template-columns:1fr;gap:0;margin:6px 0 -2px}
-@media (min-width:640px){.gnotes{grid-template-columns:repeat(3,1fr);gap:0 12px}.gnotes .hnote{margin-top:2px}}
+.gnotes{display:grid;grid-template-columns:1fr;gap:0;margin:6px 0 10px}
+
 .safety{margin-top:14px;font-size:14px;color:var(--muted)}
 /* area bands */
 .band{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:20px;padding:20px;margin-bottom:16px;display:grid;gap:8px}
@@ -191,7 +192,7 @@ body.task main{padding-bottom:calc(32px + env(safe-area-inset-bottom))}
 .band.cases{background:repeating-linear-gradient(transparent 0 31px,var(--line) 31px 32px),var(--surface)}
 .band.network{background:radial-gradient(var(--line-2) 1px,transparent 1.4px) 0 0/14px 14px,var(--surface)}
 /* cases */
-.tools{display:grid;gap:10px;margin-bottom:12px}
+.ctools{display:grid;gap:10px;margin-bottom:12px}
 .search{position:relative}.search .i{position:absolute;left:14px;top:14px;color:var(--muted);pointer-events:none}
 .search input{width:100%;min-height:52px;padding:0 14px 0 46px;border-radius:14px;border:1px solid var(--line-2);background:var(--surface-2);color:var(--text);font:16px var(--sans)}
 .fgroup{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px;scrollbar-width:thin}
@@ -283,7 +284,8 @@ body:not([data-view="crisis"]) .startbar{display:none}
   <div class="home" id="home">
     <section class="hero" aria-labelledby="h-home">
       <div>
-        <h1 id="h-home" tabindex="-1"></h1>
+        <div class="lockup" data-lockup><span class="lk"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-mark"/></svg><b>Nury</b></span><span class="tg">An AI Crisis Response Agent</span></div>
+        <h1 id="h-home" tabindex="-1" style="margin-top:18px"></h1>
         <p id="hero-sub"></p>
         <button class="cta primary" type="button" id="hero-btn" data-choose aria-haspopup="dialog"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-plus"/></svg>Respond to a crisis</button>
       </div>
@@ -308,7 +310,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
       <section class="start" id="start" aria-labelledby="h-start">
         <div class="sec-h"><h2 id="h-start">A family needs help</h2></div>
         <p class="muted sm" style="margin:-6px 0 12px">Choose what the family is facing. You will see how it works before you begin the response.</p>
-        <div class="pickgrid" id="picks" data-note="pick the one that sounds like your call" data-arrow="up" data-rot="-1.5" data-note-at="before"></div>
+        <div class="pickgrid" id="picks"></div>
         <p class="safety">If anyone is in immediate danger, call 911 first.</p>
       </section>
       <section class="netcard" id="netcard" aria-labelledby="h-net">
@@ -342,7 +344,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <svg class="scene" aria-hidden="true" focusable="false"><use href="/icons.svg#s-cases"/></svg>
   </div>
   <div id="cases-body">
-    <div class="tools">
+    <div class="ctools">
       <div class="search"><svg class="i" aria-hidden="true" focusable="false"><use href="/icons.svg#i-search"/></svg><label class="vh" for="q">Search cases</label><input id="q" type="search" placeholder="Search by family or place" autocomplete="off"></div>
       <div class="flabel" id="fl-c">Crisis</div>
       <div class="fgroup" role="group" aria-labelledby="fl-c" id="f-crisis"></div>
@@ -423,8 +425,6 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <div class="fbrow hidden" id="fb-row" data-note="one tap tells Nury what to fix" data-arrow="up" data-rot="-1.2" role="group" aria-labelledby="fb-l"><span class="fbl" id="fb-l">How is this draft? Optional.</span><span class="fbchips" id="fb-chips"></span><span class="fbm" id="fb-msg" role="status"></span></div>
     <div class="gnotes" aria-hidden="true">
       <span class="gn" data-note="sends nothing; you stay in charge" data-note-at="in" data-arrow="down" data-rot="-1.5"></span>
-      <span class="gn" data-note="change anything, your words win" data-note-at="in" data-arrow="down" data-rot="1" data-note-phone="skip"></span>
-      <span class="gn" data-note="I will handle this myself" data-note-at="in" data-arrow="down" data-rot="-1" data-note-phone="skip"></span>
     </div>
     <div class="row dock" id="g-btns">
       <button class="btn primary" id="b-approve">Approve</button>
@@ -441,18 +441,26 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <button class="btn" id="b-new1">Try again</button></div>
   <details class="card"><summary>Audit log</summary><div class="log" id="log"></div></details>
 </section>
-<section id="v-pkg" class="hidden narrow">
-  <div class="bar">
-    <p class="note"><b>Package ready.</b> Nury never sends anything. You do.</p>
-    <div class="row two"><button class="btn primary" id="b-copyall">Copy all</button><button class="btn" id="b-download">Download</button></div>
+<section id="v-pkg" class="hidden pkgpage">
+  <article id="final" class="final" aria-label="The package for the family">
+    <div id="final-head"></div>
+    <div class="fp-actions" id="fp-actions">
+      <button class="btn primary" id="b-copyall">Copy all</button>
+      <button class="btn" id="b-download">Download</button>
+      <button class="btn" id="b-print">Print family copy</button>
+      <button class="btn" id="b-save">Save to case file</button>
+    </div>
+    <div id="final-body"></div>
+  </article>
+  <div class="card"><div class="saved hidden" id="saved" role="status"></div>
+    <p class="note" id="save-err" style="margin:0"></p></div>
+  <div id="pkg-extra" class="fp-more">
+    <details class="card"><summary>Case summary for you (not for the family)</summary><div id="pastor-sum"></div></details>
+    <div class="card hidden" id="map-card"><h2>Next steps map</h2><img class="mapimg" id="map-img" alt="Next steps map: tonight, this week, questions still open, who to call"></div>
+    <details class="card"><summary>Every stage as approved</summary><div id="pkg"></div></details>
+    <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
+    <button class="btn" id="b-new2">New case</button>
   </div>
-  <div class="card"><button class="btn" id="b-save" style="min-height:56px">Save to case file</button>
-    <div class="saved hidden" id="saved" role="status"></div>
-    <p class="note" id="save-err" style="margin:8px 0 0"></p></div>
-  <div class="card hidden" id="map-card"><h2>Next steps</h2><img class="mapimg" id="map-img" alt="Next steps map: tonight, this week, questions still open, who to call"></div>
-  <div id="pkg"></div>
-  <button class="btn" id="b-new2">New case</button>
-  <details class="card"><summary>Audit log</summary><div class="log" id="log2"></div></details>
 </section>
 <section id="v-case" class="hidden narrow">
   <button class="back" id="back-case">&larr; Cases</button>
@@ -506,6 +514,7 @@ body:not([data-view="crisis"]) .startbar{display:none}
     <button class="cta block" type="button" id="leave-go">Leave without saving</button></div>
 </dialog>
 
+<script src="/final.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const LANG={es:"Spanish",en:"English",pt:"Portuguese",fr:"French"};
@@ -831,6 +840,8 @@ async function poll(){
   $("elapsed").textContent=halted0||P.phase==="idle"?"":(P.phase==="ready"?`took ${P.elapsed_s} s`:`${P.elapsed_s} s`);
   $("strip").classList.toggle("hidden",P.phase==="idle"&&!halted0);
   if(s.done&&!s.halted&&!s.error){clearInterval(timer);
+    NuryFinal.render(s);document.getElementById("final").dataset.fam=(s.language&&s.language!=="en")?"1":"";
+    {const tri=s.stages.find(x=>x.id==="triage");$("pastor-sum").replaceChildren();if(tri){const d=document.createElement("div");d.className="plain";fmt(d,tri.final);$("pastor-sum").append(d)}}
     $("pkg").replaceChildren(...s.stages.map(x=>{const c=document.createElement("div");c.className="card";
       const h=document.createElement("h2");h.textContent=x.title;
       const p=document.createElement("div");p.className=x.id==="triage"?"plain":"family";fmt(p,x.final);const d1=document.createElement("p");d1.className="disc1";d1.textContent=oneLine(x.disclaimer);
@@ -838,9 +849,10 @@ async function poll(){
       const b=document.createElement("button");b.className="btn";b.textContent="Copy";b.style.marginTop="12px";
       b.onclick=()=>navigator.clipboard.writeText(x.final+"\n\n"+x.disclaimer).then(()=>{b.textContent="Copied";setTimeout(()=>b.textContent="Copy",1500)});
       c.append(h,d1,p,d,b);return c}));
-    const whole=s.stages.map(x=>x.title+"\n\n"+x.final+"\n\n"+x.disclaimer).join("\n\n----------\n\n");
+    const whole=NuryFinal.text(s);
     $("b-copyall").onclick=()=>navigator.clipboard.writeText(whole).then(()=>{$("b-copyall").textContent="Copied";setTimeout(()=>$("b-copyall").textContent="Copy all",1500)});
-    $("b-download").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([whole],{type:"text/plain;charset=utf-8"}));a.download="nury-package.txt";a.click();URL.revokeObjectURL(a.href)};
+    $("b-download").onclick=()=>NuryFinal.download("nury-package.txt",whole);
+    $("b-print").onclick=()=>window.print();
     $("map-card").classList.toggle("hidden",!s.map_svg);if(s.map_svg)$("map-img").src=svgUrl(s.map_svg);
     const sv=$("saved"),er=$("save-err"),btn=$("b-save");sv.classList.add("hidden");er.textContent="";er.removeAttribute("role");btn.disabled=false;btn.textContent="Save to case file";
     btn.onclick=async()=>{

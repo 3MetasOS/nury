@@ -41,7 +41,7 @@ def test_no_storage_location_wording_in_user_facing_text():
     """The app will run on a server. It must not say where data is kept ('on this computer', 'stays here', 'local', 'on your device')."""
     terms = re.compile(r"this computer|stays? here|stays? on (this|your)|\blocal(ly)?\b|your device|this device|your computer|never leaves|on-?device", re.I)
     for f in STATIC.glob("*.html"):
-        if f.name == "how-it-was-built.html":      # technical documentation: held to the narrower rule below
+        if f.name in ("how-it-was-built.html", "build-log.html"):      # records and documentation: held to the narrower rule below
             continue
         s = re.sub(r"<style>.*?</style>", "", f.read_text(encoding="utf-8"), flags=re.S)
         hits = [l.strip()[:80] for l in s.splitlines() if terms.search(l)]
@@ -180,8 +180,9 @@ def test_built_page_is_current_with_its_source():
 
 def test_how_it_was_built_has_no_computer_or_device_wording():
     """The documentation may say 'a local .env file' (a file name). It may not say where the pastor's data sits."""
-    s = re.sub(r"<style>.*?</style>", "", (STATIC / "how-it-was-built.html").read_text(encoding="utf-8"), flags=re.S)
-    assert not re.search(r"this computer|your computer|local computer|your device|this device|on-?device|stays? on (this|your)", s, re.I)
+    for name in ("how-it-was-built.html",):      # the build log is a record and quotes the banned words when it describes their removal
+        s = re.sub(r"<style>.*?</style>", "", (STATIC / name).read_text(encoding="utf-8"), flags=re.S)
+        assert not re.search(r"this computer|your computer|local computer|your device|this device|on-?device|stays? on (this|your)", s, re.I), name
 
 
 def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
@@ -194,12 +195,13 @@ def test_home_strip_does_not_type_the_check_count_or_the_old_jev_wording():
 def test_hand_written_notes_are_decoration_only_and_self_hosted():
     js = (STATIC / "shell.js").read_text(encoding="utf-8")
     assert 'setAttribute("aria-hidden", "true")' in js, "notes are aria-hidden: the real label carries the same information"
-    assert "nury-notes" in js and "notes-toggle" in js, "a Hide notes toggle, remembered in the browser"
+    assert "nury-notes" not in js and "notes-toggle" not in js and "toggleNotes" not in js, "no Hide notes control: the notes are always shown"
+    assert "no-phone" not in js and "data-note-phone" not in (STATIC / "index.html").read_text(encoding="utf-8"), "one note, one text: no phone-only hidden variants"
     css = (STATIC / "shell.css").read_text(encoding="utf-8")
     assert "/fonts/GochiHand-400.woff2" in css and (STATIC / "fonts" / "GochiHand-400.woff2").is_file(), "Gochi Hand is self-hosted"
     assert "googleapis" not in css
     assert "@media (max-width:639px){.hnote" in css, "on a phone a note becomes a small caption (no rotation, no arrow)"
-    assert 'html[data-notes="off"] .hnote{display:none}' in css
+    assert "data-notes" not in css and ".no-phone" not in css
     credits = (ROOT.parents[0] / "branding" / "IMAGES.md").read_text(encoding="utf-8") if False else ""
     page_notes = re.findall(r'data-note="([^"]+)"', (STATIC / "index.html").read_text(encoding="utf-8") + (STATIC / "network.html").read_text(encoding="utf-8"))
     assert len(page_notes) >= 6 and all(len(n) <= 60 for n in page_notes), "short notes only"
@@ -209,3 +211,38 @@ def test_every_shell_css_brace_is_closed():
     """A dangling @media once swallowed the whole footer and note styles."""
     css = (STATIC / "shell.css").read_text(encoding="utf-8")
     assert css.count("{") == css.count("}")
+
+
+def test_header_carries_the_tagline_under_the_logo_and_the_footer_the_provenance_line():
+    js = (STATIC / "shell.js").read_text(encoding="utf-8")
+    head = js.split("const header = `")[1].split("`;")[0]
+    assert head.index('class="lk"') < head.index('class="tg"') and "An AI Crisis Response Agent" in head, "the tagline is in the header, after (below) the logo"
+    css = (STATIC / "shell.css").read_text(encoding="utf-8")
+    assert ".brand{display:grid" in css and ".brand .tg{display:block;white-space:nowrap" in css, "stacked, never wrapping, never beside the logo"
+    foot = js.split("const footer = `")[1].split("`;")[0]
+    assert "Built in Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026." in foot and 'href="/build-log"' in foot
+    assert foot.index('class="prov"') < foot.index('class="fine"'), "the provenance line sits above the disclaimer"
+
+
+def test_build_log_page_is_static_scanned_and_in_the_shell():
+    import sys
+    sys.path.insert(0, str(ROOT / "code"))
+    from app import build_docs
+    page = (STATIC / "build-log.html").read_text(encoding="utf-8")
+    assert '<script src="/shell.js"></script>' in page and '<link rel="stylesheet" href="/shell.css">' in page and "<header" not in page
+    assert "Source:" in page and "BUILD_LOG.md in the repository" in page and "2026-10-06 19:36 MDT" in page
+    assert page.count('<details class="ent"') >= 100, "every entry is a collapsible block"
+    nums = [int(n) for n in re.findall(r'<span class="num mono">#(\d+)</span>', page)]
+    assert nums == sorted(nums, reverse=True), "newest on top"
+    text = re.sub(r"<[^>]+>", " ", page)
+    assert build_docs.scan_log(text) == [], "no key, token, email or phone is published"
+    assert "fetch(" not in page and "/BUILD_LOG" not in page.replace("BUILD_LOG.md in the repository", ""), "static: nothing is read from the repository at run time"
+
+
+def test_the_build_log_scan_catches_secrets_and_personal_data():
+    import sys
+    sys.path.insert(0, str(ROOT / "code"))
+    from app import build_docs
+    for bad in ("call 303-555-0101 now", "mail ana@example.com", "GLOO_API_KEY=abc123xyz", "token sk-abcdefghij1234", "Authorization: Bearer abcdefghij12345"):
+        assert build_docs.scan_log(bad), bad
+    assert build_docs.scan_log("an invented address x@invented.org is allowed") == []
