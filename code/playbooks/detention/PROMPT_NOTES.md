@@ -15,7 +15,8 @@ The v1 prompts came from the prework reference (`documents/prework/crisis_agent/
 | 5 | Disclaimer never said Nury is an AI assistant. | all | Disclaimer rewritten (EN and ES): "Nury is an AI assistant, not a lawyer, pastor, counselor, or therapist." The loader refuses a playbook disclaimer that drops this wording. |
 | 6 | Links and phone numbers were only checked on two stages. | all | Floor check on every stage: a link or phone number must appear in the vetted sources or in approved earlier text. |
 | 7 | An edited rights brief did not reach stages 3-5. | attorney, checklist, pastoral | Stage `deps` now include `rights`. |
+| 9 | The triage "missing facts" line gave an example that named an agency ("for example, ICE"). We decided no agency name appears on screen. | triage | Triage prompt: say "immigration officers", never name an agency, even if the pastor did. The `no_agency_names` check runs on triage, checklist, and pastoral. It stays off rights and attorney, whose vetted sources may name agencies. |
 | 8 | Checks too strict: translated attorney names and "---" lines caused 3 false escalations. | attorney, rights | Attorney check matches vetted links, not names. Bullet check ignores separators. |
 
-## Model behavior worth knowing
-The model refused to write legal advice when asked to. We could not make it fail on demand. The demo and the eval therefore use fault injection (a forced unsafe suffix on the draft), which is deterministic and costs no extra Gloo call.
+## Model behavior
+Asked to write legal advice, the model refused, so we could not make it fail on demand. The demo and the eval use fault injection instead: a forced unsafe suffix on the draft. It is deterministic and costs no extra Gloo call.
