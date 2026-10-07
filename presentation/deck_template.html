@@ -52,17 +52,27 @@ body.show-gated li[data-gated]::before{display:inline}
 :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
 ::selection{background:var(--amber);color:var(--paper)}
 @media (max-width:760px){.two,.cols{grid-template-columns:1fr}.photo{max-height:34vh}.slide{padding-bottom:3vh}.foot{position:static;padding:10px 6.5vw 18px}.ill{max-height:200px}}
+.center{align-items:center;text-align:center;justify-content:center}
+.lantern{width:clamp(110px,16vw,190px)}.lantern svg{width:100%;height:auto;display:block}
+.lantern.small{width:clamp(60px,8vw,96px)}
+.lantern .flame{opacity:0;animation:light 1.6s .5s ease-out forwards}
+.lantern .body{transition:none;animation:warm 1.6s .5s ease-out forwards}
+@keyframes light{to{opacity:1}} @keyframes warm{from{stroke:#a39a86}to{stroke:#b8680f}}
+@media (prefers-reduced-motion:reduce){.lantern .flame{opacity:1;animation:none}.lantern .body{animation:none}}
+.photo.wide{max-height:24vh}
+.memorial{background:var(--paper);gap:3vh}.memorial .mtext{max-width:46ch;display:grid;gap:1.6vh}
+.memorial .mtext p{font-family:var(--serif);font-size:clamp(19px,2.35vw,32px);line-height:1.35;font-weight:400}
+body.nofoot .foot{visibility:hidden}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
 <!-- ============ MAIN TALK (3:00). data-cut="90" stays in the 90-second cut ============ -->
-<section class="slide on" data-cut="90" data-part="talk">
-<div class="two"><div class="col">
-<div class="brandrow">{{MARK}}<h1>Nury</h1></div>
-<p class="tagline">The crisis-response agent for solo pastors.</p>
-<p class="muted">Juan Pelaez · 3Metas · Gloo AI Hackathon · Track 1</p></div>
-<img class="photo" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div>
-<aside class="notes">0:00. Say your name and the line. Nothing else. The porch light is the whole story: someone left it on. 90-second cut: keep this slide, 5 seconds.</aside></section>
+<section class="slide on center" data-cut="90" data-part="talk">
+<div class="lantern">{{MARKLIT}}</div>
+<h1>This is Nury.</h1>
+<p class="tagline">the crisis-response agent for solo pastors</p>
+<p class="muted">Juan Pelaez · 3Metas · Gloo AI Hackathon · Track 1</p>
+<aside class="notes">0:00 to 0:06. The lantern lights, then the line. Say: "This is Nury." Nothing else. 90-second cut: keep, 5 seconds. The brand line is locked: do not reword it.</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
 <h2><span class="amber">2:07 AM.</span> A solo pastor's phone rings.</h2>
@@ -71,7 +81,7 @@ body.show-gated li[data-gated]::before{display:inline}
 <li>The pastor has no staff and no lawyer on the line.</li>
 <li>They have a phone and a few minutes.</li></ul>
 <p class="muted">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></div>
-<div class="col"><img class="ill" src="images/phone-night.svg" alt="A phone lit in the dark" width="320" height="220"><img class="ill" src="images/shoes-door.svg" alt="Children's shoes by a door with light under it" width="320" height="220"></div></div>
+<div class="col"><img class="ill" src="images/phone-night.svg" alt="A phone lit in the dark" width="320" height="220"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
 <aside class="notes">0:10 to 0:30. The user is a solo pastor: no staff, no lawyer on the line, a panicked call on a phone, Sunday afternoon or 2 AM. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md).</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
@@ -158,6 +168,17 @@ body.show-gated li[data-gated]::before{display:inline}
 <img class="photo" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div>
 <aside class="notes">Close. The next call will come. Nury is there when the pastor picks up. 90-second cut ends here.</aside></section>
 
+
+<section class="slide center memorial nofoot" data-part="talk" data-gated="memorial">
+<div class="lantern small">{{MARKDEEP}}</div>
+<div class="mtext">
+<p>Nury is named for my aunt, Nury.</p>
+<p>For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.</p>
+<p>She never married.</p>
+<p>She passed away a month ago.</p>
+<p>This is for her.</p></div>
+<aside class="notes">Juan's words, unedited. Gated until Juan approves the text in writing. Juan says it himself, slowly: about 20 seconds with pauses. Nothing else is on this slide. Still open from Juan: her full name for "In memory of", years or omit, a photo only if he provides one.</aside></section>
+
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
 <section class="slide" data-part="backup">
 <span class="pill">BACKUP</span>
@@ -240,7 +261,7 @@ const all=[...document.querySelectorAll('.slide')];let i=0;
 const vis=()=>all.filter(s=>document.body.classList.contains('show-gated')||!s.hasAttribute('data-gated'));
 function go(k){const S=vis();i=Math.max(0,Math.min(S.length-1,k));all.forEach(s=>s.classList.remove('on'));const s=S[i];s.classList.add('on');
  document.getElementById('n').textContent=(i+1)+' / '+S.length;document.getElementById('part').textContent=s.dataset.part==='backup'?'  ·  backup':'';
- const a=s.querySelector('aside.notes');document.getElementById('notes').textContent=a?a.textContent:'';
+ document.body.classList.toggle('nofoot',s.classList.contains('nofoot'));const a=s.querySelector('aside.notes');document.getElementById('notes').textContent=a?a.textContent:'';
  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
 function start(){const h=parseInt((location.hash||'').slice(1));go(isNaN(h)?0:h-1)}
 addEventListener('keydown',e=>{const k=e.key;
