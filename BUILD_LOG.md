@@ -490,3 +490,7 @@ Timestamped build record for the judges. One entry per milestone: what was built
 
 - Three treatments from hack-ninja (A "From night to light", B "His hands", C "The clock"), sourced craft research (NPR Story Spine, Pixar rules, YC Demo Day guide, Problem-Agitate-Solve, a hackathon video guide, sound design, Kuleshov effect, Remotion docs), 25 storyboard frames, each summing to exactly 90 seconds. hack-video's feasibility in their own hours: A 8 to 10, B 14 to 20 (highest risk), C 6 to 8. Both agents recommended A.
 - Decision: A, borrowing one plain line from C (the clock tick as the sound of the night; no invented times). Tension comes from time and consequence, never from showing a family in distress. The real app run stays clear in every frame. hack-video is the single builder. The deck follows the same arc.
+
+## 76. 2026-10-06 22:53 MDT — Immigration stays the flagship (Juan's decision)
+
+- Decision (Juan): the immigration case stays the flagship, whatever the risk. Families facing enforcement go to their churches for help, and a platform exists to be used for that. We keep the rules: pastoral care and legal information with an attorney referral, never advocacy; no agency names on screen; humanitarian framing; synthetic families only; tension from time and consequence, never from showing a family in distress. The hospital playbook stays as the second live track.
