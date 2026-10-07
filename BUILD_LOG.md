@@ -479,3 +479,9 @@ Timestamped build record for the judges. One entry per milestone: what was built
 ## 73. 2026-10-06 22:44 MDT — Target user confirmed (Juan)
 
 - After questioning whether the solo pastor is really the target, Juan chose: the solo pastor stays the hero. The brand line is unchanged ("the crisis-response agent for solo pastors"); the film's persona is one pastor, alone, at 2:07 AM; one honest line at the end of the deck says church teams can use it too, as next. No team imagery and no claim of roles or shared cases.
+
+## 74. 2026-10-06 22:45 MDT — Full creative brief; who Gloo's customers are; feature list requested
+
+- Juan's full brief for the 90 seconds: say "This is Nury", a crisis-management tool; name the many crises a pastor carries; follow one case (immigration); say when and how Gloo (run time, every draft) and Jev (test time only) are used; explain the evaluation in one beat; land two elements: the agent keeps growing with more case types (playbooks; a second already runs) and the family case is kept on the pastor's own computer and can be reopened later (v2 beside v1); end with the memorial. Honesty rule: never say encrypted or secured; the case files are plain local files.
+- Gloo's customers (`documents/GLOO_CUSTOMERS.md`): more than 140,000 churches, ministry and non-profit leaders; more than 70,000 churches; denominations and networks, recovery centers, parachurch ministries (Compassion International, Cru, FamilyLife, Alpha, MOPS), Wycliffe, American Bible Society. A solo pastor sits squarely inside that audience; "a denomination or network could offer Nury to every small-church pastor" is a true Q and A line. Not found: a count of solo pastors among Gloo's customers; no claim made. The press release says $250,000 in prizes; the official rules we read say $200,000; use the rules.
+- Feature list: hack-jedi writes `documents/FEATURES.md` (built live, built offline, not built).
