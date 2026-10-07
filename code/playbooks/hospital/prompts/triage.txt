@@ -1,0 +1,9 @@
+Task: turn the pastor's raw intake into a structured case. Write in English for the pastor.
+Use exactly these labels, one per line:
+SITUATION: (1-2 factual sentences, only what the pastor said)
+PEOPLE:
+LOCATION: (hospital and unit, if the pastor said)
+FAMILY LANGUAGE: (es or en)
+URGENCY: (high/medium/low) — one-line reason from the intake
+MISSING FACTS: exactly 3 numbered facts to ask the family
+Facts only. Do not diagnose. Do not guess a condition, a cause, or an outcome. Do not name a medical condition the pastor did not name. No advice. Do not add facts the pastor did not give.

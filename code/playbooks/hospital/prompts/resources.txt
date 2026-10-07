@@ -1,0 +1,6 @@
+Task: format the list below as a clean, scannable list in {{lang_name}}. Copy names, phone numbers, and links exactly. Do not add entries, phone numbers, or links.
+Add one line on what to have ready when asking the hospital for help (the patient's full name, the unit or room if known, who is calling).
+Do not recommend a specific hospital, doctor, or provider.
+
+LIST:
+{{vetted_list}}

@@ -1,0 +1,113 @@
+{
+ "status": "pending approval",
+ "drafted": "2026-10-06",
+ "by": "hack-jedi",
+ "sources": [
+  {
+   "id": "hipaa-164-510b",
+   "title": "HIPAA: sharing information with family and friends (45 CFR 164.510(b))",
+   "url": "https://www.law.cornell.edu/cfr/text/45/164.510",
+   "read_via": "Cornell LII copy of the eCFR (hhs.gov blocked automated reads, 403)",
+   "verification": "verbatim",
+   "quotes": [
+    "a family member, other relative, or a close personal friend of the individual ... directly relevant to such person's involvement with the individual's health care or payment.",
+    "(b)(2): obtains the individual's agreement; provides the opportunity to object and the individual does not express an objection; or reasonably infers from the circumstances ... that the individual does not object.",
+    "(b)(3): the covered entity may, in the exercise of professional judgment, determine whether the disclosure is in the best interests of the individual ... directly relevant."
+   ],
+   "uses": [
+    "What the hospital may share with family",
+    "If the patient cannot be asked"
+   ],
+   "phones": []
+  },
+  {
+   "id": "cfr-482-13",
+   "title": "Hospital patient rights: informed decisions, visitation, complaints (42 CFR 482.13)",
+   "url": "https://www.law.cornell.edu/cfr/text/42/482.13",
+   "read_via": "Cornell LII copy of the eCFR (ecfr.gov redirected away)",
+   "verification": "verbatim",
+   "quotes": [
+    "(b)(2): The patient or his or her representative (as allowed under State law) has the right to make informed decisions regarding his or her care. The patient's rights include being informed of his or her health status, being involved in care planning and treatment, and being able to request or refuse treatment.",
+    "(h)(2): ... the right, subject to his or her consent, to receive the visitors whom he or she designates, including, but not limited to, a spouse, a domestic partner ..., another family member, or a friend, and his or her right to withdraw or deny such consent at any time.",
+    "(h)(3): Not restrict, limit, or otherwise deny visitation privileges on the basis of race, color, national origin, religion, sex, gender identity, sexual orientation, or disability.",
+    "(a)(2): The hospital must establish a process for prompt resolution of patient grievances and must inform each patient whom to contact to file a grievance. ... written notice of its decision that contains the name of the hospital contact person, the steps taken on behalf of the patient to investigate the grievance, the results of the grievance process, and the date of completion."
+   ],
+   "uses": [
+    "The patient's right to be informed and to take part",
+    "Visitation",
+    "Complaints",
+    "Resource: hospital complaint contact"
+   ],
+   "phones": []
+  },
+  {
+   "id": "cfr-92-201",
+   "title": "Language access in health programs (45 CFR 92.201)",
+   "url": "https://www.law.cornell.edu/cfr/text/45/92.201",
+   "read_via": "Cornell LII copy of the eCFR",
+   "verification": "verbatim",
+   "quotes": [
+    "(b): Language assistance services ... must be provided free of charge, be accurate and timely, and protect the privacy and the independent decision-making ability of the individual with limited English proficiency.",
+    "(c)(1): a covered entity must offer a qualified interpreter in its health programs and activities.",
+    "(e)(1): must not ... Require an individual with limited English proficiency to provide their own interpreter, or to pay the cost of their own interpreter.",
+    "(e)(3): must not rely on a minor child to interpret ... except as a temporary measure while finding a qualified interpreter in an emergency."
+   ],
+   "uses": [
+    "A free interpreter",
+    "Resource: free qualified interpreter"
+   ],
+   "phones": []
+  },
+  {
+   "id": "988-lifeline",
+   "title": "988 Suicide & Crisis Lifeline",
+   "url": "https://988lifeline.org/",
+   "read_via": "988lifeline.org, read directly",
+   "verification": "verbatim",
+   "quotes": [
+    "Call, text, or chat with a 988 Lifeline counselor for help during difficult moments",
+    "The 988 Lifeline is available 24/7/365",
+    "Your conversations are free and confidential",
+    "Los servicios de texto y chat de 988 Lifeline ya están disponibles en Español"
+   ],
+   "uses": [
+    "Resource: 988"
+   ],
+   "phones": [
+    "988"
+   ]
+  },
+  {
+   "id": "bls-social-workers",
+   "title": "US Bureau of Labor Statistics: Social Workers (healthcare social workers)",
+   "url": "https://www.bls.gov/ooh/community-and-social-service/social-workers.htm",
+   "read_via": "bls.gov, read directly",
+   "verification": "verbatim",
+   "quotes": [
+    "help clients understand their diagnosis and adjust their lifestyle, housing, or healthcare",
+    "help people transition from the hospital to their homes and communities",
+    "provide information about services, such as home healthcare or support groups, to help clients manage their illness or disease"
+   ],
+   "uses": [
+    "Resource: hospital social worker"
+   ],
+   "phones": []
+  },
+  {
+   "id": "apc-chaplains",
+   "title": "Association of Professional Chaplains: Common Qualifications and Competencies for Professional Chaplains",
+   "url": "https://www.apchaplains.org/wp-content/uploads/2022/05/2017-Common-Qualifications-and-Competencies-for-Professional-Chaplains.pdf",
+   "read_via": "Search-result summary only. The PDF would not open as text, and the APC home page has no chaplain description. NOT verified verbatim.",
+   "verification": "search_summary",
+   "quotes": [
+    "(summary, not a quote) Chaplaincy care ... emotional, spiritual, religious, pastoral, ethical, and/or existential care.",
+    "(summary, not a quote) Professional chaplains provide spiritual care that respects diversity and differences including culture, gender, sexual orientation and spiritual/religious practices."
+   ],
+   "uses": [
+    "Resource: hospital chaplaincy"
+   ],
+   "phones": [],
+   "caveat": "Weakest source. Reject it, or approve it knowing the wording was not checked against the page text."
+  }
+ ]
+}

@@ -1,0 +1,173 @@
+[
+  {
+    "id": "triage",
+    "title": "1. Triage",
+    "audience": "pastor",
+    "prompt": "prompts/triage.txt",
+    "input": {
+      "from": "intake"
+    },
+    "deps": [],
+    "sources": [],
+    "checks": [
+      {
+        "name": "required_labels",
+        "labels": [
+          "SITUATION",
+          "PEOPLE",
+          "LOCATION",
+          "FAMILY LANGUAGE",
+          "URGENCY",
+          "MISSING FACTS"
+        ]
+      },
+      {
+        "name": "numbered_after",
+        "marker": "MISSING FACTS",
+        "count": 3
+      }
+    ]
+  },
+  {
+    "id": "info",
+    "title": "2. Family information brief",
+    "audience": "family",
+    "prompt": "prompts/info.txt",
+    "input": {
+      "from": "context",
+      "prefix": "Case summary for context only:\n"
+    },
+    "deps": [
+      "triage"
+    ],
+    "sources": [
+      {
+        "name": "family_info",
+        "file": "family_information.json",
+        "var": "vetted_points",
+        "groups": [
+          {
+            "list": "entries",
+            "line": "- {topic}: {summary_{lang}} (source: {source_short})"
+          }
+        ]
+      }
+    ],
+    "checks": [
+      {
+        "name": "cited_bullets",
+        "source": "family_info",
+        "list": "entries",
+        "field": "source"
+      },
+      {
+        "name": "ends_with_referral",
+        "pattern": "equipo|care team|hospital|enfermer|nurse|doctor|m[eé]dic|trabajador social|social worker",
+        "reason": "must end by urging the family to ask the hospital care team"
+      }
+    ]
+  },
+  {
+    "id": "resources",
+    "title": "3. Hospital resources",
+    "audience": "family",
+    "prompt": "prompts/resources.txt",
+    "input": {
+      "from": "context",
+      "prefix": "Case context:\n"
+    },
+    "deps": [
+      "triage",
+      "info"
+    ],
+    "sources": [
+      {
+        "name": "resources",
+        "file": "hospital_resources.json",
+        "var": "vetted_list",
+        "groups": [
+          {
+            "list": "national",
+            "line": "- {name}: {description} {phone} {url}"
+          },
+          {
+            "list": "local",
+            "line": "- LOCAL (church-vetted): {name} ({area}): {phone} {url}",
+            "empty": "(No church-vetted local entries yet. Say the pastor can add them.)"
+          }
+        ]
+      }
+    ],
+    "checks": [
+      {
+        "name": "vetted_links_present",
+        "source": "resources",
+        "lists": [
+          "national",
+          "local"
+        ],
+        "field": "url"
+      }
+    ]
+  },
+  {
+    "id": "checklist",
+    "title": "4. Family checklist",
+    "audience": "family",
+    "prompt": "prompts/checklist.txt",
+    "input": {
+      "from": "context",
+      "prefix": "Approved context:\n"
+    },
+    "deps": [
+      "triage",
+      "info",
+      "resources"
+    ],
+    "sources": [
+      {
+        "name": "family_info",
+        "file": "family_information.json",
+        "var": "vetted_points",
+        "groups": [
+          {
+            "list": "entries",
+            "line": "- {topic}: {summary_{lang}}"
+          }
+        ]
+      }
+    ],
+    "checks": [
+      {
+        "name": "required_headings",
+        "headings": [
+          "DO TONIGHT",
+          "DO NOT DO",
+          "WHAT TO BRING AND ASK"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "pastoral",
+    "title": "5. Pastoral message",
+    "audience": "family",
+    "prompt": "prompts/pastoral.txt",
+    "input": {
+      "from": "context",
+      "prefix": "Approved context:\n"
+    },
+    "deps": [
+      "triage",
+      "info",
+      "checklist"
+    ],
+    "sources": [],
+    "checks": [
+      {
+        "name": "max_words",
+        "limit": 119
+      }
+    ]
+  }
+]

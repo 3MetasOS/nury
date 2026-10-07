@@ -1,0 +1,46 @@
+{
+ "entries": [
+  {
+   "source_id": "hipaa-164-510b",
+   "source": "HIPAA rule 45 CFR 164.510(b) (law.cornell.edu/cfr/text/45/164.510)",
+   "topic": "What the hospital may share with family",
+   "summary_en": "A hospital may share health information with a family member or close friend who is involved in the patient's care. It may share only what is directly relevant to that person's involvement. If the patient is present and able to decide, the hospital may share when the patient agrees, when the patient has the chance to object and does not, or when the hospital reasonably infers from the circumstances that the patient does not object.",
+   "summary_es": "Un hospital puede compartir información de salud con un familiar o amigo cercano que participa en la atención del paciente. Solo puede compartir lo que sea directamente relevante para esa participación. Si el paciente está presente y puede decidir, el hospital puede compartir cuando el paciente está de acuerdo, cuando tiene la oportunidad de oponerse y no se opone, o cuando el hospital deduce razonablemente de las circunstancias que el paciente no se opone."
+  },
+  {
+   "source_id": "hipaa-164-510b",
+   "source": "HIPAA rule 45 CFR 164.510(b) (law.cornell.edu/cfr/text/45/164.510)",
+   "topic": "If the patient cannot be asked",
+   "summary_en": "If the patient is not present, or cannot agree because of incapacity, the hospital may use its professional judgment to decide whether sharing is in the patient's best interests. It may share only information directly relevant to the person's involvement.",
+   "summary_es": "Si el paciente no está presente, o no puede dar su acuerdo por incapacidad, el hospital puede usar su criterio profesional para decidir si compartir información es lo mejor para el paciente. Solo puede compartir información directamente relevante para la participación de esa persona."
+  },
+  {
+   "source_id": "cfr-482-13",
+   "source": "Hospital patient rights rule 42 CFR 482.13 (law.cornell.edu/cfr/text/42/482.13)",
+   "topic": "The patient's right to be informed and to take part",
+   "summary_en": "The patient, or the patient's representative as state law allows, has the right to make informed decisions about care. This includes being told about the patient's health status, being involved in care planning and treatment, and being able to request or refuse treatment.",
+   "summary_es": "El paciente, o su representante según lo permita la ley estatal, tiene derecho a tomar decisiones informadas sobre su atención. Esto incluye recibir información sobre su estado de salud, participar en la planificación de la atención y el tratamiento, y poder solicitar o rechazar un tratamiento."
+  },
+  {
+   "source_id": "cfr-482-13",
+   "source": "Hospital patient rights rule 42 CFR 482.13 (law.cornell.edu/cfr/text/42/482.13)",
+   "topic": "Visitation",
+   "summary_en": "The hospital must tell each patient, or a support person, about visitation rights, including any clinical restriction on them. The patient may choose which visitors to receive, such as a spouse, a domestic partner, another family member, or a friend, and may withdraw that consent at any time. The hospital may not deny visitation because of race, color, national origin, religion, sex, gender identity, sexual orientation, or disability.",
+   "summary_es": "El hospital debe informar a cada paciente, o a una persona de apoyo, sobre sus derechos de visita, incluida cualquier restricción clínica. El paciente puede elegir qué visitas recibir, como su cónyuge, su pareja, otro familiar o un amigo, y puede retirar ese consentimiento en cualquier momento. El hospital no puede negar visitas por raza, color, origen nacional, religión, sexo, identidad de género, orientación sexual o discapacidad."
+  },
+  {
+   "source_id": "cfr-92-201",
+   "source": "Language access rule 45 CFR 92.201 (law.cornell.edu/cfr/text/45/92.201)",
+   "topic": "A free interpreter",
+   "summary_en": "A covered hospital must offer a qualified interpreter to a person with limited English proficiency. The service must be free of charge, accurate, and timely. The hospital cannot require the person to bring or pay for their own interpreter. It should not rely on a minor child to interpret, except as a temporary measure in an emergency while a qualified interpreter is found. It may use an accompanying adult only as a temporary emergency measure, or when the person specifically asks.",
+   "summary_es": "Un hospital cubierto debe ofrecer un intérprete calificado a una persona con dominio limitado del inglés. El servicio debe ser gratuito, preciso y oportuno. El hospital no puede exigir que la persona traiga o pague a su propio intérprete. No debe depender de un menor para interpretar, salvo como medida temporal en una emergencia mientras se encuentra un intérprete calificado. Puede usar a un adulto acompañante solo como medida temporal en una emergencia, o cuando la persona lo pide de forma específica."
+  },
+  {
+   "source_id": "cfr-482-13",
+   "source": "Hospital patient rights rule 42 CFR 482.13 (law.cornell.edu/cfr/text/42/482.13)",
+   "topic": "Complaints",
+   "summary_en": "A hospital must have a process for prompt resolution of patient complaints, called grievances, and must tell each patient whom to contact to file one. When it resolves a grievance, it must give the patient written notice with the contact person's name, the steps taken, the results, and the date it was finished.",
+   "summary_es": "Un hospital debe tener un proceso para resolver con rapidez las quejas de los pacientes, llamadas reclamos, y debe informar a cada paciente con quién comunicarse para presentar uno. Al resolver un reclamo, debe entregar al paciente un aviso por escrito con el nombre de la persona de contacto, los pasos tomados, los resultados y la fecha de finalización."
+  }
+ ]
+}

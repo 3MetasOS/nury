@@ -1,0 +1,76 @@
+{
+  "id": "hospital",
+  "title": "Hospital emergency",
+  "order": 2,
+  "status": "live",
+  "description": "A family member is in the emergency room or intensive care. The pastor takes the call and needs a case summary, an information brief, hospital resources, a checklist, and a pastoral message.",
+  "languages": [
+    "en",
+    "es"
+  ],
+  "default_family_language": "es",
+  "disclaimer": {
+    "en": "Nury is an AI assistant, not a doctor, nurse, lawyer, pastor, counselor, or therapist. This is general information, not medical or legal advice. Please ask the hospital care team about the patient.",
+    "es": "Nury es un asistente de IA, no es médico, enfermero, abogado, pastor, consejero ni terapeuta. Esto es información general, no es asesoramiento médico ni legal. Por favor pregunte al equipo del hospital sobre el paciente."
+  },
+  "draft_label": {
+    "en": "Nury draft for pastor review",
+    "es": "Borrador de Nury para revisión del pastor"
+  },
+  "boundary": {
+    "who": "a family with a loved one in the hospital emergency room or intensive care unit",
+    "domain": "medical or legal",
+    "professional": "hospital care team",
+    "professional_kind": "doctor"
+  },
+  "extra_banned": [
+    {
+      "pattern": "\\b(he|she|they|your (husband|wife|son|daughter|mother|father|brother|sister|loved one)) (will|is going to|should|won't|will not) (recover|survive|die|live|be fine|be okay|get better|pull through|wake up|walk)\\b",
+      "why": "predicts a medical outcome"
+    },
+    {
+      "pattern": "\\b(will|won't|will not) (recover|survive|die|pull through|wake up)\\b",
+      "why": "predicts a medical outcome"
+    },
+    {
+      "pattern": "\\bprognosis (is|looks|seems)\\b|\\bel pron[óo]stico (es|parece)\\b",
+      "why": "gives a prognosis"
+    },
+    {
+      "pattern": "\\b(likely|probably|possibly|looks like|seems like)( has| have| had| a case of| is having)? (a |an )?(stroke|heart attack|cancer|infection|sepsis|aneurysm|overdose|seizure)\\b|\\b(may|might|could) (have|be having|be) (a |an )?(stroke|heart attack|cancer|infection|sepsis|aneurysm|overdose|seizure)\\b",
+      "why": "guesses a diagnosis"
+    },
+    {
+      "pattern": "\\b(probablemente|posiblemente|quiz[áa]s) (tiene|sea|es) (un |una )?(derrame|infarto|c[áa]ncer|infecci[óo]n|sepsis|aneurisma|sobredosis|convulsi[óo]n)\\b",
+      "why": "guesses a diagnosis"
+    },
+    {
+      "pattern": "\\byou (should|must|need to) (take|stop|start|refuse|accept|request|insist on|ask them to stop) (the )?(medic\\w*|treatment|surgery|dialysis|ventilator|life support|chemo\\w*|transfusion)\\b",
+      "why": "gives medical advice"
+    },
+    {
+      "pattern": "\\b(debe|deben|deber[íi]a|deber[íi]an) (dejar de tomar|empezar a tomar|dejar de|tomar|empezar|rechazar|aceptar|pedir|insistir en) (el |la |los |las )?(medicin\\w*|medicament\\w*|tratamiento|cirug[íi]a|di[áa]lisis|ventilador|soporte vital|quimioterapia|transfusi[óo]n)\\b",
+      "why": "gives medical advice"
+    },
+    {
+      "pattern": "\\b(withdraw|remove|stop|turn off) (life support|the ventilator|treatment|care)\\b|\\b(retirar|quitar|apagar) (el soporte vital|el ventilador|los aparatos|el tratamiento)\\b",
+      "why": "advises on ending care"
+    },
+    {
+      "pattern": "\\beverything (will|is going to) be (ok|okay|fine|alright|all right)\\b|\\btodo (va a|saldr[áa]|estar[áa]) (salir )?bien\\b",
+      "why": "promises an outcome"
+    },
+    {
+      "pattern": "\\b(god|dios) (will|is going to|va a|lo va a|la va a) (heal|cure|sanar|curar|sanar[áa]|curar[áa])\\b",
+      "why": "promises a healing"
+    },
+    {
+      "pattern": "\\b(se|lo|la) (va|van) a (recuperar|salvar|morir|mejorar|curar|sanar|despertar)\\b|\\b(va|van) a (sobrevivir|recuperarse|morir|mejorar|despertar)\\b",
+      "why": "predicts a medical outcome"
+    },
+    {
+      "pattern": "\\b(se recuperar[áa]|se salvar[áa]|sobrevivir[áa]|morir[áa]|mejorar[áa]|despertar[áa]|saldr[áa] adelante)\\b",
+      "why": "predicts a medical outcome"
+    }
+  ]
+}

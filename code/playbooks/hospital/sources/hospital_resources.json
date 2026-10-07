@@ -1,0 +1,37 @@
+{
+ "national": [
+  {
+   "source_id": "988-lifeline",
+   "name": "988 Suicide & Crisis Lifeline",
+   "description": "Free, confidential support by call, text, or chat, 24 hours a day, every day. Text and chat are also available in Spanish.",
+   "phone": "988",
+   "url": "https://988lifeline.org/",
+   "source": "988 Suicide & Crisis Lifeline (988lifeline.org)"
+  },
+  {
+   "source_id": "bls-social-workers",
+   "name": "Hospital social worker",
+   "description": "Healthcare social workers help patients understand a diagnosis and adjust, help people move from the hospital to home, and give information about services and support groups. Ask the care team whether a social worker is available.",
+   "source": "US Bureau of Labor Statistics, Occupational Outlook Handbook: Social Workers (bls.gov/ooh/community-and-social-service/social-workers.htm)"
+  },
+  {
+   "source_id": "apc-chaplains",
+   "name": "Hospital chaplaincy (spiritual care)",
+   "description": "Professional chaplains give emotional and spiritual care to patients and families, and respect differences in culture and faith practice. Ask the care team whether chaplaincy is available.",
+   "source": "Association of Professional Chaplains, Common Qualifications and Competencies for Professional Chaplains (apchaplains.org)"
+  },
+  {
+   "source_id": "cfr-482-13",
+   "name": "Hospital complaint contact",
+   "description": "Each hospital must tell patients whom to contact to file a complaint. Ask the hospital for that contact.",
+   "source": "Hospital patient rights rule 42 CFR 482.13 (law.cornell.edu/cfr/text/42/482.13)"
+  },
+  {
+   "source_id": "cfr-92-201",
+   "name": "Free qualified interpreter",
+   "description": "You can ask the hospital for a qualified interpreter at no cost.",
+   "source": "Language access rule 45 CFR 92.201 (law.cornell.edu/cfr/text/45/92.201)"
+  }
+ ],
+ "local": []
+}

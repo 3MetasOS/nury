@@ -230,5 +230,130 @@ class Playbooks(unittest.TestCase):
         self.assertEqual([s.id for s in get_playbook().stages], ORDER)
 
 
+HTRIAGE = TRIAGE.replace("Carlos was detained in Aurora.", "Her father is in the intensive care unit at St. Mary's.")
+HINFO = ("- El hospital puede compartir información con un familiar que participa en la atención. (HIPAA rule 45 CFR 164.510(b))\n"
+         "- Tiene derecho a un intérprete gratis. (Language access rule 45 CFR 92.201)\n"
+         "- Puede pedir las reglas de visita. (Hospital patient rights rule 42 CFR 482.13)\n"
+         "Pregunte al equipo del hospital sobre el paciente.")
+HRES = "Recursos: 988 https://988lifeline.org/ Trabajador social. Capellanía. Intérprete gratis."
+HCHK = "DO TONIGHT\n1. Pregunte a quién llamar.\nDO NOT DO\n1. No use a un niño como intérprete.\nWHAT TO BRING AND ASK\n1. Una lista de preguntas."
+HPAST = "Estamos con ustedes y con su papá. No están solos. Estamos preparando una lista de recursos."
+HCANNED = {"triage": HTRIAGE, "info": HINFO, "resources": HRES, "checklist": HCHK, "pastoral": HPAST}
+HORDER = ["triage", "info", "resources", "checklist", "pastoral"]
+
+
+class HFake(FakeClient):
+    def ask(self, user_input, instructions=None, **kw):
+        self.calls += 1
+        self.inputs.append(user_input)
+        key = ("triage" if "structured case" in instructions else "info" if "information brief" in instructions
+               else "resources" if "scannable list" in instructions
+               else "pastoral" if "pastoral message" in instructions else "checklist")
+        self.last = instructions
+        return self.canned[key], {"latency_s": 0.01, "input_tokens": 10, "output_tokens": 5, "model": "fake"}
+
+
+class Hospital(unittest.TestCase):
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        shutil.copytree(pbm.PLAYBOOKS_DIR, self.tmp, dirs_exist_ok=True)
+        self.src = self.tmp / "hospital" / "sources"
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def _approve_all(self):
+        a = json.loads((self.src / "approvals.json").read_text())
+        (self.src / "approvals.json").write_text(json.dumps({k: "approved" for k in a}))
+
+    def test_pending_sources_cannot_run_and_list_as_soon(self):
+        a = {k: "pending" for k in json.loads((self.src / "approvals.json").read_text())}
+        (self.src / "approvals.json").write_text(json.dumps(a))
+        with self.assertRaises(pbm.PlaybookError):
+            pbm.load_playbook("hospital", self.tmp)
+        self.assertEqual({p["id"]: p["status"] for p in pbm.list_playbooks(self.tmp)}["hospital"], "soon")
+
+    def test_list_shape_and_soon_cannot_run(self):
+        self._approve_all()
+        lst = pbm.list_playbooks(self.tmp)
+        self.assertEqual([(p["id"], p["status"]) for p in lst],
+                         [("detention", "live"), ("hospital", "live"), ("sudden-death", "soon"), ("house-fire", "soon")])
+        self.assertTrue(all(set(p) == {"id", "title", "description", "status"} for p in lst))
+        for pid in ("sudden-death", "house-fire"):
+            with self.assertRaises(pbm.PlaybookError):
+                pbm.load_playbook(pid, self.tmp)
+        with self.assertRaises(pbm.PlaybookError):
+            run_stage("triage", CaseState("x"), client=HFake(), playbook="sudden-death")
+
+    def test_rejected_source_is_removed(self):
+        self._approve_all()
+        a = json.loads((self.src / "approvals.json").read_text())
+        a["apc-chaplains"] = "rejected"
+        (self.src / "approvals.json").write_text(json.dumps(a))
+        pb = pbm.load_playbook("hospital", self.tmp)
+        names = [e["name"] for e in pb.sources["resources"]["national"]]
+        self.assertNotIn("Hospital chaplaincy (spiritual care)", names)
+        self.assertIn("988 Suicide & Crisis Lifeline", names)
+
+    def test_full_run_no_immigration_words(self):
+        self._approve_all()
+        pb = pbm.load_playbook("hospital", self.tmp)
+        c = HFake(HCANNED)
+        prompts = []
+        orig = c.ask
+        def spy(u, instructions=None, **kw):
+            prompts.append(instructions)
+            return orig(u, instructions=instructions, **kw)
+        c.ask = spy
+        st, rs, au = run_scripted("intake", client=c, playbook=pb)
+        self.assertEqual([r.stage_id for r in rs], HORDER)
+        self.assertEqual([r.status for r in rs], ["approved"] * 5)
+        self.assertEqual(st.outcome["outcome"], "package_complete")
+        blob = "\n".join(prompts) + json.dumps(pb.disclaimer) + pb.title + pb.description + "".join(st.approved.values())
+        self.assertNotIn("immigra", blob.lower())
+        self.assertNotIn("attorney", "\n".join(prompts).lower())
+        self.assertIn("AI assistant", st.approved["triage"])
+        self.assertIn("asistente de IA", st.approved["info"])
+
+    def test_forced_rejection_on_info_and_escalation(self):
+        self._approve_all()
+        pb = pbm.load_playbook("hospital", self.tmp)
+        st, rs, au = run_scripted("intake", client=HFake(HCANNED), playbook=pb,
+                                  fault_injection={"stage": "info", "times": 1, "draft_suffix": UNSAFE_SUFFIX})
+        self.assertEqual((rs[1].status, rs[1].metrics["attempts"]), ("approved", 2))
+        self.assertEqual(rs[1].reason_categories, ["banned_phrase"])
+        self.assertEqual(au.of_kind("draft_rejected")[0]["visible_to_pastor"], False)
+        st, rs, au = run_scripted("intake", client=HFake(HCANNED), playbook=pb,
+                                  fault_injection={"stage": "info", "times": 3, "draft_suffix": UNSAFE_SUFFIX})
+        self.assertEqual(rs[-1].status, "escalated")
+        self.assertEqual(st.outcome["outcome"], "escalated")
+        self.assertIn("sources_list", st.outcome["package"])
+
+    def test_hospital_banned_patterns_live_in_the_playbook(self):
+        self._approve_all()
+        pb = pbm.load_playbook("hospital", self.tmp)
+        self.assertGreaterEqual(len(pb.extra_banned), 8)
+        from nury import guardrails as g
+        for bad in ("Su papá se va a recuperar", "Your mother will recover soon", "The prognosis is good",
+                    "He probably has a stroke", "Usted debe dejar de tomar el medicamento",
+                    "Todo va a salir bien", "Dios lo va a sanar"):
+            cats = [v["category"] for v in g.unsafe_reasons(bad, pb.extra_banned)]
+            self.assertIn("banned_phrase", cats, bad)
+        # the same text passes the floor alone for patterns that only the hospital adds
+        self.assertEqual(g.unsafe_reasons("The prognosis is good"), [])
+        # normal informational text is not flagged
+        self.assertEqual(g.unsafe_reasons("Pregunte al equipo del hospital sobre el paciente.", pb.extra_banned), [])
+
+    def test_hospital_prediction_in_pastoral_is_rejected(self):
+        self._approve_all()
+        pb = pbm.load_playbook("hospital", self.tmp)
+        bad = dict(HCANNED, pastoral=HPAST + " Su papá se va a recuperar pronto.")
+        st = CaseState("x")
+        st.approved.update(triage=HTRIAGE, info=HINFO, checklist=HCHK)
+        r = run_stage("pastoral", st, client=HFake(bad), playbook=pb)
+        self.assertEqual(r.status, "escalated")
+        self.assertIn("banned_phrase", r.reason_categories)
+
+
 if __name__ == "__main__":
     unittest.main()

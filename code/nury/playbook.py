@@ -7,6 +7,7 @@ It cannot remove the floor, and the loader refuses a disclaimer that drops it.
 """
 
 import json
+import os
 import re
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -54,21 +55,65 @@ class Playbook:
     boundary: dict = field(default_factory=dict)       # domain words the engine's rules template fills in
     extra_banned: list = field(default_factory=list)   # [{"pattern", "why"}] added to the floor
     sources: dict = field(default_factory=dict)    # name -> loaded JSON
+    pending_sources: list = field(default_factory=list)  # source ids not yet approved (dev flag only)
 
     @property
     def registry(self):
         return {s.id: s for s in self.stages}
 
 
-def list_playbooks():
-    """[{id, title, description}] for the crisis picker."""
+def allow_pending():
+    """Dev only: run a playbook whose sources are not all approved. Never for the demo or the eval."""
+    return os.environ.get("NURY_ALLOW_PENDING") == "1"
+
+
+def list_playbooks(root: Optional[Path] = None):
+    """[{id, title, description, status}] in display order, for GET /api/playbooks.
+
+    status is "live" or "soon". A playbook marked soon, or whose vetted sources are not all
+    approved yet, is listed as soon. The engine refuses to run a soon entry."""
     out = []
-    for d in sorted(PLAYBOOKS_DIR.iterdir()):
+    for d in (root or PLAYBOOKS_DIR).iterdir():
         f = d / "playbook.json"
-        if f.is_file():
-            j = json.loads(f.read_text(encoding="utf-8"))
-            out.append({"id": j["id"], "title": j["title"], "description": j["description"]})
-    return out
+        if not f.is_file():
+            continue
+        j = json.loads(f.read_text(encoding="utf-8"))
+        status = "soon"
+        if j.get("status", "live") == "live":
+            try:
+                load_playbook(j["id"], root)
+                status = "live"
+            except PlaybookError:
+                status = "soon"
+        out.append((j.get("order", 99), {"id": j["id"], "title": j["title"],
+                                         "description": j["description"], "status": status}))
+    return [e for _, e in sorted(out, key=lambda x: (x[0], x[1]["id"]))]
+
+
+def _approvals(d):
+    f = d / "sources" / "approvals.json"
+    return json.loads(f.read_text(encoding="utf-8")) if f.is_file() else None
+
+
+def _apply_approvals(sources, approvals, pb_id):
+    """Drop rejected entries. Refuse to load while any used entry is still pending."""
+    pending = set()
+    for name, data in sources.items():
+        for key, val in list(data.items()):
+            if isinstance(val, list):
+                keep = []
+                for e in val:
+                    sid = e.get("source_id") if isinstance(e, dict) else None
+                    st = approvals.get(sid, "pending") if sid else "approved"
+                    if st == "rejected":
+                        continue
+                    if st != "approved":
+                        pending.add(sid)
+                    keep.append(e)
+                data[key] = keep
+    if pending and not allow_pending():
+        raise PlaybookError(f"{pb_id}: sources pending approval: {sorted(pending)}")
+    return sorted(pending)
 
 
 def _validate_disclaimer(d):
@@ -87,6 +132,8 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
     if not (d / "playbook.json").is_file():
         raise PlaybookError(f"no playbook {playbook_id!r} in {d.parent}")
     pj = json.loads((d / "playbook.json").read_text(encoding="utf-8"))
+    if pj.get("status", "live") != "live":
+        raise PlaybookError(f"{playbook_id!r} is coming soon and cannot run")
     _validate_disclaimer(pj["disclaimer"])
     need = ("who", "domain", "professional", "professional_kind")
     if any(k not in pj.get("boundary", {}) for k in need):
@@ -120,9 +167,13 @@ def load_playbook(playbook_id, root: Optional[Path] = None) -> Playbook:
     for s in stages:
         for spec in s.source_specs:
             sources[spec["name"]] = json.loads((d / "sources" / spec["file"]).read_text(encoding="utf-8"))
-    return Playbook(pj["id"], pj["title"], pj["description"], pj["languages"],
+    approvals = _approvals(d)
+    pending = _apply_approvals(sources, approvals, pj["id"]) if approvals is not None else []
+    pb = Playbook(pj["id"], pj["title"], pj["description"], pj["languages"],
                     pj.get("default_family_language", "es"), pj["disclaimer"], pj["draft_label"],
                     stages, outcomes, d, pj["boundary"], pj.get("extra_banned", []), sources)
+    pb.pending_sources = pending
+    return pb
 
 
 # ---------- prompt and source rendering ----------

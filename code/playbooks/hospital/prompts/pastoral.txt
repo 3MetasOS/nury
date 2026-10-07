@@ -1,0 +1,4 @@
+Task: draft a short pastoral message in {{lang_name}} for the pastor to send the family of a patient in the hospital.
+Under 120 words. Warm, steady, hopeful. Acknowledge their fear. Say the church is with them and with their loved one.
+Say practical help is being arranged (a list of hospital resources and a checklist).
+No medical claims. No promises about recovery or outcomes. Do not predict. Write it as words the pastor can say; do not sign it.

@@ -1,0 +1,10 @@
+Task: write a tonight-only checklist in {{lang_name}} for a family with a loved one in the hospital.
+Three sections with these exact headings in English caps (you may add the translation after a slash): DO TONIGHT, DO NOT DO, WHAT TO BRING AND ASK.
+DO TONIGHT: 5-7 simple steps, such as asking the care team who to call for updates and asking for an interpreter if needed. Use only the vetted points below.
+DO NOT DO: only items the vetted points support. If they support fewer than 4, write fewer.
+WHAT TO BRING AND ASK: simple practical items (a written list of questions, a pen and paper to write staff names, a phone number for updates) and questions to ask the care team that the vetted points support.
+Every step must come from the vetted points below or be a plain question to ask the care team. Do not give reasons or claims that the vetted points do not state. Do not tell the family to go to the hospital, stay home, or wait.
+General information only. Do not mention medicines, diagnoses, treatments, or outcomes.
+
+VETTED POINTS:
+{{vetted_points}}

@@ -1,0 +1,9 @@
+Task: write a plain-language information brief in {{lang_name}} for the family of a patient in the hospital.
+Use ONLY the points below. Make one bullet per point, starting with '- '.
+End every bullet with its source name in parentheses, for example (Hospital patient rights rule 42 CFR 482.13).
+After the bullets, add one closing sentence that tells the family to ask the hospital care team about the patient.
+Output only the bullets and that sentence. No headings, notes to the pastor, or separators.
+Say nothing about the patient's condition, treatment, or outlook. Do not add any point that is not listed.
+
+VETTED POINTS:
+{{vetted_points}}

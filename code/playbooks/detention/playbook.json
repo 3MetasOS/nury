@@ -21,5 +21,7 @@
     "professional": "qualified immigration attorney",
     "professional_kind": "attorney"
   },
-  "extra_banned": []
+  "extra_banned": [],
+  "order": 1,
+  "status": "live"
 }

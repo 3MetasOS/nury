@@ -61,6 +61,25 @@ StageResult(stage_id, title,
 - **Safety floor (engine, not data).** Boundary prompt, banned-pattern checks, language check, link and phone allowlist from the stage's sources and approved earlier text, disclaimer on every output, 3-attempt cap, no send path. The loader refuses a playbook whose disclaimer drops "AI assistant / pastor / not a <professional> / advice" (EN and ES), or that has no `boundary` fields, and refuses a playbook whose stage 1 is not `triage`.
 - Prompt history: `playbooks/detention/PROMPT_NOTES.md`. Tests: `cd code && python3 -m unittest discover -s tests`.
 
+## Crisis list and live tracks
+
+`nury.playbook.list_playbooks()` returns the data for `GET /api/playbooks`, in display order:
+
+```json
+{"playbooks": [
+  {"id": "detention",     "title": "Immigration detention or raid", "description": "...", "status": "live"},
+  {"id": "hospital",      "title": "Hospital emergency",            "description": "...", "status": "live"},
+  {"id": "sudden-death",  "title": "Sudden death in a family",      "description": "Coming soon. Not available yet.", "status": "soon"},
+  {"id": "house-fire",    "title": "House fire or displacement",    "description": "Coming soon. Not available yet.", "status": "soon"}
+]}
+```
+
+- `status` is `live` or `soon`. A `soon` entry has no stages. `load_playbook`, `run_stage` and `run_pipeline` raise `PlaybookError` for it. The UI must not make it clickable.
+- **Source approval.** A playbook with `sources/approvals.json` (hospital) runs only when every source it uses is `approved`. A `rejected` source is removed from the playbook. While any is `pending`, the playbook lists as `soon` and refuses to run. For UI work only, set `NURY_ALLOW_PENDING=1` in your dev shell: it lists and runs as `live`. Never set it for the demo or the eval.
+- **Stage ids differ per playbook.** Take them from `get_playbook(id).stages`. Hospital: `triage, info, resources, checklist, pastoral`. Detention: `triage, rights, attorney, checklist, pastoral`. For the forced rejection use stage index 1 of the playbook: `fault_injection={"stage": pb.stages[1].id, "times": 1, "draft_suffix": UNSAFE_SUFFIX}`. The env switch `NURY_FORCE_REJECTION` still targets `rights` only.
+- Pass the id through: `run_stage(stage_id, state, gate, client, audit, fault_injection=..., playbook="hospital")`, `run_pipeline("hospital", state, ...)`, `run_scripted(..., playbook="hospital")`.
+- Hospital extra banned patterns (medical outcome, diagnosis guesses, medical advice, promises of healing) live in `playbooks/hospital/playbook.json` under `extra_banned`, not in the engine.
+
 ## Rules the seam enforces
 
 - **Chaining.** `state.approved[stage_id]` holds approved or edited text. Later stages read it, never the raw draft.

@@ -8,6 +8,7 @@ import json
 import os
 import threading
 import uuid
+from datetime import datetime, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
@@ -100,6 +101,36 @@ class Session:
             self.cv.notify_all()
             return True
 
+    def progress(self, ev):
+        """What the engine is doing right now, read from real audit events. No timers, no guesses.
+        phase: writing | checking | regenerating | ready | escalated | idle. Carries categories and counts only."""
+        sid = self.current or (self.waiting.stage_id if self.waiting else None)
+        if not sid:
+            return {"phase": "idle", "stage": None, "attempt": 0, "elapsed_s": 0}
+        mine = [e for e in ev if e.get("stage") == sid]
+        start = next((e for e in reversed(mine) if e["kind"] == "stage_start"), None)
+        mine = mine[mine.index(start):] if start else mine
+        last = mine[-1] if mine else None
+        calls = [e for e in mine if e["kind"] == "gloo_call"]
+        fails = [e for e in mine if e["kind"] in ("draft_rejected", "gloo_block")]
+        if self.waiting:
+            phase = "ready"
+        elif last and last["kind"] == "escalated":
+            phase = "escalated"
+        elif last and last["kind"] == "check":
+            phase = "checking"
+        elif fails and last and last["kind"] in ("draft_rejected", "gloo_block", "gloo_call"):
+            phase = "regenerating"
+        else:
+            phase = "writing"
+        elapsed = 0.0
+        if start:
+            t0 = datetime.fromisoformat(start["ts"])
+            t1 = datetime.fromisoformat(last["ts"]) if phase in ("ready", "escalated") and last else datetime.now(timezone.utc)
+            elapsed = max(0.0, (t1 - t0).total_seconds())
+        return {"phase": phase, "stage": sid, "attempt": min(len(fails) + 1, 3), "calls": len(calls),
+                "elapsed_s": int(elapsed)}
+
     def view(self):
         ev = list(self.audit.events)
         stages = []
@@ -123,8 +154,9 @@ class Session:
                 last_check = [e for e in mine if e["kind"] == "check"]
                 strip = ("passed" if (self.waiting or (last_check and last_check[-1]["passed"]))
                          else f"Draft rejected by guardrail. Regenerating ({min(len(fails) + 1, 3)} of 3).")
+        progress = self.progress(ev)
         log = [safe_event(e) for e in ev]
-        return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "halted": self.halted,
+        return {"id": self.id, "playbook": {"id": self.pb.id, "title": self.pb.title}, "stages": stages, "gate": gate, "strip": strip, "progress": progress, "halted": self.halted,
                 "error": self.error, "done": self.done, "log": log, "language": self.state.language,
                 "package": {s["id"]: s["final"] for s in stages if s["final"]} if self.done and not self.halted else None}
 
