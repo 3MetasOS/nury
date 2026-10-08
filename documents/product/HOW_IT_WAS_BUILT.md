@@ -373,7 +373,30 @@ The final scored numbers are not on this page until every review item is decided
 - A native Spanish speaker has not scored the Spanish. Word checks catch stock phrases, not how natural a sentence sounds.
 - We did not run a single-AI-judge baseline. We did not measure how much an AI judge's verdict varies between runs.
 - The 0.80 and 0.20 bars come from Jev's design guidance. We checked them on our own examples. We did not run a calibration study.
-- The effect of the skills is not measured. The before-and-after script exists and has not been run.
+- The effect of the skills is not measured.
+- Nothing has been learned from pastors, because none has used Nury. The learning loop is built and tested on invented sessions only, and we do not claim it improves Nury. The before-and-after script exists and has not been run.
+
+### Learning from what pastors change (built, not used)
+
+No real pastor has used Nury. We built a loop for learning from use, and we tested it on 30 invented sessions. **Nothing has been learned yet, and we do not claim it improves Nury.** Nury does not learn, improve itself or evolve. The loop proposes. It scores. A person approves. The source is `documents/product/LEARNING_LOOP.md`.
+
+| Step | What happens | Status | Evidence |
+|---|---|---|---|
+| 1. Capture | At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. **Off by default** (`NURY_FEEDBACK`). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored. | BUILT, offline tested. **The app does not call it yet** (PLANNED). | `code/nury/feedback.py`; `tests/test_feedback.py` (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57 |
+| 2. Analyze | A script reads the feedback and writes a report by crisis and stage. A candidate change is proposed only when the same pattern appears in at least 3 separate edits. | BUILT, offline tested | `code/tools/learning_report.py` |
+| 3. Test | Run a candidate on the evaluation sets, before and after, with a no-regression gate. It works on copies and never edits the repository. | BUILT, offline tested. **Not run live.** | `code/tools/candidate_test.py`; about $5.60 for the core set, $10 for all three, by estimate |
+| 4. Approve | A person reads the candidate file, the evidence and the test, then writes their name and the date. The checker refuses an approval without a person's name. No script sets a status past `proposed`, and a test reads the scripts' source to check it. | BUILT, offline tested | `code/tools/candidates.py`; `tests/test_learning_loop.py` (19 tests); TECH_CLAIMS 58 |
+| 5. Release | A normal commit, with the usual tests and a live check. | By hand | git |
+
+**What it cannot show, plainly.**
+- Every number comes from invented sessions. The pattern in the worked example was written into the scripted behavior, so finding it shows the pipeline works. It does not show that pastors want shorter messages.
+- An edit is not a preference. A pastor may shorten a message because it is late. A frequent edit is a lead, not a finding.
+- Sentence mode holds tokenized text in a file. Context that points to a person without naming them is not caught. This is the same limit as the privacy layer.
+- The before-and-after gate's thresholds are our choice. Jev scored the same drafts up to 0.12 apart between two passes, so one run per arm cannot tell a small effect from noise.
+- Retention is a recommendation (30 days for sentence mode), not a policy, and nothing prunes the files automatically.
+- Nobody has reviewed the consent or the retention as a lawyer or an ethics board would.
+
+The research behind the pattern (reflect on what went wrong, propose a change, score it, keep it only if it scores better) is in `LEARNING_LOOP.md`, read from abstracts only. We left out everything that lets an agent change itself.
 
 ## 4. The rules
 
@@ -632,6 +655,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Follow-up reminders** | A reminder for a case that needs follow-up | A flag only | PLANNED |
 | **Voice input** | Taking the call and writing the intake by voice | Typed intake | NOT BUILT |
 | **Accessibility** | A screen reader test, and fixes | Labels and focus rings exist. Nobody has tested with a screen reader. | NOT BUILT |
+| **Learning from real use** | Capture wired into the app, a retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate | The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app does not call the capture code. No real data. | Code: BUILT, offline. App wiring: PLANNED. The rest: NOT BUILT |
 | **Real use** | Pilots with real pastors, and what we learn from them | No pastor outside the team has used Nury | NOT BUILT |
 
 ### A sober order

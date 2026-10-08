@@ -18,14 +18,14 @@ Status: **APPROVED by hack-sensei (2026-10-07): the fuller four-sentence version
 **Do not claim it yet.** Nothing about recording changes goes in the deck, the film, the description or the Q and A until hack-sensei confirms in writing that phase 2 is built and verified. Version B is held, like the other gated lines.
 
 ## Why the new sentence would be true: what must exist first
-`feedback.py` has not landed. Until it does, none of these rows is evidenced, and version B stays off.
+`feedback.py` landed on 2026-10-07 (commit `bb6c17b`). The rows below now have offline evidence. **The app does not call it yet** (FEATURES: PLANNED), so nothing is captured and version B must still not be shown.
 
 | Clause | What must be true | Evidence needed (not yet there) |
 |---|---|---|
-| "Nury also records what you change" | When a pastor edits a draft at a gate, the edit is stored. A pastor who approves unchanged records nothing. | `feedback.py` (when it lands); a test that an edit is stored and an unchanged approval is not |
-| "without names" | The stored change holds no name, phone, email, address, date or ID. It passes through the same pseudonymizer as the Gloo path, and a leak test with canary names finds none. | A leak test on the stored feedback, like `tests/test_privacy.py`; the same method as TECH_CLAIMS row 16 and 53 |
-| "to improve its drafts" | The recorded changes are used for that purpose and no other. Say what "improve" means in the code, and do not promise more than it does. | The design note for phase 2; a line in `FEATURES.md` |
-| "a person reviews every change before it is used" | No recorded change reaches a prompt, a rule, a skill or a check until a named person approves it. | A review step in code (not only a policy), and a test that an unreviewed change is never used. Today there is no review queue (`HOW_IT_WAS_BUILT.md`, section 9). |
+| "Nury also records what you change" | When a pastor edits a draft at a gate, the edit is stored. A pastor who approves unchanged records nothing. | `code/nury/feedback.py` (`record_gate`; off by default, `NURY_FEEDBACK`), `code/tests/test_feedback.py`, TECH_CLAIMS 57. Offline only; the app does not call it yet. |
+| "without names" | The stored change holds no name, phone, email, address, date or ID. It passes through the same pseudonymizer as the Gloo path, and a leak test with canary names finds none. | `tests/test_feedback.py`: 10 canaries (names, a phone, an email, an address, an ID) and a name the pastor typed without protecting it, in both modes: none stored; the unprotected name's sentence is dropped and counted. Sentence mode still holds tokenized text, and context can hint at a person. |
+| "to improve its drafts" | The recorded changes are used for that purpose and no other. Say what "improve" means in the code, and do not promise more than it does. | `documents/product/LEARNING_LOOP.md`: the recorded changes feed a report and proposed candidates; they change nothing by themselves. "To improve" states the purpose, not a result: we do not claim it improves Nury. |
+| "a person reviews every change before it is used" | No recorded change reaches a prompt, a rule, a skill or a check until a named person approves it. | `code/tools/candidates.py` refuses an approval without a named person and a date; no script sets a status past `proposed` and a test reads the scripts' source (`tests/test_learning_loop.py`, TECH_CLAIMS 58). Release is a normal commit by a developer. There is no review queue in the app (`HOW_IT_WAS_BUILT.md`, section 9). |
 
 If any row fails, the sentence is wrong. Change the sentence or leave capture off. Do not ship version B on hope.
 

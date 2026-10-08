@@ -230,6 +230,7 @@ Nothing here may be claimed in the film, the deck or the description.
 - The tone score did not rise after the promises fix; the re-run on the fixed core is pending.
 - "14 named checks" is the headline until the final scored build; the registry holds 20.
 - The effect of the skills is not measured.
+- Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default and the app does not call it yet. It proposes; a named person approves; we do not claim it improves Nury.
 
 ## 14. Rules that stay
 
