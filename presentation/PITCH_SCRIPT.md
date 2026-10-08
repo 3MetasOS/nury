@@ -54,7 +54,7 @@ Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, 
 
 ## 1:52 to 2:10  Slide 8 (light): use of AI, and why two judges
 [45 words, about 18 s] Two judges, because they fail differently. A red team of three models from other makers hunts freely and must quote the sentence. Jev answers fixed questions with a probability, at test time only: unsafe 0.89 to 0.98, safe 0.02 to 0.24. People review the middle.
-If asked for more, go to the backup slide "Why two judges" (press `b`): the table, the stability check (within 0.03 an hour later), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is my prior project, used at evaluation time only, and disclosed.
+If asked for more, go to the backup slide "Why two judges" (press `b`): the table, the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is my prior project, used at evaluation time only, and disclosed.
 
 ## 2:10 to 2:22  Slide 9 (light): impact and execution
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
