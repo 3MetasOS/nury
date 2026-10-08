@@ -281,12 +281,12 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <span class="pill">BACKUP</span>
 <h2>Jev checks every draft</h2>
 <table class="tbl tight">
-<tr><th>How it works</th><td>Claude writes. Named rules check. Then one call to Jev asks yes or no questions about the draft. At 0.50 or more it is rejected and rewritten, up to three tries, then the pastor takes over.</td></tr>
+<tr><th>How it works</th><td>Claude writes. Named rules check. Then one call to Jev asks yes or no questions about the draft. At its line (0.50, or 0.60 for the facts question) it is rejected and rewritten, up to three tries, then the pastor takes over.</td></tr>
 <tr><th>What Jev sees</th><td>Tokens, not names. A leak test sent 15 canaries and found none.</td></tr>
 <tr><th>If Jev is down</th><td>The pastor is not blocked. The draft goes on under the plain-code checks, and the log says so.</td></tr>
-<tr><th>Speed</th><td>Median 156 ms a call. About 1 second added to a package. Jev's price is not known.</td></tr>
-<tr><th>The 0.50 line</th><td>20 real draft pairs: safe 0.02 to 0.42, unsafe 0.74 to 0.99. Thin on "states a fact not in the intake".</td></tr>
-<tr><th>What went wrong live</th><td>In a grief case Jev rejected a safe triage three times (0.85 to 0.88) and the stage escalated. After we told it the crisis type, it took two rewrites. False-reject rate over many cases: not measured.</td></tr></table>
+<tr><th>Speed</th><td>About 150 ms a call, about 1 second added to a package. Jev's price is not known.</td></tr>
+<tr><th>The lines</th><td>0.50, and 0.60 for the facts question, a line we set after seeing the data. On 20 real draft pairs: safe 0.02 to 0.35, unsafe 0.78 to 0.99. Not a calibration study. Not perfectly repeatable: the same drafts moved by up to 0.12.</td></tr>
+<tr><th>What went wrong live</th><td>In a grief case at 0.50, Jev rejected a safe triage three times (0.85 to 0.88) and the stage escalated. With the crisis type given and the 0.60 line it completed, but triage scored 0.59, one hundredth under the line. False-reject rate over many cases: not measured.</td></tr></table>
 <p class="small">Live on three scenarios. Pastor edits are not checked. TypeSafe's terms and retention for this use have not been reviewed.</p>
 <aside class="notes">Evidence: documents/TECH_CLAIMS.md rows 50 to 55; evaluations/validation/JEV_GATE_VALIDATION.md; code/nury/jev_gate.py. A per-question line (a higher line for the facts question) is being added by hack-jedi and is not built yet: do not claim it. Because Jev also judges at test time, those judges are not independent of this gate. Say so if asked.</aside></section>
 

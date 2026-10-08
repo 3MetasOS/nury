@@ -46,7 +46,7 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
    3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is 5 Gloo calls (TECH_CLAIMS 1). A Gloo HTTP 403 counts as a failed try.
    4. **Detokenize.** Tokens become the real names again. A mangled token is repaired; an unknown token makes Nury ask again, twice at most.
    5. **Named checks.** The stage's checks plus the floor run in plain code. Any violation sends the draft back.
-   6. **Jev gate.** *BUILT, live verified on 3 scenarios.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At 0.50 or more, the draft is rejected and the reason category is `jev_<question>`. From 0.30 to 0.50 the draft passes and the audit logs "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate.
+   6. **Jev gate.** *BUILT, live verified on 3 scenarios.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At or over the question's line (0.50, or 0.60 for `assumes_facts`), the draft is rejected and the reason category is `jev_<question>`. From 0.30 up to the line the draft passes and the audit logs "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate.
    7. **Loop.** A rejected draft is regenerated. The model gets the reasons, never the rejected text. Three attempts in all. After the third failure the stage escalates with no draft shown and "I'll handle this manually." The pastor never sees an unsafe draft.
    8. **Scripture** (pastoral stage only). The model returns a verse id from an approved list and at most two short why-lines. The app inserts the exact verse text. See section 8.
    9. **Approval gate.** The pastor sees only the draft that passed. Approve, Edit or Stop. Stop ends the run with "I'll handle this manually." Names the pastor adds in an edit are protected before the next stage.
@@ -57,19 +57,19 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 
 | Item | Status | Evidence |
 |---|---|---|
-| Gate code: one batched call per draft per attempt, reject at 0.50, uncertain band logged, 8 s timeout | BUILT, offline tested | `code/nury/jev_gate.py`, commit `98fc221`; engine hook at `engine.py` line 268 |
+| Gate code: one batched call per draft per attempt, reject at 0.50 (0.60 for `assumes_facts`, set per question in `REJECT_AT`), uncertain band logged, 8 s timeout | BUILT, offline tested (15 gate tests) | `code/nury/jev_gate.py`, commits `98fc221` and `c317050`; engine hook at `engine.py` line 268 |
 | 13 gate tests, no network | BUILT, offline tested | `code/tests/test_jev_gate.py` (13 pass, run 2026-10-07 with no keys set) |
 | Jev request carries tokens, never names or the map | BUILT, offline tested | `code/tests/test_privacy.py` (`test_the_jev_gate_requests_carry_tokens_never_names_or_the_map`) |
 | The question wording equals the wording validated for the eval harness | BUILT, offline tested | `test_jev_gate.py` compares the two copies |
-| Line-at-0.50 smoke test on real drafts | BUILT, live verified (small) | `evaluations/validation/JEV_GATE_VALIDATION.md`: 20 question and draft pairs from two scenarios, safe 0.02 to 0.42, unsafe 0.74 to 0.99, none missed, no false reject, Jev median 156 ms per call (max 271 ms, 30 calls) |
+| Smoke test of the lines on real drafts | BUILT, live verified (small) | `evaluations/validation/JEV_GATE_VALIDATION.md`: 20 question and draft pairs from two scenarios, safe 0.02 to 0.35, unsafe 0.78 to 0.99, none missed, no false reject. The 0.60 line for `assumes_facts` was set after seeing this kind of data, so the result is partly circular. Jev median about 150 ms per call (30 calls). |
 | Full live runs with the gate on | BUILT, live verified (3 scenarios: detention 01 and 14, hospital h01; build `50668d6`) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. A package adds about 0.8 to 1.1 s of Jev time. |
 | What the live runs showed | Detention 14 (grief): with no crisis context Jev rejected the triage three times (0.85 to 0.88) and the stage escalated. After the crisis type was added to what Jev sees and the reason made specific, it completed with two regenerations. | TECH_CLAIMS 52; PROMPT_NOTES problem 24 |
-| A higher line for `assumes_facts` (0.60) and a per-question reason line | **IN PROGRESS** (a small commit from hack-jedi, not built) | Not claimed |
+| Per-question lines: 0.60 for `assumes_facts`, 0.50 for the rest | BUILT, live verified (3 of 3 clean, build `c317050`) | Set after seeing validation data; hack-sensei approved it 2026-10-07 (TECH_CLAIMS 50, 51) |
 | Gate on by default | Only when `JEV_API_KEY` is set | `jev_gate.enabled`; override with `NURY_JEV_GATE=on|off` |
 
 **Fails open.** With no key, a timeout, an error or a bad answer, the draft goes on to the pastor on the strength of the named checks and the floor. The audit logs decision "unavailable" with the reason, and later stages of the same run skip the gate. The product never blocks on Jev.
 
-**Known soft spot** (from the smoke test): the `assumes_facts` and `promises_action` questions score safe drafts at 0.26 to 0.42. Four of 20 safe pairs landed in the uncertain band. The highest, 0.42, is 0.08 from a false reject. A false reject costs an attempt, not safety. Three in a row escalate the stage. Stability across repeated calls was not measured for the gate. The false-reject rate over many cases is not measured. Jev's price is not known, so no Jev dollar cost is quoted. TypeSafe's retention and terms for run-time use are not reviewed.
+**Known soft spots.** `assumes_facts` is the question Jev is least sure of: safe drafts scored 0.27 to 0.42 on the first pass, so its line is 0.60, a line set after seeing the data. Jev is not perfectly repeatable: the same drafts moved by up to 0.12 between two passes, and stability was measured on two passes only. Live on detention 14 with the 0.60 line, triage scored 0.59, one hundredth under it. A false reject costs an attempt, not safety, and three in a row escalate the stage. The false-reject rate over many cases is not measured. Jev's price is not known, so no Jev dollar cost is quoted. TypeSafe's retention and terms for run-time use are not reviewed.
 
 ## 4. Test-time layers
 
@@ -204,7 +204,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M3 | Oct 6 to 7 | Pastor app | Selector, intake, pipeline, package, audit, cases, revision, network built. Home, chooser and shared shell **in progress** (BUILD_LOG 95, 97). |
 | M3b | Oct 6 to 7 | Scripture | 12 verses approved (BUILD_LOG 93); YouVersion live end to end (BUILD_LOG 96); last Scripture rule added. |
 | M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **163 pass now** (run 2026-10-07 with no keys set). |
-| M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** A small follow-up (a higher line for `assumes_facts`, a per-question reason line) is in progress. |
+| M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** The follow-up (a 0.60 line for `assumes_facts`) landed in build `c317050`. |
 | M4 | Oct 7 | Scored runs | Earlier scorecards exist in `evaluations/results/`. The final scored set (detention 20, hospital 8), the attacker set (18) and the red-team run on the final sets are owed by hack-artisans. No number is quoted until every review item is decided. |
 | M5 | Oct 7 | Description draft; deck | Drafts done by hack-ninja. Real numbers only from the final run. |
 | M6 | Oct 7, 15:00 | End-to-end demo with one rejected-and-regenerated draft; harness scores | Open. |
