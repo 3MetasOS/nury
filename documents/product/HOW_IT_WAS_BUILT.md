@@ -413,6 +413,8 @@ A rule in Nury is a test a draft must pass. There are three kinds, and the order
 - No send path.
 - Hospital adds twelve more banned patterns in `playbooks/hospital/playbook.json`: no prognosis, no diagnosis guess, no medical advice, no advice on ending care, no promised healing. These are data, so a playbook can add its own.
 
+**Plain-language rules in the family-facing prompts.** The eight prompts a family reads (rights brief, attorney resources, checklist and pastoral message for detention; information, resources, checklist and pastoral message for hospital) carry plain-language rules: short sentences, a 6th to 8th grade reading level, the verb first, the key fact first, and Spanish written plainly in its own right, not word for word from English. The guard lines, the checks and triage did not change. BUILT, live (commit `8a28a18`). The engine also records a reading-level number for each family stage in the audit log (Flesch-Kincaid for English, the INFLESZ scale for Spanish). That number is advisory: it never rejects a draft. Before-and-after samples are in `documents/product/PLAIN_LANGUAGE_SAMPLES.md`. The limits: one sample per scenario, not a rate; the earlier run is not a paired comparison; the formula is a tripwire, not proof that a family understood; no native Spanish speaker has read the Spanish. `code/nury/readability.py`, `documents/product/readability_check.py`.
+
 **Data rules.** Plain settings in a playbook's JSON: banned patterns (`extra_banned`), required labels, required headings, word limits, the pattern a stage must end with. Section 5 shows where each one lives.
 
 **Named checks.** Functions in code that a stage lists by name. The registry holds **20**, and the same 20 were in the scored build. Each stage applies the ones listed for it, plus the safety floor. Six of them were added last: three about Scripture and three added after the red team's findings. An earlier version of this page said "14"; that figure came from an older build.
@@ -678,5 +680,6 @@ This is a suggested order, not a plan we have committed to.
 - The test-time Jev judges are not independent of the run-time gate.
 - The effect of the skills is not measured.
 - The tone score did not rise after the promises fix.
+- The plain-language prompts were checked on one sample per scenario. The reading-level formula is a tripwire, not proof a family understood, and the Spanish has not been read by a native speaker.
 - No real pastor has used Nury. A native Spanish speaker has not scored the Spanish.
 - There is no sign-in and no encryption. Nury is a demo on synthetic families, not a service for real ones.

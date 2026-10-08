@@ -144,6 +144,7 @@ MENU = [
     ("Overview", "Who Gloo's customers are", "md", "documents/GLOO_CUSTOMERS.md"),
     ("Overview", "Case management standards", "md", "documents/STANDARDS_ALIGNMENT.md"),
     ("Overview", "Standards page text (for the app)", "md", "documents/product/STANDARDS_PAGE.md"),
+    ("Overview", "Plain-language samples (before and after)", "md", "documents/product/PLAIN_LANGUAGE_SAMPLES.md"),
     ("Architecture", "How this was built (page content)", "md", "documents/product/HOW_IT_WAS_BUILT.md"),
     ("Architecture", "How the engine thinks (walkthrough)", "md", "documents/product/ENGINE_WALKTHROUGH.md"),
     ("Architecture", "Technical reference (for engineers)", "md", "documents/product/TECHNICAL_REFERENCE.md"),
