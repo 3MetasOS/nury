@@ -60,7 +60,7 @@ If asked for more, go to the backup slide "Why two judges" (press `b`): who each
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
 Fallback if no scorecard: "We built twenty scenarios and scored each stage. The scorecard is in our build document."
 No number from any interim run. Say one failure, plainly: a checklist named a detainee locator that was not in our vetted sources. We fixed the prompt and the check.
-The harness uses the Jev decision API from TypeSafe as typed judges, and Jev also checks drafts at run time. Disclosed as third-party technology per the rules.
+The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier. Disclosed as third-party technology per the rules.
 
 ## 2:22 to 2:30  Slide 10 (light): teamwork, and what is next
 Built by Juan Pelaez at 3Metas with a small team of AI agents that coordinate over a messaging protocol. Next is the human team: pastors to pilot with, and an attorney to review the sources. Not done yet.

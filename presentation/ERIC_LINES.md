@@ -25,7 +25,7 @@ Status: approved 2026-10-07. hack-video generates these with ElevenLabs (paid pl
 6. **Memorial:** the film uses option 3 (8 s). The deck and the live pitch use option 2, unless Juan objects.
 
 ## On screen with L7 and L8 (row 8, 0:52 to 1:04)
-The three VERIFIED captions, about 3 s each: "Leak test: 90 checks per playbook, 0 found"; "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24"; "A full package: 50 to 56 s, about 9 cents". The disclosure line verbatim, small, for the whole beat: "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules." The red team is **not** a caption: it appears only if hack-sensei confirms the panel is validated for the film.
+The three VERIFIED captions, about 3 s each: "Leak test: 90 checks per playbook, 0 found"; "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24"; "A full package: 50 to 56 s, about 9 cents". The disclosure line verbatim, small, for the whole beat: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules." The red team is **not** a caption: it appears only if hack-sensei confirms the panel is validated for the film.
 
 ## Words that need care
 Say Gloo as GLOO and Jev as JEV. "2:07 AM" is sent as "two oh seven A M". No other number is read aloud. The tech beat is two lines now, one per node group: L7 as the diagram's Gloo node lights, L8 as the judge node lights.

@@ -59,7 +59,7 @@ Built by hack-video as an animated architecture shot. Text only, no third-party 
 3. "A full package: 50 to 56 s, about 9 cents" (TC 30)
 Spare caption if there is room: "91 offline tests pass; no send path" (re-run the count at export).
 
-**Disclosure caption, verbatim, small, on screen for the whole beat:** "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules."
+**Disclosure caption, verbatim, small, on screen for the whole beat:** "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
 Lower-third labels: "Built on Gloo AI Studio" and "Checked by Jev". Optional TECH-B only if there is time: "A red team from other model makers audits it before release. It advises; a person decides."
 Proof shots that already exist offline (`python3 code/tools/show_proofs.py N`, about 2 s): 1 a rejected draft never reaches the pastor; 2 Gloo sees tokens, not names; 3 the leak test; 4 the loader refuses a skill that says "ignore the disclaimer" (gated until skills are confirmed); 5 a held entry is never named (gated).
 
