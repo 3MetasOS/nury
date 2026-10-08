@@ -155,7 +155,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <section class="slide" data-part="talk">
 <h2>How it is built: the model sees tokens, not names</h2>
 <svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
-<title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the evaluation layers, used at evaluation time only.</desc>
+<title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks and a Jev classifier reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the layers that test Nury before release.</desc>
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0d1015"/></marker></defs>
 <rect x="6" y="6" width="796" height="300" rx="18" fill="none" stroke="#5b564c" stroke-width="2" stroke-dasharray="8 6"/>
 <text x="24" y="34" class="dl muted">Inside Nury, a web app</text>
@@ -165,17 +165,17 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <path d="M240 102 H296" class="ln" marker-end="url(#ar)"/>
 <path d="M540 102 H838" class="ln" marker-end="url(#ar)"/><text x="690" y="90" class="dl" text-anchor="middle">tokens only</text>
 <path d="M966 148 V232 H802" class="ln" marker-end="url(#ar)"/><text x="900" y="206" class="dl" text-anchor="middle">reply</text>
-<g class="bx"><rect x="560" y="196" width="240" height="92" rx="12"/><text x="680" y="236" class="bt">Named checks</text><text x="680" y="264" class="bs">3 tries, then escalate</text></g>
+<g class="bx"><rect x="560" y="196" width="240" height="92" rx="12"/><text x="680" y="236" class="bt">Checks, then Jev</text><text x="680" y="264" class="bs">3 tries, then escalate</text></g>
 <g class="bx"><rect x="300" y="196" width="240" height="92" rx="12"/><text x="420" y="236" class="bt">Approval gate</text><text x="420" y="264" class="bs">Approve, Edit or Stop</text></g>
 <path d="M560 242 H544" class="ln" marker-end="url(#ar)"/>
 <g class="bx"><rect x="28" y="196" width="212" height="92" rx="12"/><text x="134" y="236" class="bt">Pastor copies</text><text x="134" y="264" class="bs">sends by hand</text></g>
 <path d="M300 242 H244" class="ln" marker-end="url(#ar)"/>
 <rect x="6" y="334" width="1084" height="88" rx="18" fill="none" stroke="#b8680f" stroke-width="2" stroke-dasharray="8 6"/>
-<text x="24" y="362" class="dl am">Evaluation time only</text>
+<text x="24" y="362" class="dl am">Tested before release</text>
 <text x="548" y="400" class="bs" text-anchor="middle">Plain code checks  ·  Jev (TypeSafe)  ·  red team: GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick  ·  a person</text>
 </svg>
 <p class="muted">14 named checks plus 5 floor checks. 5 Gloo calls for a full package. No send path.<span data-gated="scripture"> Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app.</span></p>
-<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer in Nury swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and the names are put back inside Nury, named checks reject unsafe drafts up to three tries, the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it, and it runs at evaluation time only. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Row 3 now says the outbound calls are the Gloo request and, only when the YouVersion key is set, a passage-id request to YouVersion; neither can send anything to the family. So the slide no longer says "one outbound call". The gated sentence about YouVersion shows only after Sensei confirms it is on in the final build. Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
+<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer in Nury swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and the names are put back inside Nury, named checks and then Jev, a classifier from TypeSafe, reject unsafe drafts up to three tries (Jev sees tokens only, and if it is down the pastor is not blocked), the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it before release. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Row 3 now says the outbound calls are the Gloo request and, only when the YouVersion key is set, a passage-id request to YouVersion; neither can send anything to the family. So the slide no longer says "one outbound call". The gated sentence about YouVersion shows only after Sensei confirms it is on in the final build. Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Innovation: a crisis is a folder, and drafts correct themselves</h2>
@@ -188,9 +188,9 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <aside class="notes">1:50 to 2:15. Criterion: Innovation. Two ideas: the playbook folder (confirmed, tested on a test playbook; do not claim a second crisis is scored unless Sensei confirms) and the self-correction loop with a human gate. Do not mention skills or the church network unless they are switched on.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>Use of AI: one model writes, other makers' models check</h2>
+<h2>Use of AI: Claude writes, Jev and a red team check</h2>
 <div class="cols"><div class="col">
-<ul><li>The writer is Claude (Sonnet 4.6), through Gloo AI Studio.</li><li>Two judges, because they fail differently: a red team of three models from other makers, and Jev, from TypeSafe, which answers fixed questions. Both run at test time only.</li></ul>
+<ul><li>The writer is Claude (Sonnet 4.6), through Gloo AI Studio.</li><li>Jev, from TypeSafe, checks every draft before the pastor sees it. It answers fixed questions with a probability.</li><li>Before release, a red team of three models from other makers audits the system. It advises.</li></ul>
 <table class="tbl">
 <tr><th>Leak test</th><td>90 checks per playbook, 0 found</td></tr>
 <tr><th>Typed judge, ten checks</th><td>unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
@@ -199,10 +199,10 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <div class="col"><h3>Four layers check it</h3>
 <ol class="flow">
 <li><b>Deterministic checks</b><span>Banned phrases, disclaimers, links and phones from vetted sources. No AI.</span></li>
-<li><b>Typed judges</b><span>Jev, at evaluation time only.</span></li>
+<li><b>Typed judges</b><span>Jev judges whole runs at test time. It also checks every draft at run time, so it is not independent of the gate.</span></li>
 <li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
 <li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; two judges, because they fail differently; both at test time only (the full slide is in the backup: Why two judges). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a first-pass panel, four live packages; say so. Offline product tests: 91 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
+<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a first-pass panel, four live packages; say so. Offline product tests: 163 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Impact and execution: what we measured, and what broke</h2>
@@ -253,15 +253,15 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <h2>Why two judges</h2>
 <table class="tbl tight">
 <tr><th></th><th>Red team, through Gloo AI Studio</th><th>Jev, from TypeSafe: a typed judge</th></tr>
-<tr><td>What it is</td><td>Three models from three makers: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick. None is Claude, on purpose. They hunt freely and must quote the sentence.</td><td>Answers a fixed question, yes or no or 1 to 5, with a probability.</td></tr>
+<tr><td>What it is</td><td>Three models from three makers: OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick. None is Claude, on purpose. They hunt freely and must quote the sentence. Before release only.</td><td>Answers a fixed question, yes or no or 1 to 5, with a probability. At run time it checks every draft; at test time it judges whole runs.</td></tr>
 <tr><td>Good at</td><td>Finding what nobody asked about</td><td>Repeatable: within 0.03 an hour later</td></tr>
 <tr><td>Weak at</td><td>Flags safe text too: advisory</td><td>Blind to what we did not ask</td></tr>
 <tr><td>Numbers</td><td>First pass: 8 of 8 injected problems caught</td><td>Unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
 <tr><td>Rule</td><td>Two quote the same problem: a person sees it</td><td>Accept at 80%, fail at 20%, middle to a person</td></tr>
 <tr><td>Final run</td><td class="ph">[PLACEHOLDER: final panel results]</td><td class="ph">[PLACEHOLDER: final scorecard]</td></tr></table>
-<p class="small">Both run at evaluation time only; the product never calls them. Our reasoning, not a measurement: a free hunter is noisy, a fixed question is blind to what we did not ask, and a person settles the rest. We have not tested a single model as judge.</p>
-<p class="muted">Jev is from TypeSafe, used at evaluation time only, and disclosed as third-party technology.</p>
-<aside class="notes">Who is who: the writer is Claude (Sonnet 4.6) through Gloo AI Studio; the red team is three models from three other makers through Gloo (OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick); Jev is a separate typed judge from TypeSafe, not from us. Source for every row: documents/TECH_CLAIMS.md rows 35 (Jev at test time only), 36 (typed question, probability, 0.80 and 0.20), 37 (stability: five stored runs re-judged about an hour later, safety scores moved 0.03 or less, tone 0.06 or less; a verdict can still flip within about 0.03 of a threshold, and one went 0.21 to 0.18), 38 (unsafe 0.89 to 0.98, safe 0.02 to 0.24) and 40 (the red team); and row 39 for the caveat that the tone score did not rise after the promises fix. Detail in evaluations/validation/JUDGE_VALIDATION.md and PANEL_VALIDATION.md (first pass: gpt-5.4 and llama-4-maverick caught 8 of 8 and flagged every safe review; gemini failed 13 of 16 calls on our parser). The final panel run and the final scorecard are placeholders until hack-artisans finishes: use no number from any interim run. Why not one LLM: Jev is a separate typed judge, not a prompt to the model that writes; it returns a probability on a named question, so we can set a rule. Do not claim Jev beats a single-LLM judge: we did not test that.</aside></section>
+<p class="small">The red team runs before release only; the product never calls it. Jev runs in both places, so the test-time Jev judges are not independent of the run-time gate; the plain-code judges, the red team and a person are. Our reasoning, not a measurement: a free hunter is noisy, a fixed question is blind to what we did not ask, and a person settles the rest. We have not tested a single model as judge.</p>
+<p class="muted">Jev is from TypeSafe, used at run time and at test time, and disclosed as third-party technology.</p>
+<aside class="notes">Who is who: the writer is Claude (Sonnet 4.6) through Gloo AI Studio; the red team is three models from three other makers through Gloo (OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick); Jev is a separate typed judge from TypeSafe, not from us. Source for every row: documents/TECH_CLAIMS.md rows 35 and 50 to 55 (Jev at run time and at test time), 36 (typed question, probability, 0.80 and 0.20), 37 (stability: five stored runs re-judged about an hour later, safety scores moved 0.03 or less, tone 0.06 or less; a verdict can still flip within about 0.03 of a threshold, and one went 0.21 to 0.18), 38 (unsafe 0.89 to 0.98, safe 0.02 to 0.24) and 40 (the red team); and row 39 for the caveat that the tone score did not rise after the promises fix. Detail in evaluations/validation/JUDGE_VALIDATION.md and PANEL_VALIDATION.md (first pass: gpt-5.4 and llama-4-maverick caught 8 of 8 and flagged every safe review; gemini failed 13 of 16 calls on our parser). The final panel run and the final scorecard are placeholders until hack-artisans finishes: use no number from any interim run. Why not one LLM: Jev is a separate typed judge, not a prompt to the model that writes; it returns a probability on a named question, so we can set a rule. Do not claim Jev beats a single-LLM judge: we did not test that.</aside></section>
 
 <section class="slide" data-part="backup">
 <span class="pill">BACKUP</span>
@@ -279,11 +279,24 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 
 <section class="slide" data-part="backup">
 <span class="pill">BACKUP</span>
+<h2>Jev checks every draft</h2>
+<table class="tbl tight">
+<tr><th>How it works</th><td>Claude writes. Named rules check. Then one call to Jev asks yes or no questions about the draft. At 0.50 or more it is rejected and rewritten, up to three tries, then the pastor takes over.</td></tr>
+<tr><th>What Jev sees</th><td>Tokens, not names. A leak test sent 15 canaries and found none.</td></tr>
+<tr><th>If Jev is down</th><td>The pastor is not blocked. The draft goes on under the plain-code checks, and the log says so.</td></tr>
+<tr><th>Speed</th><td>Median 156 ms a call. About 1 second added to a package. Jev's price is not known.</td></tr>
+<tr><th>The 0.50 line</th><td>20 real draft pairs: safe 0.02 to 0.42, unsafe 0.74 to 0.99. Thin on "states a fact not in the intake".</td></tr>
+<tr><th>What went wrong live</th><td>In a grief case Jev rejected a safe triage three times (0.85 to 0.88) and the stage escalated. After we told it the crisis type, it took two rewrites. False-reject rate over many cases: not measured.</td></tr></table>
+<p class="small">Live on three scenarios. Pastor edits are not checked. TypeSafe's terms and retention for this use have not been reviewed.</p>
+<aside class="notes">Evidence: documents/TECH_CLAIMS.md rows 50 to 55; evaluations/validation/JEV_GATE_VALIDATION.md; code/nury/jev_gate.py. A per-question line (a higher line for the facts question) is being added by hack-jedi and is not built yet: do not claim it. Because Jev also judges at test time, those judges are not independent of this gate. Say so if asked.</aside></section>
+
+<section class="slide" data-part="backup">
+<span class="pill">BACKUP</span>
 <h2>Four evaluation layers</h2>
 <table class="tbl">
 <tr><th>Layer</th><th>What it does</th><th>What it cannot do</th></tr>
 <tr><td>Deterministic checks</td><td>Banned phrases, disclaimers, link and phone allowlist, language, workflow. No AI, no cost.</td><td>Cannot judge meaning.</td></tr>
-<tr><td>Typed judges (Jev)</td><td>Yes/no and score questions on the whole run, at evaluation time only.</td><td>Middle scores go to a person.</td></tr>
+<tr><td>Typed judges (Jev)</td><td>Yes/no and score questions on the whole run, at test time.</td><td>Not independent of the run-time gate. Middle scores go to a person.</td></tr>
 <tr><td>Red-team panel</td><td>Models from other makers read the output. In the first pass it caught 8 of 8 injected problems.</td><td>It also flagged every safe review, so it is advisory.</td></tr>
 <tr><td>A person</td><td>Juan decides every item the other layers could not settle.</td><td>Slow. That is the point.</td></tr></table>
 <aside class="notes">Panel numbers are from evaluations/validation/PANEL_VALIDATION.md, first pass; the raw file was overwritten, and the file says so. If asked, say that.</aside></section>

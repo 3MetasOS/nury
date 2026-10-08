@@ -10,7 +10,7 @@ The pastor stays in charge. After every stage, the pastor can Approve, Edit, or 
 
 Nury gives legal information only, never advice or predictions. Every rights point cites a vetted source file. There is no open web. Every output carries a disclaimer and urges an attorney. Nury never recommends a specific attorney. Nury is not a pastor, counselor, or lawyer.
 
-Each draft passes a guardrail check. An unsafe draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it.
+Each draft passes named rule checks and a Jev classifier. An unsafe draft is rejected and regenerated, up to three tries, then escalated. The pastor never sees it.
 
 Nury runs on Gloo's guarded Responses endpoint. We tested 20 hand-built scenarios. Results: [PLACEHOLDER: scorecard numbers].
 

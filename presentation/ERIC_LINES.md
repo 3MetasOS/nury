@@ -11,7 +11,7 @@ Status: approved 2026-10-07. hack-video generates these with ElevenLabs (paid pl
 | L5 | 6 rights, about 0:35 | Her language. Every point cited. | 5 | Her language. Every point cited. | Calm. Slight emphasis on "cited". |
 | L6 | 7 the turn, about 0:42 | Unsafe draft. Rejected. He never sees it. | 7 | Unsafe draft. Rejected. He never sees it. | The tension line. Slower, lower. Pause after "Rejected." Relief on "never sees it". |
 | L7 | 8 tech, about 0:52 | Gloo AI Studio writes, seeing tokens, not names. | 8 | Gloo AI Studio writes, seeing tokens, not names. | Even, factual, no hype. Say Gloo as GLOO. A small stop after "writes". |
-| L8 | 8 tech, about 0:58 | Tested with Jev. People review what is unsure. | 8 | Tested with Jev. People review what is unsure. | Even, factual. Say Jev as JEV. A small stop after "Jev." Softer on "what is unsure". |
+| L8 | 8 tech, about 0:58 | Jev checks every draft. People decide. | 6 | Jev checks every draft. People decide. | Even, factual. Say Jev as JEV. A small stop after "draft." Then "People decide." warm and firm. |
 | L9 | 9 stages, about 1:04 | A warm message. His to edit. | 6 | A warm message. His to edit. | Warm. Slightly softer than the line before. |
 | L10 | 10 copy, about 1:12 | Nury is not a pastor. It never sends. | 8 | Nury is not a pastor. It never sends. | Gentle and exact. This is the honesty line: Nury is not a pastor. Do not smile it. |
 | L11 | 11 dawn, about 1:18 | An AI crisis response agent. | 5 | An AI crisis response agent. | The close. Slow, warm, a little lower. Let it land. |
@@ -19,7 +19,7 @@ Status: approved 2026-10-07. hack-video generates these with ElevenLabs (paid pl
 ## Decisions from hack-sensei (2026-10-07)
 1. **L3** is sent as "Nury", the normal spelling (Juan chose it). The `voice.json` `noory` flag stays false. If the voice says it wrong, retake the line; do not respell.
 2. **L7 and L8 changed** so Gloo and Jev are named out loud, not only on screen. The old L7 (about names becoming tokens) and the old L8 (about checks and a person deciding) are both replaced.
-3. "A person decides" is covered by L8 "People review what is unsure" and by L9 "His to edit".
+3. "A person decides" is covered by L8 "People decide" and by L9 "His to edit".
 4. **L10** ("Nury is not a pastor. It never sends.") is approved. "The pastor does." is on screen.
 5. **L2** is approved. "The pastor has no lawyer on the line" goes on screen in row 2.
 6. **Memorial:** the film uses option 3 (8 s). The deck and the live pitch use option 2, unless Juan objects.
@@ -40,7 +40,7 @@ Say Gloo as GLOO and Jev as JEV. "2:07 AM" is sent as "two oh seven A M". No oth
 | L5 | 2.04 | 36 s, row 6 ends 42 s | yes |
 | L6 | 2.28 | 43.3 s, row 7 ends 52 s | yes |
 | L7 | 2.88 | 52.5 s, row 8 ends 64 s | yes |
-| L8 | 3.02 | 58.5 s, row 8 ends 64 s | yes |
+| L8 | 3.02 (old line; new line needs a re-render and a re-check) | 58.5 s, row 8 ends 64 s | re-check |
 | L9 | 1.44 | 65 s, row 9 ends 72 s | yes (quick; see retake note) |
 | L10 | 2.51 | 72.5 s, row 10 ends 78 s | yes |
 | L11 | 2.28 | 78.5 s, row 11 ends 82 s | yes |
@@ -56,3 +56,6 @@ The pause tags are in the request only; nothing on screen changes, and "Nury" is
 
 ## Tagline change (Juan, 2026-10-08): L11 changed
 L11 is now "An AI crisis response agent." (5 words; it replaces the previous tagline line). It needs a new render. On screen the brand line is "An AI Crisis Response Agent." The film's second on-screen persona caption is "A pastor. No lawyer on the line." (it says nothing about the pastor being alone). All other lines are unchanged and all stay at 8 words or fewer.
+
+## Jev change (2026-10-07): L8 changed
+Jev now checks every draft at run time (live on three scenarios), so the old L8 ("Tested with Jev. People review what is unsure.") was only half true. L8 is now "Jev checks every draft. People decide." (6 words). It needs a NEW RENDER, and its length and slot (row 8, starts about 58.5 s) must be checked again. L8 plays as the judge node lights, after the Gloo node. "People decide" is true: the pastor approves, edits or stops after every stage.

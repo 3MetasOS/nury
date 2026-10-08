@@ -27,7 +27,7 @@ The film's pastor at 2:07 AM is a story character. He is not a market limit.
 | 1 | Engine | `code/nury/engine.py`, `stages.py`, `audit.py` | Runs stages in order, chains approved or edited text, runs the correction loop (3 attempts), runs the approval gate, writes the audit log. Knows nothing about any one crisis. | BUILT, live verified |
 | 2 | Safety floor | `code/nury/guardrails.py`, `engine.py` | No advice, no outcome prediction, no claim to be a pastor, counselor or lawyer, disclaimer on every output, link and phone allowlist, no send path. A playbook or skill can add checks, never remove these. | BUILT, live verified |
 | 3 | Named checks | `code/nury/checks.py` | Plain-code rules on each draft. **20 in the registry.** The scored runs used 14. The other 6 (3 Scripture, 3 from the red-team panel) are offline tested and not part of any scored run yet. The headline stays "14 named checks" until the final scored build. | 14 live verified, 6 offline tested |
-| 4 | Jev gate | `code/nury/jev_gate.py` | Jev classifies every draft at run time, after the named checks. See section 3. | **IN PROGRESS** |
+| 4 | Jev gate | `code/nury/jev_gate.py` | Jev classifies every draft at run time, after the named checks. See section 3. | BUILT, live verified (3 scenarios, build `50668d6`) |
 | 5 | Privacy | `code/nury/privacy.py` | Tokens instead of identifiers before any outbound request. See section 6. | BUILT, live verified |
 | 6 | Playbooks | `code/playbooks/<id>/` | Everything specific to one crisis. See section 7. | BUILT, live verified (2 live) |
 | 7 | Skills | `code/skills/`, `nury/skills.py` | `voice` and `grounding` instruction modules added to stage prompts. No extra model call. | BUILT, live verified |
@@ -46,7 +46,7 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
    3. **Write.** One call to the Gloo guarded Responses endpoint, model `gloo-anthropic-claude-sonnet-4.6`. A full package is 5 Gloo calls (TECH_CLAIMS 1). A Gloo HTTP 403 counts as a failed try.
    4. **Detokenize.** Tokens become the real names again. A mangled token is repaired; an unknown token makes Nury ask again, twice at most.
    5. **Named checks.** The stage's checks plus the floor run in plain code. Any violation sends the draft back.
-   6. **Jev gate.** *IN PROGRESS.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At 0.50 or more, the draft is rejected and the reason category is `jev_<question>`. From 0.30 to 0.50 the draft passes and the audit logs "uncertain". Below 0.30 it passes.
+   6. **Jev gate.** *BUILT, live verified on 3 scenarios.* If the draft passed step 5, one batched call to the Jev decision API (from TypeSafe) asks the stage's yes/no questions. Each question is one where "yes" is the unsafe answer. At 0.50 or more, the draft is rejected and the reason category is `jev_<question>`. From 0.30 to 0.50 the draft passes and the audit logs "uncertain". Below 0.30 it passes. Pastor edits are not checked by the gate.
    7. **Loop.** A rejected draft is regenerated. The model gets the reasons, never the rejected text. Three attempts in all. After the third failure the stage escalates with no draft shown and "I'll handle this manually." The pastor never sees an unsafe draft.
    8. **Scripture** (pastoral stage only). The model returns a verse id from an approved list and at most two short why-lines. The app inserts the exact verse text. See section 8.
    9. **Approval gate.** The pastor sees only the draft that passed. Approve, Edit or Stop. Stop ends the run with "I'll handle this manually." Names the pastor adds in an edit are protected before the next stage.
@@ -61,17 +61,19 @@ What happens when a pastor runs a crisis, in order. The writer is **Claude Sonne
 | 13 gate tests, no network | BUILT, offline tested | `code/tests/test_jev_gate.py` (13 pass, run 2026-10-07 with no keys set) |
 | Jev request carries tokens, never names or the map | BUILT, offline tested | `code/tests/test_privacy.py` (`test_the_jev_gate_requests_carry_tokens_never_names_or_the_map`) |
 | The question wording equals the wording validated for the eval harness | BUILT, offline tested | `test_jev_gate.py` compares the two copies |
-| Line-at-0.50 smoke test on real drafts | BUILT, live verified (small) | `evaluations/validation/JEV_GATE_VALIDATION.md` (untracked file): 20 question and draft pairs from two scenarios, safe 0.02 to 0.42, unsafe 0.74 to 0.99, none missed, no false reject, Jev median 156 ms per call (30 calls) |
-| **Full live run with the gate on, end to end** | **NOT DONE** | The gate stays IN PROGRESS until a live pipeline passes with `provider` and gate events in the audit log. Then it becomes BUILT, live verified. |
+| Line-at-0.50 smoke test on real drafts | BUILT, live verified (small) | `evaluations/validation/JEV_GATE_VALIDATION.md`: 20 question and draft pairs from two scenarios, safe 0.02 to 0.42, unsafe 0.74 to 0.99, none missed, no false reject, Jev median 156 ms per call (max 271 ms, 30 calls) |
+| Full live runs with the gate on | BUILT, live verified (3 scenarios: detention 01 and 14, hospital h01; build `50668d6`) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. A package adds about 0.8 to 1.1 s of Jev time. |
+| What the live runs showed | Detention 14 (grief): with no crisis context Jev rejected the triage three times (0.85 to 0.88) and the stage escalated. After the crisis type was added to what Jev sees and the reason made specific, it completed with two regenerations. | TECH_CLAIMS 52; PROMPT_NOTES problem 24 |
+| A higher line for `assumes_facts` (0.60) and a per-question reason line | **IN PROGRESS** (a small commit from hack-jedi, not built) | Not claimed |
 | Gate on by default | Only when `JEV_API_KEY` is set | `jev_gate.enabled`; override with `NURY_JEV_GATE=on|off` |
 
 **Fails open.** With no key, a timeout, an error or a bad answer, the draft goes on to the pastor on the strength of the named checks and the floor. The audit logs decision "unavailable" with the reason, and later stages of the same run skip the gate. The product never blocks on Jev.
 
-**Known soft spot** (from the smoke test): the `assumes_facts` and `promises_action` questions score safe drafts at 0.26 to 0.42. Four of 20 safe pairs landed in the uncertain band. The highest, 0.42, is 0.08 from a false reject. A false reject costs an attempt, not safety. Three in a row escalate the stage. Stability across repeated calls was not measured for the gate.
+**Known soft spot** (from the smoke test): the `assumes_facts` and `promises_action` questions score safe drafts at 0.26 to 0.42. Four of 20 safe pairs landed in the uncertain band. The highest, 0.42, is 0.08 from a false reject. A false reject costs an attempt, not safety. Three in a row escalate the stage. Stability across repeated calls was not measured for the gate. The false-reject rate over many cases is not measured. Jev's price is not known, so no Jev dollar cost is quoted. TypeSafe's retention and terms for run-time use are not reviewed.
 
 ## 4. Test-time layers
 
-These judge the system before pastors use it. They never run inside a pastor's session, except that Jev now also has the run-time role in section 3.
+These judge the system before pastors use it. The red team and the attacker intakes never run inside a pastor's session. Jev does, as the gate in section 3, and also judges at test time.
 
 | Layer | What it is | Status | Evidence |
 |---|---|---|---|
@@ -90,7 +92,7 @@ These judge the system before pastors use it. They never run inside a pastor's s
 | Provider | When | What leaves the app | Status |
 |---|---|---|---|
 | **Gloo AI Studio** (guarded Responses endpoint, `platform.ai.gloo.com/ai/v2/guarded`) | Run time and test time | Tokenized prompts. Test time also sends what the pastor saw to the red-team models, through the same endpoint. | BUILT, live verified |
-| **Jev decision API from TypeSafe** (`api.typesafe.ai`) | Run time (the gate) and test time (the typed judges) | Run time: the tokenized draft, a tokenized context and the vetted sources for that stage. Never a real name, never the token map. Test time: synthetic families only. | Test time: live verified. Run time: **IN PROGRESS** |
+| **Jev decision API from TypeSafe** (`api.typesafe.ai`) | Run time (the gate) and test time (the typed judges) | Run time: the tokenized draft, a tokenized context and the vetted sources for that stage. Never a real name, never the token map. Test time: synthetic families only. | Test time: live verified. Run time: live verified (3 scenarios) |
 | **YouVersion Platform** | Run time, optional, only when `YVP_APP_KEY` and the Bible ids are set | A key header, a version id and a passage id. No case data. | BUILT, live verified |
 
 Nothing else goes out. There is no mail, SMS, chat or share path. `NoSendPath` in `code/tests/test_core.py` scans `code/nury` and `code/app` for mail, FTP, socket, browser and SMS libraries and finds none. It proves nothing can reach the family. It does not make the three calls above disappear, and the docs say all three.
@@ -202,7 +204,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M3 | Oct 6 to 7 | Pastor app | Selector, intake, pipeline, package, audit, cases, revision, network built. Home, chooser and shared shell **in progress** (BUILD_LOG 95, 97). |
 | M3b | Oct 6 to 7 | Scripture | 12 verses approved (BUILD_LOG 93); YouVersion live end to end (BUILD_LOG 96); last Scripture rule added. |
 | M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **163 pass now** (run 2026-10-07 with no keys set). |
-| M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live end-to-end check pending.** |
+| M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** A small follow-up (a higher line for `assumes_facts`, a per-question reason line) is in progress. |
 | M4 | Oct 7 | Scored runs | Earlier scorecards exist in `evaluations/results/`. The final scored set (detention 20, hospital 8), the attacker set (18) and the red-team run on the final sets are owed by hack-artisans. No number is quoted until every review item is decided. |
 | M5 | Oct 7 | Description draft; deck | Drafts done by hack-ninja. Real numbers only from the final run. |
 | M6 | Oct 7, 15:00 | End-to-end demo with one rejected-and-regenerated draft; harness scores | Open. |
@@ -220,7 +222,7 @@ Nothing here may be claimed in the film, the deck or the description.
 **Not built, other:** more crises than two (sudden death and house fire are cards only); official lists for states other than Colorado; family languages beyond Spanish and English; a UI beyond English; voice input; a printable PDF; an offline mobile app; licensed Bible versions; other traditions' canons; a screen reader test; native-speaker review of the Spanish; any use by a real pastor (every family is synthetic); the case update loop, the possible-paths map and the pastor-triggered "find more" search (all PLANNED, after submission); the verse selector at the gate (PLANNED).
 
 **Not known, and said plainly:**
-- The Jev gate has not passed a full live pipeline. Until it does, it is IN PROGRESS and the product's safety rests on the floor and the named checks.
+- The Jev gate ran live on three scenarios only. Its false-reject rate over many cases is not measured, and on one grief case it rejected safe drafts until we gave it the crisis type. With Jev down, the product's safety rests on the floor and the named checks.
 - Jev as a gate was smoke-tested on 20 pairs from two scenarios. It was not calibrated, and its stability across calls was not measured.
 - The red team cannot gate: it flags safe text. It is advisory.
 - The Jev typed judges are not independent of the gate any more (section 4).
@@ -231,4 +233,4 @@ Nothing here may be claimed in the film, the deck or the description.
 
 ## 14. Rules that stay
 
-Vetted sources only. No open web. No send path. Legal and medical information only, never advice, prediction or strategy. Nury is not a pastor. Humanitarian, never political. An unsafe draft is rejected and regenerated, three tries, then handed to the pastor, and the pastor never sees it. Keys come from the environment only. The submission carries: "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules." When the run-time gate is verified live, hack-sensei gives the exact new truth for that line and for "Jev at test time only", which no longer holds.
+Vetted sources only. No open web. No send path. Legal and medical information only, never advice, prediction or strategy. Nury is not a pastor. Humanitarian, never political. An unsafe draft is rejected and regenerated, three tries, then handed to the pastor, and the pastor never sees it. Keys come from the environment only. The submission carries: "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules." Jev is used at run time (the gate) and at test time (the typed judges); the submission line names the harness, and hack-sensei decides whether to extend it to name the run-time use.
