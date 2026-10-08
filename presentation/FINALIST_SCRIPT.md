@@ -2,7 +2,7 @@
 
 Status: **treatment A chosen by Juan** (2026-10-07), borrowing one plain line from C. Replaces the earlier finalist script. Owner: hack-ninja writes, hack-video builds, hack-sensei signs off on Eric's lines.
 Hard rules: at most 90 s. Eric (ElevenLabs, disclosed) narrates; every line is 8 words or fewer. The memorial is last, text only, no synthetic voice. No real people, no real children, no agency imagery or names. Humanitarian, never political. Technical claims from `documents/TECH_CLAIMS.md`, VERIFIED rows only, plus the Jev disclosure caption verbatim. Every sound is synthesized or licensed.
-**Eric's lines are NOT to be rendered until hack-sensei has reviewed `presentation/ERIC_LINES.md`.** Build the pictures and the sound first.
+**Eric's lines are approved (hack-sensei, 2026-10-07). Render them now with ElevenLabs.** "Nury" is sent as the normal spelling, with no respelling.
 
 ## The arc of light
 Night (0:00 to 0:17, ink and a single lamp) to lantern (0:17, the lantern lights, the card builds) to light (0:25 to 1:18, the work, amber on a paper-grey that brightens) to dawn (1:18, paper) to the memorial. The grade moves one way: ink to paper.
@@ -43,7 +43,7 @@ The plain line borrowed from C: "Five stages. A gate after each. Nothing sent." 
 | 11 | 1:10-1:14 | 4 s | DAWN. The ink has washed to paper. The lantern, small, deep amber. | L11 | The pad fades out. One soft high tone, like first light (3 s attack). | Nury. the crisis-response agent for solo pastors | REUSE end card, re-skinned |
 | 12 | 1:14-1:30 | 16 s | MEMORIAL. Paper, a deep-amber lantern, Juan's words, text only. Slow fade in and out. A hidden slot for one portrait (Juan sends it tomorrow). | (none) | Near silence. Faint room tone only, about -40 dB. No voice. | Memorial text, option 2 (see presentation/MEMORIAL.md) | REUSE memorial card (memorial.json: option 2) |
 
-## Eric's lines (11; each 8 words or fewer; full review sheet in `ERIC_LINES.md`)
+## Eric's lines (11; each 8 words or fewer; APPROVED by hack-sensei; full sheet in `ERIC_LINES.md`)
 | # | Row | Line | Words |
 |---|---|---|---|
 | L1 | 2 persona | 2:07 AM. Maria is calling. | 5 |
@@ -52,8 +52,8 @@ The plain line borrowed from C: "Five stages. A gate after each. Nothing sent." 
 | L4 | 5 the tool | Five stages. A gate after each. | 6 |
 | L5 | 6 rights | Her language. Every point cited. | 5 |
 | L6 | 7 the turn | Unsafe draft. Rejected. He never sees it. | 7 |
-| L7 | 8 tech | Names become tokens before leaving his computer. | 7 |
-| L8 | 8 tech | Checks reject unsafe drafts. A person decides. | 7 |
+| L7 | 8 tech | Gloo AI Studio writes, seeing tokens, not names. | 8 |
+| L8 | 8 tech | Tested with Jev. People review what is unsure. | 8 |
 | L9 | 9 stages | A warm message. His to edit. | 6 |
 | L10 | 10 copy | Nury is not a pastor. It never sends. | 8 |
 | L11 | 11 dawn | The crisis-response agent for solo pastors. | 6 |
@@ -73,11 +73,14 @@ Mix: Eric on top, pad about 20 dB under him, ticks about 25 dB under. Leave half
 ## What is reused, and what is new
 - **Reuse:** the real app run (`video/remotion/public/run.mp4`: selector, intake, triage, gate, rights, guardrail strip, attorney, checklist, message, copy), the dictionary card, the tech beat, the end card, the memorial card.
 - **New:** three vector night shots (the table, the lit window, the dawn wash) and the ink-to-paper grade; a synthesized pad, ticks and foley; 11 new Eric lines; the plain line under the entry.
-- **Flags that exist:** `memorial.json` (`option`, `approved`, `portrait`), `voice.json` (`noory`: the voice is given "Noory" so it says Nury as NOO-ree), `credits.json`.
+- **Flags that exist:** `memorial.json` (`option`, `approved`, `portrait`), `voice.json` (`noory` stays false: "Nury" is sent as written), `credits.json`.
+
+## Decisions already made
+Memorial: the film is option 3 (8 s); the deck and live pitch are option 2, unless Juan objects. L3 is "Nury", normal spelling. Gloo and Jev are named out loud (L7, L8).
 
 ## Honest limits
 - The Eric lines are new ElevenLabs generations: one take per line, a few retakes.
 - Row 3's window shot is a synthetic family. It is labeled on screen.
 - The memorial text is not approved yet. The portrait slot stays hidden until Juan sends a photo.
-- No scorecard number is on screen. The tech beat shows only VERIFIED rows. If one of them changes, change the caption.
+- No scorecard number is on screen. The tech beat shows only VERIFIED rows. If one of them changes, change the caption. The red team is not a caption unless hack-sensei confirms the panel is validated for the film.
 - The pad, ticks and foley are made in code; if taste says they sound thin, the fallback is a licensed track, which needs a license check first.
