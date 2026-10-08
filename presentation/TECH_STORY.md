@@ -117,3 +117,8 @@ Honest: It ran live on three scenarios and adds about a second to a package. The
 - Say "ten checks", "first pass" and "smoke test" where the file does. Do not round up.
 - Final numbers (pass rate, cost, latency per run) only from the final scorecard. Otherwise the placeholder stays or the line is cut at 16:00 Oct 7.
 - No hype words. No third-party logos.
+
+**12. Did you use an open-source agent framework, or copy someone's harness?** (backup; not in the 3-minute talk)
+Short: No. The core is plain Python and `requests`, written for this project from Juan's prework brief. The pattern (write, check, regenerate with the reasons, a person at the gate) is a common one, and we do not claim to have invented it. What is ours: the checks are plain code, the model sees reasons and never the rejected text, and the pastor never sees an unsafe draft.
+Honest: We have not compared Nury with other agent harnesses, so we make no claim about how it differs in quality or speed. If a part looks like another project, it is because the pattern is common. Jev is a third-party service we call; we did not build it. Source: `documents/product/ENGINE_WALKTHROUGH.md`, "Where the design came from".
+
