@@ -1,11 +1,11 @@
 # Consent and confidentiality note (draft for Juan to approve)
 
-Status: **DRAFT. Not in the app.** hack-sensei assigned the build to hack-jedi and hack-artisans after Juan approves the words. Written by hack-ninja, 2026-10-07. Source: `documents/STANDARDS_ALIGNMENT.md` (informed by NASW's consent and confidentiality wording, and by the pastoral confidentiality norm; this note does not meet either one).
+Status: **APPROVED by hack-sensei (2026-10-07): the fuller four-sentence version is the default.** Juan can edit the words later; he should be told it is the default. hack-sensei sends it to hack-artisans for the intake screen (above Begin), the top of a saved case and the About sheet. Not yet in the app. Written by hack-ninja, 2026-10-07. Source: `documents/STANDARDS_ALIGNMENT.md` (informed by NASW's consent and confidentiality wording, and by the pastoral confidentiality norm; this note does not meet either one).
 
-## Recommended text (3 sentences)
+## Shorter text (3 sentences, not the default)
 > Nury saves cases so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Share only what the family has agreed to share.
 
-## Fuller option (4 sentences, adds what is saved and that nothing is sent)
+## DEFAULT text (4 sentences, approved: says what is saved and that nothing is sent)
 > Nury saves approved cases, with the names you typed, so you can come back to them. There is no sign-in yet: anyone who can open this app can open the saved cases. Nury sends nothing to the family. Share only what the family has agreed to share.
 
 ## Why each sentence is true today
@@ -24,4 +24,4 @@ No "confidential", "private", "secure", "encrypted", "protected" or "safe". None
 When sign-in exists, rewrite the second sentence. Until then, the note must keep saying there is none. If the note ever says more than is true, it is worse than no note.
 
 ## Where it goes (for the builders)
-On the intake screen, above the Start button, and at the top of a saved case. Short, plain, one block, not a checkbox. English for the pastor. Spanish is for the family's drafts and does not apply here.
+On the intake screen above the Begin button, at the top of a saved case, and on the About sheet. Short, plain, one block, not a checkbox. English for the pastor. Spanish is for the family's drafts and does not apply here.
