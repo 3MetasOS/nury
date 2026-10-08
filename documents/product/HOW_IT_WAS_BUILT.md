@@ -16,6 +16,8 @@ Written 2026-10-07 by hack-ninja for the app route `/how-it-was-built`. Sources:
 
 "Live" means it ran. It does not mean it scored well. No pass rate is quoted on this page until the final scored run is decided.
 
+**Technical reference.** Engineers will find the exact facts (the network retry, the error table, every environment variable, the HTTP routes, the data folders, the test commands) in a separate document: `documents/product/TECHNICAL_REFERENCE.md`. Every claim in it says how it was checked.
+
 ## Contents
 
 1. [What Nury is and how a run works](#1-what-nury-is-and-how-a-run-works)
