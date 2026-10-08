@@ -15,7 +15,8 @@ We test it in four layers. Plain code checks, with no AI. Typed judges from the 
 | TC # | Claim (what we say) | The number | Status in TECH_CLAIMS |
 |---|---|---|---|
 | 1 | Every model call goes through Gloo AI Studio's guarded Responses endpoint, using Claude Sonnet 4.6. | 5 Gloo calls for a full package | VERIFIED live |
-| 3 | Nury has no send path. A test scans the code for mail, FTP, socket, web-browser and SMS libraries and finds none. | 1 outbound call site, 0 send paths | VERIFIED offline test |
+| 3 | There is no send path. The product's outbound calls are the Gloo request and, only when the YouVersion key is set, a passage-id request to YouVersion for Scripture text. Neither can send anything to the family. A test scans the code for mail, FTP, socket, web-browser and SMS libraries and finds none. | 0 send paths | VERIFIED offline test |
+| 3 (gated wording) | **GATED until hack-sensei confirms YouVersion is on in the final build:** "Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app; no send path." If it is off, say: "Only the model request leaves Nury, with tokens instead of names; no send path." Do not say "one outbound call". | n/a | pending |
 | 4, 5 | Each stage is drafted, checked by rules, and if it fails, the reasons (not the draft) go back for a new try. Three attempts, then escalate. | 14 named checks, 5 floor checks, 3 attempts | VERIFIED live |
 | 6 | A rejected draft never reaches the pastor. It goes to the audit log with categories only. | 0 rejected drafts shown | VERIFIED offline test |
 | 9 | Nothing Nury shows can contain an invented link, phone number, bare web address or email. A real gap (bare domains passed) was found and fixed on 2026-10-07. | 4 kinds checked | VERIFIED offline test |
@@ -41,7 +42,7 @@ Tests: I quote only the product count (91). The evaluations suite adds a few doz
 **Held back by the gate (hidden in the deck until Sensei confirms in writing):** skills (TC 20), the case file (TC 22, 23), church network (TC 14), the official list (TC 13: 28 read, 21 approved, 7 held).
 
 ## 3. Deck: where the story sits
-- Slide 5, "How it is built": one diagram, names in text, no third-party logos (TC 1, 3, 4, 5, 16). A line under it gives the numbers: 14 named checks plus 5 floor checks, 5 Gloo calls, no send path.
+- Slide 5, "How it is built": one diagram, names in text, no third-party logos (TC 1, 3, 4, 5, 16). A line under it gives the numbers: 14 named checks plus 5 floor checks, 5 Gloo calls, no send path. The outbound-calls wording is gated (row 3).
 - Slide 8, "Use of AI": the four layers with numbers from TC 16, 26, 28 and 30.
 - Slide 9: "what broke and what changed" stays as the proof of honesty.
 
