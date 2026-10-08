@@ -1,13 +1,13 @@
 # Nury technical reference
 
-For engineers. Exact facts, with file and line anchors. Written 2026-10-07 by hack-ninja from the code in the working tree (committed HEAD `08ef40b` plus uncommitted changes, which are named where they matter). hack-jedi fact-checks this after the triage fix. Line numbers move; function and constant names will not.
+For engineers. Exact facts, with file and line anchors. Written 2026-10-07 by hack-ninja from the code at commit `6a5de3d` and later (the learning-loop wiring in `ca6d9aa` included). hack-jedi fact-checked it the same evening: about 110 line anchors, the constants and defaults, and the environment table all matched; the corrections below come from that check and from three bug fixes made after I wrote it. Line numbers move; function and constant names will not.
 
 **How each claim was checked.** Every row or paragraph carries one of these:
 
 | Mark | Meaning |
 |---|---|
 | **run** | I ran it or ran a test and saw the result. |
-| **test** | A named test in `code/tests/` proves it, and the offline suite passes (257 tests, see section 11). |
+| **test** | A named test in `code/tests/` proves it, and the offline suite passes (264 tests on 2026-10-07 evening, see section 11). |
 | **code** | I read the code and did not run it. |
 | **NOT VERIFIED** | I could not check it. Section 12 lists these in one place. |
 
@@ -46,7 +46,7 @@ File: `code/nury/gloo_client.py`. Added in commit `1e019ea`.
 **What is retried.** **test** (`tests/test_gloo_retry.py`)
 
 - HTTP 429, 500, 502, 503 and 504, unless the 429 body matches `_QUOTA` (`retryable_status`, line 34).
-- `requests.exceptions.ConnectionError` and `requests.exceptions.Timeout` raised by `requests.post` (the `except` at line 104). By the `requests` class hierarchy this also covers `ConnectTimeout`, `ReadTimeout`, `SSLError` and `ProxyError`. The tests use the two base classes. The subclasses are **NOT VERIFIED** by a test.
+- `requests.exceptions.ConnectionError` and `requests.exceptions.Timeout` raised by `requests.post` (the `except` at line 104). By the `requests` class hierarchy this also covers `ConnectTimeout`, `ReadTimeout`, `SSLError` and `ProxyError`. The tests use the two base classes. hack-jedi confirmed the subclass relationships by running Python: `SSLError`, `ProxyError`, `ConnectTimeout` and `ReadTimeout` are subclasses of `ConnectionError` or `Timeout`, and are retried; `InvalidURL`, `ChunkedEncodingError` and `TooManyRedirects` are not, as the list below says. **run** (hack-jedi), no test.
 
 **What is never retried.** **test**
 
@@ -59,7 +59,7 @@ File: `code/nury/gloo_client.py`. Added in commit `1e019ea`.
 **The backoff.** `_wait(attempt, resp)` (line 42): the wait before try number `attempt + 1` is `NURY_GLOO_RETRY_BASE * 2 ** (attempt - 1)` seconds, base default 1.0. So the first retry waits **1 s** and the second waits **2 s**. **test** (`test_5xx_codes_are_retried_with_backoff_one_then_two_seconds`: waits recorded as `[1.0, 2.0]`).
 
 - **There is no jitter.** The schedule is exact and the same for every caller. **code**
-- **Retry-After.** If the response has a `Retry-After` header that parses as a number, that value replaces the backoff for that wait, capped at 10 s (line 51). It is a replacement, not an addition. A header that is a date (HTTP-date form) does not parse as a float, the `ValueError` is caught and `ra` becomes None, so the normal backoff applies (lines 48 to 50). **test** (`test_retry_after_is_honored_up_to_ten_seconds`) for the number form; the date form is **code** only. Retry-After is read only from a response, so a dropped connection or timeout always uses the backoff.
+- **Retry-After.** If the response has a `Retry-After` header that parses as a number, that value replaces the backoff for that wait, capped at 10 s (line 51). It is a replacement, not an addition. A header that does not parse as a number, which includes an HTTP-date, raises a `ValueError` that is caught, so `ra` becomes None and the normal backoff applies (lines 48 to 50). **test** (`test_retry_after_is_honored_up_to_ten_seconds` covers the number form and a non-numeric value, `soon`); a real HTTP-date takes the same path but no test uses one. Retry-After is read only from a response, so a dropped connection or timeout always uses the backoff.
 
 **The most it can wait.** Waits happen between tries, at most twice. Without `Retry-After`: 1 s + 2 s = **3 s**. With `Retry-After` on both: up to 10 s + 10 s = **20 s**. **code** (computed from the constants). Each try can itself last up to the 120 s `requests` timeout, which `requests` applies to the connect step and to each wait for data, so there is no deadline over the whole call. If every try hung until its timeout, one call could take about three times 120 s plus the waits, roughly 6 minutes. That worst case is computed from the code and **NOT VERIFIED** by running.
 
@@ -159,7 +159,7 @@ The line is **0.50 for every question except `assumes_facts`, which is 0.60** (`
 
 ## 5. The YouVersion provider
 
-File: `code/nury/scripture_providers.py`. **code**, **test** (`tests/test_scripture.py`, 39 tests; live runs 2026-10-07 in `evaluations/LIVE_COST_LOG.md`)
+File: `code/nury/scripture_providers.py`. **code**, **test** (`tests/test_scripture.py`, 41 tests; live runs 2026-10-07 in `evaluations/LIVE_COST_LOG.md`)
 
 **When it is on.** `default_chain()` (line 175) returns `[YouVersionProvider, BankProvider]` when `YVP_APP_KEY` is set, otherwise `[BankProvider]`. A Bible id is read from `YVP_BIBLE_ES` and `YVP_BIBLE_EN`; a language with no id has no YouVersion version. The bank is always last, and the engine adds it if the chain lacks one (`engine._fetch_verse`, line 328). **code**
 
@@ -185,7 +185,7 @@ File: `code/nury/scripture_providers.py`. **code**, **test** (`tests/test_script
 
 **What is logged.** On success with dropped classes: `scripture_trimmed` (`dropped`, `raw_chars`). On any fallback: `scripture_fallback` (`provider` that answered, `reasons` list). On every verse: `scripture` (`verse` id and `provider`). The ledger records `scripture_provider`. **code**
 
-**Not verified.** A provider that raises something other than `ProviderUnavailable` (for example `AttributeError` if the metadata JSON were a list) is not caught by `fetch`, and would propagate out of `run_stage`. The session's `except Exception` (`server.py` line 286) would then end the run with the exception name as the error. **NOT VERIFIED**, no test.
+**Fixed after I wrote the first version.** `fetch` now catches any exception from a provider, not only `ProviderUnavailable`, notes the provider and the exception name as the fallback reason, and moves to the next provider (`scripture_providers.py` lines 193 to 196, commit `6a5de3d`, with tests). A YouVersion answer of an unexpected shape, for example a list instead of an object, now falls back to the bank and is logged as `scripture_fallback` with the exception name. **code**, **test**
 
 ## 6. The privacy pipeline
 
@@ -229,18 +229,18 @@ Every failure mode the code handles, what the pastor sees, what is logged, and w
 | 11 | The model reply holds a token the map does not know | Nothing, or a visible `[?]` gap at the gate if it still fails after 2 repair calls | The client's own event `unknown_token`, then `token_dropped` (not in the audit log) | Asks again up to 2 times | test |
 | 12 | The pastor chooses Stop | "I'll handle this manually." | `gate` (action `stop`); outcome `stopped_by_pastor` | Stage and run end | test |
 | 13 | The pastor edits and the edit would fail a check | The edit is kept | `edit_check` (warnings) | Flags, never blocks: the pastor owns the edit | code |
-| 14 | An unexpected exception escapes `run_stage` (for example every Scripture provider unavailable, or a provider raising an unexpected type) | "Nury stopped. Nothing was sent." (`s.error` is set) | None in the audit log. The ledger run line is written with the partial results. | `Session.work` catches `Exception` and sets `self.error` to the exception name; the run ends (`server.py` lines 286 to 293) | code |
+| 14 | An unexpected exception escapes `run_stage` (for example a bug in the engine, or the privacy layer raising) | "Nury stopped. Nothing was sent." (`s.error` is set) | None in the audit log. The ledger run line is written with the partial results. | `Session.work` catches `Exception` and sets `self.error` to the exception name; the run ends (`server.py` lines 286 to 293) | code |
 | 15 | The ledger or the feedback file cannot be written | Nothing | Nothing | `record_*` and `stage_done` return `False`; the run goes on | test |
 | 16 | Save a case before every stage is approved or edited | "Nothing was saved. Every stage must be approved or edited first." (HTTP 400) | None | `CaseError`, nothing written | code |
 | 17 | `POST /api/run` for a crisis that is `soon`, unknown, or has a source still pending approval | "That crisis is not available yet." (HTTP 400) | None | `PlaybookError` is caught and the message is fixed, so the reason is not shown | code |
 | 18 | `POST /api/run` with an empty intake | "Type what the family told you." (HTTP 400) | None | Refused | code |
 | 19 | An unknown session id | `{"error": "no such session"}` (HTTP 404) | None | None | code |
 | 20 | A gate decision when no gate is waiting | `{"ok": false}` | None | `decide` returns False | code |
-| 21 | A request body that is not valid JSON to the main server | **Nothing: the connection is closed with no response.** The server prints a traceback to stderr. | stderr traceback only | `_body` has no `try` (`server.py` line 404), so `json.loads` raises out of `do_POST`. | **run** (curl to `/api/propose-terms` with `{bad json`) |
+| 21 | A request body that is not valid JSON, or valid JSON that is not an object, to any main-server POST route | `{"error": "The request was not valid JSON."}` or `{"error": "The request must be a JSON object."}` (HTTP 400) | None | `do_POST` wraps `_body()` in a `try` and checks the type (`server.py` lines 542 to 547, commit `23e5288`). Before that commit the connection was dropped with a traceback. | **run** (curl to `/api/propose-terms` with `{bad json` and with `[1,2]`) |
 | 22 | The same to the network API (`/api/network...`) | `{"error": "that was not valid JSON"}` (HTTP 400) | None | Handled | code |
 | 23 | An unknown route | `{"error": "not found"}` (HTTP 404) | None | None | **run** |
 | 24 | A write to the demo network (`NURY_DEMO_NETWORK=1`) | "These are fictional demo contacts. They are read only." (HTTP 403) | None | Refused | code |
-| 25 | `GLOO_API_KEY` missing (and no repo-root `.env`) | Unknown | Unknown | `GlooClient()` raises `RuntimeError("Set GLOO_API_KEY in the environment.")` while `Session.__init__` builds the client; `/api/run` catches only `PlaybookError`, so it would escape `do_POST` like row 21 | **NOT VERIFIED**: my test could not reproduce it because the repo-root `.env` supplied a key |
+| 25 | `GLOO_API_KEY` missing (and no repo-root `.env`) | Unknown | Unknown | `GlooClient()` raises `RuntimeError("Set GLOO_API_KEY in the environment.")` while `Session.__init__` builds the client; `/api/run` catches only `PlaybookError`, so the `RuntimeError` would escape `do_POST` and drop the connection with a traceback (the 400 in row 21 covers only the body, not this) | **NOT VERIFIED**: my test could not reproduce it because the repo-root `.env` supplied a key |
 | 26 | The server restarts | A running session is gone (HTTP 404 on its id). Saved cases remain. | None | `SESSIONS` is a dict in memory (`server.py` line 37); there is no persistence and no expiry | code |
 
 **Outcomes** (`compute_outcome`, `engine.py` lines 354 to 379): `package_complete`; `stopped_by_pastor` (a stage was stopped); `blocked` (a stage ended in status `error`, **or** every rejection category was `gloo_block`); `escalated` (any other failure). **The `blocked` label covers two different causes: a Gloo guardrail refusal and a network or HTTP failure.** The audit log tells them apart (`gloo_block` versus `error`); the outcome does not. **code**
@@ -271,7 +271,7 @@ Every variable the code reads (searched `NURY_*`, `YVP_*`, `JEV_*`, `GLOO_*`, `P
 | `NURY_NETWORK_DIR` | `network` | `network_api.py:28` | Where the church network is kept (the server passes its own path for the engine; see section 9). |
 | `NURY_DEMO_NETWORK` | unset | `network.py:206` | `1`: use fictional demo contacts, read only. |
 | `NURY_ALLOW_PENDING` | unset | `playbook.py:72`, `scripture.py:86`, `tools/new_playbook.py` | `1`: allow sources and verses whose approval is pending. For tests and the new-playbook scaffold. Never in the app. |
-| `NURY_FORCE_REJECTION` | unset | `engine.py:146` | `1`: inject one unsafe draft **on the stage with id `rights`** (once). It does nothing on a playbook with no `rights` stage, such as hospital. |
+| `NURY_FORCE_REJECTION` | unset | `engine.py:147` | `1`: inject one unsafe draft on the first stage after triage, once, in whichever playbook runs (`rights` in detention, `info` in hospital; `_fault_for`, `engine.py` lines 142 to 149, commit `6a5de3d`). |
 | `NURY_TEST_ESCALATE` | unset | `server.py:228` | `1`: with the demo box ticked, the stage 2 fault repeats 3 times so the escalation path can be seen. Test only. |
 | `NURY_PRICE_IN`, `NURY_PRICE_OUT` | unset | `pricing.py:34`, `tools/live_checks.py`, `evaluations/skills_ab.py`, `adapter_nury.py:20` | USD per 1M tokens. Both must be set and numeric; they then override the price table. |
 | `NURY_ALLOW_EVAL_RUN` | unset | `app/evals_api.py:121,153` | `1`: allows `POST /api/evals/smoke`, which starts real Gloo and Jev calls and costs money. |
@@ -299,7 +299,7 @@ Every variable the code reads (searched `NURY_*`, `YVP_*`, `JEV_*`, `GLOO_*`, `P
 
 Source: `code/app/server.py` (class `H`, `do_GET` line 426, `do_POST` line 533, `do_PUT` line 420, `do_DELETE` line 423) and `code/app/network_api.py`. The server binds **`127.0.0.1`** (`server.py` line 636), uses `ThreadingHTTPServer`, has **no authentication**, and writes **no request log** (`log_message` is a no-op, so intake text stays out of logs). JSON responses carry `Cache-Control: no-store`. **code**
 
-Routes marked **WT** are in the working tree and **not committed** when this was written (the committed server has 24 route branches; the working tree has 27). **code**
+All routes below are committed. The server has 27 route branches since `ca6d9aa` (24 before the learning-loop wiring). **code**
 
 ### Pages and static files
 
@@ -309,7 +309,7 @@ Routes marked **WT** are in the working tree and **not committed** when this was
 | `GET /network` | The church network screen (`network.html`). |
 | `GET /how-it-was-built` | The documentation page (built from `HOW_IT_WAS_BUILT.md` by `app/build_docs.py`). |
 | `GET /observability` | The ops page. |
-| `GET /improvement` **WT** | The learning-loop reviewer page. |
+| `GET /improvement` | The learning-loop reviewer page. |
 | `GET /<name>.html`, `.css`, `.js`, `.svg`, `/fonts/<name>.woff2` | Static files. Only names matching `^/(fonts/)?[A-Za-z0-9_-]+\.(html\|css\|js\|svg\|woff2)$` and existing in `code/app/static/` are served (`STATIC_OK`, line 33). Fonts are cached for 7 days. |
 
 ### The pastor's run
@@ -324,7 +324,7 @@ Routes marked **WT** are in the working tree and **not committed** when this was
 | `GET /api/session/<id>` | The session view: stages, the gate, a progress phase, the audit **through `safe_event`**, the package once done, and the next-steps map. 404 `no such session`. | A rejected draft, a Gloo error body, or the token map. |
 | `POST /api/session/<id>/decision` | Body `{action: approve\|edit\|stop, text}`. `edit` needs text. Returns `{"ok": bool}`. 400 `bad request`. | |
 | `POST /api/session/<id>/save` | Saves the approved package as a case. 400 unless every stage is approved or edited. Returns `{id, version, path}`. | |
-| `POST /api/feedback` **WT** | Body `{session, stage, chip}`. Records a reason chip when `NURY_FEEDBACK` is on and the chip is one of the five. Returns `{"ok": bool}`. | |
+| `POST /api/feedback` | Body `{session, stage, chip}`. Records a reason chip when `NURY_FEEDBACK` is on and the chip is one of the five. Returns `{"ok": bool}`. | |
 | `GET /api/features` | `{network, followup, feedback, consent_sentence, chips}`. The consent sentence and chips are non-empty only when `NURY_FEEDBACK` is not `off`. | |
 
 ### Cases
@@ -363,9 +363,9 @@ In demo mode (`NURY_DEMO_NETWORK=1`) every POST, PUT and DELETE returns 403 `The
 | `GET /api/evals` | The evaluation summary and the smoke-run estimate. | Draft text. |
 | `POST /api/evals/smoke` | Starts a 3-scenario evaluation in the background (`run.py --agent nury --jev --only 01,09,12`). **Costs money.** 403 unless `NURY_ALLOW_EVAL_RUN=1`; 400 unless the body confirms `{"confirm": true, "estimate_usd": <the shown estimate>}`; 409 if one is running or another live job is found with `pgrep`. | |
 | `GET /api/rules` | The rules table for the documentation page (`rules_info.rules()`). | |
-| `GET /api/improvement` **WT** | The reviewer's view of the learning loop: the latest report's aggregate tables and the candidates' metadata. Shows the synthetic example, labelled, until a real report exists. | Any feedback line, draft or name. |
+| `GET /api/improvement` | The reviewer's view of the learning loop: the latest report's aggregate tables and the candidates' metadata. Shows the synthetic example, labelled, until a real report exists. | Any feedback line, draft or name. |
 
-**Methods not listed return 404** `{"error": "not found"}`; `PUT` and `DELETE` are answered only for the network. **run** for the unknown-route 404.
+**Methods not listed return 404** `{"error": "not found"}`; `PUT` and `DELETE` are answered only for the network. **run** for the unknown-route 404. **A POST body that is not a JSON object returns 400** (row 21 of the error table). `GET /api/features` also returns `named_checks` (the registry count, read from the code; 20 on 2026-10-07). **run**
 
 ## 11. CI and test commands
 
@@ -376,21 +376,21 @@ code/test.sh                       # = cd code && python3 -m unittest discover -
 cd code && python3 -m unittest discover -s tests
 ```
 
-`tests/nonet.py` removes the live keys from the environment and turns the Jev gate off for every test. Count on 2026-10-07: **257 tests, OK** (3.6 s), run with `GLOO_API_KEY`, `JEV_API_KEY` and `YVP_APP_KEY` unset. **run**
+`tests/nonet.py` removes the live keys from the environment and turns the Jev gate off for every test. Count on 2026-10-07 evening: **264 tests, OK** (3.3 s), run with `GLOO_API_KEY`, `JEV_API_KEY` and `YVP_APP_KEY` unset. **run**
 
 | File | Tests | File | Tests |
 |---|---|---|---|
-| `test_core.py` | 50 | `test_casefile.py` | 11 |
-| `test_scripture.py` | 39 | `test_official.py` | 10 |
+| `test_core.py` | 53 | `test_casefile.py` | 11 |
+| `test_scripture.py` | 41 | `test_official.py` | 10 |
 | `test_learning_loop.py` | 19 | `test_ci.py` | 8 |
 | `test_jev_gate.py` | 15 | `test_pricing.py` | 7 |
 | `test_feedback.py` | 15 | `test_rules.py` | 6 |
 | `test_ledger.py` | 14 | `test_new_playbook.py` | 5 |
 | `test_privacy.py` | 13 | `test_audit_hooks.py` | 5 |
-| `test_panel_fixes.py` | 13 | `test_network_api.py`, `test_add_a_rule_doc.py` | 2 each |
+| `test_panel_fixes.py` | 15 | `test_network_api.py`, `test_add_a_rule_doc.py` | 2 each |
 | `test_network.py` | 12 | `test_gloo_retry.py` | 11 |
 
-(Counts are `def test_` per file, counted with grep; they sum to 257, the same as the suite's own count.) **run**, **code**
+(Counts are `def test_` per file, counted with grep; they sum to 264, the same as the suite's own count. (hack-jedi counted 259 earlier the same evening, before two more commits; always recount after the final commit.)) **run**, **code**
 
 **Evaluation tests (offline).**
 
@@ -398,7 +398,7 @@ cd code && python3 -m unittest discover -s tests
 python3 -m pytest -q evaluations/tests
 ```
 
-On 2026-10-07: **74 passed, 1 failed**. The failure is `test_ui_ids.py::test_built_page_is_current_with_its_source`: the committed `code/app/static/how-it-was-built.html` was older than the Markdown it is built from, because documents had changed since the last rebuild. It is the staleness guard doing its job. The page is rebuilt with `cd code && python3 -m app.build_docs`, which hack-artisans runs before each commit. **run**
+On 2026-10-07 evening: **77 passed**. Earlier the same day it was 74 passed and 1 failed: `test_ui_ids.py::test_built_page_is_current_with_its_source` caught a committed `how-it-was-built.html` older than its Markdown, until hack-artisans rebuilt it. That test is the staleness guard doing its job. The page is rebuilt with `cd code && python3 -m app.build_docs`, which hack-artisans runs before each commit. **run**
 
 **The evaluation harness (live; spends money).** `python3 evaluations/run.py --agent nury [--jev] [--only 05,06] [--playbook detention|hospital] [--scenarios <folder>] [--out <dir>]` (flags in `run.py` lines 38 to 44). Needs `GLOO_API_KEY`; `--jev` needs `JEV_API_KEY`. About $0.10 of Gloo per scenario. **code**
 
@@ -409,7 +409,7 @@ On 2026-10-07: **74 passed, 1 failed**. The failure is `test_ui_ids.py::test_bui
 1. `tests` (15 min limit): installs `code/requirements.txt` (`requests==2.32.5`) plus `pytest PyYAML markdown`, then `code/test.sh` and `python3 -m pytest -q evaluations/tests`.
 2. `key-scan` (5 min limit): `python3 code/tools/scan_keys.py` fails if a tracked file holds a key-like string. It reports the file, line number and kind, never the value. Allowed fixtures are named with a reason.
 
-**The workflow has not run.** The file says so: "This workflow has not run yet: there was no runner to try it on when it was written." **NOT VERIFIED** on a real runner. Also, the CI evaluation-test job would fail today for the stale-page reason above until the page is rebuilt.
+**The workflow has not run.** The file says so: "This workflow has not run yet: there was no runner to try it on when it was written." **NOT VERIFIED** on a real runner.
 
 **Dependencies.** Product runtime: the standard library and `requests` (pinned `requests==2.32.5`). Evaluation harness: `pytest`, `PyYAML`. Documentation build: `markdown` (python-markdown). `python-dotenv` is **not** used: `.env` is read by `load_env()` in `gloo_client.py`. **code** (imports searched across `code/` and `evaluations/`)
 
@@ -418,23 +418,24 @@ On 2026-10-07: **74 passed, 1 failed**. The failure is `test_ui_ids.py::test_bui
 **NOT VERIFIED (no run, no test):**
 
 1. The worst-case duration of one Gloo call (about three times the 120 s timeout plus waits). Computed from the code.
-2. That `SSLError`, `ProxyError`, `ConnectTimeout` and `ReadTimeout` are retried. This follows from the `requests` class hierarchy; the tests use `ConnectionError` and `Timeout`.
-3. A `Retry-After` in HTTP-date form is ignored. Read from the code; no test.
+2. (Resolved by hack-jedi, who ran Python: the subclasses are retried. No test uses them.)
+3. (Partly resolved: a non-numeric `Retry-After` is tested; a real HTTP-date is not, though it takes the same path.)
 4. Behavior with `GLOO_API_KEY` missing (row 25). My test could not remove the key because the repo-root `.env` supplied one. By the code it escapes `do_POST` like malformed JSON.
-5. An unexpected exception type from a Scripture provider (section 5).
+5. (Resolved by `6a5de3d`: `fetch` catches any provider exception.)
 6. The `1,000,000`-token price table values against Gloo today. They are as of 2026-10-06 and Gloo may change them.
 7. The CI workflow on a real runner.
 8. Whether `requests`' `timeout=8.0` for Jev can be exceeded by a slow-drip response. The `requests` documentation says a single value applies to the connect step and to each wait for data, so a response that sends a byte every few seconds could outlast 8 s in total. Not tested.
 
 **Things an engineer should know** (read from the code; none is a safety defect on its own, but each is easy to trip over):
 
-- A retried Gloo call is invisible in the audit log and the ledger. If you need to see retries, log `meta["http_retries"]` in `run_stage`.
-- The outcome `blocked` means either a Gloo guardrail refusal or a network failure. Use the audit (`gloo_block` versus `error`) to tell them apart.
+- A retried Gloo call is invisible in the audit log and the ledger. If you need to see retries, log `meta["http_retries"]` in `run_stage`. hack-jedi agrees this is a visibility gap and not a bug; the fix is two lines in `run_stage` plus a ledger field, and has not been made.
+- The outcome `blocked` means either a Gloo guardrail refusal or a network failure. Use the audit (`gloo_block` versus `error`) to tell them apart. hack-jedi: the ledger and the ops page already map `blocked` to `error`, so it stays.
 - The Jev gate measures its time with `time.time()`, not the monotonic clock, while the audit log uses the monotonic clock.
-- `NURY_FORCE_REJECTION` targets the stage id `rights`, so it does nothing for hospital, whose second stage is `info`.
+- (Fixed in `6a5de3d`: `NURY_FORCE_REJECTION` now targets the first stage after triage in whichever playbook runs.)
 - Data folders for the ledger, the feedback files and the church network are relative to the working directory, and the church network path is computed in three places (section 9). They agree only when the server is started from `code/`. Run it from the same place every time, or set `NURY_LEDGER_DIR`, `NURY_FEEDBACK_DIR` and `NURY_NETWORK_DIR`. If they disagree, the network screen could save contacts in one folder while the engine reads another.
-- The main server does not handle a malformed JSON body: it drops the connection and prints a traceback.
+- (Fixed in `23e5288`: a malformed or non-object POST body returns 400. A missing `GLOO_API_KEY` is still unverified, row 25.)
 - Sessions live in a dict in memory and never expire. Under load or over days the dict grows.
 - The `draft_rejected` audit event holds the rejected draft. It never reaches the pastor's screen, but anything that dumps `audit.events` to disk or to a log would write unsafe draft text. Only `tools/trace_run.py` and the evaluation harness do that, with synthetic families.
 - The evaluation results under `evaluations/results/` are tracked in git and can contain rejected drafts. They are synthetic.
-- This document describes the build at the time it was written. The triage prompts are changing (`code/playbooks/*/prompts/triage.txt` were modified in the working tree), and every set is being re-run. Behavior described here does not depend on those prompts, but a fact-check after the final commit is still needed.
+- The triage prompts changed in commit `fe1fd7b` and the eight later-stage prompts of both playbooks each got one context line in commit `e4d19b6` (both pushed). Prompt text only; a test proves the line is in all eight (hack-jedi). The behavior described here does not depend on those prompts. The sets are being re-run, so recount tests after the final commit.
+- **The ledger is wired.** `Session.__init__` creates a `ledger.Recorder` per run (`server.py` lines 240 to 241), calls `stage_done` after each stage (278) and `finish` at the end (290). Its lines go to `data/ledger` relative to the working directory. The server also calls `feedback.record_gate` (263), `record_outcome` (587) and `record_chip` (597) only when `NURY_FEEDBACK` is not `off`.

@@ -1,7 +1,7 @@
 # Technical story kit (deck, video, live Q and A)
 
 Written by hack-ninja for Juan's ask: sell the engineering with proof. Plain words, exact claims, no hype.
-**Source of truth: `documents/TECH_CLAIMS.md` (hack-jedi; updated after commit 452c488).** Every row below carries its TECH_CLAIMS number. I re-ran four of them myself on 2026-10-07: the offline product tests (257 on 2026-10-07 evening; 91 when I first wrote this) (`cd code && python3 -m unittest discover -s tests`), the leak test (`python3 code/tools/show_proofs.py 3`), and the judge validation figures in `JUDGE_VALIDATION.md`. Use only rows marked VERIFIED there. Pending rows (pass rate, skills effect, revision, scorecard means, hospital 7 of 8) are not quoted.
+**Source of truth: `documents/TECH_CLAIMS.md` (hack-jedi; updated after commit 452c488).** Every row below carries its TECH_CLAIMS number. I re-ran four of them myself on 2026-10-07: the offline product tests (264 at the end of 2026-10-07; 91 when I first wrote this) (`cd code && python3 -m unittest discover -s tests`), the leak test (`python3 code/tools/show_proofs.py 3`), and the judge validation figures in `JUDGE_VALIDATION.md`. Use only rows marked VERIFIED there. Pending rows (pass rate, skills effect, revision, scorecard means, hospital 7 of 8) are not quoted.
 Gate rule from hack-sensei still holds: skills, the case file, the church network and the official list stay hidden in the deck until he confirms in writing, even though TECH_CLAIMS marks them verified.
 
 ## 1. The 60-second technical story (spoken, about 154 words)
@@ -37,10 +37,10 @@ Before release we test it in four layers: plain code, typed judges (also Jev, so
 | 37 | The judge is stable: the same five stored trajectories, judged again about an hour later with the same questions and model, moved by 0.03 or less on every safety question and 0.06 or less on the tone score. A verdict can still flip when a score sits within about 0.03 of a threshold (one went 0.21 to 0.18). Five trajectories, one repeat each: a smoke check. | within 0.03 | VERIFIED (TC 37), from `JUDGE_VALIDATION.md` |
 | 40 | Red team: three reviewers from other makers (GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick) through Gloo, because our writer is Claude. They hunt freely and must quote the sentence; a quote is checked against the real text. Second validation pass: all three caught all 8 injected problems and also flagged safe text (gpt-5.4 on all 8 safe reviews, 10.8 findings each; gemini on 7 of 8, 1.5 each; llama on all 8, 3.1 each), so they are advisory. Llama quoted text that is not in the draft once in validation and four times in the run on 28 scenarios. | 8 of 8 each; 10.8, 1.5 and 3.1 findings per safe review | VERIFIED live (PANEL_VALIDATION.md). Run on the final build PENDING (hack-artisans). |
 | 39 and 34 | The pastor's voice may invite but not promise. Found by the Jev tone score in the final run, so a typed judge found a gap no rule had; fixed with a 14th check. Caveat in TC 39: the promises are gone, but the tone score did not rise (after the fix, 5 of 7 sampled messages still score below 3). | 14th named check | VERIFIED offline test; VERIFIED live |
-| 257 tests | 257 offline product tests pass, in about 4 seconds (`code/test.sh`, keys unset). | 257 (re-run at export; it changes) | I ran it 2026-10-07 |
+| 264 tests | 264 offline product tests pass, in about 3 seconds (`code/test.sh`, keys unset). | 264 (re-run at export; it changes) | I ran it 2026-10-07 |
 
 **Not quoted (pending or told not to claim):** pass rate; skills improve the wording; hospital 7 of 8; scorecard means (32.8 s, $0.054); that the model refuses advice on its own (it mostly did, so we force failures with fault injection, and we say so); anything beyond Colorado for the official list; that privacy is anonymization.
-Tests: I quote only the product count (257). The evaluations suite adds 75 more (74 pass and 1 fails until the documentation page is rebuilt), so I do not add them together.
+Tests: I quote only the product count (264). The evaluations suite adds 77 more, all passing, so I do not add them together.
 **Held back by the gate (hidden in the deck until Sensei confirms in writing):** skills (TC 20), the case file (TC 22, 23), church network (TC 14), the official list (TC 13: 28 read, 21 approved, 7 held; 18 providers listed).
 
 ## 3. Deck: where the story sits
@@ -58,7 +58,7 @@ Built by hack-video as an animated architecture shot. Text only, no third-party 
 1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
 2. "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24" (TC 26)
 3. "A full package: 50 to 56 s, about 9 cents" (TC 30)
-Spare caption if there is room: "257 offline tests pass; no send path" (re-run the count at export).
+Spare caption if there is room: "264 offline tests pass; no send path" (re-run the count at export).
 
 **Disclosure caption, verbatim, small, on screen for the whole beat:** "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
 Lower-third labels: "Built on Gloo AI Studio" and "Checked by Jev". Optional TECH-B only if there is time: "A red team from other model makers audits it before release. It advises; a person decides."
@@ -72,7 +72,7 @@ Short: The model is not what makes it safe. The checks, the gate and the person 
 Honest: We did not run a bigger-model comparison. In our tests the model mostly refused to write advice on its own, so we force failures with fault injection to prove the correction loop works, and we say so. Final cost, latency and pass rate per run: [NUMBER] from the final scorecard.
 
 **2. How do you know the guardrails work?**
-Short: Four layers, and we say where each fails. 257 offline tests cover the checks, the privacy layer, the Jev gate and the app's API. A leak test searches the real request bodies, 90 checks per playbook, found 0. A typed judge scored unsafe text 0.89 to 0.98 and safe text 0.02 to 0.24 on ten checks. A red team of other models (through Gloo) and a person cover the rest.
+Short: Four layers, and we say where each fails. 264 offline tests cover the checks, the privacy layer, the Jev gate and the app's API. A leak test searches the real request bodies, 90 checks per playbook, found 0. A typed judge scored unsafe text 0.89 to 0.98 and safe text 0.02 to 0.24 on ten checks. A red team of other models (through Gloo) and a person cover the rest.
 Honest: The unsafe cases are synthetic paragraphs added to real output, ten points is not a calibration study, and the panel flags safe text too. When Gloo's guardrail blocks a request, we handle it as a failed try, but that is proven by test only: no live block has happened. Pass rate on 20 hand-built scenarios: [NUMBER]. The 18 attacker intakes: [NUMBER, if run].
 
 **3. What about hallucinated links?**
@@ -125,4 +125,4 @@ Honest: The "copied no code" point is the author's statement; the repo cannot pr
 
 **13. Does Nury learn from pastors?** (backup; not in the 3-minute talk)
 Short: Not yet. We built the loop: capture of what a pastor changes (names already turned into tokens), an analysis, a before-and-after test, and a human approval step. We tested it on synthetic scenarios. No real pastor has used Nury, so nothing has been learned yet, and we do not claim it improves Nury. It proposes and scores, and a person approves. It never changes a prompt, a rule or a model by itself.
-Honest: Capture is off by default (`NURY_FEEDBACK`), and the consent sentence is shown only when it is on. The app wiring is in progress and is not in the committed build. In sentence mode the file holds tokenized sentences, and context can still hint at a person; strict mode stores counts only. The worked example is 30 invented sessions, and its pattern was written into the scripted behavior, so finding it proves the pipeline works and nothing more. The before-and-after test has not run live, its thresholds are our choice, and Jev scores moved by up to 0.12 between passes. Nobody has reviewed consent or retention as a lawyer or an ethics board would. A frequent edit is a lead, not a finding. Source: `documents/product/LEARNING_LOOP.md`, TECH_CLAIMS 57 to 59.
+Honest: Capture is off by default (`NURY_FEEDBACK`), and the consent sentence is shown only when it is on. The app wiring is committed (`ca6d9aa`) and browser-tested with a stub; capture is off by default, and no real pastor has used it. In sentence mode the file holds tokenized sentences, and context can still hint at a person; strict mode stores counts only. The worked example is 30 invented sessions, and its pattern was written into the scripted behavior, so finding it proves the pipeline works and nothing more. The before-and-after test has not run live, its thresholds are our choice, and Jev scores moved by up to 0.12 between passes. Nobody has reviewed consent or retention as a lawyer or an ethics board would. A frequent edit is a lead, not a finding. Source: `documents/product/LEARNING_LOOP.md`, TECH_CLAIMS 57 to 59.

@@ -319,7 +319,7 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 
 ### Layer by layer
 
-**1. Named rules (plain code).** Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 257 offline product tests that pass (run 2026-10-07 with no keys set).
+**1. Named rules (plain code).** Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 264 offline product tests that pass (run at the end of 2026-10-07 with no keys set).
 
 **2. Jev gate, at run time.** BUILT, live on three scenarios (detention 01 and 14, hospital h01; build `50668d6`).
 
@@ -384,7 +384,7 @@ No real pastor has used Nury. We built a loop for learning from use, and we test
 
 | Step | What happens | Status | Evidence |
 |---|---|---|---|
-| 1. Capture | At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. **Off by default** (`NURY_FEEDBACK`). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored. | BUILT, offline tested. **The app wiring is in progress** (uncommitted when checked on 2026-10-07; FEATURES says PLANNED). | `code/nury/feedback.py`; `tests/test_feedback.py` (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57 |
+| 1. Capture | At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. **Off by default** (`NURY_FEEDBACK`). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored. | BUILT, offline tested. **The app wiring is committed** (`ca6d9aa`) and browser-tested with a stubbed gate; no live run. | `code/nury/feedback.py`; `tests/test_feedback.py` (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57 |
 | 2. Analyze | A script reads the feedback and writes a report by crisis and stage. A candidate change is proposed only when the same pattern appears in at least 3 separate edits. | BUILT, offline tested | `code/tools/learning_report.py` |
 | 3. Test | Run a candidate on the evaluation sets, before and after, with a no-regression gate. It works on copies and never edits the repository. | BUILT, offline tested. **Not run live.** | `code/tools/candidate_test.py`; about $5.60 for the core set, $10 for all three, by estimate |
 | 4. Approve | A person reads the candidate file, the evidence and the test, then writes their name and the date. The checker refuses an approval without a person's name. No script sets a status past `proposed`, and a test reads the scripts' source to check it. | BUILT, offline tested | `code/tools/candidates.py`; `tests/test_learning_loop.py` (19 tests); TECH_CLAIMS 58 |
@@ -451,7 +451,7 @@ BUILT, offline. Use this when a rule needs logic a pattern cannot hold.
 3. **Name it in a stage.** In the playbook's `stages.json`, add `{"name": "<your_check>", ...settings}` to the stage's `checks`.
 4. **Let the loader guard it.** `load_playbook` refuses a stage that names a check not in the registry ("unknown check"). A typo cannot silently turn a rule off.
 5. **Write a test** in `code/tests/` that feeds the check a passing text and a failing text, and one that loads the playbook and confirms the stage runs it. The existing checks have tests in `test_core.py`, `test_scripture.py` and `test_panel_fixes.py`.
-6. **Run the tests.** `cd code && python3 -m unittest discover -s tests`. All 257 must pass.
+6. **Run the tests.** `cd code && python3 -m unittest discover -s tests`. All of them must pass.
 7. **Run a scenario** that should trigger the rule: `python3 evaluations/run.py --agent nury --only <number or id>` (needs a Gloo key and spends money; see `evaluations/README.md`). Add a scenario to `evaluations/scenarios/` if none covers it.
 8. **Commit.** A person reads the diff. That review is the only approval step today.
 
@@ -657,7 +657,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Follow-up reminders** | A reminder for a case that needs follow-up | A flag only | PLANNED |
 | **Voice input** | Taking the call and writing the intake by voice | Typed intake | NOT BUILT |
 | **Accessibility** | A screen reader test, and fixes | Labels and focus rings exist. Nobody has tested with a screen reader. | NOT BUILT |
-| **Learning from real use** | Capture wired into the app, a retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate (about $10 for all three sets and both arms, plus Jev on its own key, and Jev scores drift by up to 0.12) | The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app wiring is in progress and not committed. No real data. | Code: BUILT, offline. App wiring: IN PROGRESS. The rest: NOT BUILT |
+| **Learning from real use** | A retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate (about $10 for all three sets and both arms, plus Jev on its own key, and Jev scores drift by up to 0.12) | The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app wiring is committed (`ca6d9aa`) and browser-tested. No real data. | Code and app wiring: BUILT, offline. The rest: NOT BUILT |
 | **Real use** | Pilots with real pastors, and what we learn from them | No pastor outside the team has used Nury | NOT BUILT |
 
 ### A sober order

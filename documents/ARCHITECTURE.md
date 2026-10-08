@@ -33,7 +33,7 @@ The film's pastor at 2:07 AM is a story character. He is not a market limit.
 | 7 | Skills | `code/skills/`, `nury/skills.py` | `voice` and `grounding` instruction modules added to stage prompts. No extra model call. | BUILT, live verified |
 | 8 | App | `code/app/` | The pastor's screens. See section 10. | Mixed, see section 10 |
 | 9 | Evals | `evaluations/` | Test-time layers. See section 4. | BUILT, live verified (final runs pending) |
-| 10 | Learning loop | `code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py` | Proposes changes from what pastors change; a person approves. Off by default. See section 12. | BUILT, offline tested; app wiring IN PROGRESS; not used |
+| 10 | Learning loop | `code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py` | Proposes changes from what pastors change; a person approves. Off by default. See section 12. | BUILT, offline tested (app wiring committed in `ca6d9aa`); not used |
 
 ## 3. The run-time pipeline
 
@@ -201,7 +201,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 
 | Step | What it does | Where | Status |
 |---|---|---|---|
-| 1. Capture | At each gate, records the pastor's action (approve, edit, stop) and the sentences that changed, with names already turned into tokens. An optional reason chip and the "Something changed" answer. Never a whole draft, never quoted Scripture, never the pastor's free-text note. | `code/nury/feedback.py` (`record_gate`, `record_chip`, `record_outcome`, `prune`) | BUILT, offline tested (15 tests). **App wiring: IN PROGRESS**, not in the committed build when checked on 2026-10-07. |
+| 1. Capture | At each gate, records the pastor's action (approve, edit, stop) and the sentences that changed, with names already turned into tokens. An optional reason chip and the "Something changed" answer. Never a whole draft, never quoted Scripture, never the pastor's free-text note. | `code/nury/feedback.py` (`record_gate`, `record_chip`, `record_outcome`, `prune`) | BUILT, offline tested (15 tests). App wiring committed in `ca6d9aa` and browser-tested (81 checks at 390 and 1280 px, with a stubbed gate; not a live run). |
 | 2. Analyze | Reads the feedback and the run ledger and writes a report by crisis and stage. Proposes a candidate only when the same pattern appears in at least 3 separate edits or chips. Four candidate types: a prompt line, a banned phrase, a new Jev question (a person writes it), a new scenario. | `code/tools/learning_report.py` | BUILT, offline tested |
 | 3. Test | Runs a candidate on the evaluation sets before and after, on copies of `code/` and `evaluations/`. A no-regression gate: more failures, errors, safety failures or escalations, a tone mean more than 0.15 lower, or a cost per run more than 10 percent higher fails it. | `code/tools/candidate_test.py` | BUILT, offline tested. **Never run live.** |
 | 4. Approve | A candidate is a file with a status. `approved` needs a person's name and a date. The checker refuses "nury", "auto", "bot" and "script". No script sets a status past `proposed`, and a test reads their source to check it. | `code/tools/candidates.py`, `code/tests/test_learning_loop.py` (19 tests) | BUILT, offline tested |
@@ -235,9 +235,9 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M2b, M2c | Oct 6 to 7, done | Hospital sources approved; hospital playbook runs | Juan approved five sources and rejected one. Hospital ran live, 8 scenarios. |
 | M3 | Oct 6 to 7 | Pastor app | Selector, intake, pipeline, package, audit, cases, revision, network built. Home, chooser and shared shell **in progress** (BUILD_LOG 95, 97). |
 | M3b | Oct 6 to 7 | Scripture | 12 verses approved (BUILD_LOG 93); YouVersion live end to end (BUILD_LOG 96); last Scripture rule added. |
-| M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **257 pass now** (run 2026-10-07 with no keys set). |
+| M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **264 pass at the end of 2026-10-07** (run with no keys set; recount after the final commit). |
 | M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** The follow-up (a 0.60 line for `assumes_facts`) landed in build `c317050`. |
-| M3e | Oct 7 01:15 | Learning loop built offline (hack-jedi, `bb6c17b`) | Capture, report, candidate checker and test script, with 30 invented sessions. App wiring in progress. Nothing learned; no real pastor has used Nury. |
+| M3e | Oct 7 01:15 | Learning loop built offline (hack-jedi, `bb6c17b`) | Capture, report, candidate checker and test script, with 30 invented sessions. App wiring committed in `ca6d9aa`. Nothing learned; no real pastor has used Nury. |
 | M4 | Oct 7 | Scored runs | Earlier scorecards exist in `evaluations/results/`. The final scored set (detention 20, hospital 8), the attacker set (18) and the red-team run on the final sets are owed by hack-artisans. No number is quoted until every review item is decided. |
 | M5 | Oct 7 | Description draft; deck | Drafts done by hack-ninja. Real numbers only from the final run. |
 | M6 | Oct 7, 15:00 | End-to-end demo with one rejected-and-regenerated draft; harness scores | Open. |
@@ -263,7 +263,7 @@ Nothing here may be claimed in the film, the deck or the description.
 - The tone score did not rise after the promises fix; the re-run on the fixed core is pending.
 - "14 named checks" is the headline until the final scored build; the registry holds 20.
 - The effect of the skills is not measured.
-- Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default and the app wiring is in progress (not in the committed build). It proposes; a named person approves; we do not claim it improves Nury.
+- Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default, and the app wiring is committed (`ca6d9aa`) and tested offline. It proposes; a named person approves; we do not claim it improves Nury.
 
 ## 15. Rules that stay
 

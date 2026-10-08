@@ -205,7 +205,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li><b>Typed judges</b><span>Jev judges whole runs at test time. It also checks every draft at run time, so it is not independent of the gate.</span></li>
 <li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
 <li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a small panel validation, four live packages; say so. Offline product tests: 257 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
+<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a small panel validation, four live packages; say so. Offline product tests: 264 passed at the end of 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2 style="font-size:clamp(1.5rem,3vw,2.2rem)">Impact and execution: what we measured, and what broke</h2>
@@ -305,7 +305,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <tr><th>The loop</th><td>Capture what a pastor changes, with names already tokens. Analyze it. Test a proposed change before and after. A named person approves.</td></tr>
 <tr><th>What it never does</th><td>Change a prompt, a rule or a model by itself. It proposes and scores. A person approves.</td></tr>
 <tr><th>Switches</th><td>Capture is off by default. The consent sentence shows only when it is on.</td></tr>
-<tr><th>Not done</th><td>The app wiring is not finished. No real data. The before-and-after test has not run live.</td></tr></table>
+<tr><th>Not done</th><td>No real pastor has used it. Capture is built and tested offline. The before-and-after test has not run live.</td></tr></table>
 <aside class="notes">Say it plainly: we built the loop (capture, analysis, test, human approval) and tested it on 30 invented sessions. Do NOT say Nury improves itself, learns or self-evolves. Do not show or read the consent sentence about recording changes until hack-sensei confirms the app records them. Source: documents/product/LEARNING_LOOP.md; TECH_CLAIMS rows 57 to 59; Q13 in presentation/TECH_STORY.md.</aside></section>
 
 <section class="slide" data-part="backup">

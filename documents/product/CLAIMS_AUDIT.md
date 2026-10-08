@@ -9,15 +9,25 @@ Written 2026-10-07 by hack-ninja for hack-sensei (BUILD_LOG 120). Scope: every f
 - **2 blockers**: the video source still carries the old, wrong Jev disclosure and the old tagline, and the deck and talk disagree with the app about hospital.
 - **10 high findings**: stale or soon-to-be-wrong claims, mostly about to be overtaken by the re-run.
 - **Fixed in my own files during this audit: 14 items** (section 7, rows 1 to 12 plus M4 and M5), including one that mattered: the red-team claims in the deck, scripts and documentation described a superseded first pass and said "no reviewer invented a quote", which the newer validation file contradicts.
-- **Open for others: 14 items** (B1, B2, H4 to H9, M1, M2, M6, M7, L1, L2), each with an owner.
-- **Wait for the re-run or a gate: 5 items** (H1, H2, H3, H10, M3), and 9 numbers or lines in the final fill (section 6).
+- **Open for others: 12 items** (B1, B2, H4 to H7, M1, M2, M6, M7, L1, L2), each with an owner.
+- **Wait for the re-run or a gate: 4 items** (H1, H2, H3, M3), and 9 numbers or lines in the final fill (section 6).
 
 | Severity | Meaning | Count open |
 |---|---|---|
 | BLOCKER | Wrong or contradicted if shown in the film, the talk or the submission | 2 |
-| HIGH | Stale, or will be wrong after the final run | 10 |
+| HIGH | Stale, or will be wrong after the final run | 7 (3 more fixed since the first version) |
 | MEDIUM | True but misleading, or incomplete | 7 |
 | LOW | Wording and tidiness | 3 |
+
+## 1b. Update, 2026-10-07 evening (after the first version)
+
+- **H8 fixed** by hack-artisans (`3bd1684`): the documentation page was rebuilt, and the evaluation suite passes (77 tests).
+- **H9 fixed** (`1c1e6cc`, `f02e998`): the home list now reads the check count from the registry and names Jev's run-time role.
+- **H10 resolved.** The learning-loop wiring is committed (`ca6d9aa`). My five files now say "built and browser-tested with a stub, not live", with capture off by default. The consent sentence (version B) is still held for hack-sensei's written word.
+- **Three bugs I reported were fixed by hack-jedi:** a malformed POST body now returns 400 (`23e5288`); `fetch` treats any provider exception as unavailable (`6a5de3d`); `NURY_FORCE_REJECTION` follows the playbook (`6a5de3d`).
+- **hack-jedi fact-checked `TECHNICAL_REFERENCE.md`**: about 110 anchors matched. Corrections applied: the test counts (264 product tests at the end of the evening, `test_core` 53, `test_scripture` 41, `test_panel_fixes` 15), the prompt-change note, the ledger wiring, and two items upgraded from "not verified".
+- **H1 is sharper.** `GET /api/features` returns `named_checks: 20` (I ran it), and the app's home strip shows "20 named checks", while the deck, the pitch and the tech story still say 14. The deck and the product now disagree on screen. This resolves when hack-sensei gives the number.
+- **Still open from the first version:** B1 (video source), B2 (hospital gate), H4 to H7 (the claims register and the prework file), and the decisions in section 10.
 
 ## 2. Blockers
 
@@ -35,12 +45,12 @@ Written 2026-10-07 by hack-ninja for hack-sensei (BUILD_LOG 120). Scope: every f
 | H2 | Deck slide 8, `FINALIST_SCRIPT.md` 24 and 40, `ERIC_LINES.md` 28, `TREATMENTS.md`, `TECH_STORY.md` 8, 31, 60, 71 | "A full package: 50 to 56 s, about 9 cents" | It came from four live pipelines before the Jev gate (TC 30). The scored run on `c317050` measured detention 41 s and $0.072 per run, hospital 50 s and $0.087. "Under a minute" is still true; "50 to 56 s" is not the scored mean. | `evaluations/results/scorecard.md`; `hospital/scorecard.md` | I fill from the final scorecards | **WAITS** |
 | H3 | `description.txt` 15 and `description_two_playbooks.txt` 15, `PITCH_SCRIPT.md` 61 (fallback), `TECH_STORY.md` 76, `PROOF_FILL.md` 9 | "We tested 20 hand-built scenarios" and "twenty scenarios and scored each stage" | The sets are 20 detention, 8 hospital and 18 hostile intakes (46). The hostile intakes were written by a non-Claude model and edited by a person, so "hand-built" is loose. Scenarios are scored per run, not per stage. | `evaluations/scenarios*/` (run: counts) | I fill | **WAITS** |
 | H4 | `TECH_CLAIMS.md` rows 28 and 40 | "First pass: two reviewers caught all 8 ... the third failed on a parser bug. No reviewer invented a quote." | **Superseded.** The second validation pass: all three caught 8 of 8; gpt-5.4 flagged 8 of 8 safe reviews (10.8 findings each), gemini 7 of 8 (1.5), llama 8 of 8 (3.1). Llama quoted text that is not in the draft once in validation and four times in the run on 28 scenarios. A run on the 28 final scenarios exists (55 corroborated findings), on core `00fe7b1`. | `evaluations/validation/PANEL_VALIDATION.md` | hack-jedi | **OPEN** for the register. **Fixed** in my files (section 7). |
-| H5 | `TECH_CLAIMS.md` header and row 33 | "91 tests pass today; the evaluation harness adds 40 more" | 257 product tests (run) and 75 evaluation tests (74 pass, 1 fails: the committed documentation page is stale). | `code/test.sh`; `pytest evaluations/tests` | hack-jedi | **OPEN** |
+| H5 | `TECH_CLAIMS.md` header and row 33 | "91 tests pass today; the evaluation harness adds 40 more" | 257 product tests when the audit started, 264 by the end of the evening (run), and 75 evaluation tests (74 passed and 1 failed because the committed documentation page was stale; 77 pass after the rebuild). | `code/test.sh`; `pytest evaluations/tests` | hack-jedi | **OPEN** |
 | H6 | `TECH_CLAIMS.md` line 79 | "Disclosure, as the submission carries it: 'Evaluation harness uses the Jev decision API from TypeSafe as typed judges ...'" | The canonical line is the longer one (CLAUDE.md line 33), which names the run-time use. | CLAUDE.md line 33 | hack-jedi | **OPEN** |
 | H7 | `documents/prework/EVAL_DESIGN.md` lines 137 and 138 | "Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules." | False, and Juan said so. The file is prework reference data, but it sits in the repo and the hub. | BUILD_LOG 98 | hack-sensei | **DECISION**: leave as history, or correct with a note |
-| H8 | `code/app/static/how-it-was-built.html` (generated) | The page is older than `HOW_IT_WAS_BUILT.md` | `evaluations/tests/test_ui_ids.py::test_built_page_is_current_with_its_source` fails (74 pass, 1 fails). My Markdown changed three times since the last build. | run | hack-artisans | **OPEN**; told twice |
-| H9 | `code/app/static/index.html` 324 to 326 (the home page's "How this was built" list) | "14 named checks, 3 tries" and "Jev typed judges, a red team, human review" | Jev also checks every draft at run time. The list reads as if Jev only judges after the fact. | TECH_CLAIMS 32, 35 and 50 | hack-artisans | **OPEN** |
-| H10 | The learning-loop lines: `TECH_STORY.md` Q13, deck slide 16, `HOW_IT_WAS_BUILT.md`, `ARCHITECTURE.md` section 12, `CONSENT_NOTE.md` | "The app wiring is in progress and not in the committed build" | True at 2026-10-07 01:50. BUILD_LOG 120 puts the wiring back in scope. When hack-artisans commits and tests it, the lines change to "built" with the commit. | `git status` (server.py, `improvement_api.py` uncommitted) | I change; hack-artisans tells me | **WAITS** |
+| H8 | `code/app/static/how-it-was-built.html` (generated) | The page is older than `HOW_IT_WAS_BUILT.md` | `evaluations/tests/test_ui_ids.py::test_built_page_is_current_with_its_source` fails (74 pass, 1 fails). My Markdown changed three times since the last build. | run | hack-artisans | **FIXED** (`3bd1684`; the test passes) |
+| H9 | `code/app/static/index.html` 324 to 326 (the home page's "How this was built" list) | "14 named checks, 3 tries" and "Jev typed judges, a red team, human review" | Jev also checks every draft at run time. The list reads as if Jev only judges after the fact. | TECH_CLAIMS 32, 35 and 50 | hack-artisans | **FIXED** (`1c1e6cc`, `f02e998`: the count is read from the registry; the list names Jev's run-time role) |
+| H10 | The learning-loop lines: `TECH_STORY.md` Q13, deck slide 16, `HOW_IT_WAS_BUILT.md`, `ARCHITECTURE.md` section 12, `CONSENT_NOTE.md` | "The app wiring is in progress and not in the committed build" | True at 2026-10-07 01:50. BUILD_LOG 120 puts the wiring back in scope. When hack-artisans commits and tests it, the lines change to "built" with the commit. | `ca6d9aa` (pushed); 81 real-click checks at 390 and 1280 px with a stubbed gate | I changed the five files | **FIXED** ("built and browser-tested with a stub, not live") |
 
 ## 4. Medium and low findings
 
@@ -123,7 +133,7 @@ Method: a script scanned 39 files (deck source, scripts, descriptions, notes, do
 | Writer | "Claude Sonnet 4.6 through Gloo AI Studio" | 39 files | **Consistent.** `pricing.json` also lists Sonnet 5.5 "for comparison; Nury does not run on it", correctly. |
 | Red team | OpenAI GPT-5.4, Google Gemini 3.1 Pro, Meta Llama 4 Maverick; none is Claude | 39 files | **Consistent names** in 8 files. Claims about their results fixed (H4). |
 | Named checks | 20 in the registry; 14 used in the earlier scored runs; plus 5 floor checks (banned phrases, language, links, phones, emails) | 39 files | "14" consistent, becoming stale (H1). "5 floor checks" consistent with TC 5. "19 banned patterns" and "12 hospital patterns" consistent. |
-| Tests | 257 product, 74 pass and 1 fails in evaluation | 39 files | Fixed (7 places). `TECH_CLAIMS.md` still stale (H5). |
+| Tests | 264 product and 77 evaluation, all passing at the end of the evening (257 and 74 plus 1 failing when the audit started) | 39 files | Fixed (7 places). `TECH_CLAIMS.md` still stale (H5). |
 | Scenarios | 20 detention, 8 hospital, 18 hostile intakes, 5 case-file, 3 network | 39 files | Counts consistent. "20 hand-built" in the description is the stale one (H3). |
 | Costs | $3 and $15 per million tokens; 8 to 9 cents per package (four pre-gate runs); scored means $0.072 and $0.087 | 39 files | Consistent among themselves; stale against the scored runs (H2). Jev price: **not quoted anywhere** (checked). |
 | Attempts and gates | 3 attempts; Approve, Edit or Stop; "I'll handle this manually." | 39 files | **Consistent.** |
