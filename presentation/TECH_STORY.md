@@ -102,7 +102,7 @@ Honest: Gaps we can name: no case status or follow-up date, no consent note, no 
 Short: Norms exist and vary. One example is the American Association of Pastoral Counselors code, which allows disclosure when the law requires it or to prevent a clear and immediate danger. Nury keeps a pastor's private notes out of every model request and sends nothing to the family.
 Honest: We found no national standard that covers every pastor, and we read the AAPC wording through a published article, not the code itself. Today there is no sign-in, so anyone who can open the app can open the saved cases. A consent and confidentiality note is being written for Juan to approve.
 
-**10. Who is Nury for?** (replaces any "why solo pastors" answer; not in the 3-minute talk)
+**10. Who is Nury for?** (replaces the old positioning answer; not in the 3-minute talk)
 Short: Churches, and the pastors who answer the call. The pastor in our film is a character: a story needs one person. He is not the market.
 Honest: Nury is built and tested on two crises, a detention and a hospital emergency, with synthetic families only. No pastor outside the team has used it yet. There is no sign-in yet, so today it is a demo for one church at a time, not a service for many. A new crisis is a new playbook folder; we have tested that on a test playbook, and we do not claim a third crisis runs.
 
