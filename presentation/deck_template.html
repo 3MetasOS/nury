@@ -68,10 +68,38 @@ body.nofoot .foot{visibility:hidden}
 .diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .bt{font-family:var(--serif);font-weight:600;font-size:24px;text-anchor:middle}
 .diagram .bs{font-size:19px;text-anchor:middle;fill:var(--muted)}.diagram .dl{font-size:17px;fill:var(--muted)}.diagram .dl.am{fill:var(--amber-text);font-weight:600}
 .diagram .ln{fill:none;stroke:var(--ink);stroke-width:2.4}
+.entry{padding-top:2.5vh;padding-bottom:6vh}.entrywrap{max-width:32em;text-align:left;display:grid;gap:1.1vh}
+.e-head{display:flex;align-items:center;gap:clamp(12px,2vw,26px)}
+.e-word{font-size:clamp(48px,7.2vw,92px)}
+.e-pron{font-size:clamp(17px,2vw,26px);color:var(--muted);margin:0}.e-pron i{margin-left:.6em}
+.e-senses{list-style:none;margin:.4vh 0;padding:0;counter-reset:sn;display:grid;gap:1.2vh}
+.e-senses li{counter-increment:sn;display:grid;grid-template-columns:1.6em 1fr;font-size:clamp(17px,1.95vw,26px);line-height:1.3}
+.e-senses li::before{content:counter(sn) ".";font-family:var(--serif);font-weight:600;color:var(--amber)}
+.entry .e-word,.entry .e-pron,.entry .e-senses li,.entry .e-ety,.entry .e-see{opacity:0;animation:rise .8s ease-out forwards}
+.entry .e-word{animation-delay:.2s}.entry .e-pron{animation-delay:1s}
+.entry .e-senses li:nth-child(1){animation-delay:1.8s}.entry .e-senses li:nth-child(2){animation-delay:2.8s}.entry .e-senses li:nth-child(3){animation-delay:3.8s}
+.entry .e-ety{animation-delay:4.8s}.entry .e-see{animation-delay:5.6s}
+.entry .lantern .flame{animation-delay:1.8s}.entry .lantern .body{animation-delay:1.8s}
+body.show-gated .e-senses li[data-gated]::before{content:counter(sn) ".";display:block;font-size:inherit;color:var(--amber)}
+body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses";grid-column:2;font:600 12px var(--sans);color:var(--amber-text)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.entry .e-word,.entry .e-pron,.entry .e-senses li,.entry .e-ety,.entry .e-see{opacity:1;animation:none}}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
 <!-- ============ MAIN TALK (3:00). data-cut="90" stays in the 90-second cut ============ -->
+<section class="slide center entry" data-cut="90" data-part="talk" data-gated="name">
+<div class="entrywrap">
+<div class="e-head"><div class="lantern small">{{MARKLIT}}</div><h1 class="e-word">Nury</h1></div>
+<p class="e-pron"><span>/NOO-ree/</span> <i>proper noun</i></p>
+<ol class="e-senses">
+<li><span>A given name from Arabic <i>nūr</i>, "light".</span></li>
+<li data-gated="name-sense2"><span>A Catalan and Spanish name, Núria, from the Virgin of Núria, a shrine in the Pyrenees.</span></li>
+<li><span>The crisis-response agent for solo pastors, named in memory of Nury Pelaez.</span></li></ol>
+<p class="e-ety muted">Etymology: Arabic <i>nūr</i>, "light, ray of light, lamp, lantern".</p>
+<p class="e-see muted">see also: <b>lantern</b></p></div>
+<aside class="notes">Gated until Juan approves the text. About 7 seconds, senses appear one by one; press Right Arrow when the last line is in. This replaces the "This is Nury." slide if approved. Sources and what is not verified: presentation/NAME_ENTRY.md. Sense 2 (Núria) shows only if Juan chooses it. Do not say which origin his aunt's name has.</aside></section>
+
 <section class="slide on center" data-cut="90" data-part="talk">
 <div class="lantern">{{MARKLIT}}</div>
 <h1>This is Nury.</h1>
