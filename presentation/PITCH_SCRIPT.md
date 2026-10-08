@@ -45,7 +45,7 @@ Play the cut of the demo (the guardrail strip and the approval gate), or run the
 
 ## 1:17 to 1:37  Slide 6 (light): how it is built  [90s]
 Trace the line once. [90s] The pastor types. A privacy layer in Nury swaps names for tokens. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are put back inside Nury, and named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The model sees tokens, not names. The leak test ran 90 checks per playbook and found no names.
-Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
+Under the diagram: twenty named checks plus the safety floor, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
 
 ## 1:37 to 1:52  Slide 7 (light): innovation
 Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital emergency both run on it, and a test builds a new crisis from scratch.

@@ -26,7 +26,7 @@ The film's pastor at 2:07 AM is a story character. He is not a market limit.
 |---|---|---|---|---|
 | 1 | Engine | `code/nury/engine.py`, `stages.py`, `audit.py` | Runs stages in order, chains approved or edited text, runs the correction loop (3 attempts), runs the approval gate, writes the audit log. Knows nothing about any one crisis. | BUILT, live verified |
 | 2 | Safety floor | `code/nury/guardrails.py`, `engine.py` | No advice, no outcome prediction, no claim to be a pastor, counselor or lawyer, disclaimer on every output, link and phone allowlist, no send path. A playbook or skill can add checks, never remove these. | BUILT, live verified |
-| 3 | Named checks | `code/nury/checks.py` | Plain-code rules on each draft. **20 in the registry.** The scored runs used 14. The other 6 (3 Scripture, 3 from the red-team panel) are offline tested and not part of any scored run yet. The headline stays "14 named checks" until the final scored build. | 14 live verified, 6 offline tested |
+| 3 | Named checks | `code/nury/checks.py` | Plain-code rules on each draft. **20 in the registry, and the same 20 in the scored build `c317050`** (checked with git by hack-jedi). All 20 apply in a full run of the two playbooks: 17 are named in the stage files, the engine forces the Scripture check, and the voice skill adds the stock-phrase check. Six were added last (3 Scripture, 3 from the red-team panel). The headline is "20 named checks plus the safety floor". | 14 live verified earlier, 6 offline tested and in the scored build |
 | 4 | Jev gate | `code/nury/jev_gate.py` | Jev classifies every draft at run time, after the named checks. See section 3. | BUILT, live verified (3 scenarios, build `50668d6`) |
 | 5 | Privacy | `code/nury/privacy.py` | Tokens instead of identifiers before any outbound request. See section 6. | BUILT, live verified |
 | 6 | Playbooks | `code/playbooks/<id>/` | Everything specific to one crisis. See section 7. | BUILT, live verified (2 live) |
@@ -261,7 +261,6 @@ Nothing here may be claimed in the film, the deck or the description.
 - The Jev typed judges are not independent of the gate any more (section 4).
 - Jev's retention and terms for run-time use are not reviewed.
 - The tone score did not rise after the promises fix; the re-run on the fixed core is pending.
-- "14 named checks" is the headline until the final scored build; the registry holds 20.
 - The effect of the skills is not measured.
 - Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default, and the app wiring is committed (`ca6d9aa`) and tested offline. It proposes; a named person approves; we do not claim it improves Nury.
 

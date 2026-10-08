@@ -415,7 +415,7 @@ A rule in Nury is a test a draft must pass. There are three kinds, and the order
 
 **Data rules.** Plain settings in a playbook's JSON: banned patterns (`extra_banned`), required labels, required headings, word limits, the pattern a stage must end with. Section 5 shows where each one lives.
 
-**Named checks.** Functions in code that a stage lists by name. The registry holds **20**. The scored runs used 14 of them. The other six (three about Scripture, three added after the red team's findings) are tested offline and have not been part of a scored run. Where this page says "14 named checks", it means the scored set.
+**Named checks.** Functions in code that a stage lists by name. The registry holds **20**, and the same 20 were in the scored build. All 20 apply in a full run of the two playbooks. Six of them were added last: three about Scripture and three added after the red team's findings. An earlier version of this page said "14"; that figure came from an older build.
 
 The list below is read from the app's registry when this page loads. It shows each check's name, a plain explanation, and which stages use it.
 
