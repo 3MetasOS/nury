@@ -46,3 +46,10 @@ Say Gloo as GLOO and Jev as JEV. "2:07 AM" is sent as "two oh seven A M". No oth
 | L11 | 2.28 | 78.5 s, row 11 ends 82 s | yes |
 Checked by hack-ninja against both tables (memorial option 3 and option 2): every line ends at least 0.3 s before its slot ends. L7 ends at 55.4 s and L8 starts at 58.5 s, so they do not overlap. Files: `video/vo/arc/L1.wav` to `L11.wav`.
 Retake notes: L3 (0.88 s) and L9 (1.44 s) are the quickest. L3 is the moment of light and was meant to be unhurried: try a take near 1.3 to 1.6 s. L9 should be softer and a little slower: try about 1.8 s. Nobody has listened yet. Nury, Gloo, Jev and "two oh seven A M" need a listener.
+
+## Retakes (hack-video, 2026-10-07): ready, not the default
+| Line | Original | Retake | What changed | Fits (table 1 / table 2) |
+|---|---|---|---|---|
+| L3 | 0.88 s | 1.67 s | A 0.4 s pause tag before "Nury", speed 0.85. Same words. | ends 19.3 s, slot ends 25 s / ends 17.3 s, slot ends 23 s |
+| L9 | 1.44 s | 2.23 s | A 0.25 s pause tag after the first sentence, speed 0.85. Same words. | ends 67.2 s, slot ends 72 s / ends 60.7 s, slot ends 64 s |
+The pause tags are in the request only; nothing on screen changes, and "Nury" is still the normal spelling. Files: `video/vo/arc/L3_retake.wav`, `L9_retake.wav`. The cut uses the originals until a person has listened and picked. To switch: `video/remotion/public/voice.json` `{"retakes": true}`.
