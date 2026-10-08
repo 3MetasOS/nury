@@ -56,7 +56,7 @@ The plain line borrowed from C: "Five stages. A gate after each. Nothing sent." 
 | L8 | 8 tech | Jev checks every draft. People decide. | 6 |
 | L9 | 9 stages | A warm message. His to edit. | 6 |
 | L10 | 10 copy | Nury is not a pastor. It never sends. | 8 |
-| L11 | 11 dawn | An AI crisis response agent. | 6 |
+| L11 | 11 dawn | An AI crisis response agent. | 5 |
 
 ## Sound design: the audio arc (sparse, tense, release)
 All sound is made in code (synthesized) or licensed. No stock music.

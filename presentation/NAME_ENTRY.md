@@ -1,6 +1,6 @@
 # The name entry: "Nury" as a dictionary entry (research, proposal, design)
 
-Status: **APPROVED by Juan (sense 2 updated 2026-10-08: the tagline changed to "An AI crisis response agent.") (2026-10-07, via hack-sensei), with the final text in section 3.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
+Status: **APPROVED by Juan (sense 2 updated 2026-10-07: the tagline changed to "An AI crisis response agent.") (2026-10-07, via hack-sensei), with the final text in section 3.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
 
 ## 1. Sourced findings
 | # | Claim | Source (read 2026-10-07) | Status |

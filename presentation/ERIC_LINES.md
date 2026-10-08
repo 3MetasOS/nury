@@ -54,7 +54,7 @@ Retake notes: L3 (0.88 s) and L9 (1.44 s) are the quickest. L3 is the moment of 
 | L9 | 1.44 s | 2.23 s | A 0.25 s pause tag after the first sentence, speed 0.85. Same words. | ends 67.2 s, slot ends 72 s / ends 60.7 s, slot ends 64 s |
 The pause tags are in the request only; nothing on screen changes, and "Nury" is still the normal spelling. Files: `video/vo/arc/L3_retake.wav`, `L9_retake.wav`. The cut uses the originals until a person has listened and picked. To switch: `video/remotion/public/voice.json` `{"retakes": true}`.
 
-## Tagline change (Juan, 2026-10-08): L11 changed
+## Tagline change (Juan, 2026-10-07): L11 changed
 L11 is now "An AI crisis response agent." (5 words; it replaces the previous tagline line). It needs a new render. On screen the brand line is "An AI Crisis Response Agent." The film's second on-screen persona caption is "A pastor. No lawyer on the line." (it says nothing about the pastor being alone). All other lines are unchanged and all stay at 8 words or fewer.
 
 ## Jev change (2026-10-07): L8 changed

@@ -44,7 +44,7 @@ Play the cut of the demo (the guardrail strip and the approval gate), or run the
 [90s] At the end, Copy, not Send. Nury is not a pastor. It never sends. The pastor does.
 
 ## 1:17 to 1:37  Slide 6 (light): how it is built  [90s]
-Trace the line once. [90s] The pastor types. A privacy layer in Nury swaps names for tokens. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are put back inside Nury, and named checks reject unsafe drafts, up to three tries. The pastor decides. The model sees tokens, not names. The leak test ran 90 checks per playbook and found no names.
+Trace the line once. [90s] The pastor types. A privacy layer in Nury swaps names for tokens. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are put back inside Nury, and named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The model sees tokens, not names. The leak test ran 90 checks per playbook and found no names.
 Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
 
 ## 1:37 to 1:52  Slide 7 (light): innovation
@@ -54,7 +54,7 @@ Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, 
 
 ## 1:52 to 2:10  Slide 8 (light): use of AI, and why two judges
 [47 words, about 18 s] The writer is Claude, through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, classifies it with a probability before the pastor sees it. Before release, a red team of three models from other makers hunts for what we missed, and a person decides.
-If asked for more, go to the backup slide "Why two judges" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is from TypeSafe, not ours: say "used at run time and at test time, and disclosed as third-party technology". If asked, the test-time Jev judges are not independent of the run-time gate.
+If asked for more, go to the backup slide "Why two judges" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. In validation all three red-team reviewers caught 8 of 8 injected problems and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is from TypeSafe, not ours: say "used at run time and at test time, and disclosed as third-party technology". If asked, the test-time Jev judges are not independent of the run-time gate.
 
 ## 2:10 to 2:22  Slide 9 (light): impact and execution
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].

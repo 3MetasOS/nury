@@ -62,4 +62,4 @@ Prepared lines, all hidden until confirmed:
 - Q and A: "Does the AI write Scripture?" is Q7 in TECH_STORY.md, marked gated.
 Do not say: that a verse "will happen", that God will act, or anything about outcomes. Do not name a licensed version until the YouVersion terms are met.
 
-Outbound-calls wording (added Oct 8): "one outbound call" is no longer true if YouVersion is on. Default line: "No send path." Gated line, only after hack-sensei confirms YouVersion is on in the final build: "Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app; no send path." If YouVersion is off: "Only the model request leaves Nury, with tokens instead of names; no send path."
+Outbound-calls wording (added Oct 7): "one outbound call" is no longer true if YouVersion is on. Default line: "No send path." Gated line, only after hack-sensei confirms YouVersion is on in the final build: "Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app; no send path." If YouVersion is off: "Only the model request leaves Nury, with tokens instead of names; no send path."

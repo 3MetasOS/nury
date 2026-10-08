@@ -319,14 +319,14 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 
 ### Layer by layer
 
-**1. Named rules (plain code).** Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 163 offline product tests that pass (run 2026-10-07 with no keys set).
+**1. Named rules (plain code).** Each draft is tested against the stage's rules and the safety floor. They are fast, exact, and they cannot be talked around. Section 4 lists them. BUILT, live. Evidence: `code/nury/checks.py`, `code/nury/guardrails.py`, 257 offline product tests that pass (run 2026-10-07 with no keys set).
 
 **2. Jev gate, at run time.** BUILT, live on three scenarios (detention 01 and 14, hospital h01; build `50668d6`).
 
 | Item | Status | Evidence |
 |---|---|---|
 | Code: one batched call per draft per attempt, reject at 0.50 (0.60 for `assumes_facts`), "uncertain" logged from 0.30, 8-second timeout | BUILT, offline | `code/nury/jev_gate.py`, commits `98fc221` and `c317050`; 15 gate tests |
-| 13 gate tests with no network | BUILT, offline | `code/tests/test_jev_gate.py` |
+| 15 gate tests with no network | BUILT, offline | `code/tests/test_jev_gate.py` |
 | The Jev request carries tokens, never names or the token map | BUILT, offline | `code/tests/test_privacy.py` |
 | The question wording equals the wording used by the test-time judges | BUILT, offline | `test_jev_gate.py` compares the two copies |
 | Smoke test of the lines on real drafts | BUILT, live (small) | `evaluations/validation/JEV_GATE_VALIDATION.md` |
@@ -352,11 +352,11 @@ Its limits, plainly. The sample is small: two scenarios, 20 pairs, with unsafe p
 
 **4. Plain-code judges, at test time.** BUILT, live. Seven judges over whole runs: banned phrases, disclaimers, link and phone allowlist, language, workflow, completeness, stock phrases. No AI. `evaluations/judges/deterministic.py`.
 
-**5. Red team, before release.** BUILT, live (first validation). The three reviewers read what the pastor saw. They quote any sentence that gives advice, predicts an outcome, invents a fact or claims a role. A finding must quote the sentence, and no reviewer invented a quote.
+**5. Red team, before release.** BUILT, live (second validation pass, then a run on 28 scenarios on an earlier core). The three reviewers read what the pastor saw. They quote any sentence that gives advice, predicts an outcome, invents a fact or claims a role. A finding must quote the sentence, and the quote is checked against the real text. One reviewer (llama) quoted text that is not in the draft: once in validation and four times in the run on 28 scenarios.
 
-- **Result.** In the first validation, two reviewers caught all 8 injected problems. They also flagged safe text. So the red team **only advises**. It cannot pass or fail a run. The third reviewer failed on a parser bug in that first pass. Evidence: `evaluations/validation/PANEL_VALIDATION.md`, TECH_CLAIMS 28 and 40.
+- **Result.** In the second validation pass all three reviewers caught all 8 injected problems. They also flagged safe text: gpt-5.4 on all 8 safe reviews (10.8 findings each), gemini on 7 of 8 (1.5 each), llama on all 8 (3.1 each). So the red team **only advises**. It cannot pass or fail a run. The first pass is superseded: 13 of gemini's 16 calls had failed on our own parser. On the 28 detention and hospital scenarios (core `00fe7b1`) the reviewers made 55 corroborated findings. By the author's rough reading of 45 distinct sentences, up to 21 look like real problems and the rest are known limits or by-design lines. A person should read them. Evidence: `evaluations/validation/PANEL_VALIDATION.md`. TECH_CLAIMS rows 28 and 40 still describe the first pass and are out of date.
 - **What it found that mattered.** A garbled sentence in a pastoral message ("call Maria Lopez can call anytime"), triage lines that stated things the intake did not say, and a hospital checklist line that told a family what to sign. Each became a named check: `no_name_after_call`, `triage_facts_only`, `do_not_directives`. We could not confirm the cause of the garbled sentence. It did not recur in later live runs, and the check now guards it.
-- **Open.** The red-team run on the final scored sets is pending (`evaluations/LIVE_CHECKS_OWED.md`, step 11).
+- **Open.** The red team has not been run on the final build, only on core `00fe7b1`. That run is pending (`evaluations/LIVE_CHECKS_OWED.md`, step 11).
 
 **6. Human review.** BUILT, live. A page for Juan, grouped by question, that shows only what the pastor saw, with pass and fail buttons. Anything a judge is unsure about goes here. `evaluations/make_review_canvas.py`.
 
@@ -451,7 +451,7 @@ BUILT, offline. Use this when a rule needs logic a pattern cannot hold.
 3. **Name it in a stage.** In the playbook's `stages.json`, add `{"name": "<your_check>", ...settings}` to the stage's `checks`.
 4. **Let the loader guard it.** `load_playbook` refuses a stage that names a check not in the registry ("unknown check"). A typo cannot silently turn a rule off.
 5. **Write a test** in `code/tests/` that feeds the check a passing text and a failing text, and one that loads the playbook and confirms the stage runs it. The existing checks have tests in `test_core.py`, `test_scripture.py` and `test_panel_fixes.py`.
-6. **Run the tests.** `cd code && python3 -m unittest discover -s tests`. All 163 must pass.
+6. **Run the tests.** `cd code && python3 -m unittest discover -s tests`. All 257 must pass.
 7. **Run a scenario** that should trigger the rule: `python3 evaluations/run.py --agent nury --only <number or id>` (needs a Gloo key and spends money; see `evaluations/README.md`). Add a scenario to `evaluations/scenarios/` if none covers it.
 8. **Commit.** A person reads the diff. That review is the only approval step today.
 
@@ -604,7 +604,7 @@ Only in the pastoral message. The model never writes Scripture.
 - **The model may not** write a Bible reference or a quotation, name a verse outside the list, or say what God will do, why this happened, or what God knows, sees, feels, wants or intends beyond what the verse says. Three checks enforce it: `no_model_scripture`, `no_providence_claims`, `verse_block_verbatim`. A failing draft is rejected and regenerated like any other. BUILT, offline (the checks), BUILT, live (the flow, 8 runs on 2026-10-07).
 - **The app inserts** the exact verse, reference and translation name, with the provider's copyright line. Nury trims lines that hold an email address and a repeated second copyright block. That trimming is Nury's own rule.
 - **The bank** is the default and the fallback: 12 verses in Reina-Valera 1909 and the World English Bible, both public domain, with the source and licence recorded. Juan approved all 12. BUILT, offline.
-- **The YouVersion provider** is optional and turns on only when the app holds a YouVersion key and both Bible ids: Versión Biblia Libre for Spanish, Berean Standard Bible for English. On any failure Nury uses the bank and the audit log says `provider=bank` with the reason. Live: 8 verses fetched, 1 fallback (one verse was over the word cap). BUILT, live.
+- **The YouVersion provider** is optional and turns on only when the app holds a YouVersion key and both Bible ids: Versión Biblia Libre for Spanish, Berean Standard Bible for English. On any failure Nury uses the bank and the audit log says `provider=bank` with the reason. Live: 8 verses fetched, 1 fallback (one verse was over the word cap). In the scored runs on build `c317050` (detention, hospital and hostile intakes together), all 31 verses came from YouVersion with no fallback (BUILD_LOG 116). BUILT, live.
 - **Not claimed.** NVI and RVR1960 are not available to our key. Nothing licensed is used. Nothing is cached, because no cache rule was found. Someone should read the Platform terms before the key runs on a public server.
 - **Swap the verse at the gate:** the engine function exists; the selector in the app is PLANNED. The church's own verses: a file the loader checks, with no screen yet. BUILT, offline.
 
