@@ -89,6 +89,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 .slide.on{animation:fadein .6s ease-out}@keyframes fadein{from{opacity:0}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.slide.on{animation:none}}
 .portrait{display:none}
+.tight{font-size:clamp(13px,1.4vw,19px)}.tight th,.tight td{padding:.55vh 1vw .55vh 0;line-height:1.25}.tight td:first-child{white-space:nowrap;padding-right:1.6vw;color:var(--muted)}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
@@ -189,7 +190,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <section class="slide" data-part="talk">
 <h2>Use of AI: one model writes, other makers' models check</h2>
 <div class="cols"><div class="col">
-<ul><li>Nury runs on Gloo's guarded Responses endpoint and gives legal information only, from vetted sources.</li></ul>
+<ul><li>Two judges, because they fail differently: a red team that hunts freely, and Jev, which answers fixed questions.</li></ul>
 <table class="tbl">
 <tr><th>Leak test</th><td>90 checks per playbook, 0 found</td></tr>
 <tr><th>Typed judge, ten checks</th><td>unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
@@ -201,7 +202,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li><b>Typed judges</b><span>Jev, at evaluation time only.</span></li>
 <li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
 <li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<aside class="notes">About 18 seconds. Criterion: Use of AI. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a first-pass panel, four live packages; say so. Offline product tests: 91 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
+<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: two judges, because they fail differently (the full slide is in the backup: Why two judges). Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a first-pass panel, four live packages; say so. Offline product tests: 91 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Impact and execution: what we measured, and what broke</h2>
@@ -247,6 +248,21 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <aside class="notes">DAWN, then the memorial. Option 2 of presentation/MEMORIAL.md (recommended for the deck and the live pitch, about 16 s). Gated until Juan approves the text in writing. Juan chooses who reads it, if anyone; the film uses text only. Nothing else is on this slide. A hidden slot is ready for one portrait: Juan sends the photo tomorrow. Option 3 (8 s) is for the 90-second film.</aside></section>
 
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
+<section class="slide" data-part="backup">
+<span class="pill">BACKUP</span>
+<h2>Why two judges</h2>
+<table class="tbl tight">
+<tr><th></th><th>Red team, through Gloo AI Studio</th><th>Jev, a typed judge</th></tr>
+<tr><td>What it is</td><td>Three models from other makers, not Claude. They hunt freely and must quote the sentence.</td><td>Answers a fixed question, yes or no or 1 to 5, with a probability.</td></tr>
+<tr><td>Good at</td><td>Finding what nobody asked about</td><td>Repeatable: within 0.03 an hour later</td></tr>
+<tr><td>Weak at</td><td>Flags safe text too: advisory</td><td>Blind to what we did not ask</td></tr>
+<tr><td>Numbers</td><td>First pass: 8 of 8 injected problems caught</td><td>Unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
+<tr><td>Rule</td><td>Two quote the same problem: a person sees it</td><td>Accept at 80%, fail at 20%, middle to a person</td></tr>
+<tr><td>Final run</td><td class="ph">[PLACEHOLDER: final panel results]</td><td class="ph">[PLACEHOLDER: final scorecard]</td></tr></table>
+<p class="small">Both run at evaluation time only; the product never calls them. Our reasoning, not a measurement: a free hunter is noisy, a fixed question is blind to what we did not ask, and a person settles the rest. We have not tested a single model as judge.</p>
+<p class="muted">Jev is my prior project, used at evaluation time only, and disclosed.</p>
+<aside class="notes">Source for every row: documents/TECH_CLAIMS.md rows 25, 26, 28 and 32, and evaluations/validation/JUDGE_VALIDATION.md (stability: five stored trajectories, re-judged about an hour later, safety questions moved by 0.03 or less, tone by 0.06 or less; a smoke check, not a study; a verdict can still flip when a score sits within 0.03 of a threshold) and PANEL_VALIDATION.md (first pass: gpt-5.4 and llama-4-maverick caught 8 of 8 and flagged every safe review; gemini failed 13 of 16 calls on our parser). The final panel run and the final scorecard are placeholders until hack-artisans finishes: use no number from any interim run. Why not one LLM: Jev is a separate typed judge, not a prompt to the model that writes; it returns a probability on a named question, so we can set a rule. Do not claim Jev beats a single-LLM judge: we did not test that.</aside></section>
+
 <section class="slide" data-part="backup">
 <span class="pill">BACKUP</span>
 <h2>What broke and what changed</h2>

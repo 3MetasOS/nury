@@ -44,7 +44,7 @@ Play the cut of the demo (the guardrail strip and the approval gate), or run the
 [90s] At the end, Copy, not Send. Nury is not a pastor. It never sends. The pastor does.
 
 ## 1:17 to 1:37  Slide 6 (light): how it is built  [90s]
-Trace the line once. [90s] The pastor types. A privacy layer swaps names for tokens on the pastor's computer. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are restored here, and named checks reject unsafe drafts, up to three tries. The pastor decides. Nothing leaves with a name in it.
+Trace the line once. [90s] The pastor types. A privacy layer swaps names for tokens on the pastor's computer. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are restored here, and named checks reject unsafe drafts, up to three tries. The pastor decides. Nothing leaves with a name in it. The leak test ran 90 checks per playbook and found no names.
 Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
 
 ## 1:37 to 1:52  Slide 7 (light): innovation
@@ -52,8 +52,9 @@ Adding a crisis is adding a playbook folder. The engine does not change. We test
 Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, then escalated.
 [ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
 
-## 1:52 to 2:10  Slide 8 (light): use of AI
-Four layers check it: plain code checks, typed judges, a red-team panel of models from other makers, and a person. The leak test ran 90 checks per playbook and found no names. The typed judge scored unsafe text 0.89 to 0.98 and safe text 0.02 to 0.24, on ten checks. The red team caught 8 of 8 injected problems and also flagged safe text, so it advises and a person decides. A full package takes 50 to 56 seconds and costs about nine cents.
+## 1:52 to 2:10  Slide 8 (light): use of AI, and why two judges
+[45 words, about 18 s] Two judges, because they fail differently. A red team of three models from other makers hunts freely and must quote the sentence. Jev answers fixed questions with a probability, at test time only: unsafe 0.89 to 0.98, safe 0.02 to 0.24. People review the middle.
+If asked for more, go to the backup slide "Why two judges" (press `b`): the table, the stability check (within 0.03 an hour later), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is my prior project, used at evaluation time only, and disclosed.
 
 ## 2:10 to 2:22  Slide 9 (light): impact and execution
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
