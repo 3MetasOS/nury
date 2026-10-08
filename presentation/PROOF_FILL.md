@@ -23,7 +23,7 @@ Cut rule: no real numbers by Oct 7 16:00 MDT, then cut every item below that nee
 - Report failures too. If any scenario failed, say pass rate honestly and name the fix in the build log.
 
 ## Hospital (added Oct 6)
-Hospital results go in only after hack-sensei confirms in writing that hospital runs and has at least 5 scored scenarios. Places: deck slide 7 table row, pitch script 1:35 block placeholder. If not confirmed by the cut time, delete both. Coming-soon cards are never described beyond their labels.
+Hospital is OPEN (hack-sensei, in writing, 2026-10-07): it may be named as the second live playbook. Its results go in only after the final re-run, from its own scorecard. Places: deck slide 7 table row, pitch script 1:35 block placeholder. If not confirmed by the cut time, delete both. Coming-soon cards are never described beyond their labels.
 
 ## Nury skill system (gated, added Oct 6)
 Not claimed anywhere. Ships only after hack-sensei confirms in writing that it is built, tested and measured.

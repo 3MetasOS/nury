@@ -134,8 +134,8 @@ workflow / adversarial); mean corrections per run; mean latency; total eval cost
 
 ## Submission disclosure line
 
-"Evaluation harness uses the Jev decision API (my prior project) as typed
-judges; disclosed as prior technology per the rules."
+"The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules."
+(corrected 2026-10-07: Jev is third-party)
 
 ## References
 

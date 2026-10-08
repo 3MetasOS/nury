@@ -35,6 +35,7 @@ ul{margin:0;padding-left:1.05em;display:grid;gap:1.3vh}
 .tbl th{font-weight:600;color:var(--amber-text)}
 .ph{outline:2px dashed var(--amber);outline-offset:2px;padding:0 .3em;color:var(--amber-text)}
 .phone{width:min(100%,250px);aspect-ratio:9/17;background:var(--ink);border-radius:30px;padding:12px;margin-inline:auto}
+.phone img.shot{width:100%;height:100%;object-fit:contain;background:#0d1015;border-radius:20px;display:block}
 .phone .scr{height:100%;border-radius:20px;border:2px dashed #e8a33d;color:#e8a33d;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:14px;line-height:1.4}
 .chip{display:inline-block;padding:.15em .65em;border-radius:99px;font-size:clamp(13px,1.5vw,19px);background:var(--card);margin-right:.4em}
 .live{background:#e1eee4;color:#1d5d37}.soon{background:var(--card);color:var(--muted)}
@@ -139,10 +140,10 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <div class="col"><img class="ill" src="images/family-silhouette.svg" alt="A family in silhouette under a lantern" width="320" height="220">
 <ul class="sel">
 <li><b>Detention</b><span class="chip live">live, the demo</span></li>
-<li data-gated="hospital"><b>Hospital emergency</b><span class="chip live">live</span></li>
+<li><b>Hospital emergency</b><span class="chip live">live</span></li>
 <li><b>Sudden death in a family</b><span class="chip soon">coming soon</span></li>
 <li><b>House fire or displacement</b><span class="chip soon">coming soon</span></li></ul></div></div>
-<aside class="notes">LIGHT. 0:28 to 0:43. [GATED, scripture: after Sensei confirms in writing, say: the pastoral message carries a Bible verse, quoted from a verified list; the AI never writes Scripture.] Criterion: Concept and Product. The app opens on a crisis selector; each card is a playbook. The two coming-soon cards are labels only: say nothing more about them. Hospital stays off until Sensei confirms in writing that it runs and is scored. How we differ from other church-AI entries: Rockpool automates routine work; KineticFlow supports the pastor's own wellbeing; Nury shows up for the crisis (see backup slide, How we differ).</aside></section>
+<aside class="notes">LIGHT. 0:28 to 0:43. [GATED, scripture: after Sensei confirms in writing, say: the pastoral message carries a Bible verse, quoted from a verified list; the AI never writes Scripture.] Criterion: Concept and Product. The app opens on a crisis selector; each card is a playbook. The two coming-soon cards are labels only: say nothing more about them. Hospital is open (hack-sensei, in writing, 2026-10-07): name it as the second live playbook; its numbers come only after the final re-run. How we differ from other church-AI entries: Rockpool automates routine work; KineticFlow supports the pastor's own wellbeing; Nury shows up for the crisis (see backup slide, How we differ).</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
 <h2>The demo: the call, the work, the rejected draft</h2>
@@ -152,7 +153,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li>One unsafe draft is rejected and regenerated. The pastor never sees it.</li>
 <li>Nothing is sent. The pastor copies the text and sends it by hand.</li></ul>
 <p class="muted">Maria, Jose, two children (8 and 11). Live app, or the 90-second video.</p></div>
-<div class="phone"><div class="scr">[SCREENSHOT SLOT: crisis selector, live app, phone width. Capture after hack-artisans ships it.]</div></div></div>
+<div class="phone"><img class="shot" src="images/chooser-390.png" alt="The Nury crisis chooser on a phone: Immigration detention or raid and Hospital emergency are live; Sudden death in a family and House fire or displacement say coming soon." width="390" height="844"></div></div>
 <aside class="notes">LIGHT. 0:43 to 1:17. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
 
 <section class="slide" data-part="talk">
@@ -183,7 +184,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <section class="slide" data-part="talk">
 <h2>Innovation: a crisis is a folder, and drafts correct themselves</h2>
 <div class="cols"><div class="col"><h3>One engine, many playbooks</h3>
-<p>Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a test playbook.</p>
+<p>Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital emergency both run on it today, and a test builds a new crisis from scratch.</p>
 <p class="small" data-gated="skills">Playbooks share small skills, like voice and grounding. A stage includes them by name.</p></div>
 <div class="col"><h3>Unsafe drafts never reach the pastor</h3>
 <p>Every draft is checked. An unsafe draft is rejected and regenerated, up to three tries, then escalated to the pastor.</p>
@@ -205,7 +206,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li><b>Typed judges</b><span>Jev judges whole runs at test time. It also checks every draft at run time, so it is not independent of the gate.</span></li>
 <li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
 <li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a small panel validation, four live packages; say so. Offline product tests: 257 passed on 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
+<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a small panel validation, four live packages; say so. Offline product tests: 264 passed at the end of 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2 style="font-size:clamp(1.5rem,3vw,2.2rem)">Impact and execution: what we measured, and what broke</h2>
@@ -305,7 +306,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <tr><th>The loop</th><td>Capture what a pastor changes, with names already tokens. Analyze it. Test a proposed change before and after. A named person approves.</td></tr>
 <tr><th>What it never does</th><td>Change a prompt, a rule or a model by itself. It proposes and scores. A person approves.</td></tr>
 <tr><th>Switches</th><td>Capture is off by default. The consent sentence shows only when it is on.</td></tr>
-<tr><th>Not done</th><td>The app wiring is not finished. No real data. The before-and-after test has not run live.</td></tr></table>
+<tr><th>Not done</th><td>No real pastor has used it. Capture is built and tested offline. The before-and-after test has not run live.</td></tr></table>
 <aside class="notes">Say it plainly: we built the loop (capture, analysis, test, human approval) and tested it on 30 invented sessions. Do NOT say Nury improves itself, learns or self-evolves. Do not show or read the consent sentence about recording changes until hack-sensei confirms the app records them. Source: documents/product/LEARNING_LOOP.md; TECH_CLAIMS rows 57 to 59; Q13 in presentation/TECH_STORY.md.</aside></section>
 
 <section class="slide" data-part="backup">

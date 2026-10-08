@@ -34,7 +34,7 @@ The entry builds itself: Nury, /NOO-ree/, proper noun. [90s] "A given name from 
 
 ## 0:28 to 0:43  Slide 4 (light): concept and product
 Five stages, one gate after each. [ONLY AFTER SENSEI CONFIRMS IN WRITING THAT THE VERSE BANK IS BUILT: The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture.] The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon. Nothing is sent without the pastor.
-[ONLY AFTER SENSEI CONFIRMS IN WRITING THAT HOSPITAL RUNS AND IS SCORED] A second playbook, hospital emergency, runs on the same engine. [PLACEHOLDER: hospital scenario count and pass rate]
+A second playbook, hospital emergency, runs on the same engine (open: hack-sensei, in writing, 2026-10-07). [PLACEHOLDER: hospital scenario count and pass rate]
 Say nothing more about the coming-soon cards.
 
 ## 0:43 to 1:17  Slide 5 (light): the demo  [90s]
@@ -48,7 +48,7 @@ Trace the line once. [90s] The pastor types. A privacy layer in Nury swaps names
 Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it before release. Four layers."
 
 ## 1:37 to 1:52  Slide 7 (light): innovation
-Adding a crisis is adding a playbook folder. The engine does not change. We tested that with a test playbook.
+Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital emergency both run on it, and a test builds a new crisis from scratch.
 Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, then escalated.
 [ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
 
@@ -86,4 +86,4 @@ For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, 
 - Humanitarian, never political. Name no agency and no party.
 - Do not claim a pastor, attorney or family has used it. We have not validated with one.
 - Say "smoke test" and "first pass" where the numbers come from one. Do not round up.
-- Say nothing about the church network, the skill system, the case file or hospital until Sensei confirms in writing.
+- Say nothing about the church network, the skill system or the case file until Sensei confirms in writing. Hospital is open (2026-10-07); its numbers wait for the final re-run.
