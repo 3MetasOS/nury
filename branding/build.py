@@ -78,15 +78,15 @@ def lockup(opt, mark_color, word_color, tag_color, bg=None, tagline=True):
     parts = []
     W = 82 + ww + 8
     if tagline:
-        _td, _tw = text_path(INTER, "the crisis-response agent for solo pastors", 11.5, 84, 76, tracking=0.012); W = max(W, 84 + _tw + 8)
+        _td, _tw = text_path(INTER, "An AI Crisis Response Agent", 11.5, 84, 76, tracking=0.012); W = max(W, 84 + _tw + 8)
     if bg: parts.append(f'<rect x="-20" y="-12" width="{W+40:.0f}" height="104" fill="{bg}"/>')
     parts.append(mark_group(opt, mark_color, 0, 8, 1))
     parts.append(f'<path fill="{word_color}" d="{wd}"/>')
     if tagline:
-        td, tw = text_path(INTER, "the crisis-response agent for solo pastors", 11.5, 84, 76, tracking=0.012)
+        td, tw = text_path(INTER, "An AI Crisis Response Agent", 11.5, 84, 76, tracking=0.012)
         parts.append(f'<path fill="{tag_color}" d="{td}"/>')
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="-20 -12 {W+40:.0f} 104" width="{W+40:.0f}" height="104" role="img" '
-            f'aria-label="Nury, the crisis-response agent for solo pastors">'+"".join(parts)+'</svg>'), W
+            f'aria-label="Nury, An AI Crisis Response Agent">'+"".join(parts)+'</svg>'), W
 
 def favicon(opt):
     body, kind = MARKS[opt + "s"] if opt + "s" in MARKS else MARKS[opt]

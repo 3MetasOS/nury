@@ -24,13 +24,13 @@ Technical claims and the five hard questions: `TECH_STORY.md`. Numbers come from
 Total 2:50 with the memorial, 2:34 without. With memorial option 3 (8 s) the total is 2:42.
 
 ## 0:00 to 0:14  Slide 1 (night): the call  [90s]
-The slide is dark. Play the phone buzz if the room allows. [90s] It is 2:07 in the morning. A solo pastor's phone rings. A family. A husband was detained last evening. The pastor has no staff and no lawyer on the line, a phone, and a few minutes.
+The slide is dark. Play the phone buzz if the room allows. [90s] It is 2:07 in the morning. A pastor's phone rings. A family. A husband was detained last evening. The pastor has no lawyer on the line, a phone, and a few minutes.
 
 ## 0:14 to 0:20  Slide 2 (lantern): This is Nury  [90s]
 The slide turns from night to paper and the lantern lights. [90s] This is Nury.
 
 ## 0:20 to 0:28  Slide 3 (lantern): the name entry  [90s]
-The entry builds itself: Nury, /NOO-ree/, proper noun. [90s] "A given name from Arabic nur, light. The crisis-response agent for solo pastors." Then "see also: lantern". Do not say her name here; it appears once, in the memorial.
+The entry builds itself: Nury, /NOO-ree/, proper noun. [90s] "A given name from Arabic nur, light. An AI crisis response agent." Then "see also: lantern". Do not say her name here; it appears once, in the memorial.
 
 ## 0:28 to 0:43  Slide 4 (light): concept and product
 Five stages, one gate after each. [ONLY AFTER SENSEI CONFIRMS IN WRITING THAT THE VERSE BANK IS BUILT: The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture.] The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon. Nothing is sent without the pastor.

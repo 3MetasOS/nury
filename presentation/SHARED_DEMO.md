@@ -15,7 +15,7 @@ Status strip only: "Draft rejected by guardrail. Regenerating (2 of 3)." then gr
 
 ## Locked VO (90 s video)
 1. "It is two in the morning. A family is calling their pastor."
-2. "Her husband was detained last evening. The pastor has no staff, and no lawyer on the line."
+2. "Her husband was detained last evening. The pastor has no lawyer on the line."
 3. "Nury turns the call into a clear case. Facts only. No advice."
 4. "After every stage, the pastor decides."
 5. "Rights in the family's own language. Built only from a vetted source. Every point cited."
@@ -23,6 +23,6 @@ Status strip only: "Draft rejected by guardrail. Regenerating (2 of 3)." then gr
 7. "Attorney hotlines. A checklist for tonight."
 8. "And a short, warm message, in the pastor's hands to edit."
 9. "Nury is not a pastor, and it never sends. The pastor does."
-10. "Nury. The crisis-response agent for solo pastors."
+10. "Nury. An AI crisis response agent."
 
 Edits to the storyboard draft: shot 2 ("taken today" to "detained last evening"); shot 6 ("Sometimes a draft crosses" to "When a draft crosses", so we do not imply a failure rate we have not measured).

@@ -1,6 +1,6 @@
 # Nury brand kit
 
-Nury is the crisis-response agent for solo pastors. It is named for Juan's late tía Nury, who was always ready to help at her church.
+Nury is an AI crisis response agent for churches and the pastors who answer the call. It is named for Juan's late tía Nury, who was always ready to help at her church.
 
 The look is a lantern in the dark: a deep ink background, one warm amber light, a serif for the words a family reads, a quiet sans for everything else.
 
@@ -41,7 +41,7 @@ Amber is the only accent. Green and red appear only on approved and rejected chi
 - Both are open fonts (SIL Open Font License) from Google Fonts.
 
 ## Tagline
-"the crisis-response agent for solo pastors." This is the brand line. Do not reword it. In the lockup it is set in lowercase, small, in muted text.
+"An AI Crisis Response Agent." This is the brand line, capitalised as shown. Do not reword it. In the lockup it is set small, in muted text. In running text, write "an AI crisis response agent".
 
 ## Clear space
 Keep empty space around the logo equal to half the width of the lantern on every side. The lockup files already carry this space inside their background. Do not crowd it with other marks or text.
@@ -49,7 +49,7 @@ Keep empty space around the logo equal to half the width of the lantern on every
 ## Minimum size
 - 24 px and up: `logo-mark.svg`.
 - 16 to 23 px: `logo-mark-small.svg` or the favicon. Do not go below 16 px.
-- Lockup with tagline: 320 px wide. The tagline is too small to read below that. When space is tighter, use the mark alone and set "Nury" in Fraunces beside it.
+- Lockup with tagline: 260 px wide. The tagline is too small to read below that (checked at 320, 260 and 220 px). When space is tighter, use the mark alone and set "Nury" in Fraunces beside it.
 
 ## Do
 - Use the amber lantern on ink, the deep-amber lantern on paper, or a single color (ink or paper) on a busy background.

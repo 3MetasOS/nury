@@ -1,6 +1,6 @@
 # The name entry: "Nury" as a dictionary entry (research, proposal, design)
 
-Status: **APPROVED by Juan (2026-10-07, via hack-sensei), with the final text in section 3.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
+Status: **APPROVED by Juan (sense 2 updated 2026-10-08: the tagline changed to "An AI crisis response agent.") (2026-10-07, via hack-sensei), with the final text in section 3.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
 
 ## 1. Sourced findings
 | # | Claim | Source (read 2026-10-07) | Status |
@@ -30,7 +30,7 @@ An aside I did not use: Idescat says the Virgin of Núria "és considerada patro
 ## 3. Final entry (approved by Juan)
 > **Nury** /NOO-ree/ *proper noun*
 > 1. A given name from Arabic *nūr*, "light".
-> 2. The crisis-response agent for solo pastors.
+> 2. An AI crisis response agent.
 >
 > *Etymology:* Arabic *nūr*, "light, ray of light, lamp, lantern".
 > *see also:* **lantern**
@@ -58,7 +58,7 @@ Light paper, the look of the deck and the memorial card. No voiceover needed.
 | 1.2 to 1.5 s | Cross-fade. The lantern stays, small, beside the headword. |
 | 1.5 to 2.2 s | **Nury** (Fraunces) and "/NOO-ree/ *proper noun*" fade in. |
 | 2.2 to 3.6 s | "1. A given name from Arabic *nūr*, 'light'." |
-| 3.6 to 5.0 s | "2. The crisis-response agent for solo pastors." Hold to 5.0 s. |
+| 3.6 to 5.0 s | "2. An AI crisis response agent." Hold to 5.0 s. |
 The etymology line and "see also: lantern" are left out of the video for time. The 90 s total holds: the opener takes 2 s more than the old 3 s intro, and shots 3 and 5 each give back 1 s (`FINALIST_SCRIPT.md`).
 
 ## 6. If anyone asks about the name

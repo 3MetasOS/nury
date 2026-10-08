@@ -8,8 +8,8 @@ The original ask, kept for the record: three treatments, then Juan picks one.
 
 ## 1. What the 90 seconds must do (non-negotiable content)
 1. "This is Nury": the name, the dictionary moment (light, lantern), the brand line.
-2. What it is: a crisis-management tool for the solo pastor. One crisis picked, five stages, a gate after every one, nothing sent without the pastor.
-3. The tension and the person: a real-feeling persona (a synthetic solo pastor and a synthetic family), a ticking clock (2:07 AM), a decision under pressure.
+2. What it is: an AI crisis response agent for churches and the pastors who answer the call. One crisis picked, five stages, a gate after every one, nothing sent without the pastor.
+3. The tension and the person: a real-feeling persona (a synthetic pastor and a synthetic family), a ticking clock (2:07 AM), a decision under pressure.
 4. The turn: the moment Nury earns trust (a draft is rejected before the pastor sees it).
 5. The technical sell, with proof: Gloo AI Studio guarded endpoint, privacy (tokens, not names), Jev typed judges plus a red team, a person reviews. VERIFIED claims only (documents/TECH_CLAIMS.md). Disclosure caption verbatim.
 6. The memorial: Nury Pelaez, last thing on screen. Juan's words, text only.

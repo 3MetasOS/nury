@@ -4,7 +4,7 @@ Written 2026-10-07 by hack-ninja for hack-sensei and Juan. Research from pages I
 
 ## Wording rules (read first)
 - Say **"informed by"** or **"aligned with"**. Never "compliant with", "certified", "meets" or "follows" a standard.
-- Nury is a **drafting aid for a pastor**. It is not a clinical or professional case-management system, and the pastor is not acting as a licensed case manager because of it.
+- Nury is a **drafting aid**. It is not a clinical or professional case-management system, and the pastor is not acting as a licensed case manager because of it.
 - **No body endorses Nury.** None of the organizations below has reviewed, approved or endorsed it.
 - Nury gives legal information and drafts. The pastor decides. Nury does not give advice, advocate, or predict.
 
@@ -125,7 +125,7 @@ Not on the list because they are large: sign-in and roles, per-church separation
 ## 5. The short version (deck and Q and A)
 **Three lines for the deck:**
 1. Nury is informed by case-management and trauma-informed practice: it gathers the facts, makes a plan, leaves every decision to the pastor, and saves a record.
-2. It is a drafting aid for a pastor, not a professional case-management system, and no standards body has endorsed it.
+2. It is a drafting aid, not a professional case-management system, and no standards body has endorsed it.
 3. We know the gaps: case status and follow-up, a consent note, an access log, and sign-in.
 
 **Q: "Is Nury compliant with case-management standards?"**

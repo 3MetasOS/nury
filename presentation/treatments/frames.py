@@ -83,7 +83,7 @@ def card_entry(x=320, y=60, light=True):
     return (lantern(x-130, y+22, 40, DAMB if light else AMB) + txt(x-100, y+40, "Nury", 54, c, "start", 600) +
             txt(x-100, y+68, "/NOO-ree/  proper noun", 16, MUT if light else MUT, "start", 400, "Arial,sans-serif", True) +
             txt(x-100, y+100, "1. A given name from Arabic nūr, “light”.", 18, c, "start", 400, "Arial,sans-serif") +
-            txt(x-100, y+126, "2. The crisis-response agent for solo pastors.", 18, c, "start", 400, "Arial,sans-serif") +
+            txt(x-100, y+126, "2. An AI crisis response agent.", 18, c, "start", 400, "Arial,sans-serif") +
             txt(x-100, y+156, "see also: lantern", 14, MUT, "start", 400, "Arial,sans-serif", True))
 
 def tech(c1=AMB, bg=INK):

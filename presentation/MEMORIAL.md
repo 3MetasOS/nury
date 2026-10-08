@@ -4,7 +4,7 @@ Source of truth for the "This is Nury" moment and the memorial, in the video, th
 **Rules:** these words are Juan's. Nobody edits, humanizes or shortens them without Juan's written OK. Use only facts Juan has given. No stock photo. A photo of Nury only if Juan provides it.
 
 ## 1. "This is Nury" (opening moment)
-- Deck: first slide. The lantern mark lights up. "This is Nury." Then the brand line: "the crisis-response agent for solo pastors."
+- Deck: first slide. The lantern mark lights up. "This is Nury." Then the brand line: "An AI Crisis Response Agent."
 - Video: 3 to 4 seconds before the 2:07 AM call. The lantern lights. Caption: "This is Nury." Then the brand line, smaller. No voiceover needed. (Optional: Juan says "This is Nury." in his own voice.)
 
 ## 2. The memorial (last moment, in the video and in the deck)

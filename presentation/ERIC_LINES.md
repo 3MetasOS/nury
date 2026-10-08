@@ -14,14 +14,14 @@ Status: approved 2026-10-07. hack-video generates these with ElevenLabs (paid pl
 | L8 | 8 tech, about 0:58 | Tested with Jev. People review what is unsure. | 8 | Tested with Jev. People review what is unsure. | Even, factual. Say Jev as JEV. A small stop after "Jev." Softer on "what is unsure". |
 | L9 | 9 stages, about 1:04 | A warm message. His to edit. | 6 | A warm message. His to edit. | Warm. Slightly softer than the line before. |
 | L10 | 10 copy, about 1:12 | Nury is not a pastor. It never sends. | 8 | Nury is not a pastor. It never sends. | Gentle and exact. This is the honesty line: Nury is not a pastor. Do not smile it. |
-| L11 | 11 dawn, about 1:18 | The crisis-response agent for solo pastors. | 6 | The crisis-response agent for solo pastors. | The close. Slow, warm, a little lower. Let it land. |
+| L11 | 11 dawn, about 1:18 | An AI crisis response agent. | 5 | An AI crisis response agent. | The close. Slow, warm, a little lower. Let it land. |
 
 ## Decisions from hack-sensei (2026-10-07)
 1. **L3** is sent as "Nury", the normal spelling (Juan chose it). The `voice.json` `noory` flag stays false. If the voice says it wrong, retake the line; do not respell.
 2. **L7 and L8 changed** so Gloo and Jev are named out loud, not only on screen. The old L7 (about names becoming tokens) and the old L8 (about checks and a person deciding) are both replaced.
 3. "A person decides" is covered by L8 "People review what is unsure" and by L9 "His to edit".
 4. **L10** ("Nury is not a pastor. It never sends.") is approved. "The pastor does." is on screen.
-5. **L2** is approved. "The pastor has no staff, and no lawyer on the line" goes on screen in row 2.
+5. **L2** is approved. "The pastor has no lawyer on the line" goes on screen in row 2.
 6. **Memorial:** the film uses option 3 (8 s). The deck and the live pitch use option 2, unless Juan objects.
 
 ## On screen with L7 and L8 (row 8, 0:52 to 1:04)
@@ -53,3 +53,6 @@ Retake notes: L3 (0.88 s) and L9 (1.44 s) are the quickest. L3 is the moment of 
 | L3 | 0.88 s | 1.67 s | A 0.4 s pause tag before "Nury", speed 0.85. Same words. | ends 19.3 s, slot ends 25 s / ends 17.3 s, slot ends 23 s |
 | L9 | 1.44 s | 2.23 s | A 0.25 s pause tag after the first sentence, speed 0.85. Same words. | ends 67.2 s, slot ends 72 s / ends 60.7 s, slot ends 64 s |
 The pause tags are in the request only; nothing on screen changes, and "Nury" is still the normal spelling. Files: `video/vo/arc/L3_retake.wav`, `L9_retake.wav`. The cut uses the originals until a person has listened and picked. To switch: `video/remotion/public/voice.json` `{"retakes": true}`.
+
+## Tagline change (Juan, 2026-10-08): L11 changed
+L11 is now "An AI crisis response agent." (5 words; it replaces the previous tagline line). It needs a new render. On screen the brand line is "An AI Crisis Response Agent." The film's second on-screen persona caption is "A pastor. No lawyer on the line." (it says nothing about the pastor being alone). All other lines are unchanged and all stay at 8 words or fewer.

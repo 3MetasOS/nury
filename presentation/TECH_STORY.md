@@ -95,12 +95,16 @@ Short: No. The model only picks a verse by id from a verified list. The engine i
 Honest (from the design in BUILD_LOG item 83; each point needs its own TECH_CLAIMS row before we say it): Juan approves the verse list on a canvas. It holds comfort and presence verses only: none that promises an outcome, none about foreigners or politics. Checks block outcome promises and claims about God's providence in the sentences the model writes. The two translations are public domain; licensed versions through the YouVersion platform are a next step and are not built. We have not tested how pastors or families feel about it. Claim row: [PENDING: TECH_CLAIMS row, hack-jedi].
 
 **8. Is Nury compliant with case-management standards?** (backup; not in the 3-minute talk)
-Short: No, and we do not claim it. Nury is informed by the NASW standards for social work case management and by trauma-informed practice. Examples we can show: structured triage, a service plan with a next-steps map, the pastor deciding at every gate, a saved record, and private notes that never reach a model. It is a drafting aid for a pastor, not a professional case-management system, and no standards body has endorsed it.
+Short: No, and we do not claim it. Nury is informed by the NASW standards for social work case management and by trauma-informed practice. Examples we can show: structured triage, a service plan with a next-steps map, the pastor deciding at every gate, a saved record, and private notes that never reach a model. It is a drafting aid, not a professional case-management system, and no standards body has endorsed it.
 Honest: Gaps we can name: no case status or follow-up date, no consent note, no access log, and no sign-in or encryption at rest yet. We read NASW's 2013 standards in full. We did not map CMSA's standards, which are behind a membership, or SAMHSA's sixth principle, which we could not verify. Source: documents/STANDARDS_ALIGNMENT.md.
 
 **9. Do pastors have a confidentiality standard?** (backup)
 Short: Norms exist and vary. One example is the American Association of Pastoral Counselors code, which allows disclosure when the law requires it or to prevent a clear and immediate danger. Nury keeps a pastor's private notes out of every model request and sends nothing to the family.
 Honest: We found no national standard that covers every pastor, and we read the AAPC wording through a published article, not the code itself. Today there is no sign-in, so anyone who can open the app can open the saved cases. A consent and confidentiality note is being written for Juan to approve.
+
+**10. Who is Nury for?** (replaces any "why solo pastors" answer; not in the 3-minute talk)
+Short: Churches, and the pastors who answer the call. The pastor in our film is a character: a story needs one person. He is not the market.
+Honest: Nury is built and tested on two crises, a detention and a hospital emergency, with synthetic families only. No pastor outside the team has used it yet. There is no sign-in yet, so today it is a demo for one church at a time, not a service for many. A new crisis is a new playbook folder; we have tested that on a test playbook, and we do not claim a third crisis runs.
 
 ## 6. Rules
 - Use only rows that TECH_CLAIMS.md marks VERIFIED. The judge rows are 35 to 40. Cut the rest.
