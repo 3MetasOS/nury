@@ -14,6 +14,6 @@ Each draft passes a guardrail check. An unsafe draft is rejected and regenerated
 
 Nury runs on Gloo's guarded Responses endpoint. We tested 20 hand-built scenarios. Results: [PLACEHOLDER: scorecard numbers].
 
-Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.
+Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules.
 
 Entry by Juan Pelaez, 3Metas.

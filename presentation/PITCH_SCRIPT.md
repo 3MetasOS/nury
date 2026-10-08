@@ -53,14 +53,14 @@ Unsafe drafts never reach the pastor: rejected, regenerated, up to three tries, 
 [ONLY AFTER SENSEI CONFIRMS IN WRITING] Playbooks share small skills, like voice and grounding.
 
 ## 1:52 to 2:10  Slide 8 (light): use of AI, and why two judges
-[45 words, about 18 s] Two judges, because they fail differently. A red team of three models from other makers hunts freely and must quote the sentence. Jev answers fixed questions with a probability, at test time only: unsafe 0.89 to 0.98, safe 0.02 to 0.24. People review the middle.
-If asked for more, go to the backup slide "Why two judges" (press `b`): the table, the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is my prior project, used at evaluation time only, and disclosed.
+[46 words, about 18 s] The writer is Claude, through Gloo AI Studio. Two judges check it, because they fail differently. A red team of three models from other makers hunts freely and must quote the sentence. Jev, from TypeSafe, answers fixed questions with a probability. Both at test time only.
+If asked for more, go to the backup slide "Why two judges" (press `b`): who each model is (the red team is OpenAI GPT-5.4, Google Gemini 3.1 Pro and Meta Llama 4 Maverick; none is Claude, on purpose), the numbers (unsafe 0.89 to 0.98, safe 0.02 to 0.24), the stability check (TC 37: five stored runs, within 0.03 an hour later; one verdict near a threshold flipped, 0.21 to 0.18), and the honest limits. The red team caught 8 of 8 injected problems in its first pass and also flagged safe text, so it advises. Final panel numbers: [PLACEHOLDER until hack-artisans finishes]. Jev is from TypeSafe, not ours: say "used at evaluation time only, and disclosed as third-party technology".
 
 ## 2:10 to 2:22  Slide 9 (light): impact and execution
 [ONLY IF TRUE] Hand-built scenarios, scored by typed judges. [NUMBER: pass rate], [NUMBER: drafts rejected and regenerated], [NUMBER: cost per run], [NUMBER: latency per run].
 Fallback if no scorecard: "We built twenty scenarios and scored each stage. The scorecard is in our build document."
 No number from any interim run. Say one failure, plainly: a checklist named a detainee locator that was not in our vetted sources. We fixed the prompt and the check.
-The harness uses the Jev decision API, my prior project, as typed judges. Disclosed as prior technology per the rules.
+The harness uses the Jev decision API from TypeSafe as typed judges. Disclosed as third-party technology per the rules.
 
 ## 2:22 to 2:30  Slide 10 (light): teamwork, and what is next
 Built by Juan Pelaez at 3Metas with a small team of AI agents that coordinate over a messaging protocol. Next is the human team: pastors to pilot with, and an attorney to review the sources. Not done yet.

@@ -94,7 +94,7 @@ def tech(c1=AMB, bg=INK):
         if i: b += f'<path d="M{xs[i-1]+48} 173 H{x-48}" stroke="{c1}" stroke-width="2"/>'
     b += txt(320, 240, "leak test 90 checks, 0 found  ·  judge unsafe 0.89–0.98, safe 0.02–0.24", 14, MUT, "middle", 400, "Arial,sans-serif")
     b += txt(320, 262, "a full package: 50 to 56 s, about 9 cents", 14, MUT, "middle", 400, "Arial,sans-serif")
-    b += txt(320, 300, "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules.", 9.5, "#6f6a5f", "middle", 400, "Arial,sans-serif")
+    b += txt(320, 300, "Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules.", 9.5, "#6f6a5f", "middle", 400, "Arial,sans-serif")
     return b
 
 def memorial():

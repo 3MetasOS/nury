@@ -3,7 +3,7 @@
 Lines that belong in the submission, outside the 250-word description:
 
 - The video narration is an AI-generated voice (ElevenLabs).
-- Evaluation harness uses the Jev decision API (my prior project) as typed judges; disclosed as prior technology per the rules.
+- Evaluation harness uses the Jev decision API from TypeSafe as typed judges; disclosed as third-party technology per the rules.
 - Entry by Juan Pelaez, 3Metas.
 - Images and fonts: see `branding/IMAGES.md`.
 
