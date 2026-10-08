@@ -94,6 +94,31 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 @media (prefers-reduced-motion:reduce){.slide.on{animation:none}}
 .portrait{display:none}
 .tight{font-size:clamp(13px,1.4vw,19px)}.tight th,.tight td{padding:.55vh 1vw .55vh 0;line-height:1.25}.tight td:first-child{white-space:nowrap;padding-right:1.6vw;color:var(--muted)}
+
+@font-face{font-family:"Gochi Hand";src:url(fonts/GochiHand-400.woff2) format("woff2");font-weight:400;font-display:swap}
+:root{--hand:"Gochi Hand","Bradley Hand",cursive;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.slide{gap:3vh;padding:6vh 7vw 9vh}
+h2.big{font-size:clamp(34px,5.4vw,78px);letter-spacing:-.02em;line-height:1.04}
+.lbl{font:600 clamp(12px,1.05vw,15px)/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--amber-text);margin:0;display:flex;align-items:center;gap:.9em}
+.lbl::before{content:"";width:2.4em;height:2px;background:var(--amber)}
+.night .lbl{color:#e8a33d}
+.lead,ul.lead li{font-size:clamp(20px,2.8vw,44px);line-height:1.28}
+ul.lead{list-style:none;padding:0;gap:1.6vh}
+.hand{font-family:var(--hand);font-size:clamp(24px,2.7vw,40px);line-height:1.1;margin:.4vh 0 0;display:flex;align-items:flex-start;gap:.35em;transform:rotate(-1.6deg);color:inherit}
+.hl{background:linear-gradient(transparent 58%,rgba(232,163,61,.6) 58% 90%,transparent 90%);padding:0 .2em}
+.arrow{width:clamp(38px,4.4vw,64px);height:auto;flex:none;fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;margin-top:-.2em}
+.arrow.flip{transform:scaleX(-1) rotate(-8deg)}
+.flow li{font-size:clamp(19px,1.95vw,29px)}.flow span{font-size:clamp(15px,1.6vw,22px)}
+.cols h3{font-size:clamp(18px,2vw,30px);color:var(--amber-text)}
+.night .photo.wide{max-height:46vh}
+.slide .phone{width:min(100%,29vh,340px)}
+.slide[data-part=backup]{gap:2.4vh;padding:5.5vh 6.5vw 9vh}
+.diagram{max-height:48vh}
+.slide.impact{gap:1.2vh;padding-top:3.5vh;padding-bottom:7vh}.impact .tight th,.impact .tight td{padding:.35vh 1vw .35vh 0}
+.slide.memorial{padding:5.5vh 6.5vw 9vh}
+.entry .e-see{font-size:clamp(26px,3vw,44px);margin-top:1vh}
+.entry .e-see.hand{opacity:0;animation:rise .8s 5.6s ease-out forwards}
+.entry .lbl{align-self:flex-start;position:absolute;top:5vh;left:7vw}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
@@ -101,23 +126,16 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 
 
 <section class="slide night on" data-cut="90" data-part="talk">
-<h2><span class="amber">2:07 AM.</span> A pastor's phone rings.</h2>
+<p class="lbl">01 · The call</p>
+<h2 class="big"><span class="amber">2:07 AM.</span> A pastor's phone rings.</h2>
 <div class="two"><div class="col">
-<ul><li>A family. A husband was detained last evening.</li>
-<li>The pastor has no lawyer on the line.</li>
-<li>They have a phone and a few minutes.</li></ul>
-<p class="muted">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></div>
-<div class="col"><img class="ill" src="images/phone-night.svg" alt="A phone lit in the dark" width="320" height="220"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
-<aside class="notes">NIGHT. 0:00 to 0:14. Open here, in the dark, with the phone buzz and the time. The film's person is a pastor: a character, not a market. A panicked call on a phone at 2:07 AM, no lawyer on the line. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md).</aside></section>
-
-<section class="slide center" data-cut="90" data-part="talk">
-<div class="lantern">{{MARKLIT}}</div>
-<h1>This is Nury.</h1>
-<p class="tagline">An AI Crisis Response Agent.</p>
-<p class="muted">Juan Peláez · 3Metas · Gloo AI Hackathon · Track 1</p>
-<aside class="notes">LANTERN. 0:14 to 0:20. The slide turns from night to paper and the lantern lights, then the line. Say: "This is Nury." Nothing else. 90-second cut: keep, 5 seconds. The brand line is locked: do not reword it.</aside></section>
+<p class="lead">A family. A husband was detained last evening.</p>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">no lawyer on the line</span></p></div>
+<div class="col"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
+<aside class="notes">NIGHT. 0:00 to 0:14. Open in the dark, with the phone buzz and the time. The film's person is a pastor: a character, not a market. A panicked call on a phone at 2:07 AM, no lawyer on the line. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md). Nury is humanitarian and takes no political side: the subject is a family and a night. (Cut from the slide in the taste pass; say it if asked.)</aside></section>
 
 <section class="slide center entry" data-cut="90" data-part="talk">
+<p class="lbl">02 · The name</p>
 <div class="entrywrap">
 <div class="e-head"><div class="lantern small">{{MARKLIT}}</div><h1 class="e-word">Nury</h1></div>
 <p class="e-pron"><span>/NOO-ree/</span> <i>proper noun</i></p>
@@ -125,39 +143,40 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li><span>A given name from Arabic <i>nūr</i>, "light".</span></li>
 <li><span>An AI crisis response agent.</span></li></ol>
 <p class="e-ety muted">Etymology: Arabic <i>nūr</i>, "light, ray of light, lamp, lantern".</p>
-<p class="e-see muted">see also: <b>lantern</b></p></div>
-<aside class="notes">LANTERN, continued. APPROVED by Juan. About 8 seconds; the senses appear one by one, press Right Arrow when "see also: lantern" is in. Read sense 1 and sense 2 aloud if you like; say nothing about her name here: it appears once, in the memorial at the end. Pronunciation /NOO-ree/ is how the family says it. SOURCES (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
+<p class="e-see hand"><span class="hl">see also: lantern</span></p></div>
+<aside class="notes">LANTERN. 0:14 to 0:26. The slide turns from night to paper and the lantern lights. Say: "This is Nury." Pause while the entry builds (about 8 seconds), then read: "A given name from Arabic nur, light. An AI crisis response agent." Merged with the old "This is Nury." slide in the taste pass. Brand line locked: An AI Crisis Response Agent. Presenter credit line (cut from the slide, say it only if asked): Juan Peláez, 3Metas, Gloo AI Hackathon, Track 1. APPROVED by Juan. Do not say her name here: it appears once, in the memorial. Pronunciation /NOO-ree/. SOURCES: (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>Concept and product: five stages, and the pastor decides each</h2>
+<p class="lbl">03 · The product</p>
+<h2 class="big">Five stages. The pastor decides each.</h2>
 <div class="two"><div class="col">
 <ol class="flow">
-<li><b>Triage</b><span>States the facts without advice.</span></li>
-<li><b>Rights brief</b><span>Family's language. Vetted source. Every point cited.</span></li>
-<li><b>Attorney resources</b><span>Hotlines and contacts from vetted lists.</span></li>
-<li><b>Family checklist</b><span>Do tonight. Do not do. Gather these documents.</span></li>
+<li><b>Triage</b><span>The facts, no advice.</span></li>
+<li><b>Rights brief</b><span>Family's language. Every point cited.</span></li>
+<li><b>Attorney resources</b><span>Vetted hotlines and contacts.</span></li>
+<li><b>Family checklist</b><span>Tonight. Do not do. Documents.</span></li>
 <li><b>Pastoral message</b><span>Under 120 words. Warm and steady.<span data-gated="scripture"> With a Bible verse, quoted from a verified list.</span></span></li></ol></div>
-<div class="col"><img class="ill" src="images/family-silhouette.svg" alt="A family in silhouette under a lantern" width="320" height="220">
-<ul class="sel">
-<li><b>Detention</b><span class="chip live">live, the demo</span></li>
+<div class="col"><ul class="sel">
+<li><b>Detention</b><span class="chip live">live</span></li>
 <li><b>Hospital emergency</b><span class="chip live">live</span></li>
 <li><b>Sudden death in a family</b><span class="chip soon">coming soon</span></li>
-<li><b>House fire or displacement</b><span class="chip soon">coming soon</span></li></ul></div></div>
-<aside class="notes">LIGHT. 0:28 to 0:43. [GATED, scripture: after Sensei confirms in writing, say: the pastoral message carries a Bible verse, quoted from a verified list; the AI never writes Scripture.] Criterion: Concept and Product. The app opens on a crisis selector; each card is a playbook. The two coming-soon cards are labels only: say nothing more about them. Hospital is open (hack-sensei, in writing, 2026-10-07): name it as the second live playbook; its numbers come only after the final re-run. How we differ from other church-AI entries: Rockpool automates routine work; KineticFlow supports the pastor's own wellbeing; Nury shows up for the crisis (see backup slide, How we differ).</aside></section>
+<li><b>House fire or displacement</b><span class="chip soon">coming soon</span></li></ul>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">a gate after each stage</span></p></div></div>
+<aside class="notes">LIGHT. 0:26 to 0:40. Say: "Five stages, one gate after each. The app opens on a crisis selector. Detention and hospital emergency are live, and two more are coming soon. Nothing is sent without the pastor." Do NOT say "the one you saw": the demo comes next. [GATED, scripture: after Sensei confirms in writing, say: the pastoral message carries a Bible verse, quoted from a verified list; the AI never writes Scripture.] Criterion: Concept and Product. Hospital is open (hack-sensei, 2026-10-07); its numbers come only after the final re-run. Say nothing more about the coming-soon cards. How we differ from other church-AI entries: backup slide. Cut in the taste pass: the family silhouette picture and the longer stage descriptions.</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
-<h2>The demo: the call, the work, the rejected draft</h2>
+<p class="lbl">04 · The demo</p>
+<h2 class="big">One call. Start to finish.</h2>
 <div class="two"><div class="col">
-<ul><li>The pastor types what the family said.</li>
-<li>After every stage: Approve, Edit or Stop.</li>
-<li>One unsafe draft is rejected and regenerated. The pastor never sees it.</li>
-<li>Nothing is sent. The pastor copies the text and sends it by hand.</li></ul>
-<p class="muted">Maria, Jose, two children (8 and 11). Live app, or the 90-second video.</p></div>
+<ul class="lead"><li>The pastor types what the family said.</li>
+<li>One unsafe draft is rejected and rewritten.</li></ul>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">the pastor never sees it</span></p></div>
 <div class="phone"><img class="shot" src="images/chooser-390.png" alt="The Nury crisis chooser on a phone: Immigration detention or raid and Hospital emergency are live; Sudden death in a family and House fire or displacement say coming soon." width="390" height="844"></div></div>
-<aside class="notes">LIGHT. 0:43 to 1:17. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
+<aside class="notes">LIGHT. 0:40 to 1:14. DECIDED (hack-sensei): Eric's film plays and Juan stays silent while it plays (rows 5 to 7 of the film, about 27 s). Juan BEFORE, about 3 s: "Here is one call, start to finish." Film plays. Juan AFTER, about 4 s: "The pastor never saw the unsafe draft. Nury never sends. The pastor does." No live app on stage. The selector screenshot is the first frame. Cut in the taste pass: the line about Approve, Edit or Stop (Eric says it) and "Nothing is sent" (Juan says it after).</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>How it is built: the model sees tokens, not names</h2>
+<p class="lbl">05 · How it is built</p>
+<h2 class="big">The model sees tokens, not names.</h2>
 <svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
 <title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks and a Jev classifier reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the layers that test Nury before release.</desc>
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0d1015"/></marker></defs>
@@ -179,37 +198,34 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <text x="548" y="400" class="bs" text-anchor="middle">Plain code checks  ·  Jev (TypeSafe)  ·  red team: GPT-5.4, Gemini 3.1 Pro, Llama 4 Maverick  ·  a person</text>
 </svg>
 <p class="muted">20 named checks plus the safety floor. 5 Gloo calls for a full package. No send path.<span data-gated="scripture"> Gloo for the model, YouVersion for exact Scripture text; only tokens and a verse reference leave the app.</span></p>
-<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer in Nury swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and the names are put back inside Nury, named checks and then Jev, a classifier from TypeSafe, reject unsafe drafts up to three tries (Jev sees tokens only, and if it is down the pastor is not blocked), the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it before release. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Row 3 now says the outbound calls are the Gloo request and, only when the YouVersion key is set, a passage-id request to YouVersion; neither can send anything to the family. So the slide no longer says "one outbound call". The gated sentence about YouVersion shows only after Sensei confirms it is on in the final build. Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
+<aside class="notes">1:14 to 1:36, about 17 s. Say: "The pastor types. Names become tokens inside Nury. Only tokens reach Gloo AI Studio. Named checks, then Jev, reject unsafe drafts, up to three tries. The pastor decides. The leak test ran 90 checks per playbook and found no names." Trace the line once, left to right; then point at the bottom strip: that is how we test it before release (Jev sees tokens only; if it is down the pastor is not blocked). Evidence: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>Innovation: a crisis is a folder, and drafts correct themselves</h2>
+<p class="lbl">06 · Innovation</p>
+<h2 class="big">A crisis is a folder.</h2>
 <div class="cols"><div class="col"><h3>One engine, many playbooks</h3>
-<p>Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital emergency both run on it today, and a test builds a new crisis from scratch.</p>
+<p class="lead">Add a playbook. The engine does not change. Detention and hospital both run on it.</p>
 <p class="small" data-gated="skills">Playbooks share small skills, like voice and grounding. A stage includes them by name.</p></div>
-<div class="col"><h3>Unsafe drafts never reach the pastor</h3>
-<p>Every draft is checked. An unsafe draft is rejected and regenerated, up to three tries, then escalated to the pastor.</p>
-<p class="small">The pastor sees the accepted draft only.</p></div></div>
-<aside class="notes">1:50 to 2:15. Criterion: Innovation. Two ideas: the playbook folder (confirmed, tested on a test playbook; do not claim a second crisis is scored unless Sensei confirms) and the self-correction loop with a human gate. Do not mention skills or the church network unless they are switched on.</aside></section>
+<div class="col"><h3>Drafts correct themselves</h3>
+<p class="lead">Rejected, rewritten, up to three tries. The pastor sees only the accepted draft.</p>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">a test builds a new crisis</span></p></div></div>
+<aside class="notes">1:36 to 1:50. Criterion: Innovation. Say: "Adding a crisis is adding a playbook folder. The engine does not change. Detention and hospital both run on it, and a test builds a new crisis from scratch." The correction loop is said once, on the how-it-is-built slide. Do not mention skills or the church network unless they are switched on.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>Use of AI: Claude writes, Jev and a red team check</h2>
+<p class="lbl">07 · Use of AI</p>
+<h2 class="big">Claude writes. Jev and a red team check.</h2>
 <div class="cols"><div class="col">
-<ul><li>The writer is Claude (Sonnet 4.6), through Gloo AI Studio.</li><li>Jev, from TypeSafe, checks every draft before the pastor sees it. It answers fixed questions with a probability.</li><li>Before release, a red team of three models from other makers audits the system. It advises.</li></ul>
-<table class="tbl">
+<ul class="lead"><li>Claude Sonnet 4.6 writes, through Gloo AI Studio.</li><li>Jev, from TypeSafe, checks every draft first.</li><li>Before release, three models from other makers audit it.</li></ul></div>
+<div class="col"><table class="tbl">
 <tr><th>Leak test</th><td>90 checks per playbook, 0 found</td></tr>
-<tr><th>Typed judge, ten checks</th><td>unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
-<tr><th>Red-team panel, validation</th><td>all three caught 8 of 8, and flagged safe text too</td></tr>
-<tr><th>A full package</th><td>50 to 56 s, about 9 cents</td></tr></table></div>
-<div class="col"><h3>Four layers check it</h3>
-<ol class="flow">
-<li><b>Deterministic checks</b><span>Banned phrases, disclaimers, links and phones from vetted sources. No AI.</span></li>
-<li><b>Typed judges</b><span>Jev judges whole runs at test time. It also checks every draft at run time, so it is not independent of the gate.</span></li>
-<li><b>Red-team panel</b><span>Models from other makers. Advisory, not a gate.</span></li>
-<li><b>A person</b><span>Juan reviews every uncertain item.</span></li></ol></div></div>
-<aside class="notes">About 18 seconds. Criterion: Use of AI. Say it: the writer is Claude through Gloo AI Studio; our rules check every draft; Jev checks every draft too, before the pastor sees it; a red team audits the system before release (the full slides are in the backup: Why two judges, and Jev checks every draft). Jev is from TypeSafe. We do not build it. Numbers come from documents/TECH_CLAIMS.md, VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, a small panel validation, four live packages; say so. Offline product tests: 264 passed at the end of 2026-10-07; re-run before export and say the count if you mention it. Why other makers: the writer is one model, and a reviewer from another maker has different blind spots. Hard questions and honest answers: presentation/TECH_STORY.md section 5.</aside></section>
+<tr><th>Judge test</th><td>unsafe 0.89 to 0.98, safe 0.02 to 0.24</td></tr>
+<tr><th>A full package</th><td>50 to 56 s, about 9 cents</td></tr></table>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">a person decides</span></p></div></div>
+<aside class="notes">1:50 to 2:09, about 19 s. Say: "The writer is Claude, through Gloo AI Studio. Our rules check every draft, and Jev, from TypeSafe, classifies it with a probability before the pastor sees it. Before release, a red team of three models from other makers hunts for what we missed, and a person decides." Jev is from TypeSafe. We do not build it. Numbers: documents/TECH_CLAIMS.md VERIFIED rows 16, 26, 28 and 30. They are real but small: ten judge checks, four live packages; say so. Red-team validation (all three caught 8 of 8 and flagged safe text too) and the four layers are on the backup slides "Why two judges" and "Four evaluation layers" (press b): cut from this slide in the taste pass. Offline product tests: recount before export. Hard questions: presentation/TECH_STORY.md section 5.</aside></section>
 
-<section class="slide" data-part="talk">
-<h2 style="font-size:clamp(1.5rem,3vw,2.2rem)">Impact and execution: what we measured, and what broke</h2>
+<section class="slide impact" data-part="talk">
+<p class="lbl">08 · Impact</p>
+<h2 class="big" style="font-size:clamp(24px,2.8vw,40px)">What we measured, and what broke.</h2>
 <div class="cols"><div class="col"><table class="tbl tight">
 <tr><th></th><th>Earlier build</th><th>Final build</th></tr>
 <tr><th>Detention (20)</th><td><span class="ph nogate">[held]</span><span class="hold">12 / 3 / 5</span></td><td class="ph">[PLACEHOLDER]</td></tr>
@@ -226,15 +242,17 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <li class="hold">Tone: promises gone; warmth still about 3 of 5.</li>
 <li class="hold">A close call: Jev scored a checklist 0.52 to 0.58 against a 0.50 line and the stage escalated. A person decides if that was right.</li></ul></div></div>
 <p class="muted">The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.</p>
-<aside class="notes">2:35 to 2:50. Criterion: Impact and Execution (first tie-break). Honest failures win trust: say one of the three in a sentence. Numbers: only from the final scorecard, after the full re-run. The earlier-build column and the three new findings are HELD (hidden; press g to preview) until hack-sensei releases them. The interim run on build c317050 is not for the deck. Details: presentation/RESULTS_DRAFT.md.</aside></section>
+<aside class="notes">2:09 to 2:22. Do not read the Jev disclosure aloud: it is on the slide. Speak the numbers and one failure only. Criterion: Impact and Execution (first tie-break). Honest failures win trust: say one of the three in a sentence. Numbers: only from the final scorecard, after the full re-run. The earlier-build column and the three new findings are HELD (hidden; press g to preview) until hack-sensei releases them. The interim run on build c317050 is not for the deck. Details: presentation/RESULTS_DRAFT.md.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>Teamwork: one founder, five AI agents, and what comes next</h2>
+<p class="lbl">09 · Team</p>
+<h2 class="big">One founder. Five AI agents.</h2>
 <div class="cols"><div class="col"><h3>Built</h3>
-<p>Juan Peláez, 3Metas, with a small team of AI agents that coordinate over a messaging protocol. Every step is in the commit log.</p></div>
+<p class="lead">Juan Peláez, 3Metas, with agents that coordinate over a messaging protocol. Every step is in the commit log.</p></div>
 <div class="col"><h3>Next</h3>
-<p>People. A pilot with real pastors, and an immigration attorney who reviews the sources. None of that is done yet.</p></div></div>
-<aside class="notes">2:50 to 3:00. Criterion: Presentation and Teamwork. One honest line: the agents are the team that built it; the human team is what comes next. Claim nothing about pastors or attorneys having used it.</aside></section>
+<p class="lead">Real pastors. An immigration attorney to review our sources.</p>
+<p class="hand"><svg class="arrow flip" viewBox="0 0 90 64" aria-hidden="true"><path d="M5 10 C 34 4, 68 20, 74 54"/><path d="M60 44 L74 56 L80 38"/></svg><span class="hl">none of that is done yet</span></p></div></div>
+<aside class="notes">2:22 to 2:32. Criterion: Presentation and Teamwork. Say: "Built by one founder and a small team of AI agents. Next: real pastors, and an attorney to review our sources." Claim nothing about pastors or attorneys having used it.</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
 <div class="two"><div class="col">
@@ -242,7 +260,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <p class="tagline">An AI Crisis Response Agent.</p>
 <p class="muted">Legal information only. Not legal advice.</p></div>
 <img class="photo" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div>
-<aside class="notes">DAWN. 2:30 to 2:34. The next call will come. Nury is there when the pastor picks up. 90-second cut ends here.</aside></section>
+<aside class="notes">DAWN. 2:32 to 2:37. "The next call will come. Nury is there when the pastor picks up." 90-second cut ends here.</aside></section>
 
 
 <section class="slide center memorial nofoot" data-part="talk" data-gated="memorial">

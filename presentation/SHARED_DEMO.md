@@ -1,6 +1,6 @@
 # Shared demo: one family, one intake, one VO
 
-Locked by hack-ninja with hack-video. Deck, pitch, finalist script and video all use this. Change it here first.
+Locked by hack-ninja with hack-video. Deck, pitch, finalist script and video all use this. Change it here first. The voice-over is in `ERIC_LINES.md`.
 
 ## The family
 Maria (caller, Spanish-speaking), Jose (her husband, detained), two children, 8 and 11, both US citizens. Aurora. Jose has lived here 14 years. Synthetic. No real people, no real numbers.
@@ -13,16 +13,5 @@ Changes from `demo_scenario.py`: time 9:10 PM to 2:07 AM; "ICE" to "immigration 
 ## Guardrail beat
 Status strip only: "Draft rejected by guardrail. Regenerating (2 of 3)." then green "Passed". Never show the unsafe text. Three attempts total: first draft plus two regenerations.
 
-## Locked VO (90 s video)
-1. "It is two in the morning. A family is calling their pastor."
-2. "Her husband was detained last evening. The pastor has no lawyer on the line."
-3. "Nury turns the call into a clear case. Facts only. No advice."
-4. "After every stage, the pastor decides."
-5. "Rights in the family's own language. Built only from a vetted source. Every point cited."
-6. "When a draft crosses the line from information into advice, Nury rejects it and tries again. The pastor never sees it."
-7. "Attorney hotlines. A checklist for tonight."
-8. "And a short, warm message, in the pastor's hands to edit."
-9. "Nury is not a pastor, and it never sends. The pastor does."
-10. "Nury. An AI crisis response agent."
-
-Edits to the storyboard draft: shot 2 ("taken today" to "detained last evening"); shot 6 ("Sometimes a draft crosses" to "When a draft crosses", so we do not imply a failure rate we have not measured).
+## Voice-over (90 s film): see `ERIC_LINES.md`
+SUPERSEDED 2026-10-07. The old ten-line voice-over that stood here is gone. Eric's approved lines (L1 to L11 and the seven added lines E1 to E9) live in `ERIC_LINES.md`, with exact times in `FINALIST_SCRIPT.md`. Do not render from this file.

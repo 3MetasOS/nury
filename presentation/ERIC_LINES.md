@@ -59,3 +59,16 @@ L11 is now "An AI crisis response agent." (5 words; it replaces the previous tag
 
 ## Jev change (2026-10-07): L8 changed
 Jev now checks every draft at run time (live on three scenarios), so the old L8 ("Tested with Jev. People review what is unsure.") was only half true. L8 is now "Jev checks every draft. People decide." (6 words). It needs a NEW RENDER, and its length and slot (row 8, starts about 58.5 s) must be checked again. L8 plays as the judge node lights, after the Gloo node. "People decide" is true: the pastor approves, edits or stops after every stage.
+
+## Added lines (hack-ninja, approved by hack-sensei 2026-10-07): fill the silence
+Seven short lines, each 4 to 6 words, no number, each tied to what is on screen. Do not add more. hack-video renders them; lengths below are estimates (0.4 s a word) until measured.
+| ID | Line | Words | Est. s | Start, table 1 | Start, table 2 | On screen | Evidence |
+|---|---|---|---|---|---|---|---|
+| E1 | He types what she says. | 5 | 2.0 | 12.2 s | 11.0 s | The intake is typed | The pastor types the intake |
+| E4 | Pick a crisis. Triage comes first. | 6 | 2.4 | 26.0 s | 23.2 s | The selector, the triage card | Selector in the app; triage is stage 1 |
+| E5 | Approve, edit or stop. | 4 | 1.6 | 31.5 s | 28.2 s | The thumb taps Approve | The gate has these three actions |
+| E6 | Only from vetted sources. | 4 | 1.6 | 38.8 s | 33.8 s | The rights brief and its chips | Vetted sources only; every point cited |
+| E7 | It rewrites. It checks again. | 5 | 2.0 | 48.0 s | 42.0 s | Regenerating, then Passed | The correction loop |
+| E8 | Then contacts, a checklist, a message. | 6 | 2.4 | 64.2 s | 58.2 s | Stages 3, 4 and 5 appear | The five stages |
+| E9 | He changes one word. | 4 | 1.6 | 69.6 s | dropped | One word is edited | The scripted edit in the demo |
+Placement changes with no re-render: L2 starts at 8.6 s (table 1), L4 at 21.0 s, L9 at 67.2 s. Full times for both tables: `FINALIST_SCRIPT.md`. E7 must end before the strip says "Passed": hack-video aligns it to the timeline and tells hack-ninja any start that collides.

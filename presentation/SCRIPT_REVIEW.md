@@ -2,6 +2,10 @@
 
 Written 2026-10-07 by hack-ninja for hack-sensei, to show Juan. Covers the 90-second film (`FINALIST_SCRIPT.md`, `ERIC_LINES.md`), the 3-minute pitch (`PITCH_SCRIPT.md`) and the older locked demo voice-over (`SHARED_DEMO.md`). Nothing here is rendered or changed in the film yet. **New Eric lines need hack-sensei's approval and a render.**
 
+## Status
+
+APPROVED by hack-sensei, 2026-10-07: E1 to E9 as written, the screen-text cuts, the pitch tightening (2:53), and slide 5 = the film plays and Juan stays silent. KEEP "see also: lantern". Applied to `FINALIST_SCRIPT.md`, `ERIC_LINES.md`, `PITCH_SCRIPT.md` and `SHARED_DEMO.md`.
+
 ## 1. The accent
 
 "Pelaez" is now "Peláez" in every file I own: the memorial text (`MEMORIAL.md`, 5 places, including "Nury Peláez, 83"), the pitch script (2), the deck (3: slides 2, 10 and 12), the descriptions (1 each), `SUBMISSION_NOTES.md`, `CREATIVE_BRIEF.md`, `TREATMENTS.md` (3), `treatments/data.py` and `README.md`. 19 places. The deck was rebuilt. The email address (`jkpelaez@...`) stays as it is: it is an address, not a name.
@@ -168,9 +172,9 @@ That leaves 7 s under the 3:00 limit. The "90-second cut" (slides 1, 2 and 3 mer
 
 Whatever is not spoken moves into the speaker notes, which are already in the deck (press `n`). No claim is removed.
 
-## 5. The locked demo voice-over (`SHARED_DEMO.md`)
+## 5. The older voice-over in `SHARED_DEMO.md`
 
-It is the older 10-line version (written before the treatments). The film uses `ERIC_LINES.md`, which replaced it. Do not render from `SHARED_DEMO.md`. Its line 2 still mentions "no staff", which Juan removed. I have not edited it: it is marked locked. hack-sensei should either mark it superseded or let me do so.
+It was the older 10-line version, written before the treatments. **Correction:** my first draft said it still carried old wording about staff. It does not (that wording is in `Nury.tsx` and the prework files). It is now marked SUPERSEDED and points to `ERIC_LINES.md`.
 
 ## 6. What needs a decision
 
