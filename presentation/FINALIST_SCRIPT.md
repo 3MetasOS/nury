@@ -1,6 +1,6 @@
 # Nury: 90-second finalist script (video, due 09:00 MDT Oct 8)
 
-For hack-video. Same family, intake and footage as `SHARED_DEMO.md` and `video/STORYBOARD.md`. Re-timed for three additions: "This is Nury" at the start, the technical beat (about 12 s), and the memorial as the last thing on screen (`MEMORIAL.md`). The video is at most 90 s total.
+For hack-video. Same family, intake and footage as `SHARED_DEMO.md` and `video/STORYBOARD.md`. Re-timed for three additions: the opener ("This is Nury" then the dictionary entry, at most 5 s), the technical beat (about 12 s), and the memorial as the last thing on screen (`MEMORIAL.md`). The video is at most 90 s total.
 `[NUMBER]` = real scorecard number from hack-artisans only. The proof beat from the earlier cut is dropped: the tech beat's captions carry the numbers now.
 **The memorial is gated: it ships only after Juan approves the text in writing.** Until then, use the version without it (end of this file).
 Technical claims: `TECH_STORY.md`. Only rows that `documents/TECH_CLAIMS.md` marks VERIFIED go on screen.
@@ -8,12 +8,12 @@ Technical claims: `TECH_STORY.md`. Only rows that `documents/TECH_CLAIMS.md` mar
 ## Re-timed shot list (sums to 90 s)
 | # | Time | Visual | VO | On-screen text |
 |---|---|---|---|---|
-| 0 | 0:00-0:03 | The lantern lights (flame fades in, outline warms to amber). | none (optional: Juan says "This is Nury.") | This is Nury. then the brand line, smaller |
-| 1 | 0:03-0:08 | Shot 1: phone lights up, 2:07 AM, Maria calling | "It is two in the morning. A family is calling their pastor." | 2:07 AM |
-| 2 | 0:08-0:15 | Shot 2: intake typed | "Her husband was detained last evening. The pastor has no staff, and no lawyer on the line." | Solo pastor. No staff. No lawyer. |
-| 3 | 0:15-0:22 | Shot 3: triage card | "Nury turns the call into a clear case. Facts only. No advice." | 1 Triage |
-| 4 | 0:22-0:26 | Shot 4: Approve pulse | "After every stage, the pastor decides." | Approve / Edit / Stop |
-| 5 | 0:26-0:34 | Shot 5: Spanish rights brief, citation chip | "Rights in the family's own language. Built only from a vetted source. Every point cited." | 2 Rights brief. Vetted sources only. |
+| 0 | 0:00-0:05 | OPENER, one beat (see below): the lantern lights and "This is Nury." (0.0 to 1.2 s), then the dictionary entry (1.5 to 5.0 s). | none (optional: Juan says "Nury.") | This is Nury. then the entry |
+| 1 | 0:05-0:10 | Shot 1: phone lights up, 2:07 AM, Maria calling | "It is two in the morning. A family is calling their pastor." | 2:07 AM |
+| 2 | 0:10-0:17 | Shot 2: intake typed | "Her husband was detained last evening. The pastor has no staff, and no lawyer on the line." | Solo pastor. No staff. No lawyer. |
+| 3 | 0:17-0:23 | Shot 3: triage card | "Nury turns the call into a clear case. Facts only. No advice." | 1 Triage |
+| 4 | 0:23-0:27 | Shot 4: Approve pulse | "After every stage, the pastor decides." | Approve / Edit / Stop |
+| 5 | 0:27-0:34 | Shot 5: Spanish rights brief, citation chip | "Rights in the family's own language. Built only from a vetted source. Every point cited." | 2 Rights brief. Vetted sources only. |
 | 6 | 0:34-0:43 | Shot 6: guardrail strip, no draft text | "When a draft crosses the line from information into advice, Nury rejects it and tries again. The pastor never sees it." | Rejected. Regenerating (2 of 3). Passed. |
 | T | 0:43-0:55 | TECH BEAT: animated architecture shot (below). Text only, no third-party logos. | TECH-A (below) | Three proof captions, then the disclosure caption |
 | 7 | 0:55-0:59 | Shot 7: attorney resources, checklist | "Attorney hotlines. A checklist for tonight." | 3 Attorneys, 4 Checklist |
@@ -22,8 +22,19 @@ Technical claims: `TECH_STORY.md`. Only rows that `documents/TECH_CLAIMS.md` mar
 | 10 | 1:09-1:11 | Shot 10: end card, lockup on ink | "Nury. The crisis-response agent for solo pastors." (if it does not fit 2 s, speak it over the first 2 s of the memorial card's fade) | Nury · Legal information only. Not legal advice. |
 | 11 | 1:11-1:30 | Memorial card: light paper, deep-amber lantern, Fraunces. Slow fade. Nothing else on screen. | Juan, in his own voice (strongly recommended), slowly. | Juan's words, below, unedited |
 
-Time check, VO: the 10 locked lines run about 45 s of speech at 150 words a minute. Slots are tight on shots 2 (7 s for 17 words) and 6 (9 s for 20 words). hack-video confirms against real footage and may borrow up to 1 s from shot 7 or the end card.
+Time check, VO: the 10 locked lines run about 45 s of speech at 150 words a minute. Slots are tight on shot 2 (7 s for 17 words), shot 6 (9 s for 20 words) and shot 5 (7 s for 14 words). Against the earlier cut the opener took 2 s: shot 3 lost 1 s (7 to 6) and shot 5 lost 1 s (8 to 7). hack-video confirms against real footage and may borrow up to 1 s from shot 7 or the end card.
 Time check, memorial: Juan's words are 45 words, about 18 to 22 s spoken with pauses. The card is 19 s. Do not shorten his words or speed him up. If Juan needs more time, take it from shots 5 and 6 before touching the memorial.
+
+## Opener (row 0), exact timing and text, at most 5 s
+Light paper, same look as the deck and the memorial card. No voiceover needed.
+| Time | On screen |
+|---|---|
+| 0.0 to 1.2 s | The lantern (deep amber) lights: the flame fades in and the outline warms. Caption: **This is Nury.** |
+| 1.2 to 1.5 s | Cross-fade. The lantern stays, small, beside the headword. |
+| 1.5 to 2.2 s | **Nury** (Fraunces) and "/NOO-ree/ *proper noun*" fade in. |
+| 2.2 to 3.6 s | "1. A given name from Arabic *nūr*, 'light'." |
+| 3.6 to 5.0 s | "2. The crisis-response agent for solo pastors." Hold to 5.0 s. |
+The etymology line and "see also: lantern" are left out of the video for time. The deck slide has them. Her name is not in the opener: it appears once, in the memorial at the end.
 
 ## Tech beat (T), about 12 s
 Animated architecture shot by hack-video. Draw the same line as deck slide 4: pastor types, privacy layer, Gloo AI Studio guarded endpoint, named checks and the correction loop, approval gate, pastor sends. Then the evaluation strip. Text only, no third-party logos.

@@ -36,9 +36,9 @@ Tests: I quote only the product count (91). The evaluations suite adds a few doz
 **Held back by the gate (hidden in the deck until Sensei confirms in writing):** skills (TC 20), the case file (TC 22, 23), church network (TC 14), the official list (TC 13: 28 read, 21 approved, 7 held).
 
 ## 3. Deck: where the story sits
-- Slide 4, "How it is built": one diagram, names in text, no third-party logos (TC 1, 3, 4, 5, 16). A line under it gives the numbers: 14 named checks plus 5 floor checks, 5 Gloo calls, no send path.
-- Slide 7, "Use of AI": the four layers with numbers from TC 16, 26, 28 and 30.
-- Slide 8: "what broke and what changed" stays as the proof of honesty.
+- Slide 5, "How it is built": one diagram, names in text, no third-party logos (TC 1, 3, 4, 5, 16). A line under it gives the numbers: 14 named checks plus 5 floor checks, 5 Gloo calls, no send path.
+- Slide 8, "Use of AI": the four layers with numbers from TC 16, 26, 28 and 30.
+- Slide 9: "what broke and what changed" stays as the proof of honesty.
 
 ## 4. Video: the tech beat (about 12 s)
 Built by hack-video as an animated architecture shot. Text only, no third-party logos. Place it after the guardrail beat.

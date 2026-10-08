@@ -1,6 +1,6 @@
 # The name entry: "Nury" as a dictionary entry (research, proposal, design)
 
-Status: **DRAFT. Gated until Juan approves the text.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
+Status: **APPROVED by Juan (2026-10-07, via hack-sensei), with the final text in section 3.** Research done 2026-10-07 by hack-ninja. Pages were read only. Quotes are exact. Nothing here is invented etymology. Where I could not verify, the table says so.
 
 ## 1. Sourced findings
 | # | Claim | Source (read 2026-10-07) | Status |
@@ -27,44 +27,39 @@ An aside I did not use: Idescat says the Virgin of Núria "és considerada patro
 - **Safe, if Juan chooses it:** Núria and Nuria are Catalan and Spanish names taken from the Virgin of Núria, a shrine in the Pyrenees. The valley's name is pre-Roman (Idescat, citing Coromines).
 - **Not safe:** that Núria comes from Arabic nūr (uncited), that Núria means "place between valleys" (not in the source), that Nury is a female form of Nuria (no source), or any claim about how Juan's aunt got her name.
 
-## 3. Proposed entry (draft, for Juan to approve or change)
+## 3. Final entry (approved by Juan)
 > **Nury** /NOO-ree/ *proper noun*
 > 1. A given name from Arabic *nūr*, "light".
-> 2. *(optional, Juan chooses)* A Catalan and Spanish name, Núria, from the Virgin of Núria, a shrine in the Pyrenees.
-> 3. The crisis-response agent for solo pastors, named in memory of Nury Pelaez.
+> 2. The crisis-response agent for solo pastors.
 >
 > *Etymology:* Arabic *nūr*, "light, ray of light, lamp, lantern".
 > *see also:* **lantern**
 
-Notes on the wording:
-- Sense 1 uses only what both sources share: light. It does not say "my light" or "luminous", because they differ.
-- Sense 3 uses "named in memory of Nury Pelaez" as Sensei wrote it. Juan's memorial text says "named for my aunt, Nury" and leaves her full name open. Juan should confirm the spelling and the wording.
-- I wrote the Arabic as *nūr*, not in Arabic script, because the deck's font (Fraunces) has no Arabic glyphs and a fallback font would change the look at the venue.
+Juan's decisions:
+1. **Meanings: light only.** No Núria sense. The Catalan and Spanish shrine name is not in the entry.
+2. **Her name is not in the entry.** It appears once, in the memorial at the end. Sense 2 is the product line only.
+3. **Keep both slides.** "This is Nury." stays slide 1. The entry is slide 2.
+4. **Pronunciation /NOO-ree/.** Eric says it that way, and Juan approved it.
+5. **Video:** the opener is one beat of at most 5 s (below).
+I wrote the Arabic as *nūr*, not in Arabic script, because the deck's font (Fraunces) has no Arabic glyphs and a fallback font would change the look at the venue.
 
-## 4. Questions for Juan (through Sensei)
-1. Which meaning should the entry feature: sense 1 only, or senses 1 and 2? (Sense 1 gives the light and lantern tie. Sense 2 is the Catalan and Spanish shrine name.)
-2. Is "named in memory of Nury Pelaez" right: the surname, the spelling, and "in memory of"?
-3. How does your family say it? /NOO-ree/ is my guess.
-4. The memorial already ends the pitch with your words about her. Do you want her named in the entry too, or keep the entry about the word and the product?
-5. Do you want the entry to replace the "This is Nury." opener (my recommendation, below)?
-
-## 5. Slide 0 design (built, gated: `deck.html`, slide 1 in review mode)
-- Light paper, the lantern mark in deep amber (logo C) left of the headword, **Nury** in Fraunces 600, pronunciation and *proper noun* in Inter, senses numbered in amber Fraunces.
-- A quiet reveal, one beat at a time: headword (0.2 s), pronunciation (1.0 s), sense 1 with the lantern's flame lighting (1.8 s), sense 2 if chosen (2.8 s), the last sense (3.8 s), etymology (4.8 s), "see also: lantern" (5.6 s). About 7 seconds in all, no sound, simple fades.
-- Reduced motion: everything shows at once, no animation.
-- It is hidden by default. Press `g` in the deck to review it. Optional sense 2 is marked "optional: Juan chooses".
+## 4. Slide 2 (live in `deck.html`, ungated)
+- Light paper, the lantern in deep amber (logo C) left of the headword, **Nury** in Fraunces 600, pronunciation and *proper noun* in Inter, senses in amber Fraunces numerals.
+- A quiet reveal: headword (0.2 s), pronunciation (1.0 s), sense 1 with the flame lighting (1.8 s), sense 2 (2.8 s), etymology (4.8 s), "see also: lantern" (5.6 s). About 7 s in all. Reduced motion shows everything at once.
+- The speaker notes carry the sources, with URLs and the "sources differ, not verified" caveats from section 1.
 - Fits at 1280x720, 1920x1080 and 390x844 with no overflow.
-- Timing: it replaces the "This is Nury." slide (the lantern lights, the brand line appears as sense 3). That adds about 6 s to the opener, so take 6 s from the demo slide and the pitch still ends near 3:00. I have not changed the pitch script yet; I will once Juan approves.
+- Pitch time: 8 s, taken from the demo slide so the pitch stays at 2:54 with the memorial. See `PITCH_SCRIPT.md`, timing table.
 
-## 6. The 3-second video version (for hack-video, after Juan approves)
-Replaces the 3 s intro (row 0 of the finalist script). Light paper, the same look as the memorial card, no voiceover (optional: Juan says "Nury.").
+## 5. The video opener (one beat, at most 5 s; for hack-video)
+Light paper, the look of the deck and the memorial card. No voiceover needed.
 | Time | On screen |
 |---|---|
-| 0.0 to 0.8 s | The lantern (deep amber, flame unlit) and **Nury** fade in. |
-| 0.8 to 1.4 s | /NOO-ree/ *proper noun* |
-| 1.4 to 2.4 s | "1. A given name from Arabic *nūr*, 'light'." The flame lights as the line arrives. |
-| 2.4 to 3.0 s | The line gives way to the brand line: "the crisis-response agent for solo pastors". |
-Sense 2 and the aunt are left out of the 3 s cut: there is no room, and the memorial at the end carries her.
+| 0.0 to 1.2 s | The lantern (deep amber) lights: the flame fades in, the outline warms. Caption: **This is Nury.** |
+| 1.2 to 1.5 s | Cross-fade. The lantern stays, small, beside the headword. |
+| 1.5 to 2.2 s | **Nury** (Fraunces) and "/NOO-ree/ *proper noun*" fade in. |
+| 2.2 to 3.6 s | "1. A given name from Arabic *nūr*, 'light'." |
+| 3.6 to 5.0 s | "2. The crisis-response agent for solo pastors." Hold to 5.0 s. |
+The etymology line and "see also: lantern" are left out of the video for time. The 90 s total holds: the opener takes 2 s more than the old 3 s intro, and shots 3 and 5 each give back 1 s (`FINALIST_SCRIPT.md`).
 
-## 7. Gate
-Nothing here ships until Juan approves the text in writing. The deck slide is hidden by default.
+## 6. If anyone asks about the name
+Say only what section 1 verifies: the Arabic root *nūr* means light, and one of its senses is lamp or lantern; Nuri and Nury, as names, are built on it. Do not say which origin any one person's name has. Do not say Núria comes from Arabic *nūr*: that claim is uncited.
