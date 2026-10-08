@@ -33,7 +33,7 @@ The slide turns from night to paper and the lantern lights. [90s] This is Nury.
 The entry builds itself: Nury, /NOO-ree/, proper noun. [90s] "A given name from Arabic nur, light. The crisis-response agent for solo pastors." Then "see also: lantern". Do not say her name here; it appears once, in the memorial.
 
 ## 0:28 to 0:43  Slide 4 (light): concept and product
-Five stages, one gate after each. The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon. Nothing is sent without the pastor.
+Five stages, one gate after each. [ONLY AFTER SENSEI CONFIRMS IN WRITING THAT THE VERSE BANK IS BUILT: The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture.] The app opens on a crisis selector. Each card is a playbook. Detention is the one you saw. Two more cards say coming soon. Nothing is sent without the pastor.
 [ONLY AFTER SENSEI CONFIRMS IN WRITING THAT HOSPITAL RUNS AND IS SCORED] A second playbook, hospital emergency, runs on the same engine. [PLACEHOLDER: hospital scenario count and pass rate]
 Say nothing more about the coming-soon cards.
 

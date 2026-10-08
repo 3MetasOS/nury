@@ -51,3 +51,13 @@ Planned replacements:
 Do not say "find more" or any web search. It is after submission.
 
 Note: the full rule wording is 18 words, too long for the 250-word description (it would reach 257). The description keeps the compact form above. The deck and script use the full wording.
+
+## Scripture in the pastoral message (gated, added Oct 7, not built yet)
+Not claimed anywhere. Ships only after hack-sensei confirms in writing that it is built, and TECH_CLAIMS has a VERIFIED row.
+The idea, from BUILD_LOG item 83: a verified verse bank. The model only picks a verse id. The engine inserts the exact text (public-domain translations: Reina-Valera 1909 and the World English Bible). Checks verify the verse verbatim. The model writes at most two short sentences on why.
+Prepared lines, all hidden until confirmed:
+- Deck (concept slide, stage 5): "With a Bible verse, quoted from a verified list." (already in the deck, hidden; press `g` to preview)
+- Pitch script, concept slide: "The pastoral message carries a Bible verse, quoted from a verified list. The AI never writes Scripture."
+- Film, row 9 caption: "A verse, quoted from a verified list. Never written by the AI." No new Eric line. If a line is wanted: "A message with a verse. His to edit." (8 words) would replace L9, and it needs a new generation and Sensei's review.
+- Q and A: "Does the AI write Scripture?" is Q7 in TECH_STORY.md, marked gated.
+Do not say: that a verse "will happen", that God will act, or anything about outcomes. Do not name a licensed version until the YouVersion terms are met.
