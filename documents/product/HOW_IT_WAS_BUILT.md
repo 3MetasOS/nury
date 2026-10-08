@@ -226,8 +226,61 @@ Only what the repo and the prework files show:
 - **What was added later, by decision.** The run-time Jev gate (Juan, 2026-10-07), Scripture with a verified bank and YouVersion, the privacy layer, the church network and the official list, and the case file.
 - **No open-source harness was copied.** The engine was written for this project from the prework brief. If a person finds a pattern that matches another project, it is because the pattern is common, not because we took the code.
 
-<!--PI-->
-<!-- Placeholder: a comparison Juan may request (for example against another agent harness). Not written. Do not fill without a source for each claim. -->
+#### Comparison: Pi, a minimal open-source agent harness
+
+Read on 2026-10-07. Nury is not built on Pi and was not inspired by it: the engine was written before this comparison, from the prework brief, and without reference to Pi. This section is only a comparison, so a reader can see what is different and why.
+
+**Sources and how far I verified them.** I read the pages below with a fetch tool. The tool returned summaries of the pages, not the raw text, so the quotes are the summaries' quotes and I did not read the loop source line by line. The project's GitHub page named `github.com/earendil-works/pi` as its final address; search results had named `github.com/badlogic/pi-mono`, and the repository page I opened under that name pointed to the `earendil-works` organization. I treat `earendil-works/pi` as the canonical one. Pi is by Mario Zechner, from the search results; I did not verify that from the pages.
+
+- Repository: https://github.com/earendil-works/pi. Description: "AI agent toolkit: unified LLM API, agent loop, TUI, coding agent CLI". License: MIT. Packages include `pi-ai` ("Unified multi-provider LLM API (OpenAI, Anthropic, Google, etc.)"), `pi-agent-core` ("Agent runtime with tool calling and state management"), `pi-coding-agent` ("Interactive coding agent CLI") and `pi-tui` ("Terminal UI library with differential rendering"). The page also lists packages for telemetry, durable state and an application runtime.
+- Agent package README: https://github.com/badlogic/pi-mono/tree/main/packages/agent (the `pi-agent-core` package).
+- Loop source: https://github.com/earendil-works/pi/blob/main/packages/agent/src/agent-loop.ts
+- Product page: https://pi.dev. README of the coding agent: https://github.com/earendil-works/pi/blob/main/packages/coding-agent/README.md
+
+**Not verified:** the four default tools (`read`, `write`, `edit`, `bash`). The pages I could read do not list them. Nor did I verify how the extension API is typed, or any detail of Pi's behavior that I did not see in the pages above.
+
+##### 1. What Pi is for
+
+Pi describes itself as "a minimal, extensible agent harness that you can make your own." It "ships with powerful defaults but skips features like sub-agents and plan mode." Customization goes through "extensions, skills, prompt templates, and themes," bundled as packages shared through npm or git. Extensions are "TypeScript modules with access to tools, commands, keyboard shortcuts, events, and the full TUI," and skills are "capability packages with instructions and tools, loaded on-demand" (pi.dev). Its main product is a coding agent that a person runs in a terminal and shapes to their own workflow.
+
+##### 2. How the loops differ
+
+| | Pi (`pi-agent-core`) | Nury (`engine.py`) |
+|---|---|---|
+| Who decides what happens next | The model. After each answer the loop looks for tool calls and runs them. | The engine. The five stages and their order are fixed in the playbook. |
+| Tools | The model calls tools. Tool calls run in sequence or in parallel (per the README). | None. The model writes text only. |
+| Loop shape | Per the loop source summary: an outer loop for follow-up messages and an inner loop "while there are more tool calls or pending messages": call the model, run tool calls, check for new steering messages. | `for attempt in range(1, 4)` inside each stage: write, check, classify, then regenerate or stop. |
+| When it stops | When there are no tool calls and no steering or follow-up messages, on an error or abort, or when a `finishTurn` callback returns `end`. The README also says the loop stops early only if every finalized tool result in a batch sets `terminate: true`. | When a draft passes every layer, after three failed attempts (escalate), or when the pastor stops. |
+| What judges the output | The model's own choice to stop. Hooks `beforeToolCall` and `afterToolCall` can block or change a tool call. | Deterministic checks first (the floor and named checks), then a classifier (Jev) with a reject line, then a human gate after every stage. |
+| People in the loop | A person can steer or queue follow-up messages while it runs. | A person approves, edits or stops after every stage. An edit is checked and flagged, and the checks themselves do not change. |
+| Events | A stream: `agent_start`, `turn_start`, `message_*`, `tool_execution_*`, `turn_end`, `agent_end`. | An audit log: `stage_start`, `gloo_call`, `check`, `jev_gate`, `gate`, `outcome` and others (see the trace above). |
+
+In short: Pi lets the model decide and gives a person the means to steer. Nury does the opposite on purpose: the engine decides, the model only writes, and checks and a human decide what is allowed through.
+
+##### 3. What we could learn or borrow
+
+- **A small core.** Pi's pitch is that the loop stays small and everything else is an extension. Our engine is 439 lines and the rest sits in separate modules, which is the same instinct. We should keep it that way.
+- **A clear event stream.** Pi emits start and end events for runs, turns, messages and tools, and listeners subscribe. Our audit log already records the same kind of facts, and the app derives its progress phases from it. A small subscribe-style hook on `AuditLog` would be a cleaner way to feed the app than reading the list. That is an idea, not built.
+- **Extension points with names.** Pi's `beforeToolCall` and `afterToolCall` are named places to add behavior. Our named checks and the Jev questions are the same idea for drafts. Nothing to change.
+- **Skills as optional modules.** We already have skills (`voice`, `grounding`), versioned and switched off for comparison. Pi loads skills "on-demand"; ours are listed by name in each stage and always apply.
+- **We already have an audit log and skills.** So the new things to learn are small: the event naming and the idea of subscribers.
+
+##### 4. What would not fit
+
+- **Open tool use.** Our safety rests on the model not acting. It cannot search, fetch, run code or read files. Giving it tools reopens the open web and the open filesystem, which the rules rule out.
+- **Shell access.** A coding agent's `bash` is the opposite of a crisis agent's floor.
+- **No deterministic floor.** Pi leaves permission and confirmation to extensions ("Run in a container, or build your own confirmation flow with extensions"). For Nury those checks are the product, so they are in the core, not an add-on.
+- **A model that decides when it is done.** Our stages end when a draft passes the layers or after three attempts, not when the model stops.
+- **Parallel tool execution and mid-run steering.** Neither has a place in a fixed five-stage run with a human gate after each.
+- **Language.** Pi is TypeScript. Nury is Python, and a pastor can read it. Moving would be a rewrite for no gain.
+
+##### 5. Could `pi-agent-core` be the loop under Nury later?
+
+**Maybe, for one narrow case, and no for the main run.** For the five-stage run: no. Our loop is not a tool loop. Using Pi's loop with no tools would wrap one model call, and we would add a TypeScript runtime and a bridge to the Python engine for nothing. The parts that matter, the checks, the Jev gate, the correction loop and the human gate, would all stay ours.
+
+For a later feature that needs tools, such as a read-only search of a church's saved cases, a harness like this could make sense, behind our floor and our approval gate, with each tool whitelisted and logged. That would need a design review first. It is not planned.
+
+**Not verified:** whether the loop's `finishTurn` callback could carry a correction message and run another turn, which is what our regenerate step does. I saw the callback named in the summary and did not read how it works. I would read the source itself before any decision.
 
 ### How a developer extends it
 
