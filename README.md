@@ -4,7 +4,7 @@ Nury — An AI Crisis Response Agent.
 
 A family calls a church in the worst hour of its life. The pastor opens Nury, picks the crisis and types what the family said. Nury drafts five stages for the pastor to read: a case summary for the pastor, then a plain-language brief, a list of vetted contacts, a family checklist and a short pastoral message, with the family materials in the family's language. After every stage the pastor can Approve, Edit or Stop. Nothing reaches the family except through the pastor. Nury is not a pastor, counselor, doctor or lawyer, and never claims to be one.
 
-Entered by Juan Pelaez under 3Metas. Hackathon registration is under jkpelaez@hotmail.com (Solo Hacker ticket T000857383). <!-- Juan: confirm this line before the repo goes public. It prints a personal email and a ticket number. -->
+Entered by Juan Peláez under 3Metas. Hackathon registration is under jkpelaez@hotmail.com (Solo Hacker ticket T000857383). <!-- Juan: confirm this line before the repo goes public. It prints a personal email and a ticket number. -->
 
 License: MIT.
 

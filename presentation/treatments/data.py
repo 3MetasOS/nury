@@ -49,7 +49,7 @@ C_ROWS = [
 
 MUSTS = [("M1", "1. This is Nury (the name, the dictionary moment, the brand line)"), ("M2", "2. What it is (the crisis tool: five stages, a gate after each, nothing sent)"),
          ("M3", "3. The person and the tension (persona, the clock, a decision)"), ("M4", "4. The turn (a draft rejected before the pastor sees it)"),
-         ("M5", "5. The technical sell, with proof (VERIFIED claims, the disclosure caption)"), ("M6", "6. The memorial (Nury Pelaez, last, text only)")]
+         ("M5", "5. The technical sell, with proof (VERIFIED claims, the disclosure caption)"), ("M6", "6. The memorial (Nury Peláez, last, text only)")]
 
 def A_frames():
     return [

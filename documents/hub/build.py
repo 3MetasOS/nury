@@ -170,6 +170,7 @@ MENU = [
     ("Presentation", "Deck", "html_repo", "presentation/deck.html"),
     ("Presentation", "Pitch script (3 min)", "md", "presentation/PITCH_SCRIPT.md"),
     ("Presentation", "Finalist script (90 s)", "md", "presentation/FINALIST_SCRIPT.md"),
+    ("Presentation", "Script review: pace and spacing", "md", "presentation/SCRIPT_REVIEW.md"),
     ("Presentation", "Shared demo", "md", "presentation/SHARED_DEMO.md"),
     ("Presentation", "Creative brief (v3)", "md", "presentation/CREATIVE_BRIEF.md"),
     ("Presentation", "The name entry (Nury)", "md", "presentation/NAME_ENTRY.md"),

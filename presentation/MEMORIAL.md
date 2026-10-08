@@ -28,25 +28,25 @@ Draft text (from Juan's message, 2026-10-07):
 
 
 ## 4. Juan's answers (2026-10-07) and new drafts
-- Her name: **Nury Pelaez**. Age: **83**. Photo: Juan sends it tomorrow (the memorial layout keeps a hidden slot for one portrait).
+- Her name: **Nury Peláez**. Age: **83**. Photo: Juan sends it tomorrow (the memorial layout keeps a hidden slot for one portrait).
 - Voice: **not Juan's own voice**. Use a very human, warm voice (see the voice plan). For the memorial itself, the recommendation is text on screen with a few seconds of quiet, because a synthetic voice reading a family memorial can sound hollow.
-- The first text was a draft, open to improvement. Rule still holds: only facts Juan gave, and his approval before anything ships. Facts available: Nury Pelaez; 83; served her church in the small things and the big ones; always with a smile; always with Jesus in her heart; never married; passed away a month ago; Nury (the agent) is named for her; "always ready to help in the church" (from the product document).
+- The first text was a draft, open to improvement. Rule still holds: only facts Juan gave, and his approval before anything ships. Facts available: Nury Peláez; 83; served her church in the small things and the big ones; always with a smile; always with Jesus in her heart; never married; passed away a month ago; Nury (the agent) is named for her; "always ready to help in the church" (from the product document).
 
 ### Option 1: his words, tightened (about 12 s)
-> Nury is named for my aunt, Nury Pelaez.
+> Nury is named for my aunt, Nury Peláez.
 > She served her church for 83 years, in the small things and the big ones,
 > always with a smile, always with Jesus in her heart.
 > She passed away a month ago. This is for her.
 
 ### Option 2: with the bridge to the product (about 16 s) [recommended for the deck and the live pitch]
-> In memory of Nury Pelaez, 83.
+> In memory of Nury Peláez, 83.
 > She served her church in the small things and the big ones,
 > always with a smile, always with Jesus in her heart.
 > Nury is named for her.
 > May it be ready to help, the way she always was.
 
 ### Option 3: the shortest (about 8 s) [recommended for the 90-second video]
-> In memory of Nury Pelaez.
+> In memory of Nury Peláez.
 > Always ready to help. Always with a smile.
 > Always with Jesus in her heart.
 

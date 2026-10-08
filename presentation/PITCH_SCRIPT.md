@@ -1,6 +1,6 @@
 # Nury: 3-minute pitch script (deck v2, with the technical story)
 
-Speaker: Juan Pelaez (3Metas). Target about 2:50 with the memorial, 3:00 at most, at a calm pace. Slide numbers match `deck.html` (default view, gated items hidden). Press `n` for notes, `g` to reveal gated items for review, `b` to jump to backup.
+Speaker: Juan Peláez (3Metas). Target about 2:50 with the memorial, 3:00 at most, at a calm pace. Slide numbers match `deck.html` (default view, gated items hidden). Press `n` for notes, `g` to reveal gated items for review, `b` to jump to backup.
 Tags: `[90s]` lines and slides stay in the 90-second cut. The video plays inside the demo slide (approved).
 `[NUMBER]` = real scorecard number only. If none by Oct 7 16:00 MDT, use the fallback line.
 Family and intake: `SHARED_DEMO.md`. Do not say "ICE" or name any agency.
@@ -63,7 +63,7 @@ No number from any interim run. Say one failure, plainly: a checklist named a de
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier. Disclosed as third-party technology per the rules.
 
 ## 2:22 to 2:30  Slide 10 (light): teamwork, and what is next
-Built by Juan Pelaez at 3Metas with a small team of AI agents that coordinate over a messaging protocol. Next is the human team: pastors to pilot with, and an attorney to review the sources. Not done yet.
+Built by Juan Peláez at 3Metas with a small team of AI agents that coordinate over a messaging protocol. Next is the human team: pastors to pilot with, and an attorney to review the sources. Not done yet.
 
 ## 2:30 to 2:34  Slide 11 (dawn): close  [90s]
 [90s] The next call will come. Nury is there when the pastor picks up.

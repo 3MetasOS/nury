@@ -16,4 +16,4 @@ Nury runs on Gloo's guarded Responses endpoint. We tested 20 hand-built scenario
 
 The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules.
 
-Entry by Juan Pelaez, 3Metas.
+Entry by Juan Peláez, 3Metas.

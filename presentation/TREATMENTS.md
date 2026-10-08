@@ -56,7 +56,7 @@ At most 90 s. Eric (ElevenLabs, disclosed) is the narrator, and every line is 8 
 - 3. The person and the tension (persona, the clock, a decision): 0:00 to 0:03, 0:03 to 0:09, 0:09 to 0:15
 - 4. The turn (a draft rejected before the pastor sees it): 0:37 to 0:46
 - 5. The technical sell, with proof (VERIFIED claims, the disclosure caption): 0:46 to 0:58
-- 6. The memorial (Nury Pelaez, last, text only): 1:14 to 1:30
+- 6. The memorial (Nury Peláez, last, text only): 1:14 to 1:30
 
 **Sound design.** Night: low room tone, a clock tick, a phone buzz. At the lantern: the tick stops and a warm low pad enters. At the turn: silence, then a slower tick. At the end: the pad fades to one soft high tone. The memorial is near silence.
 
@@ -99,7 +99,7 @@ At most 90 s. Eric (ElevenLabs, disclosed) is the narrator, and every line is 8 
 - 3. The person and the tension (persona, the clock, a decision): 0:00 to 0:03, 0:03 to 0:09, 0:09 to 0:16
 - 4. The turn (a draft rejected before the pastor sees it): 0:33 to 0:43
 - 5. The technical sell, with proof (VERIFIED claims, the disclosure caption): 0:50 to 1:02
-- 6. The memorial (Nury Pelaez, last, text only): 1:17 to 1:30
+- 6. The memorial (Nury Peláez, last, text only): 1:17 to 1:30
 
 **Sound design.** Intimate foley: cloth, keys, a mug, a thumb on glass, breath. No music at all until the lantern lights (about 0:43), then the pad. The turn is a held breath and silence. The memorial is room tone only.
 
@@ -140,7 +140,7 @@ At most 90 s. Eric (ElevenLabs, disclosed) is the narrator, and every line is 8 
 - 3. The person and the tension (persona, the clock, a decision): 0:00 to 0:03, 0:12 to 0:18
 - 4. The turn (a draft rejected before the pastor sees it): 0:32 to 0:42
 - 5. The technical sell, with proof (VERIFIED claims, the disclosure caption): 0:42 to 0:54, 1:06 to 1:12
-- 6. The memorial (Nury Pelaez, last, text only): 1:15 to 1:30
+- 6. The memorial (Nury Peláez, last, text only): 1:15 to 1:30
 
 **Sound design.** A synthesized tick bed under everything. It slows at the turn, goes silent for one second, and stops at the end card. A pad enters only at the dictionary card and resolves at the end. The memorial is near silence.
 

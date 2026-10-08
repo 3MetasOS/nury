@@ -12,7 +12,7 @@ The original ask, kept for the record: three treatments, then Juan picks one.
 3. The tension and the person: a real-feeling persona (a synthetic pastor and a synthetic family), a ticking clock (2:07 AM), a decision under pressure.
 4. The turn: the moment Nury earns trust (a draft is rejected before the pastor sees it).
 5. The technical sell, with proof: Gloo AI Studio guarded endpoint, privacy (tokens, not names), Jev typed judges plus a red team, a person reviews. VERIFIED claims only (documents/TECH_CLAIMS.md). Disclosure caption verbatim.
-6. The memorial: Nury Pelaez, last thing on screen. Juan's words, text only.
+6. The memorial: Nury Peláez, last thing on screen. Juan's words, text only.
 Hard limits: at most 90 s; no real people, no real children, no agency imagery or names; no stock photos of detainees; humanitarian, never political; Eric is the narrator (ElevenLabs); the memorial has no synthetic voice.
 
 ## 2. Craft principles to apply (research and cite; do not just trust this list)
