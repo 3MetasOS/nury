@@ -1,70 +1,83 @@
-# Nury: 90-second finalist script (video, due 09:00 MDT Oct 8)
+# Nury: the 90-second film, final script (treatment A, "From night to light")
 
-For hack-video. Same family, intake and footage as `SHARED_DEMO.md` and `video/STORYBOARD.md`. Re-timed for three additions: the opener ("This is Nury" then the dictionary entry, at most 5 s), the technical beat (about 12 s), and the memorial as the last thing on screen (`MEMORIAL.md`). The video is at most 90 s total.
-`[NUMBER]` = real scorecard number from hack-artisans only. The proof beat from the earlier cut is dropped: the tech beat's captions carry the numbers now.
-**The memorial is gated: it ships only after Juan approves the text in writing.** Until then, use the version without it (end of this file).
-Technical claims: `TECH_STORY.md`. Only rows that `documents/TECH_CLAIMS.md` marks VERIFIED go on screen.
+Status: **treatment A chosen by Juan** (2026-10-07), borrowing one plain line from C. Replaces the earlier finalist script. Owner: hack-ninja writes, hack-video builds, hack-sensei signs off on Eric's lines.
+Hard rules: at most 90 s. Eric (ElevenLabs, disclosed) narrates; every line is 8 words or fewer. The memorial is last, text only, no synthetic voice. No real people, no real children, no agency imagery or names. Humanitarian, never political. Technical claims from `documents/TECH_CLAIMS.md`, VERIFIED rows only, plus the Jev disclosure caption verbatim. Every sound is synthesized or licensed.
+**Eric's lines are NOT to be rendered until hack-sensei has reviewed `presentation/ERIC_LINES.md`.** Build the pictures and the sound first.
 
-## Re-timed shot list (sums to 90 s)
-| # | Time | Visual | VO | On-screen text |
-|---|---|---|---|---|
-| 0 | 0:00-0:05 | OPENER, one beat (see below): the lantern lights and "This is Nury." (0.0 to 1.2 s), then the dictionary entry (1.5 to 5.0 s). | none (optional: Juan says "Nury.") | This is Nury. then the entry |
-| 1 | 0:05-0:10 | Shot 1: phone lights up, 2:07 AM, Maria calling | "It is two in the morning. A family is calling their pastor." | 2:07 AM |
-| 2 | 0:10-0:17 | Shot 2: intake typed | "Her husband was detained last evening. The pastor has no staff, and no lawyer on the line." | Solo pastor. No staff. No lawyer. |
-| 3 | 0:17-0:23 | Shot 3: triage card | "Nury turns the call into a clear case. Facts only. No advice." | 1 Triage |
-| 4 | 0:23-0:27 | Shot 4: Approve pulse | "After every stage, the pastor decides." | Approve / Edit / Stop |
-| 5 | 0:27-0:34 | Shot 5: Spanish rights brief, citation chip | "Rights in the family's own language. Built only from a vetted source. Every point cited." | 2 Rights brief. Vetted sources only. |
-| 6 | 0:34-0:43 | Shot 6: guardrail strip, no draft text | "When a draft crosses the line from information into advice, Nury rejects it and tries again. The pastor never sees it." | Rejected. Regenerating (2 of 3). Passed. |
-| T | 0:43-0:55 | TECH BEAT: animated architecture shot (below). Text only, no third-party logos. | TECH-A (below) | Three proof captions, then the disclosure caption |
-| 7 | 0:55-0:59 | Shot 7: attorney resources, checklist | "Attorney hotlines. A checklist for tonight." | 3 Attorneys, 4 Checklist |
-| 8 | 0:59-1:04 | Shot 8: pastoral message, one edit | "And a short, warm message, in the pastor's hands to edit." | 5 Pastoral message |
-| 9 | 1:04-1:09 | Shot 9: Copy, no Send; disclaimer | "Nury is not a pastor, and it never sends. The pastor does." | Nury does not send. The pastor does. |
-| 10 | 1:09-1:11 | Shot 10: end card, lockup on ink | "Nury. The crisis-response agent for solo pastors." (if it does not fit 2 s, speak it over the first 2 s of the memorial card's fade) | Nury · Legal information only. Not legal advice. |
-| 11 | 1:11-1:30 | Memorial card: light paper, deep-amber lantern, Fraunces. Slow fade. Nothing else on screen. | Juan, in his own voice (strongly recommended), slowly. | Juan's words, below, unedited |
+## The arc of light
+Night (0:00 to 0:17, ink and a single lamp) to lantern (0:17, the lantern lights, the card builds) to light (0:25 to 1:18, the work, amber on a paper-grey that brightens) to dawn (1:18, paper) to the memorial. The grade moves one way: ink to paper.
+The plain line borrowed from C: "Five stages. A gate after each. Nothing sent." sits under the dictionary entry in row 4.
 
-Time check, VO: the 10 locked lines run about 45 s of speech at 150 words a minute. Slots are tight on shot 2 (7 s for 17 words), shot 6 (9 s for 20 words) and shot 5 (7 s for 14 words). Against the earlier cut the opener took 2 s: shot 3 lost 1 s (7 to 6) and shot 5 lost 1 s (8 to 7). hack-video confirms against real footage and may borrow up to 1 s from shot 7 or the end card.
-Time check, memorial: Juan's words are 45 words, about 18 to 22 s spoken with pauses. The card is 19 s. Do not shorten his words or speed him up. If Juan needs more time, take it from shots 5 and 6 before touching the memorial.
+## Memorial flag (Juan decides; see `presentation/MEMORIAL.md`)
+`video/remotion/public/memorial.json` has `"option"`. **Default is 3 (8 s, the shortest), table 1.** Option 2 (16 s, with the bridge to the product) is table 2: the extra 8 s come from rows 2, 3, 5, 6 and 9 (1, 1, 2, 2 and 2 s). Option 1 (12 s) is not built; ask if wanted. Neither text ships until Juan approves it in writing.
 
-## Opener (row 0), exact timing and text, at most 5 s
-Light paper, same look as the deck and the memorial card. No voiceover needed.
-| Time | On screen |
-|---|---|
-| 0.0 to 1.2 s | The lantern (deep amber) lights: the flame fades in and the outline warms. Caption: **This is Nury.** |
-| 1.2 to 1.5 s | Cross-fade. The lantern stays, small, beside the headword. |
-| 1.5 to 2.2 s | **Nury** (Fraunces) and "/NOO-ree/ *proper noun*" fade in. |
-| 2.2 to 3.6 s | "1. A given name from Arabic *nūr*, 'light'." |
-| 3.6 to 5.0 s | "2. The crisis-response agent for solo pastors." Hold to 5.0 s. |
-The etymology line and "see also: lantern" are left out of the video for time. The deck slide has them. Her name is not in the opener: it appears once, in the memorial at the end.
+## Table 1: memorial option 3 (8 s), sums to exactly 90 s
+| # | Time | Len | Picture | Eric | Sound | On-screen type | Asset |
+|---|---|---|---|---|---|---|---|
+| 1 | 0:00-0:03 | 3 s | HOOK. Black. A phone lights a dark table: "2:07 AM, Maria". | (none) | Room tone starts (a low hum). One clock tick at 0.8 s. The phone buzzes twice (1.6 s, 2.3 s). | 2:07 AM | NEW: vector shot (3 s) |
+| 2 | 0:03-0:10 | 7 s | PERSONA. A man's silhouette at a kitchen table, one lamp, a cold mug. His hand takes the phone. | L1 | Hum. A chair creak. A held breath. The tick continues, one a second. | Solo pastor. No staff. No lawyer. | NEW: vector shot |
+| 3 | 0:10-0:17 | 7 s | STAKES. The intake is typed (real app footage, sped up). Cut to a lit window: a mother and two children in silhouette, shoes by the door. | L2 | Keys, very soft. A distant murmur with no words. The tick continues. | Synthetic family. Not real people. | REUSE typing footage + NEW window shot |
+| 4 | 0:17-0:25 | 8 s | THIS IS NURY. The screen's glow warms. The lantern lights. The dictionary card builds on paper-grey. The ink washes toward paper. | L3 | The tick stops. A warm low pad enters, slow attack (the first release). | Nury /NOO-ree/ proper noun. 1. A given name from Arabic nur, "light". 2. The crisis-response agent for solo pastors. see also: lantern. Plain line (borrowed from treatment C): Five stages. A gate after each. Nothing sent. | REUSE dictionary card, re-skinned |
+| 5 | 0:25-0:35 | 10 s | THE TOOL. Crisis selector: Detention. The intake. The triage card. A thumb taps Approve (amber pulse). | L4 | Pad holds. A soft tap on Approve. | 1 Triage. Approve / Edit / Stop | REUSE real app footage (selector, triage, gate) |
+| 6 | 0:35-0:42 | 7 s | Rights brief in Spanish. Every point carries a citation chip. | L5 | Pad. A faint page-turn tick on each chip. | 2 Rights brief. Vetted sources only. | REUSE real app footage |
+| 7 | 0:42-0:52 | 10 s | THE TURN. The pad cuts to silence. A slower tick. The strip: "Draft rejected by guardrail. Regenerating (2 of 3)." Then green: Passed. His hand stops, then moves. No draft text is ever shown. | L6 | Silence from 42.0 s. A slow tick from 42.8 s. A low note on "Passed". The pad returns at the end of the beat. | Rejected. Regenerating (2 of 3). Passed. | REUSE footage + NEW sound |
+| 8 | 0:52-1:04 | 12 s | TECH BEAT. The lantern's light spreads over a clean line diagram: pastor, tokens, Gloo AI Studio, checks, a person. Text only, no third-party logos. | L7 then L8 | Pad. A soft tick as each node lights. | Three proof captions, about 3 s each: "Leak test: 90 checks per playbook, 0 found"; "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24"; "A full package: 50 to 56 s, about 9 cents". Disclosure caption, verbatim, small, for the whole beat: "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules." | REUSE tech beat, re-skinned and re-timed |
+| 9 | 1:04-1:12 | 8 s | Attorney resources, the checklist, then the pastoral message. One word is edited. | L9 | Pad. A key tap on the edit. | 3 Attorneys. 4 Checklist. 5 Message | REUSE real app footage |
+| 10 | 1:12-1:18 | 6 s | Copy, not Send. The disclaimer is on screen. His hand pastes into his own messages. There is no Send button. | L10 | Tap, paste. The pad resolves to a major chord. | Nury is not a pastor. Nury does not send. The pastor does. Legal information only. | REUSE footage + NEW 1 s |
+| 11 | 1:18-1:22 | 4 s | DAWN. The ink has washed to paper. The lantern, small, deep amber. | L11 | The pad fades out. One soft high tone, like first light (3 s attack). | Nury. the crisis-response agent for solo pastors | REUSE end card, re-skinned |
+| 12 | 1:22-1:30 | 8 s | MEMORIAL. Paper, a deep-amber lantern, Juan's words, text only. Slow fade in and out. A hidden slot for one portrait (Juan sends it tomorrow). | (none) | Near silence. Faint room tone only, about -40 dB. No voice. | Memorial text, option 3 (see presentation/MEMORIAL.md) | REUSE memorial card (memorial.json: option 3) |
 
-## Tech beat (T), about 12 s
-Animated architecture shot by hack-video. Draw the same line as deck slide 4: pastor types, privacy layer, Gloo AI Studio guarded endpoint, named checks and the correction loop, approval gate, pastor sends. Then the evaluation strip. Text only, no third-party logos.
+## Table 2: memorial option 2 (16 s), sums to exactly 90 s
+| # | Time | Len | Picture | Eric | Sound | On-screen type | Asset |
+|---|---|---|---|---|---|---|---|
+| 1 | 0:00-0:03 | 3 s | HOOK. Black. A phone lights a dark table: "2:07 AM, Maria". | (none) | Room tone starts (a low hum). One clock tick at 0.8 s. The phone buzzes twice (1.6 s, 2.3 s). | 2:07 AM | NEW: vector shot (3 s) |
+| 2 | 0:03-0:09 | 6 s | PERSONA. A man's silhouette at a kitchen table, one lamp, a cold mug. His hand takes the phone. | L1 | Hum. A chair creak. A held breath. The tick continues, one a second. | Solo pastor. No staff. No lawyer. | NEW: vector shot |
+| 3 | 0:09-0:15 | 6 s | STAKES. The intake is typed (real app footage, sped up). Cut to a lit window: a mother and two children in silhouette, shoes by the door. | L2 | Keys, very soft. A distant murmur with no words. The tick continues. | Synthetic family. Not real people. | REUSE typing footage + NEW window shot |
+| 4 | 0:15-0:23 | 8 s | THIS IS NURY. The screen's glow warms. The lantern lights. The dictionary card builds on paper-grey. The ink washes toward paper. | L3 | The tick stops. A warm low pad enters, slow attack (the first release). | Nury /NOO-ree/ proper noun. 1. A given name from Arabic nur, "light". 2. The crisis-response agent for solo pastors. see also: lantern. Plain line (borrowed from treatment C): Five stages. A gate after each. Nothing sent. | REUSE dictionary card, re-skinned |
+| 5 | 0:23-0:31 | 8 s | THE TOOL. Crisis selector: Detention. The intake. The triage card. A thumb taps Approve (amber pulse). | L4 | Pad holds. A soft tap on Approve. | 1 Triage. Approve / Edit / Stop | REUSE real app footage (selector, triage, gate) |
+| 6 | 0:31-0:36 | 5 s | Rights brief in Spanish. Every point carries a citation chip. | L5 | Pad. A faint page-turn tick on each chip. | 2 Rights brief. Vetted sources only. | REUSE real app footage |
+| 7 | 0:36-0:46 | 10 s | THE TURN. The pad cuts to silence. A slower tick. The strip: "Draft rejected by guardrail. Regenerating (2 of 3)." Then green: Passed. His hand stops, then moves. No draft text is ever shown. | L6 | Silence from 42.0 s. A slow tick from 42.8 s. A low note on "Passed". The pad returns at the end of the beat. | Rejected. Regenerating (2 of 3). Passed. | REUSE footage + NEW sound |
+| 8 | 0:46-0:58 | 12 s | TECH BEAT. The lantern's light spreads over a clean line diagram: pastor, tokens, Gloo AI Studio, checks, a person. Text only, no third-party logos. | L7 then L8 | Pad. A soft tick as each node lights. | Three proof captions, about 3 s each: "Leak test: 90 checks per playbook, 0 found"; "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24"; "A full package: 50 to 56 s, about 9 cents". Disclosure caption, verbatim, small, for the whole beat: "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules." | REUSE tech beat, re-skinned and re-timed |
+| 9 | 0:58-1:04 | 6 s | Attorney resources, the checklist, then the pastoral message. One word is edited. | L9 | Pad. A key tap on the edit. | 3 Attorneys. 4 Checklist. 5 Message | REUSE real app footage |
+| 10 | 1:04-1:10 | 6 s | Copy, not Send. The disclaimer is on screen. His hand pastes into his own messages. There is no Send button. | L10 | Tap, paste. The pad resolves to a major chord. | Nury is not a pastor. Nury does not send. The pastor does. Legal information only. | REUSE footage + NEW 1 s |
+| 11 | 1:10-1:14 | 4 s | DAWN. The ink has washed to paper. The lantern, small, deep amber. | L11 | The pad fades out. One soft high tone, like first light (3 s attack). | Nury. the crisis-response agent for solo pastors | REUSE end card, re-skinned |
+| 12 | 1:14-1:30 | 16 s | MEMORIAL. Paper, a deep-amber lantern, Juan's words, text only. Slow fade in and out. A hidden slot for one portrait (Juan sends it tomorrow). | (none) | Near silence. Faint room tone only, about -40 dB. No voice. | Memorial text, option 2 (see presentation/MEMORIAL.md) | REUSE memorial card (memorial.json: option 2) |
 
-**TECH-A voiceover (30 words, about 12 s):**
-> Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.
+## Eric's lines (11; each 8 words or fewer; full review sheet in `ERIC_LINES.md`)
+| # | Row | Line | Words |
+|---|---|---|---|
+| L1 | 2 persona | 2:07 AM. Maria is calling. | 5 |
+| L2 | 3 stakes | Her husband was detained last evening. | 6 |
+| L3 | 4 this is Nury | This is Nury. | 3 |
+| L4 | 5 the tool | Five stages. A gate after each. | 6 |
+| L5 | 6 rights | Her language. Every point cited. | 5 |
+| L6 | 7 the turn | Unsafe draft. Rejected. He never sees it. | 7 |
+| L7 | 8 tech | Names become tokens before leaving his computer. | 7 |
+| L8 | 8 tech | Checks reject unsafe drafts. A person decides. | 7 |
+| L9 | 9 stages | A warm message. His to edit. | 6 |
+| L10 | 10 copy | Nury is not a pastor. It never sends. | 8 |
+| L11 | 11 dawn | The crisis-response agent for solo pastors. | 6 |
 
-**Three on-screen proof captions** (VERIFIED rows in `documents/TECH_CLAIMS.md` only, about 3 s each, one per step of the animation):
-1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
-2. "Typed judge, ten checks: unsafe 0.89 to 0.98, safe 0.02 to 0.24" (TC 26)
-3. "A full package: 50 to 56 s, about 9 cents" (TC 30)
-Spare if there is room: "91 offline tests pass; no send path" (re-run the count at export).
+## Sound design: the audio arc (sparse, tense, release)
+All sound is made in code (synthesized) or licensed. No stock music.
+1. **Night (0:00 to 0:17).** Low room tone (a hum), a clock tick once a second, the phone buzz at the start, soft foley (chair, breath, keys). Dynamic range stays small and dark.
+2. **Release (0:17).** The tick stops. A warm low pad enters with a slow attack. This is the first moment of warmth.
+3. **Work (0:25 to 0:42).** The pad holds under Eric. Taps and page-turn ticks only on actions.
+4. **The turn (0:42 to 0:52).** The pad cuts to silence for a full second. A slower tick returns. A low note on "Passed". The pad comes back warmer.
+5. **Tech beat (0:52 to 1:04).** Pad, with a soft tick as each node lights.
+6. **Resolve (1:12 to 1:18).** The pad resolves to a major chord on the paste.
+7. **Dawn (1:18).** The pad fades. One soft high tone, like first light.
+8. **Memorial.** Near silence: room tone only, no voice, no music.
+Mix: Eric on top, pad about 20 dB under him, ticks about 25 dB under. Leave half a second of quiet before and after each Eric line.
 
-**Disclosure caption, verbatim, small, on screen for the whole beat:** "The evaluation harness uses the Jev decision API (my prior project), disclosed as prior technology per the rules."
-Lower-third labels: "Built on Gloo AI Studio" and "Tested with Jev". Optional TECH-B only if there is time: "A red team from other model makers checks it too. It advises; a person decides."
+## What is reused, and what is new
+- **Reuse:** the real app run (`video/remotion/public/run.mp4`: selector, intake, triage, gate, rights, guardrail strip, attorney, checklist, message, copy), the dictionary card, the tech beat, the end card, the memorial card.
+- **New:** three vector night shots (the table, the lit window, the dawn wash) and the ink-to-paper grade; a synthesized pad, ticks and foley; 11 new Eric lines; the plain line under the entry.
+- **Flags that exist:** `memorial.json` (`option`, `approved`, `portrait`), `voice.json` (`noory`: the voice is given "Noory" so it says Nury as NOO-ree), `credits.json`.
 
-## Memorial text (Juan's words, unedited; do not change, shorten or humanize)
-```
-Nury is named for my aunt, Nury.
-For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.
-She never married.
-She passed away a month ago.
-This is for her.
-```
-Open from Juan: her full name for "In memory of", years or omit, a photo only if he provides one, and who speaks it.
-
-## Version without the memorial (use until Juan approves)
-Same rows 0 to 10, then the end card holds from 1:09 to 1:30 (21 s) with the lockup and the brand line. The video is never longer than 90 s.
-
-## Notes
-- The Jev disclosure is on screen in the tech beat, in the submission text, and on the deck's proof slide.
-- Check every frame for keys, tokens and terminal history before export.
-- Brand rules (`branding/BRAND.md`): lantern upright, no glow, rays or gradients; deep amber on light, amber on ink.
+## Honest limits
+- The Eric lines are new ElevenLabs generations: one take per line, a few retakes.
+- Row 3's window shot is a synthetic family. It is labeled on screen.
+- The memorial text is not approved yet. The portrait slot stays hidden until Juan sends a photo.
+- No scorecard number is on screen. The tech beat shows only VERIFIED rows. If one of them changes, change the caption.
+- The pad, ticks and foley are made in code; if taste says they sound thin, the fallback is a licensed track, which needs a license check first.

@@ -84,18 +84,33 @@ body.show-gated .e-senses li[data-gated]::before{content:counter(sn) ".";display
 body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses";grid-column:2;font:600 12px var(--sans);color:var(--amber-text)}
 @keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.entry .e-word,.entry .e-pron,.entry .e-senses li,.entry .e-ety,.entry .e-see{opacity:1;animation:none}}
+.slide.night{background:#0d1015;color:#ece7dc}.night h2,.night p,.night li{color:#ece7dc}.night .amber{color:#e8a33d}.night .muted{color:#a9a59b}
+body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
+.slide.on{animation:fadein .6s ease-out}@keyframes fadein{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.slide.on{animation:none}}
+.portrait{display:none}
 @media print{.slide{display:flex;page-break-after:always}.foot,.notes{display:none}}
 </style></head><body>
 
 <!-- ============ MAIN TALK (3:00). data-cut="90" stays in the 90-second cut ============ -->
 
 
-<section class="slide on center" data-cut="90" data-part="talk">
+<section class="slide night on" data-cut="90" data-part="talk">
+<h2><span class="amber">2:07 AM.</span> A solo pastor's phone rings.</h2>
+<div class="two"><div class="col">
+<ul><li>A family. A husband was detained last evening.</li>
+<li>The pastor has no staff and no lawyer on the line.</li>
+<li>They have a phone and a few minutes.</li></ul>
+<p class="muted">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></div>
+<div class="col"><img class="ill" src="images/phone-night.svg" alt="A phone lit in the dark" width="320" height="220"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
+<aside class="notes">NIGHT. 0:00 to 0:14. Open here, in the dark, with the phone buzz and the time. The user is a solo pastor: no staff, no lawyer on the line, a panicked call on a phone, Sunday afternoon or 2 AM. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md).</aside></section>
+
+<section class="slide center" data-cut="90" data-part="talk">
 <div class="lantern">{{MARKLIT}}</div>
 <h1>This is Nury.</h1>
 <p class="tagline">the crisis-response agent for solo pastors</p>
 <p class="muted">Juan Pelaez · 3Metas · Gloo AI Hackathon · Track 1</p>
-<aside class="notes">0:00 to 0:06. The lantern lights, then the line. Say: "This is Nury." Nothing else. 90-second cut: keep, 5 seconds. The brand line is locked: do not reword it.</aside></section>
+<aside class="notes">LANTERN. 0:14 to 0:20. The slide turns from night to paper and the lantern lights, then the line. Say: "This is Nury." Nothing else. 90-second cut: keep, 5 seconds. The brand line is locked: do not reword it.</aside></section>
 
 <section class="slide center entry" data-cut="90" data-part="talk">
 <div class="entrywrap">
@@ -106,20 +121,27 @@ body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses"
 <li><span>The crisis-response agent for solo pastors.</span></li></ol>
 <p class="e-ety muted">Etymology: Arabic <i>nūr</i>, "light, ray of light, lamp, lantern".</p>
 <p class="e-see muted">see also: <b>lantern</b></p></div>
-<aside class="notes">APPROVED by Juan. About 8 seconds; the senses appear one by one, press Right Arrow when "see also: lantern" is in. Read sense 1 and sense 2 aloud if you like; say nothing about her name here: it appears once, in the memorial at the end. Pronunciation /NOO-ree/ is how the family says it. SOURCES (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
+<aside class="notes">LANTERN, continued. APPROVED by Juan. About 8 seconds; the senses appear one by one, press Right Arrow when "see also: lantern" is in. Read sense 1 and sense 2 aloud if you like; say nothing about her name here: it appears once, in the memorial at the end. Pronunciation /NOO-ree/ is how the family says it. SOURCES (all read 2026-10-07; full table in presentation/NAME_ENTRY.md): Arabic nur, "light, ray of light ... lamp, light, lantern", Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1 (citing the Doha Historical Dictionary of Arabic); Noor is a common Arabic unisex name meaning light, Wikipedia https://en.wikipedia.org/wiki/Noor_(name); nuriyy, "luminous", and Turkmen Nury from it, Wiktionary https://en.wiktionary.org/wiki/%D9%86%D9%88%D8%B1%D9%8A and https://en.wiktionary.org/wiki/Nury; Nuri, "my light", Behind the Name https://www.behindthename.com/name/nuri. If asked: the sources differ on "luminous" vs "my light"; both say light. Not verified and not used: that Nuria comes from Arabic nur, and which origin any one person's name has.</aside></section>
 
-<section class="slide" data-cut="90" data-part="talk">
-<h2><span class="amber">2:07 AM.</span> A solo pastor's phone rings.</h2>
+<section class="slide" data-part="talk">
+<h2>Concept and product: five stages, and the pastor decides each</h2>
 <div class="two"><div class="col">
-<ul><li>A family. A husband was detained last evening.</li>
-<li>The pastor has no staff and no lawyer on the line.</li>
-<li>They have a phone and a few minutes.</li></ul>
-<p class="muted">Nury is humanitarian and takes no political side. The subject is a family and a night.</p></div>
-<div class="col"><img class="ill" src="images/phone-night.svg" alt="A phone lit in the dark" width="320" height="220"><img class="photo wide" src="images/porch-light.jpg" alt="A porch light glowing on a stucco wall at night" width="900" height="1350"></div></div>
-<aside class="notes">0:10 to 0:30. The user is a solo pastor: no staff, no lawyer on the line, a panicked call on a phone, Sunday afternoon or 2 AM. Do not say "ICE" or any agency. The family is Maria, Jose and two children (SHARED_DEMO.md).</aside></section>
+<ol class="flow">
+<li><b>Triage</b><span>States the facts without advice.</span></li>
+<li><b>Rights brief</b><span>Family's language. Vetted source. Every point cited.</span></li>
+<li><b>Attorney resources</b><span>Hotlines and contacts from vetted lists.</span></li>
+<li><b>Family checklist</b><span>Do tonight. Do not do. Gather these documents.</span></li>
+<li><b>Pastoral message</b><span>Under 120 words. Warm and steady.</span></li></ol></div>
+<div class="col"><img class="ill" src="images/family-silhouette.svg" alt="A family in silhouette under a lantern" width="320" height="220">
+<ul class="sel">
+<li><b>Detention</b><span class="chip live">live, the demo</span></li>
+<li data-gated="hospital"><b>Hospital emergency</b><span class="chip live">live</span></li>
+<li><b>Sudden death in a family</b><span class="chip soon">coming soon</span></li>
+<li><b>House fire or displacement</b><span class="chip soon">coming soon</span></li></ul></div></div>
+<aside class="notes">LIGHT. 0:28 to 0:43. Criterion: Concept and Product. The app opens on a crisis selector; each card is a playbook. The two coming-soon cards are labels only: say nothing more about them. Hospital stays off until Sensei confirms in writing that it runs and is scored. How we differ from other church-AI entries: Rockpool automates routine work; KineticFlow supports the pastor's own wellbeing; Nury shows up for the crisis (see backup slide, How we differ).</aside></section>
 
 <section class="slide" data-cut="90" data-part="talk">
-<h2>The demo: one call, five stages</h2>
+<h2>The demo: the call, the work, the rejected draft</h2>
 <div class="two"><div class="col">
 <ul><li>The pastor types what the family said.</li>
 <li>After every stage: Approve, Edit or Stop.</li>
@@ -127,7 +149,7 @@ body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses"
 <li>Nothing is sent. The pastor copies the text and sends it by hand.</li></ul>
 <p class="muted">Maria, Jose, two children (8 and 11). Live app, or the 90-second video.</p></div>
 <div class="phone"><div class="scr">[SCREENSHOT SLOT: crisis selector, live app, phone width. Capture after hack-artisans ships it.]</div></div></div>
-<aside class="notes">0:30 to 1:25. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
+<aside class="notes">LIGHT. 0:43 to 1:17. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>How it is built: nothing leaves with a name in it</h2>
@@ -153,23 +175,6 @@ body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses"
 </svg>
 <p class="muted">14 named checks plus 5 floor checks. 5 Gloo calls for a full package. One outbound call, no send path.</p>
 <aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and tokens are restored here, named checks reject unsafe drafts up to three tries, the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it, and it runs at evaluation time only. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
-
-<section class="slide" data-part="talk">
-<h2>Concept and product: the pastor stays in charge</h2>
-<div class="two"><div class="col">
-<ol class="flow">
-<li><b>Triage</b><span>States the facts without advice.</span></li>
-<li><b>Rights brief</b><span>Family's language. Vetted source. Every point cited.</span></li>
-<li><b>Attorney resources</b><span>Hotlines and contacts from vetted lists.</span></li>
-<li><b>Family checklist</b><span>Do tonight. Do not do. Gather these documents.</span></li>
-<li><b>Pastoral message</b><span>Under 120 words. Warm and steady.</span></li></ol></div>
-<div class="col"><img class="ill" src="images/family-silhouette.svg" alt="A family in silhouette under a lantern" width="320" height="220">
-<ul class="sel">
-<li><b>Detention</b><span class="chip live">live, the demo</span></li>
-<li data-gated="hospital"><b>Hospital emergency</b><span class="chip live">live</span></li>
-<li><b>Sudden death in a family</b><span class="chip soon">coming soon</span></li>
-<li><b>House fire or displacement</b><span class="chip soon">coming soon</span></li></ul></div></div>
-<aside class="notes">1:25 to 1:50. Criterion: Concept and Product. The app opens on a crisis selector; each card is a playbook. The two coming-soon cards are labels only: say nothing more about them. Hospital stays off until Sensei confirms in writing that it runs and is scored. How we differ from other church-AI entries: Rockpool automates routine work; KineticFlow supports the pastor's own wellbeing; Nury shows up for the crisis (see backup slide, How we differ).</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Innovation: a crisis is a folder, and drafts correct themselves</h2>
@@ -228,18 +233,18 @@ body.show-gated .e-senses li[data-gated]::after{content:"optional: Juan chooses"
 <p class="tagline">The crisis-response agent for solo pastors.</p>
 <p class="muted">Legal information only. Not legal advice.</p></div>
 <img class="photo" src="images/lanterns-hand.jpg" alt="A hand lighting small glowing lanterns at night" width="1200" height="800"></div>
-<aside class="notes">Close. The next call will come. Nury is there when the pastor picks up. 90-second cut ends here.</aside></section>
+<aside class="notes">DAWN. 2:30 to 2:34. The next call will come. Nury is there when the pastor picks up. 90-second cut ends here.</aside></section>
 
 
 <section class="slide center memorial nofoot" data-part="talk" data-gated="memorial">
 <div class="lantern small">{{MARKDEEP}}</div>
 <div class="mtext">
-<p>Nury is named for my aunt, Nury.</p>
-<p>For 83 years she served her church in the small things and the big ones, always with a smile, always with Jesus in her heart.</p>
-<p>She never married.</p>
-<p>She passed away a month ago.</p>
-<p>This is for her.</p></div>
-<aside class="notes">Juan's words, unedited. Gated until Juan approves the text in writing. Juan says it himself, slowly: about 20 seconds with pauses. Nothing else is on this slide. Still open from Juan: her full name for "In memory of", years or omit, a photo only if he provides one.</aside></section>
+<p>In memory of Nury Pelaez, 83.</p>
+<p>She served her church in the small things and the big ones,<br>always with a smile, always with Jesus in her heart.</p>
+<p>Nury is named for her.</p>
+<p>May it be ready to help, the way she always was.</p></div>
+<div class="portrait" hidden></div>
+<aside class="notes">DAWN, then the memorial. Option 2 of presentation/MEMORIAL.md (recommended for the deck and the live pitch, about 16 s). Gated until Juan approves the text in writing. Juan chooses who reads it, if anyone; the film uses text only. Nothing else is on this slide. A hidden slot is ready for one portrait: Juan sends the photo tomorrow. Option 3 (8 s) is for the 90-second film.</aside></section>
 
 <!-- ============ BACKUP (not spoken; use for questions) ============ -->
 <section class="slide" data-part="backup">
@@ -323,7 +328,7 @@ const all=[...document.querySelectorAll('.slide')];let i=0;
 const vis=()=>all.filter(s=>document.body.classList.contains('show-gated')||!s.hasAttribute('data-gated'));
 function go(k){const S=vis();i=Math.max(0,Math.min(S.length-1,k));all.forEach(s=>s.classList.remove('on'));const s=S[i];s.classList.add('on');
  document.getElementById('n').textContent=(i+1)+' / '+S.length;document.getElementById('part').textContent=s.dataset.part==='backup'?'  ·  backup':'';
- document.body.classList.toggle('nofoot',s.classList.contains('nofoot'));const a=s.querySelector('aside.notes');document.getElementById('notes').textContent=a?a.textContent:'';
+ document.body.classList.toggle('nofoot',s.classList.contains('nofoot'));document.body.classList.toggle('nightmode',s.classList.contains('night'));const a=s.querySelector('aside.notes');document.getElementById('notes').textContent=a?a.textContent:'';
  try{history.replaceState(null,'','#'+(i+1))}catch(e){}}
 function start(){const h=parseInt((location.hash||'').slice(1));go(isNaN(h)?0:h-1)}
 addEventListener('keydown',e=>{const k=e.key;

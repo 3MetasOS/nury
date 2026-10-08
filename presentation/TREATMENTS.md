@@ -1,6 +1,6 @@
 # Three treatments for the 90-second film (Juan's creative reset)
 
-Status: **for Juan to choose.** Written by hack-ninja, 2026-10-06. Nothing existing is thrown away: the app footage, the dictionary card, the tech beat, the end card, the memorial card and Eric's voice are assets in all three. Further polish on them is on hold until Juan picks.
+Status: **Juan chose A** (2026-10-07). The final script is `FINALIST_SCRIPT.md`. Written by hack-ninja, 2026-10-06. Nothing existing is thrown away: the app footage, the dictionary card, the tech beat, the end card, the memorial card and Eric's voice are assets in all three. Further polish on them is on hold until Juan picks.
 
 ## Shared persona (synthetic)
 Pastor Elias, 58. Solo pastor of a church of about forty in a storefront in Aurora, Colorado. No staff, no lawyer on speed dial. Seen only as a silhouette and as hands. In his hand: a phone. On the table: a cold mug and a worn notebook, under one lamp. His want: to give Maria something true and useful before she hangs up. His clock: it is 2:07 AM. The family: Maria, her children (8 and 11), and Jose, who was detained last evening. Seen only as silhouettes in a lit window and a few pairs of shoes by a door. All synthetic. No real people, no faces, no agency imagery.

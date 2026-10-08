@@ -2,7 +2,9 @@
 
 Juan, 2026-10-07: "I am not really happy with the way the presentation and the video are going. Let's evaluate another approach: more cinematic, more persona creation, more tension. Check better practices for video creation and audiovisual narration. We have 90 seconds: we need to say this is Nury, it is a crisis management tool..."
 
-This brief replaces nothing yet. It asks for **three treatments**, then Juan picks one.
+**Status: A CHOSEN** (Juan, 2026-10-07): treatment A, "From night to light", borrowing one plain line from C ("Five stages. A gate after each. Nothing sent."). Final film script: `presentation/FINALIST_SCRIPT.md`. Eric's lines, pending Sensei's review before anything is rendered: `presentation/ERIC_LINES.md`. The three treatments and the research: `presentation/TREATMENTS.md`. The pitch deck follows the same arc (night, lantern, light, dawn): `presentation/PITCH_SCRIPT.md`.
+
+The original ask, kept for the record: three treatments, then Juan picks one.
 
 ## 1. What the 90 seconds must do (non-negotiable content)
 1. "This is Nury": the name, the dictionary moment (light, lantern), the brand line.
