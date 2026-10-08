@@ -217,7 +217,7 @@ Copy is identical in Night and Day. Only the theme control changes (see the last
 
 | Key | Text |
 |---|---|
-| Brand tagline (desktop top bar, lowercase per brand) | the crisis-response agent for solo pastors |
+| Brand tagline (desktop top bar) | An AI Crisis Response Agent (Juan, 2026-10-07: "solo pastors" is dropped from every positioning place) |
 | Tabs | Home, Cases, Our network |
 | Settings button (aria-label) | Settings and display |
 | Skip link | Skip to content |
@@ -384,3 +384,10 @@ Acceptance checks (do these in a real browser at 390 and 1280 px, Night and Day)
 ## 16. Copy rule (Juan, 2026-10-07)
 
 The pastor is responding to a family in need. We do not start crises. Use: respond, help, draft, review, approve, save, reopen. Hero button: "Respond to a crisis". Home section: "A family needs help". Crisis page button: "Begin the response". Intake button: "Begin". Halt card: "Try again". "New case" stays only on the saved-package screen.
+
+## 17. Shared shell, chooser, header toggle (Juan, 2026-10-07)
+
+- One shell for every page: `code/app/static/shell.css` and `shell.js` supply the skip link, header (logo, name, "An AI Crisis Response Agent", Home, Cases, Our network, About button, Day/Night toggle), tab bar on phone, and the About sheet. Pages add only `<main id="main">`. An offline test fails if a page defines its own header.
+- The Settings sheet is gone. The Day/Night toggle sits in the header on every page. The About button opens "How this was made" from every page.
+- "Respond to a crisis" opens a chooser titled "A family needs help": a bottom sheet on phone, a centred modal on laptop. Live crises are large cards with icons; coming-soon cards are muted and not focusable. A primary button never silently scrolls the page.
+- About sheet: block "Who writes" (Claude Sonnet 4.6 through Gloo AI Studio, 14 named rules, up to 3 tries), block "Who checks it before anyone uses it" (Jev from TypeSafe; a red team of three models from three other makers), then what we have not done, and the disclosure line last.

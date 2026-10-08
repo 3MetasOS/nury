@@ -136,7 +136,7 @@ Two things check Nury, in two places. At **run time** (while a pastor uses it), 
 | Full live pipelines with the gate on | BUILT, live (three scenarios) | `evaluations/LIVE_COST_LOG.md` slot G; TECH_CLAIMS 50 to 55. Adds about 0.8 to 1.1 s a package. |
 | Per-question lines: 0.60 for `assumes_facts`, 0.50 for the rest | BUILT, live (3 of 3 clean, build `c317050`) | Set after seeing validation data; approved by hack-sensei on 2026-10-07 |
 
-What the smoke test showed: on 20 question-and-draft pairs from two scenarios, safe drafts scored 0.02 to 0.35 and drafts with an unsafe paragraph added scored 0.78 to 0.99. No unsafe paragraph was missed, and no safe draft reached its line. Jev's median answer time was about 150 ms over 30 calls.
+What the smoke test showed: on 20 question-and-draft pairs from two scenarios, safe drafts scored 0.02 to 0.35 and drafts with an unsafe paragraph added scored 0.78 to 0.99. No unsafe paragraph was missed, and no safe draft reached its line. Jev's median answer time was 147 to 156 ms over two passes (60 calls), and the slowest call took 271 ms.
 
 What went wrong live. In detention 14, a grief case, at the 0.50 line and with no crisis context Jev rejected the triage three times (0.85 to 0.88): the intake says "taken" and the draft said "by immigration officers". The stage escalated and the pastor would have taken over. After the crisis type was added to what Jev sees, and the correction reason was made specific, the case completed with two regenerations (triage 0.65 then 0.49; attorney list 0.53 then 0.47). With the 0.60 line it completed with no regeneration, but triage scored 0.59, one hundredth under the line. So a safe draft can be rejected, and the false-reject rate over many cases is not measured.
 
