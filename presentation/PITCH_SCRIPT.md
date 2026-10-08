@@ -76,7 +76,7 @@ Do not edit, shorten or humanize the text. Do not add a photo unless Juan provid
 Slides 1, 2, 3, 5, 6, 11 and the memorial: about 10 + 5 + 7 + 36 + 10 + 4 + 16 = 88 s. The rules doc says 90 s and Discord says 3 min. Verify at the venue. Both versions are ready.
 
 ## Backup slides (do not speak; use for questions). Press `b`.
-What broke and what changed. Four evaluation layers, with what each cannot do. Privacy that is tested. How we differ. Credits.
+What broke and what changed. Four evaluation layers, with what each cannot do. Why two judges. Privacy that is tested. Informed by case-management practice (not in the talk). How we differ. Credits.
 Gated, hidden until Sensei confirms in writing: the case file, and "listed does not mean recommended" (church network and official list).
 For technical questions, use `TECH_STORY.md` section 5: why not a bigger model, how we know the guardrails work, hallucinated links, personal information, and what Jev adds.
 

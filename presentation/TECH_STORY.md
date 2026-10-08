@@ -61,7 +61,7 @@ Spare caption if there is room: "91 offline tests pass; no send path" (re-run th
 Lower-third labels: "Built on Gloo AI Studio" and "Tested with Jev". Optional TECH-B only if there is time: "A red team from other model makers checks it too. It advises; a person decides."
 Proof shots that already exist offline (`python3 code/tools/show_proofs.py N`, about 2 s): 1 a rejected draft never reaches the pastor; 2 Gloo sees tokens, not names; 3 the leak test; 4 the loader refuses a skill that says "ignore the disclaimer" (gated until skills are confirmed); 5 a held entry is never named (gated).
 
-## 5. Live Q and A: the six hardest technical questions
+## 5. Live Q and A: the hardest technical questions
 Say the short answer first. Give the limit before the judge finds it.
 
 **1. Why not a bigger model?**
@@ -92,6 +92,14 @@ Honest: The red team caught 8 of 8 injected problems in its first pass and also 
 **7. Does the AI write Scripture?** (GATED: do not use until hack-sensei confirms in writing that it is built, and TECH_CLAIMS marks it VERIFIED)
 Short: No. The model only picks a verse by id from a verified list. The engine inserts the exact text from a public-domain translation (Reina-Valera 1909 and the World English Bible), and a check verifies the verse word for word. The model writes at most two short sentences on why the verse matters. Scripture is quoted from a source, never generated.
 Honest (from the design in BUILD_LOG item 83; each point needs its own TECH_CLAIMS row before we say it): Juan approves the verse list on a canvas. It holds comfort and presence verses only: none that promises an outcome, none about foreigners or politics. Checks block outcome promises and claims about God's providence in the sentences the model writes. The two translations are public domain; licensed versions through the YouVersion platform are a next step and are not built. We have not tested how pastors or families feel about it. Claim row: [PENDING: TECH_CLAIMS row, hack-jedi].
+
+**8. Is Nury compliant with case-management standards?** (backup; not in the 3-minute talk)
+Short: No, and we do not claim it. Nury is informed by the NASW standards for social work case management and by trauma-informed practice. Examples we can show: structured triage, a service plan with a next-steps map, the pastor deciding at every gate, a saved record, and private notes that never reach a model. It is a drafting aid for a pastor, not a professional case-management system, and no standards body has endorsed it.
+Honest: Gaps we can name: no case status or follow-up date, no consent note, no access log, and no sign-in or encryption at rest yet. We read NASW's 2013 standards in full. We did not map CMSA's standards, which are behind a membership, or SAMHSA's sixth principle, which we could not verify. Source: documents/STANDARDS_ALIGNMENT.md.
+
+**9. Do pastors have a confidentiality standard?** (backup)
+Short: Norms exist and vary. One example is the American Association of Pastoral Counselors code, which allows disclosure when the law requires it or to prevent a clear and immediate danger. Nury keeps a pastor's private notes out of every model request and sends nothing to the family.
+Honest: We found no national standard that covers every pastor, and we read the AAPC wording through a published article, not the code itself. Today there is no sign-in, so anyone who can open the app can open the saved cases. A consent and confidentiality note is being written for Juan to approve.
 
 ## 6. Rules
 - Use only rows that TECH_CLAIMS.md marks VERIFIED. The judge rows are 35 to 40. Cut the rest.
