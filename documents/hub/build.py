@@ -242,7 +242,7 @@ nav{width:300px;flex:none;background:var(--nav);color:var(--ink);display:flex;fl
 .brand{padding:22px 20px 14px}
 .brand .mark{display:flex;gap:12px;align-items:center}
 .brand b{font:600 28px Fraunces,Georgia,serif;letter-spacing:-.01em}
-.brand small{display:block;color:var(--mute);font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-top:5px}
+.brand small{display:block;color:var(--mute);font:600 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;margin-top:8px}
 .hand{font:26px "Gochi Hand","Bradley Hand",cursive;color:var(--ink);margin:10px 20px 4px;transform:rotate(-2deg);display:inline-block}
 .hand span{background:linear-gradient(transparent 58%,rgba(232,163,61,.55) 58% 90%,transparent 90%);padding:0 .2em}
 .search{padding:10px 16px 12px}
@@ -267,7 +267,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(-
 <nav id="nav" aria-label="Nury hub menu">
  <div class="brand"><div class="mark">
   __LOGO__
-  <div><b>Nury</b><small>An AI Crisis Response Agent</small></div></div></div>
+  <div><b>Nury</b></div></div>
+  <small>An AI Crisis Response Agent</small></div>
  <div class="hand"><span>start anywhere</span></div>
  <div class="search"><input id="q" type="search" placeholder="Search the menu" aria-label="Search the menu"></div>
  <div class="menu" id="menu"></div>
