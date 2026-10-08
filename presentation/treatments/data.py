@@ -3,7 +3,7 @@ import frames as F
 
 # Row: (start, end, picture, eric, sound, on_screen, asset, tags)   tags: M1 name, M2 tool, M3 tension+person, M4 turn, M5 tech, M6 memorial
 BR = "The crisis-response agent for solo pastors."
-TECH1 = "Names become tokens before leaving his computer."
+TECH1 = "Names become tokens before they reach the model."
 TECH2 = "Checks reject unsafe drafts. A person decides."
 
 A_ROWS = [
@@ -59,7 +59,7 @@ def A_frames():
      (15, F.svg(F.card_entry(330,70,True)+F.eric("This is Nury."),"0:15","#e9e2d2","#6f6a5f")),
      (22, F.svg(F.glow(320,180,170,120)+F.app(320,180,150,1)+F.txt(500,150,"1 Triage",20,F.AMB,"start",600)+F.txt(500,178,"Approve / Edit / Stop",13,F.TXT,"start",400,"Arial,sans-serif")+F.eric("Five stages. A gate after each."),"0:22",F.INK)),
      (37, F.svg(F.app(320,180,150,2,"red")+F.txt(500,150,"Rejected.",22,F.RED,"start",600)+F.txt(500,178,"Regenerating (2 of 3)",13,F.TXT,"start",400,"Arial,sans-serif")+F.eric("Unsafe draft. Rejected. He never sees it."),"0:37","#06080b")),
-     (46, F.svg(F.glow(320,170,300,100,F.AMB,.12)+F.tech()+F.eric("Names become tokens before leaving his computer."),"0:46",F.INK)),
+     (46, F.svg(F.glow(320,170,300,100,F.AMB,.12)+F.tech()+F.eric("Names become tokens before they reach the model."),"0:46",F.INK)),
      (71, F.svg(F.lantern(320,140,70,F.DAMB)+F.txt(320,250,"Nury",40,F.INK,"middle",600)+F.txt(320,282,"the crisis-response agent for solo pastors",15,"#5b564c","middle",400,"Arial,sans-serif"),"1:11",F.PAPER and F.PAPER, "#6f6a5f")),
      (74, F.svg(F.memorial(),"1:14",F.PAPER,"#6f6a5f")),
     ]

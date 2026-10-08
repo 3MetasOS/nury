@@ -34,10 +34,10 @@ If a measured result is confirmed too (for example, a before and after score), a
 
 ## Case file and next-steps map (gated, added Oct 6)
 Not claimed anywhere. Ships only after hack-sensei confirms in writing that it is built and tested.
-Required wording: "the pastor keeps a case file on their own computer". Never say it predicts or forecasts. The map is steps and questions, never outcomes.
+Required wording (updated: Nury is a web app on a server): "Nury saves each approved case". Do not say where it is stored beyond "saved in Nury", and do not claim sign-in, accounts or encryption. Never say it predicts or forecasts. The map is steps and questions, never outcomes.
 Planned lines, ready to paste:
-- Deck slide 5 bullet: "The pastor keeps a case file on their own computer, with a map of next steps and questions to ask."
-- Pitch script, 1:35 block: "The pastor keeps a case file on their own computer. Nury adds a map of next steps and questions to bring to an attorney. It lists steps and questions. It does not say what will happen."
+- Deck bullet: "Nury saves each approved case, with a map of next steps and questions to ask."
+- Pitch script, 1:35 block: "Nury saves each approved case. Nury adds a map of next steps and questions to bring to an attorney. It lists steps and questions. It does not say what will happen."
 
 ## Church network and official lists (gated, queued Oct 7, not started)
 Rule change from Juan. Replaces "never recommends a specific attorney". Ship only on hack-sensei's written go, after it works.

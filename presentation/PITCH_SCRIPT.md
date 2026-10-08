@@ -44,7 +44,7 @@ Play the cut of the demo (the guardrail strip and the approval gate), or run the
 [90s] At the end, Copy, not Send. Nury is not a pastor. It never sends. The pastor does.
 
 ## 1:17 to 1:37  Slide 6 (light): how it is built  [90s]
-Trace the line once. [90s] The pastor types. A privacy layer swaps names for tokens on the pastor's computer. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are restored here, and named checks reject unsafe drafts, up to three tries. The pastor decides. Nothing leaves with a name in it. The leak test ran 90 checks per playbook and found no names.
+Trace the line once. [90s] The pastor types. A privacy layer in Nury swaps names for tokens. Only tokens go to Gloo AI Studio's guarded endpoint. The reply comes back, the names are put back inside Nury, and named checks reject unsafe drafts, up to three tries. The pastor decides. The model sees tokens, not names. The leak test ran 90 checks per playbook and found no names.
 Under the diagram: fourteen named checks plus five floor checks, five Gloo calls, no send path. Point at the bottom strip: "That is how we test it. Four layers, at evaluation time only."
 
 ## 1:37 to 1:52  Slide 7 (light): innovation

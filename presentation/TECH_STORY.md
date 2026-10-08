@@ -5,7 +5,7 @@ Written by hack-ninja for Juan's ask: sell the engineering with proof. Plain wor
 Gate rule from hack-sensei still holds: skills, the case file, the church network and the official list stay hidden in the deck until he confirms in writing, even though TECH_CLAIMS marks them verified.
 
 ## 1. The 60-second technical story (spoken, about 165 words)
-A pastor types what a family said. Before anything leaves the pastor's computer, a privacy layer swaps names, phones, emails, addresses and IDs for tokens. The request goes to Gloo AI Studio's guarded endpoint, which adds its own guardrails on the server. A full package is five calls, about a minute and about nine cents.
+A pastor types what a family said. Before the request goes to the model, a privacy layer in Nury swaps names, phones, emails, addresses and IDs for tokens. The model sees tokens, not names. The request goes to Gloo AI Studio's guarded endpoint, which adds its own guardrails on the server. A full package is five calls, about a minute and about nine cents.
 
 Fourteen named checks and five floor checks read every draft: banned phrases, the disclaimer, links and phone numbers that must come from vetted sources, language, citations. If a draft fails, it is rejected and regenerated, up to three tries, then escalated. The pastor never sees the failed draft. Then the pastor decides: Approve, Edit or Stop. Nury has no send path. The pastor copies the text.
 
@@ -20,7 +20,7 @@ We test it in four layers. Plain code checks, with no AI. Typed judges from the 
 | 6 | A rejected draft never reaches the pastor. It goes to the audit log with categories only. | 0 rejected drafts shown | VERIFIED offline test |
 | 9 | Nothing Nury shows can contain an invented link, phone number, bare web address or email. A real gap (bare domains passed) was found and fixed on 2026-10-07. | 4 kinds checked | VERIFIED offline test |
 | 10 | A new crisis is a folder, not engine code. A second crisis in a temporary folder ran on the unchanged engine. | zero engine changes | VERIFIED offline test |
-| 16 | No direct identifier reaches a model. Names, phones, emails, addresses, dates, A-numbers, case and ID numbers become tokens before the request leaves. | Leak test: 6 request bodies x 15 canary values = 90 checks per playbook, 0 found | VERIFIED offline test |
+| 16 | No direct identifier reaches a model. Names, phones, emails, addresses, dates, A-numbers, case and ID numbers become tokens before the request goes to the model. | Leak test: 6 request bodies x 15 canary values = 90 checks per playbook, 0 found | VERIFIED offline test |
 | 17 | The same holds on the real endpoint, at a small cost: about 4 to 5% more input tokens, on three live scenarios. | +4 to 5% input tokens | VERIFIED live |
 | 19 | Limit, said plainly: direct identifiers only. Context can still hint. A name the pastor did not protect is not removed. | not a claim to sell | VERIFIED (stated limit) |
 | 25 | Four layers judge every run: 7 deterministic judges, 15 Jev typed questions, 3 red-team reviewers, a person. | 7 + 15 + 3 + a person | VERIFIED (built and run); results pending |
@@ -49,7 +49,7 @@ Tests: I quote only the product count (91). The evaluations suite adds a few doz
 Built by hack-video as an animated architecture shot. Text only, no third-party logos. Place it after the guardrail beat.
 
 **TECH-A voiceover (30 words, about 12 s):**
-> Names become tokens before anything leaves the pastor's computer. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.
+> (Superseded by Eric's approved lines L7 and L8.) Names become tokens before they reach the model. Gloo's guarded endpoint writes, and named checks reject unsafe drafts. Jev judges and a red team test it. A person decides.
 
 **Three on-screen proof captions** (VERIFIED rows only, about 3 s each, one per step of the animation):
 1. "Leak test: 90 checks per playbook, 0 found" (TC 16)
@@ -77,7 +77,7 @@ Short: Every link, phone number, bare web address and email must come from the v
 Honest: We shipped a gap. A made-up bare site such as "detentionlocator.org" passed the link check, because it only looked at text starting with http or www. We found it on Oct 7, fixed it, and added tests. Earlier the model named a detainee locator that was not in our sources, the check rejected it three times, and the stage escalated.
 
 **4. What about personal information?**
-Short: Names, phones, emails, addresses, dates, A-numbers, case numbers and IDs become tokens before a request leaves the computer. The map stays local. The leak test captured the real request bodies for all five stages of both playbooks, including a rejected draft and a pastor edit that adds a new name: 90 checks per playbook, found 0.
+Short: Names, phones, emails, addresses, dates, A-numbers, case numbers and IDs become tokens before a request goes to the model. The model sees tokens, not names, and the token map is not sent. The leak test captured the real request bodies for all five stages of both playbooks, including a rejected draft and a pastor edit that adds a new name: 90 checks per playbook, found 0.
 Honest: It removes direct identifiers only. Context can still hint, and a name the pastor did not protect is not removed. It added about 4 to 5% input tokens on three live scenarios, and one pastoral message lost the family's name. It is not anonymization.
 
 **5. What did Jev add that deterministic checks cannot?**

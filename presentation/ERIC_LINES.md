@@ -18,7 +18,7 @@ Status: approved 2026-10-07. hack-video generates these with ElevenLabs (paid pl
 
 ## Decisions from hack-sensei (2026-10-07)
 1. **L3** is sent as "Nury", the normal spelling (Juan chose it). The `voice.json` `noory` flag stays false. If the voice says it wrong, retake the line; do not respell.
-2. **L7 and L8 changed** so Gloo and Jev are named out loud, not only on screen. Old L7 was "Names become tokens before leaving his computer." Old L8 was "Checks reject unsafe drafts. A person decides." Both are replaced.
+2. **L7 and L8 changed** so Gloo and Jev are named out loud, not only on screen. The old L7 (about names becoming tokens) and the old L8 (about checks and a person deciding) are both replaced.
 3. "A person decides" is covered by L8 "People review what is unsure" and by L9 "His to edit".
 4. **L10** ("Nury is not a pastor. It never sends.") is approved. "The pastor does." is on screen.
 5. **L2** is approved. "The pastor has no staff, and no lawyer on the line" goes on screen in row 2.

@@ -153,12 +153,12 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <aside class="notes">LIGHT. 0:43 to 1:17. Play the 90-second video or run the live app on the locked intake in SHARED_DEMO.md. Say: "Watch the guardrail strip: rejected, regenerating, passed. The pastor never saw that draft." 90-second cut: this is the core, 55 seconds.</aside></section>
 
 <section class="slide" data-part="talk">
-<h2>How it is built: nothing leaves with a name in it</h2>
+<h2>How it is built: the model sees tokens, not names</h2>
 <svg class="diagram" viewBox="0 0 1100 430" role="img" aria-labelledby="dg-t dg-d">
-<title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer on the pastor's computer replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, tokens are restored on the computer, and named checks reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text and sends it by hand. A separate strip shows the evaluation layers, used at evaluation time only.</desc>
+<title id="dg-t">How Nury is built</title><desc id="dg-d">The pastor types an intake. A privacy layer in Nury replaces names with tokens. Only tokens go to the Gloo AI Studio guarded endpoint. The reply returns, the names are put back inside Nury, and named checks reject unsafe drafts, up to three tries. The pastor approves, edits or stops, then copies the text. The pastor sends it by hand, outside Nury. A separate strip shows the evaluation layers, used at evaluation time only.</desc>
 <defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0d1015"/></marker></defs>
 <rect x="6" y="6" width="796" height="300" rx="18" fill="none" stroke="#5b564c" stroke-width="2" stroke-dasharray="8 6"/>
-<text x="24" y="34" class="dl muted">On the pastor's computer</text>
+<text x="24" y="34" class="dl muted">Inside Nury, a web app</text>
 <g class="bx"><rect x="28" y="56" width="212" height="92" rx="12"/><text x="134" y="96" class="bt">Pastor types</text><text x="134" y="124" class="bt">the intake</text></g>
 <g class="bx"><rect x="300" y="56" width="240" height="92" rx="12"/><text x="420" y="96" class="bt">Privacy layer</text><text x="420" y="124" class="bs">names become tokens</text></g>
 <g class="bx gl"><rect x="842" y="56" width="248" height="92" rx="12"/><text x="966" y="96" class="bt">Gloo AI Studio</text><text x="966" y="124" class="bs">guarded endpoint</text></g>
@@ -168,14 +168,14 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <g class="bx"><rect x="560" y="196" width="240" height="92" rx="12"/><text x="680" y="236" class="bt">Named checks</text><text x="680" y="264" class="bs">3 tries, then escalate</text></g>
 <g class="bx"><rect x="300" y="196" width="240" height="92" rx="12"/><text x="420" y="236" class="bt">Approval gate</text><text x="420" y="264" class="bs">Approve, Edit or Stop</text></g>
 <path d="M560 242 H544" class="ln" marker-end="url(#ar)"/>
-<g class="bx"><rect x="28" y="196" width="212" height="92" rx="12"/><text x="134" y="236" class="bt">Pastor sends</text><text x="134" y="264" class="bs">by hand</text></g>
+<g class="bx"><rect x="28" y="196" width="212" height="92" rx="12"/><text x="134" y="236" class="bt">Pastor copies</text><text x="134" y="264" class="bs">sends by hand</text></g>
 <path d="M300 242 H244" class="ln" marker-end="url(#ar)"/>
 <rect x="6" y="334" width="1084" height="88" rx="18" fill="none" stroke="#b8680f" stroke-width="2" stroke-dasharray="8 6"/>
 <text x="24" y="362" class="dl am">Evaluation time only</text>
 <text x="548" y="400" class="bs" text-anchor="middle">Plain code checks  ·  Jev typed judges  ·  red-team panel  ·  a person</text>
 </svg>
 <p class="muted">14 named checks plus 5 floor checks. 5 Gloo calls for a full package. One outbound call, no send path.</p>
-<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and tokens are restored here, named checks reject unsafe drafts up to three tries, the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it, and it runs at evaluation time only. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
+<aside class="notes">About 20 seconds. Trace the line once, left to right: the pastor types, the privacy layer in Nury swaps names for tokens, only tokens go to Gloo AI Studio's guarded endpoint, the reply comes back and the names are put back inside Nury, named checks reject unsafe drafts up to three tries, the pastor approves, edits or stops, and sends by hand. Then point at the bottom strip: that is how we test it, and it runs at evaluation time only. Evidence for each box: documents/TECH_CLAIMS.md rows 1, 3, 4, 5, 16 (see presentation/TECH_STORY.md). Do not name a third-party logo. Say Gloo AI Studio and Jev once each.</aside></section>
 
 <section class="slide" data-part="talk">
 <h2>Innovation: a crisis is a folder, and drafts correct themselves</h2>
@@ -292,7 +292,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <span class="pill">BACKUP</span>
 <h2>Privacy that is tested</h2>
 <div class="two"><div class="col">
-<ul><li>Names, phones, emails, addresses, dates of birth and IDs become tokens before a request leaves the computer. The map stays local.</li>
+<ul><li>Names, phones, emails, addresses, dates of birth and IDs become tokens before a request goes to the model. The model sees tokens, not names, and the token map is not sent.</li>
 <li>A leak test captures the exact request body at the HTTP boundary. A synthetic intake full of canary names and numbers goes through all five stages.</li>
 <li>Limits, said plainly: direct identifiers only. Context can still hint. A name the pastor did not protect is not removed.</li>
 <li>Cost: one pastoral message lost the family's name.</li></ul></div>
@@ -302,7 +302,7 @@ body.nightmode .foot{color:#a9a59b}.night .photo{box-shadow:0 0 0 1px #263044}
 <section class="slide" data-part="backup" data-gated="casefile">
 <span class="pill">BACKUP</span>
 <h2>The case file</h2>
-<ul><li>The pastor keeps a case file on their own computer.</li>
+<ul><li>Nury saves each approved case.</li>
 <li>Nury adds a map of next steps and questions to bring to an attorney.</li>
 <li>It lists steps and questions. It does not say what will happen.</li></ul>
 <aside class="notes">Gated: show only after Sensei confirms in writing that it is built and tested. Never say predicts or forecasts.</aside></section>

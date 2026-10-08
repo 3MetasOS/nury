@@ -8,7 +8,7 @@ License: MIT.
 
 ## Privacy
 
-Nury removes direct identifiers before anything reaches a language model. Names, phone numbers, emails, street addresses, dates of birth and ID numbers become tokens on the pastor's computer; the real values stay local and are restored in the answers the pastor sees. The pastor confirms which names to protect. Limits: details such as a workplace or a rare job can still hint at who someone is, and a name the pastor did not protect is not removed. Case files stay on the pastor's computer.
+Nury removes direct identifiers before anything reaches a language model. Names, phone numbers, emails, street addresses, dates of birth and ID numbers become tokens inside Nury before a request goes to the model; the model sees tokens, not names, and the real values are put back in the answers the pastor sees. The pastor confirms which names to protect. Limits: details such as a workplace or a rare job can still hint at who someone is, and a name the pastor did not protect is not removed. Cases are saved in Nury; nothing is sent to the family.
 
 ## Credits
 
