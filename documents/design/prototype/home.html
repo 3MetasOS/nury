@@ -338,7 +338,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
           <li>Gloo AI Studio, guarded endpoint</li>
           <li>Claude Sonnet 4.6</li>
           <li>Tokens, not names, reach the model</li>
-          <li>14 named checks, 3 tries</li>
+          <li>20 named checks, 3 tries</li>
           <li>Jev typed judges, a red team, human review</li>
         </ul>
         <button class="linkbtn" type="button" id="open-about"><svg class="i sm" aria-hidden="true" focusable="false"><use href="#i-build"/></svg>About this build</button>
@@ -421,7 +421,7 @@ dialog.sheet::backdrop{background:rgba(5,7,10,.72)}
     <ol class="proof">
       <li data-claims="1"><h3>Gloo AI Studio and Claude Sonnet 4.6</h3><p>Every draft goes through Gloo AI Studio's guarded endpoint, using Claude Sonnet 4.6.</p></li>
       <li data-claims="16,17,18,19"><h3>Tokens, not names</h3><p>Before anything reaches the model, the names you protect, phone numbers, emails, addresses, dates and ID numbers become tokens. The real words come back when the draft returns.</p><p class="lim">This removes direct identifiers only. Context can still hint at who someone is, so check your list of protected names.</p></li>
-      <li data-claims="4,5,6"><h3>14 named checks, then 3 tries</h3><p>Every draft passes 14 named checks and a floor of safety rules. If a draft fails, Nury sends back the reasons, not the draft, and tries again. After three tries it stops and hands the work to you. You never see a rejected draft.</p></li>
+      <li data-claims="4,5,6"><h3>20 named checks, then 3 tries</h3><p>Nury has 20 named checks. Each stage applies the ones listed for it, plus a floor of safety rules. If a draft fails, Nury sends back the reasons, not the draft, and tries again. After three tries it stops and hands the work to you. You never see a rejected draft.</p></li>
       <li data-claims="3"><h3>Nury sends nothing</h3><p>Nury has no way to email, text or post. The only call that leaves Nury goes to Gloo.</p></li>
       <li data-claims="25,32,35,36,40"><h3>How we test it</h3><p>Typed judges from Jev answer fixed questions about each run. They are used for testing only, never inside Nury. A red team of three models from other makers reads what a pastor would see. The red team advises. People review what is flagged.</p></li>
       <li data-claims="10"><h3>A crisis is a folder</h3><p>Each crisis is data: its own prompts, reviewed sources and stages. New crises plug into the same engine and the same safety rules.</p></li>

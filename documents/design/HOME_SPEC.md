@@ -183,7 +183,7 @@ Content check against the repo: detention stages are Triage, Rights brief, Attor
 ## 8. "How this was made": strip and sheet
 
 ### Strip on Home (quiet, one row of small pills, muted)
-Label "How this was made", then: Gloo AI Studio, guarded endpoint. Claude Sonnet 4.6. Tokens, not names, reach the model. 14 named checks, 3 tries. Jev typed judges, a red team, human review. Then a text button "About this build". Names only. No logos.
+Label "How this was made", then: Gloo AI Studio, guarded endpoint. Claude Sonnet 4.6. Tokens, not names, reach the model. 20 named checks in the registry, 3 tries. Jev typed judges, a red team, human review. Then a text button "About this build". Names only. No logos.
 
 ### Sheet "How this was made" (7 items)
 
@@ -191,7 +191,7 @@ Label "How this was made", then: Gloo AI Studio, guarded endpoint. Claude Sonnet
 |---|---|---|---|---|
 | 1 | Gloo AI Studio and Claude Sonnet 4.6 | Every draft goes through Gloo AI Studio's guarded endpoint, using Claude Sonnet 4.6. | 1 (VERIFIED live) | Safety floor |
 | 2 | Tokens, not names | Names you protect, phone numbers, emails, addresses, dates and ID numbers become tokens before anything reaches the model, and come back in the draft. Limit stated: only direct identifiers are removed. | 16 (offline test), 17 (live), 18, 19 (stated limit) | Tokens instead of identifiers |
-| 3 | 14 named checks, then 3 tries | 14 named checks plus a floor of safety rules. A failed draft goes back as reasons, not text. Three tries, then it stops and hands over. A rejected draft is never shown. | 4 (live), 5 (offline), 6 (offline) | 14 named checks, Correction loop |
+| 3 | 20 named checks, then 3 tries | 20 named checks in the registry; each stage applies the ones listed for it, plus the safety floor. A failed draft goes back as reasons, not text. Three tries, then it stops and hands over. A rejected draft is never shown. | 4 (live), 5 (offline), 6 (offline) | 20 named checks, Correction loop |
 | 4 | Nury sends nothing | No way to email, text or post. The only outgoing call is to Gloo. | 3 (offline test) | No send path |
 | 5 | How we test it | Jev typed judges answer fixed questions (testing only, never in the product). A red team of three models from other makers reads what a pastor would see and only advises. People review what is flagged. | 25, 32, 35, 36, 40 | Jev typed judges, Red-team panel, Human review canvas |
 | 6 | A crisis is a folder | A crisis is data: prompts, reviewed sources and stages, run by the same engine and the same safety rules. | 10 (offline test) | A crisis is a folder |
@@ -390,4 +390,4 @@ The pastor is responding to a family in need. We do not start crises. Use: respo
 - One shell for every page: `code/app/static/shell.css` and `shell.js` supply the skip link, header (logo, name, "An AI Crisis Response Agent", Home, Cases, Our network, About button, Day/Night toggle), tab bar on phone, and the About sheet. Pages add only `<main id="main">`. An offline test fails if a page defines its own header.
 - The Settings sheet is gone. The Day/Night toggle sits in the header on every page. The About button opens "How this was made" from every page.
 - "Respond to a crisis" opens a chooser titled "A family needs help": a bottom sheet on phone, a centred modal on laptop. Live crises are large cards with icons; coming-soon cards are muted and not focusable. A primary button never silently scrolls the page.
-- About sheet: block "Who writes" (Claude Sonnet 4.6 through Gloo AI Studio, 14 named rules, up to 3 tries), block "Who checks it before anyone uses it" (Jev from TypeSafe; a red team of three models from three other makers), then what we have not done, and the disclosure line last.
+- About sheet: block "Who writes" (Claude Sonnet 4.6 through Gloo AI Studio, 20 named checks in the registry, up to 3 tries), block "Who checks it before anyone uses it" (Jev from TypeSafe; a red team of three models from three other makers), then what we have not done, and the disclosure line last.
