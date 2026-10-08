@@ -64,7 +64,7 @@ The plain line borrowed from C: "Five stages. A gate after each. Nothing sent." 
 | E7 | 7 the turn | It rewrites. It checks again. | 5 |
 | E8 | 9 stages | Then contacts, a checklist, a message. | 6 |
 | E9 | 9 stages | He changes one word. | 4 |
-E-line lengths are MEASURED (hack-video): E1 1.25 s, E4 2.14, E5 1.39, E6 1.39, E7 1.63, E8 2.18, E9 1.39. Table 1 start times follow hack-video's printed timeline (E1 12.9 s, L8 59.0 s); table 2 times are mine and not re-printed. In table 2, E9 is dropped (row 9 is 6 s). Eric speaks about 34 s of 90 (38 percent), up from 23 s. Longest gap outside the designed silences: 3.5 s.
+E-line lengths are MEASURED (hack-video): E1 1.25 s, E4 2.14, E5 1.39, E6 1.39, E7 1.63, E8 2.18, E9 1.39. Table 1 start times follow hack-video's printed timeline (E1 12.9 s, L8 59.0 s); table 2 times are mine and not re-printed. In table 2, E9 is dropped (row 9 is 6 s). Eric speaks 33.3 s of 90 (37 percent), up from 23 s. Longest gap outside the designed silences: 3.5 s.
 
 ## Sound design: the audio arc (sparse, tense, release)
 All sound is made in code (synthesized) or licensed. No stock music.
