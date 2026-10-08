@@ -33,6 +33,7 @@ The film's pastor at 2:07 AM is a story character. He is not a market limit.
 | 7 | Skills | `code/skills/`, `nury/skills.py` | `voice` and `grounding` instruction modules added to stage prompts. No extra model call. | BUILT, live verified |
 | 8 | App | `code/app/` | The pastor's screens. See section 10. | Mixed, see section 10 |
 | 9 | Evals | `evaluations/` | Test-time layers. See section 4. | BUILT, live verified (final runs pending) |
+| 10 | Learning loop | `code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py` | Proposes changes from what pastors change; a person approves. Off by default. See section 12. | BUILT, offline tested; app wiring IN PROGRESS; not used |
 
 ## 3. The run-time pipeline
 
@@ -194,7 +195,38 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 - A switch turns skills off for a before and after run. BUILT, offline tested.
 - **The effect of the skills is not measured.** The before and after runs exist as a script (`evaluations/skills_ab.py`), BUILT, not yet run. Nothing is claimed about whether they help.
 
-## 12. Milestones (MDT)
+## 12. The learning loop (built, not used)
+
+**Read this first.** No real pastor has used Nury. The loop is built and was tested on 30 invented sessions. Nothing has been learned, and we do not claim it improves Nury. Nury does not learn, improve itself or evolve. The loop proposes, it scores, and a named person approves. Sources: `documents/product/LEARNING_LOOP.md`, TECH_CLAIMS 57 to 59, and the code named below.
+
+| Step | What it does | Where | Status |
+|---|---|---|---|
+| 1. Capture | At each gate, records the pastor's action (approve, edit, stop) and the sentences that changed, with names already turned into tokens. An optional reason chip and the "Something changed" answer. Never a whole draft, never quoted Scripture, never the pastor's free-text note. | `code/nury/feedback.py` (`record_gate`, `record_chip`, `record_outcome`, `prune`) | BUILT, offline tested (15 tests). **App wiring: IN PROGRESS**, not in the committed build when checked on 2026-10-07. |
+| 2. Analyze | Reads the feedback and the run ledger and writes a report by crisis and stage. Proposes a candidate only when the same pattern appears in at least 3 separate edits or chips. Four candidate types: a prompt line, a banned phrase, a new Jev question (a person writes it), a new scenario. | `code/tools/learning_report.py` | BUILT, offline tested |
+| 3. Test | Runs a candidate on the evaluation sets before and after, on copies of `code/` and `evaluations/`. A no-regression gate: more failures, errors, safety failures or escalations, a tone mean more than 0.15 lower, or a cost per run more than 10 percent higher fails it. | `code/tools/candidate_test.py` | BUILT, offline tested. **Never run live.** |
+| 4. Approve | A candidate is a file with a status. `approved` needs a person's name and a date. The checker refuses "nury", "auto", "bot" and "script". No script sets a status past `proposed`, and a test reads their source to check it. | `code/tools/candidates.py`, `code/tests/test_learning_loop.py` (19 tests) | BUILT, offline tested |
+| 5. Release | A normal commit by a developer, with the usual tests and a live check. | git | By hand |
+
+**Capture is off by default.** `NURY_FEEDBACK=off` records nothing. `on` (sentence mode) stores the changed sentences, tokenized. `counts` (strict mode) stores counts and edit-type tags only. In sentence mode a changed sentence that still holds something the pseudonymizer would tokenize, a name-like word or a protected term is dropped and counted (`dropped_unsafe`), not stored. Any failure returns False and never breaks a run. Files are daily, gitignored, in `data/feedback/`.
+
+**The consent sentence rule.** Version B of the consent note adds one sentence, approved by Juan on 2026-10-07: "Nury also records what you change, without names, to improve its drafts; a person reviews every change before it is used." The sentence is a constant in `feedback.CONSENT_SENTENCE`. The app must show it only when `feedback.mode()` is not `off`, and never when it is off. It must be chosen from the switch itself. Nothing about recording goes into the deck, the film or the description until phase 2 is built and verified. See `presentation/CONSENT_NOTE.md`.
+
+**What is not built.**
+- Anything that changes a prompt, a rule, a threshold or a model by itself. Not built, and not planned.
+- A review queue in the app. A person reads a candidate file and writes their name in it.
+- A live before-and-after test of any candidate. By estimate about $5.60 for the core set and about $10 for all three sets and both arms, one repeat, plus Jev on its own key.
+- Automatic pruning of the feedback files. `feedback.prune(days)` exists; nothing calls it.
+- A policy for retention, and a review of consent or retention by a lawyer or an ethics board.
+
+**Honest limits.**
+- Nothing has been learned. Every number is from invented sessions, and the pattern in the worked example was written into the scripted behavior.
+- An edit is not a preference. A frequent edit is a lead, not a finding.
+- Sentence mode holds tokenized text in a file. Context that points to a person without naming them is not caught. Strict mode says less, by design.
+- The gate's thresholds (0.15 and 10 percent) are our choice, not validated. Jev scored the same drafts up to 0.12 apart between two passes, so use `--repeat 3` or more.
+- The minimum of 3 edits is a guard against noise in a demonstration, not a statistical test.
+- The retention suggestion (30 days for sentence mode) has not been reviewed.
+
+## 13. Milestones (MDT)
 
 | # | When | Milestone | What happened |
 |---|---|---|---|
@@ -205,6 +237,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M3b | Oct 6 to 7 | Scripture | 12 verses approved (BUILD_LOG 93); YouVersion live end to end (BUILD_LOG 96); last Scripture rule added. |
 | M3c | Oct 7 00:12 | Core frozen for scoring | Build `7742e7f` (boundary prompt says "a pastor"). 149 product tests then; **163 pass now** (run 2026-10-07 with no keys set). |
 | M3d | Oct 7 00:14 and after | Jev run-time gate (Juan, BUILD_LOG 101) | Approved as the one core change after the freeze. Committed `98fc221`. **Live verified on three scenarios in build `50668d6`.** The follow-up (a 0.60 line for `assumes_facts`) landed in build `c317050`. |
+| M3e | Oct 7 01:15 | Learning loop built offline (hack-jedi, `bb6c17b`) | Capture, report, candidate checker and test script, with 30 invented sessions. App wiring in progress. Nothing learned; no real pastor has used Nury. |
 | M4 | Oct 7 | Scored runs | Earlier scorecards exist in `evaluations/results/`. The final scored set (detention 20, hospital 8), the attacker set (18) and the red-team run on the final sets are owed by hack-artisans. No number is quoted until every review item is decided. |
 | M5 | Oct 7 | Description draft; deck | Drafts done by hack-ninja. Real numbers only from the final run. |
 | M6 | Oct 7, 15:00 | End-to-end demo with one rejected-and-regenerated draft; harness scores | Open. |
@@ -213,7 +246,7 @@ A skill is a small versioned instruction module (plain text, not a Claude Code s
 | M9 | Oct 7, 21:00 | Submitted. Hard stop. | Open. |
 | M10 | Oct 8, 09:00 | 90-second finalist video, only if top 25 | Open. |
 
-## 13. Honest limits: NOT BUILT, and what we do not know
+## 14. Honest limits: NOT BUILT, and what we do not know
 
 Nothing here may be claimed in the film, the deck or the description.
 
@@ -230,8 +263,8 @@ Nothing here may be claimed in the film, the deck or the description.
 - The tone score did not rise after the promises fix; the re-run on the fixed core is pending.
 - "14 named checks" is the headline until the final scored build; the registry holds 20.
 - The effect of the skills is not measured.
-- Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default and the app does not call it yet. It proposes; a named person approves; we do not claim it improves Nury.
+- Nothing has been learned from pastors. The learning loop (`code/nury/feedback.py`, `code/tools/learning_report.py`, `candidate_test.py`, `candidates.py`) is built and tested on 30 invented sessions. Capture is off by default and the app wiring is in progress (not in the committed build). It proposes; a named person approves; we do not claim it improves Nury.
 
-## 14. Rules that stay
+## 15. Rules that stay
 
 Vetted sources only. No open web. No send path. Legal and medical information only, never advice, prediction or strategy. Nury is not a pastor. Humanitarian, never political. An unsafe draft is rejected and regenerated, three tries, then handed to the pastor, and the pastor never sees it. Keys come from the environment only. The submission carries: "The Jev decision API from TypeSafe is used as typed judges in our evaluation harness and as a run-time draft classifier; disclosed as third-party technology per the rules." Jev is used at run time (the gate) and at test time (the typed judges); the submission line names both uses.

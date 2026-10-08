@@ -1,6 +1,6 @@
 # Nury architecture diagrams
 
-Open `diagrams.html` in a browser. It is one page with ten tabs, drawn as inline SVG from the code in this repo. It works offline and fits a phone screen.
+Open `diagrams.html` in a browser. It is one page with eleven tabs, drawn as inline SVG from the code in this repo. It works offline and fits a phone screen.
 
 | Tab | What it shows |
 |---|---|
@@ -14,6 +14,7 @@ Open `diagrams.html` in a browser. It is one page with ten tabs, drawn as inline
 | Skills | The voice and grounding skills, what the loader refuses, and how the audit log records them. |
 | Case file | The case folder the app saves, the next-steps map, and revision v1 to v2. |
 | Evals | Scenarios and attacker intakes to the scorecard, the three judge layers (deterministic, Jev from TypeSafe as a third-party service, the red-team panel), the review canvas, and where each API key is used. |
+| Learning | The learning loop: capture at each gate (off by default), analysis, a candidate file, a before and after test, approval by a named person, and an ordinary release. Built and tested on invented sessions; app wiring in progress; nothing learned. |
 
 ## How to read the boxes
 

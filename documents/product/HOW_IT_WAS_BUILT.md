@@ -300,7 +300,7 @@ What is not built: a rule editor, a workflow editor, and a review and approval f
 
 ## 3. The evaluation system
 
-Two things check Nury, in two places. At **run time** (while a pastor uses it), the named rules and the Jev gate check each draft. At **test time** (before release), five layers judge the system as a whole. The test-time layers exist because a system that grades its own work needs someone else to grade it too.
+Two things check Nury, in two places. At **run time** (while a pastor uses it), the named rules and the Jev gate check each draft. At **test time** (before release), five layers judge the system as a whole. The test-time layers exist because a system that grades its own work needs someone else to grade it too. A learning loop sits beside these layers: it turns what pastors change into proposed changes for a person to approve. It is built and has not been used. See the subsection "How a person can improve Nury" at the end of this section.
 
 ### Who does what
 
@@ -376,13 +376,13 @@ The final scored numbers are not on this page until every review item is decided
 - The effect of the skills is not measured.
 - Nothing has been learned from pastors, because none has used Nury. The learning loop is built and tested on invented sessions only, and we do not claim it improves Nury. The before-and-after script exists and has not been run.
 
-### Learning from what pastors change (built, not used)
+### How a person can improve Nury: the learning loop (built, not used)
 
 No real pastor has used Nury. We built a loop for learning from use, and we tested it on 30 invented sessions. **Nothing has been learned yet, and we do not claim it improves Nury.** Nury does not learn, improve itself or evolve. The loop proposes. It scores. A person approves. The source is `documents/product/LEARNING_LOOP.md`.
 
 | Step | What happens | Status | Evidence |
 |---|---|---|---|
-| 1. Capture | At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. **Off by default** (`NURY_FEEDBACK`). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored. | BUILT, offline tested. **The app does not call it yet** (PLANNED). | `code/nury/feedback.py`; `tests/test_feedback.py` (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57 |
+| 1. Capture | At each gate, record what the pastor did and the sentences that changed, with names already turned into tokens. **Off by default** (`NURY_FEEDBACK`). The consent sentence is shown only when it is on. A strict mode stores counts only. Whole drafts and quoted Scripture are never stored. | BUILT, offline tested. **The app wiring is in progress** (uncommitted when checked on 2026-10-07; FEATURES says PLANNED). | `code/nury/feedback.py`; `tests/test_feedback.py` (15 tests; 10 canary names and numbers, none found; a name the pastor typed without protecting it is dropped and counted); TECH_CLAIMS 57 |
 | 2. Analyze | A script reads the feedback and writes a report by crisis and stage. A candidate change is proposed only when the same pattern appears in at least 3 separate edits. | BUILT, offline tested | `code/tools/learning_report.py` |
 | 3. Test | Run a candidate on the evaluation sets, before and after, with a no-regression gate. It works on copies and never edits the repository. | BUILT, offline tested. **Not run live.** | `code/tools/candidate_test.py`; about $5.60 for the core set, $10 for all three, by estimate |
 | 4. Approve | A person reads the candidate file, the evidence and the test, then writes their name and the date. The checker refuses an approval without a person's name. No script sets a status past `proposed`, and a test reads the scripts' source to check it. | BUILT, offline tested | `code/tools/candidates.py`; `tests/test_learning_loop.py` (19 tests); TECH_CLAIMS 58 |
@@ -655,7 +655,7 @@ Nury today is a working demo on two crises, tested on synthetic families. The ta
 | **Follow-up reminders** | A reminder for a case that needs follow-up | A flag only | PLANNED |
 | **Voice input** | Taking the call and writing the intake by voice | Typed intake | NOT BUILT |
 | **Accessibility** | A screen reader test, and fixes | Labels and focus rings exist. Nobody has tested with a screen reader. | NOT BUILT |
-| **Learning from real use** | Capture wired into the app, a retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate | The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app does not call the capture code. No real data. | Code: BUILT, offline. App wiring: PLANNED. The rest: NOT BUILT |
+| **Learning from real use** | Capture wired into the app, a retention policy, a legal and ethics review of consent, real pastors, and a live before-and-after test of any candidate (about $10 for all three sets and both arms, plus Jev on its own key, and Jev scores drift by up to 0.12) | The capture, analysis, test and approval code is built and tested on 30 invented sessions. The app wiring is in progress and not committed. No real data. | Code: BUILT, offline. App wiring: IN PROGRESS. The rest: NOT BUILT |
 | **Real use** | Pilots with real pastors, and what we learn from them | No pastor outside the team has used Nury | NOT BUILT |
 
 ### A sober order
