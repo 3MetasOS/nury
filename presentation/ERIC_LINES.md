@@ -29,3 +29,20 @@ The three VERIFIED captions, about 3 s each: "Leak test: 90 checks per playbook,
 
 ## Words that need care
 Say Gloo as GLOO and Jev as JEV. "2:07 AM" is sent as "two oh seven A M". No other number is read aloud. The tech beat is two lines now, one per node group: L7 as the diagram's Gloo node lights, L8 as the judge node lights.
+
+## Measured lengths (hack-video, first render, 2026-10-07; -16 LUFS; 392 characters; no retakes yet)
+| Line | Seconds | Slot, table 1 | Fits |
+|---|---|---|---|
+| L1 | 2.23 | 3.5 s start, row 2 ends 10 s | yes |
+| L2 | 2.00 | 10.5 s, row 3 ends 17 s | yes |
+| L3 | 0.88 | 17.6 s, row 4 ends 25 s | yes (quick; see retake note) |
+| L4 | 1.76 | 26 s, row 5 ends 35 s | yes |
+| L5 | 2.04 | 36 s, row 6 ends 42 s | yes |
+| L6 | 2.28 | 43.3 s, row 7 ends 52 s | yes |
+| L7 | 2.88 | 52.5 s, row 8 ends 64 s | yes |
+| L8 | 3.02 | 58.5 s, row 8 ends 64 s | yes |
+| L9 | 1.44 | 65 s, row 9 ends 72 s | yes (quick; see retake note) |
+| L10 | 2.51 | 72.5 s, row 10 ends 78 s | yes |
+| L11 | 2.28 | 78.5 s, row 11 ends 82 s | yes |
+Checked by hack-ninja against both tables (memorial option 3 and option 2): every line ends at least 0.3 s before its slot ends. L7 ends at 55.4 s and L8 starts at 58.5 s, so they do not overlap. Files: `video/vo/arc/L1.wav` to `L11.wav`.
+Retake notes: L3 (0.88 s) and L9 (1.44 s) are the quickest. L3 is the moment of light and was meant to be unhurried: try a take near 1.3 to 1.6 s. L9 should be softer and a little slower: try about 1.8 s. Nobody has listened yet. Nury, Gloo, Jev and "two oh seven A M" need a listener.
