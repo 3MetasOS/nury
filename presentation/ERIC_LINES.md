@@ -64,11 +64,11 @@ Jev now checks every draft at run time (live on three scenarios), so the old L8 
 Seven short lines, each 4 to 6 words, no number, each tied to what is on screen. Do not add more. hack-video renders them; lengths below are MEASURED by hack-video (2026-10-07).
 | ID | Line | Words | Measured s | Start, table 1 | Start, table 2 | On screen | Evidence |
 |---|---|---|---|---|---|---|---|
-| E1 | He types what she says. | 5 | 1.25 | 12.9 s | 11.0 s | The intake is typed | The pastor types the intake |
-| E4 | Pick a crisis. Triage comes first. | 6 | 2.14 | 26.0 s | 23.2 s | The selector, the triage card | Selector in the app; triage is stage 1 |
-| E5 | Approve, edit or stop. | 4 | 1.39 | 31.5 s | 28.2 s | The thumb taps Approve | The gate has these three actions |
-| E6 | Only from vetted sources. | 4 | 1.39 | 38.8 s | 33.8 s | The rights brief and its chips | Vetted sources only; every point cited |
-| E7 | It rewrites. It checks again. | 5 | 1.63 | 48.0 s | 42.0 s | Regenerating, then Passed | The correction loop |
+| E1 | He types what she says. | 5 | 1.25 | 12.9 s | 11.9 s | The intake is typed | The pastor types the intake |
+| E4 | Pick a crisis. Triage comes first. | 6 | 2.14 | 26.0 s | 24.0 s | The selector, the triage card | Selector in the app; triage is stage 1 |
+| E5 | Approve, edit or stop. | 4 | 1.39 | 31.5 s | 29.5 s | The thumb taps Approve | The gate has these three actions |
+| E6 | Only from vetted sources. | 4 | 1.39 | 38.8 s | 34.8 s | The rights brief and its chips | Vetted sources only; every point cited |
+| E7 | It rewrites. It checks again. | 5 | 1.63 | 48.0 s | 43.0 s | Regenerating, then Passed | The correction loop |
 | E8 | Then contacts, a checklist, a message. | 6 | 2.18 | 64.2 s | 58.2 s | Stages 3, 4 and 5 appear | The five stages |
 | E9 | He changes one word. | 4 | 1.39 | 69.6 s | dropped | One word is edited | The scripted edit in the demo |
 Placement changes with no re-render: L2 starts at 8.6 s (table 1), L4 at 21.0 s, L9 at 67.2 s. Full times for both tables: `FINALIST_SCRIPT.md`. E7 must end before the strip says "Passed": hack-video aligns it to the timeline and tells hack-ninja any start that collides.
