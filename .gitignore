@@ -11,3 +11,6 @@ data/
 
 # raw app recordings (large, not for git)
 video/raw_app/
+
+# Private notes that must not be published (strategy, other products)
+ignore/
