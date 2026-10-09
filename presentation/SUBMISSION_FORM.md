@@ -12,7 +12,6 @@ The actual form is not in the repo. `documents/prework` (PREWORK.md, JUDGING.md)
 - **Category notes (if asked):** crisis response for churches; humanitarian, not political.
 - **Team:** Juan Peláez, 3Metas, with five AI agents (hack-sensei coordinator, hack-jedi architecture and integration, hack-artisans developers, hack-ninja presentation, hack-video video).
 - **Built in:** Boulder, Colorado, during the Gloo AI Hackathon, October 6 to 8, 2026. Every step is in the build log.
-- **Registrant line (from the README):** Entered by Juan Peláez under 3Metas. Hackathon registration is under jkpelaez@hotmail.com (Solo Hacker ticket T000857383). *Juan: this prints a personal email and a ticket number. Confirm it before it goes in any public field.*
 - **License:** MIT
 
 ## The 250-word description (two-playbooks version; use this one)

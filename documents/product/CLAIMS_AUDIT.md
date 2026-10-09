@@ -92,7 +92,7 @@ Lesson for the final fill: a number that two documents repeat has the same sourc
 | Claim | Where | Basis |
 |---|---|---|
 | "The engine was written during this event by the team's coding agent ... its author states that it copied no code from an open-source agent harness." | `HOW_IT_WAS_BUILT.md` section 2, Q12, `ENGINE_WALKTHROUGH.md` | The author's statement. The repo cannot prove it. Said so in the text. The app scaffold's origin is not audited. |
-| The competitor descriptions (Rockpool, KineticFlow) | Deck slide 22 | `documents/prework/competition/*.md`. Not re-checked against the live sites. |
+| The competitor descriptions (Rockpool, KineticFlow) | Deck slide 22 | notes removed from the repository on 2026-10-08. Not re-checked against the live sites. |
 | The memorial text and facts (name, age, the sentence about her) | Deck slide 12, `MEMORIAL.md` | Juan's text, approval pending. Hidden. |
 | "The video narration is an AI-generated voice (ElevenLabs)." | README, `SUBMISSION_NOTES.md` | True as far as I know; the render settings are hack-video's. |
 | The earlier failures on slide 14 ("What broke and what changed") | Deck slide 14 | From `evaluations/FAILURE_LOG.md`, which I read on 2026-10-06. Not re-read tonight. |

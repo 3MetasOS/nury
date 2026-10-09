@@ -141,7 +141,6 @@ MENU = [
     ("Overview", "Judging notes", "md", "documents/prework/JUDGING.md"),
     ("Overview", "Features: built vs not built", "md", "documents/FEATURES.md"),
     ("Overview", "Technical claims (verified)", "md", "documents/TECH_CLAIMS.md"),
-    ("Overview", "Who Gloo's customers are", "md", "documents/GLOO_CUSTOMERS.md"),
     ("Overview", "Case management standards", "md", "documents/STANDARDS_ALIGNMENT.md"),
     ("Overview", "Standards page text (for the app)", "md", "documents/product/STANDARDS_PAGE.md"),
     ("Overview", "Plain-language samples (before and after)", "md", "documents/product/PLAIN_LANGUAGE_SAMPLES.md"),
