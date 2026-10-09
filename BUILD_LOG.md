@@ -963,3 +963,4 @@ Timestamped build record for the judges. One entry per milestone: what was built
 - 17:56: SUBMISSION DONE by Juan on the Google Form (before 21:00). Pitch room: Flatirons, first floor. Short deck, 3x app video and app are frozen. Technology line updated (no ElevenLabs/Remotion in tonight's submission).
 - 17:56: pitch slot: position 12 in Flatirons (first floor). Estimated time 21:45 to 22:00, to be confirmed with an organizer.
 - Thu 08:03: FINALIST VIDEO AND FORM RE-SUBMITTED by Juan before the 09:00 deadline. Team told to stand by for the in-person finals.
+- Thu 18:01: Juan: removed from the tree the registrant email and ticket number (README, submission form), documents/GLOO_CUSTOMERS.md and documents/prework/competition/. They remain in git history (history rewrite not done; needs Juan's decision). LinkedIn post published by Juan. Keys to be rotated by Juan.
