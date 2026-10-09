@@ -25,3 +25,4 @@
 | Owner of the legal source file and attorney review | Later (not decided) | Thu 20:25 |
 | Start Phase 1 (app cleanup) | Not yet: wait until the whole plan is dialed | Thu 20:25 |
 | Business model | Build in public. Sell the service, not the code: managed Nury (hosted by us) or forward deployments in churches (we deploy and run it with them). The Nury code stays public (MIT). | Thu 20:40 |
+| Free offers | No free pilot or free service. The only free thing is the open source code. Early access is a lead request, then a paid start (founding rate, to be priced). | Thu 21:41 |
